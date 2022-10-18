@@ -1,4 +1,4 @@
-package com.example.sensimate
+package com.example.sensiMate
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.example.sensimate
+package com.example.sensiMate
 
 import org.junit.Test
 

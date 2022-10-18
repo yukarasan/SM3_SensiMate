@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.theme
+package com.example.sensiMate.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
