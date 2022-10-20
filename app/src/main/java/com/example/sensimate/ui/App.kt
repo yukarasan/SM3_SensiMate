@@ -1,9 +1,9 @@
-package com.example.sensiMate
+package com.example.sensimate
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.sensiMate.ui.home.HomeScreen
-import com.example.sensiMate.ui.theme.SensimateTheme
+import com.example.sensimate.ui.home.HomeScreen
+import com.example.sensimate.ui.theme.SensimateTheme
 
 @Composable
 fun App(

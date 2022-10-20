@@ -1,4 +1,4 @@
-package com.example.sensiMate.ui.home
+package com.example.sensimate.ui.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,13 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.sensimate.model.manropeFamily
 
 @Composable
 fun EventCard() {
     Card(modifier = Modifier.padding(8.dp), elevation = 4.dp) {
         Column {
             EventTitle()
-            
+
             Row() {
                 Text(text = "Location ")
                 Column() {
@@ -30,5 +31,5 @@ fun EventCard() {
 
 @Composable
 fun EventTitle() {
-    Text(text = "Coca Cola", fontWeight = FontWeight.ExtraBold)
+    Text(text = "Coca Cola", fontFamily = manropeFamily, fontWeight = FontWeight.ExtraBold)
 }

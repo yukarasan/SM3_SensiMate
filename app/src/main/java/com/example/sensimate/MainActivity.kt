@@ -1,4 +1,4 @@
-package com.example.sensiMate
+package com.example.sensimate
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

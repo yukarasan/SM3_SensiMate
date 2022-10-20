@@ -1,4 +1,4 @@
-package com.example.sensiMate.ui.home
+package com.example.sensimate.ui.home
 
 import androidx.compose.runtime.Composable
 
