@@ -6,7 +6,15 @@ import androidx.compose.runtime.Composable
 @Composable
 fun HomeScreen() {
     Column() {
-        EventCard()     // Insert resources here as parameters.
-        EventCard()     // Insert resources here as parameters.
+        EventCard(
+            title = "Coca Cola",
+            distance = "2 km",
+            address = "The Circular Lab"
+        )
+        EventCard(
+            title = "Coca Cola",
+            distance = "     ",
+            address = "  "
+        )
     }
 }

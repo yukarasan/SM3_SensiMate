@@ -1,29 +1,27 @@
 package com.example.sensimate.ui.home
 
+import android.location.Address
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.progressSemantics
-import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 
 @Composable
-fun EventCard() {
+fun EventCard(title: String, distance: String, address: String) {
     Card(
         modifier = Modifier
             .padding(start = 25.dp, end = 25.dp, top = 25.dp)
@@ -43,13 +41,13 @@ fun EventCard() {
                     )
                 ) {
                     Row {
-                        EventTitle()
+                        EventTitle(title)
                     }
-                    Row() {
+                    Row {
                         LocationIcon()
                         Column(modifier = Modifier.padding(start = 20.dp)) {
-                            DistanceToEvent()
-                            Address()
+                            DistanceToEvent(distance)
+                            Address(address)
                         }
                     }
                 }
@@ -61,9 +59,9 @@ fun EventCard() {
 }
 
 @Composable
-private fun EventTitle(modifier: Modifier = Modifier) {
+private fun EventTitle(title: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Coca Cola",
+        text = title,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 30.sp,
@@ -83,9 +81,9 @@ private fun LocationIcon() {
 }
 
 @Composable
-private fun DistanceToEvent(modifier: Modifier = Modifier) {
+private fun DistanceToEvent(distance: String, modifier: Modifier = Modifier) {
     Text(
-        text = "2 km",
+        text = distance,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
@@ -95,9 +93,9 @@ private fun DistanceToEvent(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Address(modifier: Modifier = Modifier) {
+private fun Address(address: String, modifier: Modifier = Modifier) {
     Text(
-        text = "The Circular Lab",
+        text = address,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
