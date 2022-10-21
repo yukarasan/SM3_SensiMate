@@ -112,7 +112,7 @@ private fun EventImage(modifier: Modifier = Modifier) {
     Image(
         painter = image,
         contentDescription = null,
-        modifier = modifier.size(100.dp)
+        modifier = modifier.size(120.dp).padding(top = 10.dp)
     )
 }
 
@@ -121,7 +121,7 @@ private fun ProgressBar() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp)
+            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
         LinearProgressIndicator(
             modifier = Modifier
