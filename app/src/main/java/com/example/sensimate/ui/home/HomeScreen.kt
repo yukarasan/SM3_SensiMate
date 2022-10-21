@@ -12,9 +12,9 @@ fun HomeScreen() {
             address = "The Circular Lab"
         )
         EventCard(
-            title = "Sour Cream med ost",
+            title = "Coca Cola ligth med ost og kage og noget andet til",
             distance = "349991 km",
-            address = "The cicular lab at Roskilde"
+            address = "Cicular lab at Roskilde"
         )
     }
 }

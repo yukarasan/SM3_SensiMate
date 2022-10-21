@@ -44,13 +44,13 @@ fun EventCard(title: String, distance: String, address: String) {
                     }
                     Row {
                         LocationIcon()
-                        Column(modifier = Modifier.padding(start = 20.dp)) {
+                        Column(modifier = Modifier.padding(start = 5.dp)) {
                             DistanceToEvent(distance)
                             Address(address)
                         }
                     }
                 }
-                EventImage(modifier = Modifier.fillMaxWidth())
+                EventImage()
             }
             ProgressBar()
         }
@@ -67,7 +67,7 @@ private fun EventTitle(title: String, modifier: Modifier = Modifier) {
         color = Color.White,
         modifier = modifier
             .padding(start = 8.dp)
-            .width(180.dp)
+            .width(220.dp)
     )
 }
 
@@ -89,7 +89,7 @@ private fun DistanceToEvent(distance: String, modifier: Modifier = Modifier) {
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
         color = Color.White,
-        modifier = modifier.width(128.dp)
+        modifier = modifier.width(183.dp)
     )
 }
 
@@ -101,7 +101,7 @@ private fun Address(address: String, modifier: Modifier = Modifier) {
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
         color = Color.White,
-        modifier = modifier.width(128.dp)
+        modifier = modifier.width(183.dp)
     )
 }
 
@@ -113,7 +113,7 @@ private fun EventImage(modifier: Modifier = Modifier) {
         contentDescription = null,
         modifier = modifier
             .size(120.dp)
-            .padding(top = 10.dp)
+            .padding(top = 10.dp, end = 20.dp)
     )
 }
 
