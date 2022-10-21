@@ -1,7 +1,7 @@
 package com.example.sensimate.ui.home
 
-import android.location.Address
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -14,7 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
@@ -64,9 +63,11 @@ private fun EventTitle(title: String, modifier: Modifier = Modifier) {
         text = title,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 30.sp,
+        fontSize = 25.sp,
         color = Color.White,
-        modifier = modifier.padding(start = 8.dp)
+        modifier = modifier
+            .padding(start = 8.dp)
+            .width(180.dp)
     )
 }
 
@@ -88,7 +89,7 @@ private fun DistanceToEvent(distance: String, modifier: Modifier = Modifier) {
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
         color = Color.White,
-        modifier = modifier
+        modifier = modifier.width(128.dp)
     )
 }
 
@@ -100,7 +101,7 @@ private fun Address(address: String, modifier: Modifier = Modifier) {
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
         color = Color.White,
-        modifier = modifier
+        modifier = modifier.width(128.dp)
     )
 }
 
@@ -110,7 +111,9 @@ private fun EventImage(modifier: Modifier = Modifier) {
     Image(
         painter = image,
         contentDescription = null,
-        modifier = modifier.size(120.dp).padding(top = 10.dp)
+        modifier = modifier
+            .size(120.dp)
+            .padding(top = 10.dp)
     )
 }
 
