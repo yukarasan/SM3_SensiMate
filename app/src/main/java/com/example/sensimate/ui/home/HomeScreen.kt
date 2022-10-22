@@ -5,7 +5,8 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun HomeScreen() {
-    Column() {
+    Column {
+        QuickEntry()
         EventCard(
             title = "Coca Cola",
             distance = "2 km",
@@ -14,7 +15,7 @@ fun HomeScreen() {
         EventCard(
             title = "Coca Cola light med ost og kage",
             distance = "349991 km",
-            address = "Cicular lab at Roskilde"
+            address = "The Cicular lab at Roskilde universitet"
         )
     }
 }
