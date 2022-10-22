@@ -33,6 +33,8 @@ fun App(
 ) {
     // val appUiState by appViewModel.uiState.collectAsState()
     // SetUpNavigation()
+
+    HomeScreen()
 }
 
 
@@ -44,7 +46,7 @@ fun App(
 /*
 Navigation works as fine. You can navigate from home to profile. There is one problem though.
 Whenever the HomeScreen() composable is called, it only shows one of its cards, even when
-it has 2 cards.
+it has 2 cards. This is not a problem with navigation, but rather the HomeScreen() function.
  */
 //-----------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------
