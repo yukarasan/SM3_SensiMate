@@ -44,7 +44,7 @@ fun QuickEntry() {
 @Composable
 private fun QuickEntryImage() {
     val image = painterResource(id = R.drawable.ic_add_circle_outlined)
-    Box(modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp, bottom = 5.dp)) {
+    Box(modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 10.dp, bottom = 5.dp)) {
         Image(
             painter = image,
             contentDescription = null,
@@ -64,8 +64,7 @@ private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
         fontSize = 25.sp,
         color = Color.White,
         modifier = modifier
-            .padding(start = 8.dp)
-            .width(220.dp)
+            .padding(top = 25.dp, start = 0.dp)
     )
 }
 
