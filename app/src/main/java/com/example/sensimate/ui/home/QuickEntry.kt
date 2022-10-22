@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -10,13 +11,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 
 @Composable
@@ -31,8 +33,8 @@ fun QuickEntry() {
     ) {
         Column() {
             Row() {
-                Text(text = "Knap")
-                QuickEntryTitle("Quick Entry")
+                QuickEntryImage()
+                QuickEntryTitle("Quick Entry") //TODO: Make text as recourse
             }
             EventInputField()
         }
@@ -41,7 +43,16 @@ fun QuickEntry() {
 
 @Composable
 private fun QuickEntryImage() {
-
+    val image = painterResource(id = R.drawable.ic_add_circle_outlined)
+    Box(modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp, bottom = 5.dp)) {
+        Image(
+            painter = image,
+            contentDescription = null,
+            modifier = Modifier
+                .size(50.dp)
+                .fillMaxSize()
+        )
+    }
 }
 
 @Composable
@@ -85,8 +96,9 @@ private fun EventInputField() {
                 .border(
                     width = 3.dp,
                     brush = Brush.horizontalGradient(
-                        listOf(Color(74, 75, 90),
-                        Color(74, 75, 90)
+                        listOf(
+                            Color(74, 75, 90),
+                            Color(74, 75, 90)
                         )
                     ),
                     shape = RoundedCornerShape(35.dp)
@@ -107,7 +119,7 @@ private fun EventInputField() {
 @Composable
 private fun Label() {
     Text(
-        text = "Enter event code",
+        text = "Enter event code", //TODO: Make text as recourse
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
@@ -118,7 +130,7 @@ private fun Label() {
 @Composable
 private fun Placeholder() {
     Text(
-        text = "Enter event code here to open the survey",
+        text = "Enter event code here to open the survey", //TODO: Make text as recourse
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
