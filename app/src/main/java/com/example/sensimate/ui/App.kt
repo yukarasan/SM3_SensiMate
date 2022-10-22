@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.data.BottomNavItem
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.home.HomeScreen
+import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.theme.SensimateTheme
 
 @Composable
@@ -32,9 +33,7 @@ fun App(
     // appViewModel: AppViewModel = viewModel()
 ) {
     // val appUiState by appViewModel.uiState.collectAsState()
-    // SetUpNavigation()
-
-    HomeScreen()
+    SetUpNavigation()
 }
 
 
@@ -88,7 +87,7 @@ fun Navigation(navController: NavHostController) {
             HomeScreen()
         }
         composable("profile") {
-            //ProfileScreen()
+            ProfileScreen()
         }
     }
 }
@@ -115,11 +114,11 @@ fun BottomNavigationBar(
                 unselectedContentColor = Color.Red,
                 icon = {
                     Column(horizontalAlignment = CenterHorizontally) {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = item.name
+                        )
                         if (selected) {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = item.name
-                            )
                             Text(
                                 text = item.name,
                                 textAlign = TextAlign.Center,
