@@ -36,20 +36,10 @@ fun App(
     SetUpNavigation()
 }
 
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 
-
-
-//-----------------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------
-/*
-Navigation works as fine. You can navigate from home to profile. There is one problem though.
-Whenever the HomeScreen() composable is called, it only shows one of its cards, even when
-it has 2 cards. This is not a problem with navigation, but rather the HomeScreen() function.
- */
-//-----------------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------
 @Composable
 private fun SetUpNavigation() {
     val navController = rememberNavController()
@@ -118,7 +108,7 @@ fun BottomNavigationBar(
                             imageVector = item.icon,
                             contentDescription = item.name
                         )
-                        if (selected) {
+                        if (selected) {     // TODO: If selected, show purple circle instead.
                             Text(
                                 text = item.name,
                                 textAlign = TextAlign.Center,
