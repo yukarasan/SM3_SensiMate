@@ -114,16 +114,7 @@ fun BottomNavigationBar(
                             contentDescription = item.name,
                             modifier = Modifier.size(35.dp)
                         )
-                        if (selected) {     // TODO: If selected, show purple circle instead.
-                            /*
-                            Text(
-                                text = item.name,
-                                textAlign = TextAlign.Center,
-                                fontFamily = manropeFamily,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 15.sp,
-                            )
-                             */
+                        if (selected) {
                             NavBarCircle()
                         }
                     }
