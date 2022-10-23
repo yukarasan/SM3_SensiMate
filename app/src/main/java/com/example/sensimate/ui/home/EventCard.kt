@@ -20,7 +20,7 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 
 @Composable
-fun EventCard(title: String, distance: String, address: String) {
+fun EventCard(title: String, distance: String, address: String, progress: Float) {
     Card(
         modifier = Modifier
             .padding(start = 25.dp, end = 25.dp, top = 25.dp)
@@ -52,7 +52,7 @@ fun EventCard(title: String, distance: String, address: String) {
                 }
                 EventImage()
             }
-            ProgressBar()
+            ProgressBar(progress = progress)
         }
     }
 }
@@ -118,7 +118,7 @@ private fun EventImage(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ProgressBar() {
+private fun ProgressBar(progress: Float) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -131,7 +131,7 @@ private fun ProgressBar() {
                 .clip(RoundedCornerShape(15.dp)),
             backgroundColor = Color(red = 63, green = 69, blue = 81),
             color = Color(red = 199, green = 242, blue = 219), //progress color
-            progress = 0.20f //TODO:  Needs state hoisting in future.
+            progress = progress //TODO:  Needs state hoisting in future.
         )
     }
 }
