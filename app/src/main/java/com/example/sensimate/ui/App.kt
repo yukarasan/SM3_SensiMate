@@ -1,6 +1,9 @@
 package com.example.sensimate
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -25,7 +28,9 @@ import com.example.sensimate.data.BottomNavItem
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.home.HomeScreen
 import com.example.sensimate.ui.profile.ProfileScreen
+import com.example.sensimate.ui.theme.NavBarCircle
 import com.example.sensimate.ui.theme.SensimateTheme
+import java.nio.file.Files.size
 
 @Composable
 fun App(
@@ -91,7 +96,7 @@ fun BottomNavigationBar(
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
     BottomNavigation(
-        modifier = modifier,    //TODO: Create black top border
+        modifier = modifier.height(60.dp),    //TODO: Create black top border
         backgroundColor = Color(22, 26, 30),
         elevation = 5.dp
     ) {
@@ -100,15 +105,17 @@ fun BottomNavigationBar(
             BottomNavigationItem(
                 selected = selected,
                 onClick = { onItemClick(item) },
-                selectedContentColor = Color.Green,     // TODO: Change color
-                unselectedContentColor = Color.Red,
+                selectedContentColor = Color(155, 107, 254),
+                unselectedContentColor = Color.White,
                 icon = {
                     Column(horizontalAlignment = CenterHorizontally) {
                         Icon(
                             imageVector = item.icon,
-                            contentDescription = item.name
+                            contentDescription = item.name,
+                            modifier = Modifier.size(35.dp)
                         )
                         if (selected) {     // TODO: If selected, show purple circle instead.
+                            /*
                             Text(
                                 text = item.name,
                                 textAlign = TextAlign.Center,
@@ -116,6 +123,8 @@ fun BottomNavigationBar(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 15.sp,
                             )
+                             */
+                            NavBarCircle()
                         }
                     }
                 }
