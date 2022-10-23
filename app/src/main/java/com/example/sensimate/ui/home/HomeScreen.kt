@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
@@ -12,7 +13,12 @@ import androidx.compose.ui.unit.dp
 fun HomeScreen() {
     LazyColumn(
         contentPadding = PaddingValues(bottom = 80.dp),
-        modifier = Modifier.background(Color(22, 26, 30))
+        modifier = Modifier.background(
+            Brush.verticalGradient(
+                0.0f to Color(155, 107, 254),
+                0.7f to Color(22, 26, 30)
+            )
+        )
     ) {
         /*
         items(data) { item ->   // TODO: Use the commented version in the future:
