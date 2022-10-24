@@ -56,12 +56,12 @@ private fun SetUpNavigation() {
                     BottomNavItem(
                         name = "Home",
                         route = "home",
-                        icon = Icons.Default.Home
+                        icon = Icons.Default.Home       // TODO: Change icon
                     ),
                     BottomNavItem(
                         name = "Profile",
                         route = "profile",
-                        icon = Icons.Default.Person
+                        icon = Icons.Default.Person     // TODO: Change icon
                     )
                 ),
                 navController = navController,
