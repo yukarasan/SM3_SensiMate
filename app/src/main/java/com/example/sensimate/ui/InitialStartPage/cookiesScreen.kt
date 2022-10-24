@@ -39,7 +39,7 @@ fun CookiesScreen() {
                 verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        Color.Black
+                        BottonGradient
                     )
                 )
             )
@@ -54,21 +54,19 @@ fun CookiesScreen() {
         Spacer(modifier = Modifier.size(20.dp))
         Image(
             painter = painterResource(
-                id = R.drawable.figmalogo
+                id = R.drawable.sentimatelogo
             ),
             contentDescription = "",
             modifier = Modifier.size(120.dp)
         )
         Spacer(modifier = Modifier.size(20.dp))
-            Text(
-                text = "SensiMate",
-                color = Color.White,
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Medium,
-                fontFamily = manropeFamily
-            )
-
-
+        Text(
+            text = "SensiMate",
+            color = Color.White,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Medium,
+            fontFamily = manropeFamily
+        )
 
         Spacer(modifier = Modifier.size(0.dp, 150.dp))
         Row(
@@ -88,7 +86,7 @@ fun CookiesScreen() {
 
                         disabledColor = Color.White,
                         disabledIndeterminateColor = Color.White,
-                        )
+                    )
             )
             Text(
                 text = "Continue using cookie",
@@ -149,9 +147,5 @@ fun CookiesScreen() {
                 fontFamily = manropeFamily
             )
         }
-
-
     }
-
-
 }
