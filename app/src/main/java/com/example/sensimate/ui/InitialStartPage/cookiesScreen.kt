@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
+import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.theme.*
 
 @Preview(showBackground = true)
@@ -64,6 +65,7 @@ fun CookiesScreen() {
                 color = Color.White,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Medium,
+                fontFamily = manropeFamily
             )
 
 
@@ -86,18 +88,19 @@ fun CookiesScreen() {
 
                         disabledColor = Color.White,
                         disabledIndeterminateColor = Color.White,
-
                         )
             )
             Text(
                 text = "Continue using cookie",
                 color = Color.White,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = manropeFamily
             )
             Text(
                 text = " *",
                 color = Color.Red,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                fontFamily = manropeFamily
             )
         }
 
@@ -108,8 +111,10 @@ fun CookiesScreen() {
                     "time you entered our app, nothing more.",
             color = Color.White,
             textAlign = TextAlign.Center,
-            modifier = Modifier.size(250.dp, 100.dp)
+            modifier = Modifier.size(250.dp, 100.dp),
+            fontFamily = manropeFamily
         )
+        Spacer(modifier = Modifier.size(20.dp))
 
         Button(
             onClick = { /*TODO*/ },
@@ -122,7 +127,8 @@ fun CookiesScreen() {
                 text = "Continue",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                color = Color.White
+                color = Color.White,
+                fontFamily = manropeFamily
             )
         }
 
@@ -139,7 +145,8 @@ fun CookiesScreen() {
                 text = "Exit",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                color = Color.White
+                color = Color.White,
+                fontFamily = manropeFamily
             )
         }
 
