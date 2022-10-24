@@ -18,7 +18,7 @@ fun HomeScreen() {
         modifier = Modifier.background(
             Brush.verticalGradient(
                 0.0f to Color(83, 58, 134, 255),
-                0.8f to Color(22, 26, 30)
+                0.7f to Color(22, 26, 30)
             )
         )
     ) {
