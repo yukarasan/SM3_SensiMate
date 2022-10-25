@@ -39,7 +39,7 @@ fun CookiesScreen() {
                 verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
@@ -64,7 +64,7 @@ fun CookiesScreen() {
             text = "SensiMate",
             color = Color.White,
             fontSize = 40.sp,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Bold,
             fontFamily = manropeFamily
         )
 
