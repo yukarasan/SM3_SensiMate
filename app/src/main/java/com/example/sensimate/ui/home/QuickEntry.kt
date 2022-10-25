@@ -69,7 +69,7 @@ private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EventInputField() {
+fun EventInputField() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
