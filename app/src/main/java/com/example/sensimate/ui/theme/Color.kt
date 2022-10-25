@@ -11,3 +11,6 @@ val LightColor = Color(0xff9966ff)
 val RedColor = Color(0xffff6666)
 val DarkPurple = Color(0xFF3E3366)
 val BottonGradient = Color(0xFF0D0018)
+
+val lightpurple = Color(0xFF9A6BFE)
+val darkpurple = Color(0xFF6C4BB1)
