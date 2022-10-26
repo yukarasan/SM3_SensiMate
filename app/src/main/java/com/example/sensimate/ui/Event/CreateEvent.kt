@@ -5,11 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -26,6 +23,7 @@ import com.example.sensimate.App
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
 import com.example.sensimate.ui.theme.*
+import java.time.format.TextStyle
 
 @Preview
 @Preview(showBackground = true)
@@ -33,6 +31,7 @@ import com.example.sensimate.ui.theme.*
 fun AppPreview() {
     SensimateTheme {
         CreateEventScreen()
+        //TextFiledText()
     }
 }
 
@@ -52,6 +51,7 @@ fun CreateEventScreen(){
                 )
             )
     )
+    TextFiledText()
     Card(
         modifier = Modifier
             .padding(start = 1.dp, end = 1.dp, top = 300.dp)
@@ -117,3 +117,36 @@ fun CreateEventScreen(){
     }
 }
     }}
+
+
+@Composable
+fun TextFiledText(){
+    Column(
+        modifier = Modifier
+            .padding(55.dp,55.dp,30.dp,30.dp)
+        .fillMaxSize(),
+    ) {
+        var text by remember { mutableStateOf("Type here...") }
+        ContentColorComponent(contentColor = Color(0xEFFF7067)) {
+        TextField(
+            value = text,
+            onValueChange = { newText ->
+            text = newText },
+            label = {
+                Text(
+                    text = "TITLE",
+                    color = Color(0xFFB874A6)
+                )
+                }, colors = TextFieldDefaults.textFieldColors(backgroundColor = DarkPurple))
+    }}
+
+}
+
+@Composable
+fun ContentColorComponent(
+    contentColor: Color = LocalContentColor.current,
+    content: @Composable () -> Unit
+) {
+    CompositionLocalProvider(LocalContentColor provides contentColor,
+        content = content)
+}
