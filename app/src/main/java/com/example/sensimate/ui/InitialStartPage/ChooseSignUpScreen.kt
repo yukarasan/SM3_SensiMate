@@ -135,7 +135,7 @@ fun ChooseSignUpScreen() {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.location),
+                        painter = painterResource(id = R.drawable.locationicon),
                         contentDescription = "",
                         modifier = Modifier
                             .padding(start = 0.dp, end = 10.dp)
