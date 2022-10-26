@@ -26,15 +26,13 @@ import com.example.sensimate.R
 import com.example.sensimate.ui.theme.*
 import java.time.format.TextStyle
 
-@Preview
+
 @Preview(showBackground = true)
 @Composable
 fun AppPreview() {
-    SensimateTheme {
-        CreateEventScreen()
-        //TextFiledText()
-    }
+    CreateEventScreen()
 }
+
 
 
 @Composable
@@ -88,7 +86,7 @@ fun CreateEventScreen(){
         Spacer(modifier = Modifier.size(250.dp))
 
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {/*TODO*/},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(240.dp, 50.dp)
@@ -181,3 +179,33 @@ fun ContentColorComponent(
     CompositionLocalProvider(LocalContentColor provides contentColor,
         content = content)
 }
+
+@Composable
+fun Tester(){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .size(size = 300.dp)
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        DarkPurple,
+                        BottonGradient
+                    )
+                )
+            )
+    ){
+
+    Image(
+        painter = painterResource(
+            id = R.drawable.sentimatelogo
+        ),
+        contentDescription = "",
+        modifier = Modifier
+            .size(2700.dp)
+            .blur(1.dp)
+            .alpha(0.2f),
+        contentScale = ContentScale.Crop,
+
+        )
+}}
