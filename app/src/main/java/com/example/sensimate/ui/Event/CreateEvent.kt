@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,7 +52,8 @@ fun CreateEventScreen(){
                 )
             )
     )
-    TextFiledText()
+    TextFiledTitleText()
+    TextFiledDescriptionText()
     Card(
         modifier = Modifier
             .padding(start = 1.dp, end = 1.dp, top = 300.dp)
@@ -120,14 +122,14 @@ fun CreateEventScreen(){
 
 
 @Composable
-fun TextFiledText(){
+fun TextFiledTitleText(){
     Column(
         modifier = Modifier
-            .padding(55.dp,55.dp,30.dp,30.dp)
-        .fillMaxSize(),
+            .padding(55.dp, 55.dp, 30.dp, 30.dp)
+            .fillMaxSize(),
     ) {
-        var text by remember { mutableStateOf("Type here...") }
-        ContentColorComponent(contentColor = Color(0xEFFF7067)) {
+        var text by remember { mutableStateOf("") }
+        ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
@@ -137,8 +139,37 @@ fun TextFiledText(){
                     text = "TITLE",
                     color = Color(0xFFB874A6)
                 )
-                }, colors = TextFieldDefaults.textFieldColors(backgroundColor = DarkPurple))
+                }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )})
     }}
+
+}
+
+@Composable
+fun TextFiledDescriptionText(){
+    Column(
+        modifier = Modifier
+            .padding(55.dp, 150.dp, 30.dp, 30.dp)
+            .fillMaxSize(),
+    ) {
+        var text by remember { mutableStateOf("") }
+        ContentColorComponent(contentColor = Color.White) {
+            TextField(
+                value = text,
+                onValueChange = { newText ->
+                    text = newText },
+                label = {
+                    Text(
+                        text = "Description",
+                        color = Color(0xFFB874A6)
+                    )
+                }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                singleLine = true,
+                placeholder = {Text(text = "Type here...",color = Color(0xEFFF7067))}
+            )
+
+        }}
 
 }
 
