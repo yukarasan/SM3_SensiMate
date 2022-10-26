@@ -1,4 +1,5 @@
 package com.example.sensimate.ui.home
+
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,10 +26,78 @@ import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.theme.darkpurple
 import com.example.sensimate.ui.theme.lightpurple
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 
-/*
+@Preview(showBackground = true)
 @Composable
-fun Question() {
+private fun Survery() {
+    Box(
+        modifier = Modifier.background(
+            Brush.verticalGradient(
+                0.0f to Color.White,
+                0.5f to Color.Blue
+            )
+        ).fillMaxSize()
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
+    ) {
+        OrangeBackButton()
+        ProgressPreview()
+        Question(title = "Question 1/6")
+        SurveyTitle(title = "Let's first hear about yourself")
+        Information()
+
+    }
+
+}
+
+
+@Composable
+private fun ProgressPreview() {
+    LinearProgressIndicator(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(10.dp)
+            .clip(RoundedCornerShape(15.dp)),
+        backgroundColor = darkpurple,
+        color = lightpurple, //progress color
+        progress = 0.15f //TODO:  Needs state hoisting in future.
+    )
+}
+
+
+@Composable
+fun Question(title: String, modifier: Modifier = Modifier) {
+    Text(
+        text = title,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 15.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(top = 25.dp, start = 0.dp)
+    )
+}
+
+
+@Composable
+fun SurveyTitle(title: String, modifier: Modifier = Modifier) {
+    Text(
+        text = title,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 20.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(top = 30.dp, start = 0.dp)
+    )
+}
+
+@Composable
+fun Information() {
     Card(
         modifier = Modifier
             .padding(start = 25.dp, end = 25.dp, top = 25.dp)
@@ -37,73 +106,156 @@ fun Question() {
         shape = RoundedCornerShape(20.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
-        Column() {
-            Row() {
-                QuickEntryImage()
-                QuickEntryTitle("Quick Entry") //TODO: Make text as recourse
-            }
-            EventInputField()
+        Column {
+            InformationAge(title = "Age")
+            InformationAnswerAge(title = "21")
+            InformationGender(title = "Gender")
+            InformationAnswerGender(title = "Male")
+            InformationPostalCode(title = "Postal code")
+            InformationAnswerPostalCode(title = "3600")
         }
     }
-    OrangeBackButton()
 }
 
-*/
-
-@Preview(showBackground = true)
 @Composable
-private fun ProgressPreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
-    ) {
-        LinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(10.dp)
-                .clip(RoundedCornerShape(15.dp)),
-            backgroundColor = darkpurple,
-            color = lightpurple, //progress color
-            progress = 0.5f //TODO:  Needs state hoisting in future.
+private fun InformationAge(title: String, modifier: Modifier = Modifier) {
+    Text(
+        text = title,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 15.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(top = 20.dp, start = 0.dp)
+    )
+}
+
+@Composable
+private fun InformationGender(title: String, modifier: Modifier = Modifier) {
+    Text(
+        text = title,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 15.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(top = 15.dp, start = 0.dp)
+    )
+}
+
+@Composable
+private fun InformationPostalCode(title: String, modifier: Modifier = Modifier) {
+    Text(
+        text = title,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 15.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(top = 10.dp, start = 0.dp)
+    )
+}
+
+
+@Composable
+private fun InformationAnswerAge(title: String, modifier: Modifier = Modifier) {
+    Box(modifier = Modifier.padding(top = 20.dp, start = 25.dp, end = 30.dp, bottom = 5.dp)) {
+        Text(
+            text = title,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 15.sp,
+            color = Color.White,
+            modifier = modifier
+        )
+
+    }
+}
+
+@Composable
+private fun InformationAnswerGender(title: String, modifier: Modifier = Modifier) {
+    Box(modifier = Modifier.padding(top = 15.dp, start = 25.dp, end = 30.dp, bottom = 5.dp)) {
+        Text(
+            text = title,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 15.sp,
+            color = Color.White,
+            modifier = modifier
         )
     }
+}
+
+@Composable
+private fun InformationAnswerPostalCode(title: String, modifier: Modifier = Modifier) {
+    Box(modifier = Modifier.padding(top = 10.dp, start = 25.dp, end = 30.dp, bottom = 5.dp)) {
+        Text(
+            text = title,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 15.sp,
+            color = Color.White,
+            modifier = modifier
+        )
+    }
+}
 
 
-
-    @Composable
-    fun PreviousButton() {
-        Button(
-            onClick = { /*TODO*/ },
-            shape = RoundedCornerShape(50),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
-            modifier = Modifier.height(50.dp)
-        ) {
+@Composable
+fun PreviousButton() {
+    Button(
+        onClick = { /*TODO*/ },
+        shape = RoundedCornerShape(60),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
+        modifier = Modifier
+            .height(38.dp)
+            .width(130.dp)
+    ) {
+        Row() {
             Image(
                 painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
                 contentDescription = "Previous",
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(end = 20.dp)
+            )
+            Text(
+                "Previous",
+                color = Color.White,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(start = 20.dp)
             )
         }
 
     }
 
-
-    @Composable
-    fun NextButton() {
-        Button(
-            onClick = { /*TODO*/ },
-            shape = RoundedCornerShape(50),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
-            modifier = Modifier.height(50.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
-                contentDescription = "Next",
-                modifier = Modifier.size(40.dp)
-            )
-        }
-
-    }
 }
+
+@Composable
+fun NextButton() {
+    Button(
+        onClick = { /*TODO*/ },
+        shape = RoundedCornerShape(50),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
+        modifier = Modifier
+            .height(38.dp)
+            .width(130.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.vector),
+            contentDescription = "Next",
+            modifier = Modifier
+                .size(40.dp)
+                .padding(end = 20.dp)
+        )
+        Text(
+            "Previous",
+            color = Color.White,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(start = 20.dp)
+        )
+    }
+
+}
+
 
