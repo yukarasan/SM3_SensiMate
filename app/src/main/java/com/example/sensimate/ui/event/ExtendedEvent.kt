@@ -23,6 +23,7 @@ class EventScreen {
     @Preview(showBackground = true)
     @Composable
     fun ExtendedEvent() {
+        //button
         Card(
             modifier = Modifier
                 .padding(start = 25.dp, end = 25.dp, top = 25.dp)
@@ -31,7 +32,6 @@ class EventScreen {
             shape = RoundedCornerShape(20.dp),
             backgroundColor = Color(red = 44, green = 44, blue = 59)
         ) {
-            //button
             Column {
                 Row {
                     Column(
@@ -62,19 +62,24 @@ class EventScreen {
                         }
                         EventDiscription(discription = "N/A")
 
-                        Row(verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center) {
-                            Column() {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Column {
                                 EventTitle(title = "The Circular lab")
                             }
                             Discription(discription = "2 km")
-                            Image(
-                                painter = painterResource(
-                                    id = R.drawable.location
-                                ),
-                                contentDescription = "",
-                                modifier = Modifier.size(145.dp),
-                            )
+                            Row {
+                                Image(
+                                    painter = painterResource(
+                                        id = R.drawable.location
+                                    ),
+                                    contentDescription = "",
+                                    modifier = Modifier.size(145.dp),
+                                )
+                            }
+                            EventDiscription(discription = "Helsingørmotervej 15, 2500 Lyngby")
                         }
                     }
                 }
@@ -97,7 +102,7 @@ class EventScreen {
     }
 
     @Composable
-    private fun EventDiscription(discription: String, modifier: Modifier = Modifier){
+    private fun EventDiscription(discription: String, modifier: Modifier = Modifier) {
         Text(
             text = discription,
             fontFamily = manropeFamily,
@@ -107,6 +112,7 @@ class EventScreen {
             modifier = modifier
                 .padding(start = 8.dp)
                 .width(220.dp)
+
         )
     }
 
@@ -123,8 +129,9 @@ class EventScreen {
                 .width(220.dp)
         )
     }
+
     @Composable
-    private fun Discription(discription: String, modifier: Modifier = Modifier){
+    private fun Discription(discription: String, modifier: Modifier = Modifier) {
         Text(
             text = discription,
             fontFamily = manropeFamily,
@@ -137,5 +144,4 @@ class EventScreen {
         )
     }
 }
-
 
