@@ -26,9 +26,9 @@ import com.example.sensimate.ui.theme.*
 
 @Preview(showBackground = true)
 @Composable
-fun AppPreview() {
-    //CreateEventScreen()
-    QuestionPage()
+fun CreateEventPreview() {
+    CreateEventScreen()
+    //QuestionPage()
 }
 
 
