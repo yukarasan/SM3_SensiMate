@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.event
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -16,6 +18,8 @@ import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.home.EventInputField
+import com.example.sensimate.ui.theme.BottonGradient
+import com.example.sensimate.ui.theme.DarkPurple
 
 
 class EventScreen {
@@ -24,6 +28,19 @@ class EventScreen {
     @Composable
     fun ExtendedEvent() {
         BackButton()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .size(size = 300.dp)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            DarkPurple,
+                            BottonGradient
+                        )
+                    )
+                )
+        )
         Card(
             modifier = Modifier
                 .padding(start = 25.dp, end = 25.dp, top = 25.dp)
@@ -31,6 +48,7 @@ class EventScreen {
             elevation = 5.dp,
             shape = RoundedCornerShape(20.dp),
             backgroundColor = Color(red = 44, green = 44, blue = 59)
+
         ) {
             Column {
                 Row {
@@ -75,12 +93,12 @@ class EventScreen {
                                         id = R.drawable.location
                                     ),
                                     contentDescription = "",
-                                    modifier = Modifier.size(145.dp),
+                                    modifier = Modifier.size(300.dp),
                                 )
                             }
                             EventDiscription(discription = "Helsingørmotervej 15, 2500 Lyngby")
                         }
-                        Bar(progress = 3.7f)
+                        Bar(progress = 5.8f)
                     }
                 }
             }
@@ -182,6 +200,7 @@ class EventScreen {
                 progress = progress //TODO:  Needs state hoisting in future.
             )
         }
+
     }
 }
 
