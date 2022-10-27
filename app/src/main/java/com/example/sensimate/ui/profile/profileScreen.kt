@@ -3,13 +3,16 @@ package com.example.sensimate.ui.profile
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -46,7 +49,7 @@ fun ProfileScreen() {
                 EditButton()
             }
         }
-        item { DefaultImageButton() }
+        item { ImageButton() }
         item { ProfileName() }
         item { ProfileMail() }
 
@@ -109,21 +112,22 @@ private fun EditButton() {
 }
 
 @Composable
-private fun DefaultImageButton() {
+private fun ImageButton() {
     val image = painterResource(id = R.drawable.profilepic)
 
-    Button(
-        onClick = { /*TODO*/ },
-        shape = RoundedCornerShape(100),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+    Box(
         modifier = Modifier
+            .clip(CircleShape)
             .size(180.dp)
-            .padding(5.dp)
+            .padding(bottom = 5.dp)
+            .clickable { /* TODO */ }
     ) {
         Image(
             painter = image,
             contentDescription = "",
-            modifier = Modifier.fillMaxSize(1f)
+            modifier = Modifier
+                .clip(shape = CircleShape)
+                .fillMaxSize(1f)
         )
     }
 }
