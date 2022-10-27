@@ -23,21 +23,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.theme.darkpurple
-import com.example.sensimate.ui.theme.lightpurple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import com.example.sensimate.ui.InitialStartPage.textFieldWithImage
+import com.example.sensimate.ui.theme.*
 
 @Preview(showBackground = true)
 @Composable
 private fun Survery() {
     Box(
-        modifier = Modifier.background(
-            Brush.verticalGradient(
-                0.0f to Color.White,
-                0.5f to Color.Blue
+        modifier = Modifier
+            .background(
+                Brush.verticalGradient(
+                    0.0f to DarkPurple,
+                    0.5f to BottonGradient
+                )
             )
-        ).fillMaxSize()
+            .fillMaxSize()
     )
     Column(
         modifier = Modifier
@@ -59,12 +62,14 @@ private fun Survery() {
 private fun ProgressPreview() {
     LinearProgressIndicator(
         modifier = Modifier
+            .padding(top = 20.dp, start = 0.dp)
             .fillMaxWidth()
             .height(10.dp)
             .clip(RoundedCornerShape(15.dp)),
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
         progress = 0.15f //TODO:  Needs state hoisting in future.
+
     )
 }
 
@@ -78,7 +83,7 @@ fun Question(title: String, modifier: Modifier = Modifier) {
         fontSize = 15.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 25.dp, start = 0.dp)
+            .padding(top = 5.dp, start = 0.dp)
     )
 }
 
@@ -89,7 +94,7 @@ fun SurveyTitle(title: String, modifier: Modifier = Modifier) {
         text = title,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 20.sp,
+        fontSize = 25.sp,
         color = Color.White,
         modifier = modifier
             .padding(top = 30.dp, start = 0.dp)
@@ -100,19 +105,33 @@ fun SurveyTitle(title: String, modifier: Modifier = Modifier) {
 fun Information() {
     Card(
         modifier = Modifier
-            .padding(start = 25.dp, end = 25.dp, top = 25.dp)
+            .padding(start = 0.dp, top = 25.dp)
             .fillMaxWidth(),
         elevation = 5.dp,
         shape = RoundedCornerShape(20.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
         Column {
-            InformationAge(title = "Age")
-            InformationAnswerAge(title = "21")
-            InformationGender(title = "Gender")
-            InformationAnswerGender(title = "Male")
-            InformationPostalCode(title = "Postal code")
-            InformationAnswerPostalCode(title = "3600")
+            Row (horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
+                InformationAge(title = "Age")
+                var textFieldState by remember { mutableStateOf("21") }
+                textFieldWithImage(
+                    painter = R.drawable.locationicon,
+                    text = textFieldState,
+                    onValueChange = { textFieldState = it }
+                )
+
+
+            }
+            Row {
+                InformationGender(title = "Gender")
+                InformationAnswerGender(title = "Male")
+            }
+            Row {
+                InformationPostalCode(title = "Postal code")
+                InformationAnswerPostalCode(title = "3600")
+            }
+
         }
     }
 }
@@ -123,10 +142,10 @@ private fun InformationAge(title: String, modifier: Modifier = Modifier) {
         text = title,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 15.sp,
+        fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 20.dp, start = 0.dp)
+            .padding(top = 20.dp, start = 20.dp)
     )
 }
 
@@ -136,10 +155,10 @@ private fun InformationGender(title: String, modifier: Modifier = Modifier) {
         text = title,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 15.sp,
+        fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 15.dp, start = 0.dp)
+            .padding(top = 15.dp, start = 20.dp)
     )
 }
 
@@ -149,10 +168,10 @@ private fun InformationPostalCode(title: String, modifier: Modifier = Modifier) 
         text = title,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 15.sp,
+        fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 10.dp, start = 0.dp)
+            .padding(top = 10.dp, start = 20.dp)
     )
 }
 
@@ -180,7 +199,6 @@ private fun InformationAnswerGender(title: String, modifier: Modifier = Modifier
             fontFamily = manropeFamily,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 15.sp,
-            color = Color.White,
             modifier = modifier
         )
     }
@@ -198,7 +216,53 @@ private fun InformationAnswerPostalCode(title: String, modifier: Modifier = Modi
             modifier = modifier
         )
     }
+
 }
+
+@Composable
+fun InputField(text: String, onValueChange: (String) -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 220.dp, end = 20.dp, top = 0.dp, bottom = 0.dp)
+            .height(50.dp)
+    ) {
+
+        TextField(
+            value = text,
+            onValueChange = onValueChange,
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 12.sp,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier
+                .border(
+                    width = 3.dp,
+                    brush = Brush.horizontalGradient(
+                        listOf(
+                            GreyColor,
+                            GreyColor
+                        )
+                    ),
+                    shape = RoundedCornerShape(35.dp)
+                )
+                .height(30.dp)
+                .width(110.dp)
+                .background(Color(74, 75, 90), shape = RoundedCornerShape(35.dp)),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            maxLines = 1 //TODO: maxLines not working. Fix this.
+        )
+    }
+}
+
+
 
 
 @Composable

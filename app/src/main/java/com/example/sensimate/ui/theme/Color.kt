@@ -18,3 +18,5 @@ val BottomGradient = Color(0xFF0D0018)
 val PurpleButtonColor = Color(0xFF9A6BFE)
 
 val FaceBookColor = Color(0xFF1877F2)
+
+val GreyColor = Color(0xFF3F4551)

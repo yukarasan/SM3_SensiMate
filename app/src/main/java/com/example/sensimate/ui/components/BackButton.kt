@@ -1,8 +1,10 @@
 package com.example.sensimate.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -21,12 +23,12 @@ fun OrangeBackButton() {
         onClick = { /*TODO*/ },
         shape = RoundedCornerShape(100),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
-        modifier = Modifier.height(70.dp)
+        modifier = Modifier.height(50.dp).width(50.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
             contentDescription = "",
-            modifier = Modifier.size(40.dp)
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
