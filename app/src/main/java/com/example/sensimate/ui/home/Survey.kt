@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.home
 
+import android.renderscript.ScriptGroup
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -115,21 +116,27 @@ fun Information() {
             Row (horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
                 InformationAge(title = "Age")
                 var textFieldState by remember { mutableStateOf("21") }
-                textFieldWithImage(
-                    painter = R.drawable.locationicon,
-                    text = textFieldState,
+                InputField(
+                    title = textFieldState,
                     onValueChange = { textFieldState = it }
                 )
-
 
             }
             Row {
                 InformationGender(title = "Gender")
-                InformationAnswerGender(title = "Male")
+                var textFieldState by remember { mutableStateOf("Male") }
+                InputField(
+                    title = textFieldState,
+                    onValueChange = { textFieldState = it }
+                )
             }
             Row {
                 InformationPostalCode(title = "Postal code")
-                InformationAnswerPostalCode(title = "3600")
+                var textFieldState by remember { mutableStateOf("3600") }
+                InputField(
+                    title = textFieldState,
+                    onValueChange = { textFieldState = it }
+                )
             }
 
         }
@@ -175,52 +182,8 @@ private fun InformationPostalCode(title: String, modifier: Modifier = Modifier) 
     )
 }
 
-
 @Composable
-private fun InformationAnswerAge(title: String, modifier: Modifier = Modifier) {
-    Box(modifier = Modifier.padding(top = 20.dp, start = 25.dp, end = 30.dp, bottom = 5.dp)) {
-        Text(
-            text = title,
-            fontFamily = manropeFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 15.sp,
-            color = Color.White,
-            modifier = modifier
-        )
-
-    }
-}
-
-@Composable
-private fun InformationAnswerGender(title: String, modifier: Modifier = Modifier) {
-    Box(modifier = Modifier.padding(top = 15.dp, start = 25.dp, end = 30.dp, bottom = 5.dp)) {
-        Text(
-            text = title,
-            fontFamily = manropeFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 15.sp,
-            modifier = modifier
-        )
-    }
-}
-
-@Composable
-private fun InformationAnswerPostalCode(title: String, modifier: Modifier = Modifier) {
-    Box(modifier = Modifier.padding(top = 10.dp, start = 25.dp, end = 30.dp, bottom = 5.dp)) {
-        Text(
-            text = title,
-            fontFamily = manropeFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 15.sp,
-            color = Color.White,
-            modifier = modifier
-        )
-    }
-
-}
-
-@Composable
-fun InputField(text: String, onValueChange: (String) -> Unit) {
+fun InputField(title: String, onValueChange: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -229,7 +192,7 @@ fun InputField(text: String, onValueChange: (String) -> Unit) {
     ) {
 
         TextField(
-            value = text,
+            value = title,
             onValueChange = onValueChange,
             textStyle = TextStyle(
                 color = Color.White,
