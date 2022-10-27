@@ -6,9 +6,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +28,10 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.text.input.VisualTransformation
+import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.InitialStartPage.textFieldWithImage
 import com.example.sensimate.ui.theme.*
 
@@ -45,7 +50,7 @@ private fun Survery() {
     )
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
         OrangeBackButton()
@@ -54,15 +59,18 @@ private fun Survery() {
         SurveyTitle(title = "Let's first hear about yourself")
         Information()
 
-        Row(){
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 250.dp)
+        ) {
+            //TODO: Remember to Implement Scaffold so the buttons does not move, but does not move
             PreviousButton()
             NextButton()
         }
-
-
     }
-
-
 }
 
 
@@ -119,36 +127,77 @@ fun Information() {
         shape = RoundedCornerShape(20.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
-        Column {
+        Column() {
             Row(
+                modifier = Modifier
+                    .padding(start = 0.dp, top = 25.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 InformationAge(title = "Age")
-                var textFieldState by remember { mutableStateOf("") }
-                InputField(
-                    title = textFieldState,
-                    onValueChange = { textFieldState = it },
-                    "21"
+                
+                Spacer(modifier = Modifier.width((120.dp)))
+
+                var age by remember { mutableStateOf("") }
+                MyTextField(
+                    text = age,
+                    textSize = 10,
+                    onValueChange = {age = it} ,
+                    placeHolder = "" ,
+                    width = 100,
+                    height = 20,
+                    keyboardType = KeyboardType.Number,
+                    visualTransformation = VisualTransformation.None,
+                    myTextColor = Color.White,
+                    backgroundColor = GreyColor,
+                    placeHolderColor = Color.White
                 )
 
             }
-            Row {
+            Row(
+                modifier = Modifier
+                    .padding(start = 0.dp, top = 25.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 InformationGender(title = "Gender")
-                var textFieldState by remember { mutableStateOf("") }
-                InputField(
-                    title = textFieldState,
-                    onValueChange = { textFieldState = it },
-                    "Male"
+                Spacer(modifier = Modifier.width((120.dp)))
+                var gender by remember { mutableStateOf("") }
+                MyTextField(
+                    text = gender,
+                    textSize = 12,
+                    onValueChange = {gender = it} ,
+                    placeHolder = "" ,
+                    width = 100,
+                    height = 20,
+                    keyboardType = KeyboardType.Number,
+                    visualTransformation = VisualTransformation.None,
+                    myTextColor = Color.White,
+                    backgroundColor = GreyColor,
+                    placeHolderColor = Color.Gray
                 )
             }
-            Row {
+            Row(
+                modifier = Modifier
+                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 InformationPostalCode(title = "Postal code")
-                var textFieldState by remember { mutableStateOf("") }
-                InputField(
-                    title = textFieldState,
-                    onValueChange = { textFieldState = it },
-                    "3600"
+                Spacer(modifier = Modifier.width((120.dp)))
+                var postalcode by remember { mutableStateOf("") }
+                MyTextField(
+                    text = postalcode ,
+                    textSize = 12,
+                    onValueChange = {postalcode = it} ,
+                    placeHolder = "" ,
+                    width = 100,
+                    height = 20,
+                    keyboardType = KeyboardType.Number,
+                    visualTransformation = VisualTransformation.None,
+                    myTextColor = Color.White,
+                    backgroundColor = GreyColor,
+                    placeHolderColor = Color.Gray
                 )
             }
 
@@ -195,49 +244,6 @@ private fun InformationPostalCode(title: String, modifier: Modifier = Modifier) 
     )
 }
 
-@Composable
-fun InputField(title: String, onValueChange: (String) -> Unit, placeHolder: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 220.dp, end = 20.dp, top = 0.dp, bottom = 0.dp)
-            .height(50.dp)
-    ) {
-
-        TextField(
-            value = title,
-            onValueChange = onValueChange,
-            placeholder = { Text(text = placeHolder) },
-            textStyle = TextStyle(
-                color = Color.White,
-                fontSize = 15.sp,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier
-                .border(
-                    width = 3.dp,
-                    brush = Brush.horizontalGradient(
-                        listOf(GreyColor, GreyColor)
-                    ),
-                    shape = RoundedCornerShape(35.dp)
-                )
-                .height(30.dp)
-                .width(110.dp)
-                .background(Color(74, 75, 90), shape = RoundedCornerShape(35.dp)),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            maxLines = 1 //TODO: maxLines not working. Fix this.
-        )
-    }
-
-
-}
-
 
 @Composable
 fun PreviousButton() {
@@ -255,14 +261,14 @@ fun PreviousButton() {
                 contentDescription = "Previous",
                 modifier = Modifier
                     .size(40.dp)
-                    .padding(end = 20.dp, top = 0.dp)
+                    .padding(start = 0.dp)
 
             )
             Text(
                 "Previous",
                 color = Color.White,
                 fontSize = 12.sp,
-                modifier = Modifier.padding(start = 20.dp)
+                modifier = Modifier.padding(start = 0.dp)
             )
         }
 
@@ -280,21 +286,26 @@ fun NextButton() {
             .height(38.dp)
             .width(130.dp)
     ) {
+        Text(
+            "Next",
+            color = Color.White,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(start = 0.dp)
+        )
+
         Image(
             painter = painterResource(id = R.drawable.vector),
             contentDescription = "Next",
             modifier = Modifier
-                .size(40.dp)
-                .padding(end = 20.dp)
+                .size(25.dp)
+                .padding(start = 10.dp)
         )
-        Text(
-            "Previous",
-            color = Color.White,
-            fontSize = 12.sp,
-            modifier = Modifier.padding(start = 20.dp)
-        )
+
     }
 
 }
+
+
+
 
 
