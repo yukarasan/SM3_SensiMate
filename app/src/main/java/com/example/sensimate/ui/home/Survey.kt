@@ -54,6 +54,11 @@ private fun Survery() {
         SurveyTitle(title = "Let's first hear about yourself")
         Information()
 
+        Row(){
+            PreviousButton()
+            NextButton()
+        }
+
 
     }
 
