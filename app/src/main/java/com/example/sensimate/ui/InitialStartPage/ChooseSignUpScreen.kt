@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -68,8 +69,8 @@ fun ChooseSignUpScreen() {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        
-        myButton(color = Color.White, title = "Sign up with e-mail")
+
+        myButton(color = Color.White, title = "Sign up with e-mail", PurpleButtonColor)
 
 
         Spacer(modifier = Modifier.size(20.dp))
@@ -109,44 +110,21 @@ fun ChooseSignUpScreen() {
         //Postal code button
         var textFieldState by remember { mutableStateOf("") }
         textFieldWithImage(
-            painter = R.drawable.locationicon,
+            painterResource(id = R.drawable.locationicon),
             text = textFieldState,
-            onValueChange = { textFieldState = it }
+            onValueChange = { textFieldState = it },
+            "Postal code"
         )
-
 
 
         Spacer(modifier = Modifier.size(28.dp))
 
 
         // Continue with Facebook button
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults
-                .buttonColors(
-                    backgroundColor = FaceBookColor,
-                ),
-            modifier = Modifier.size(320.dp, 50.dp),
-            shape = CircleShape,
+        buttonWithImage(bgcolor = FaceBookColor,
+            text = "Continue with Facebook",
+            painter = painterResource(id = R.drawable.facebook))
 
-
-            ) {
-            Image(
-                painter = painterResource(
-                    id = R.drawable.facebook
-                ),
-                contentDescription = "",
-            )
-            Spacer(modifier = Modifier.size(15.dp))
-
-            Text(
-                "Continue with Facebook",
-                color = Color.White,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 17.sp,
-            )
-        }
 
         Spacer(modifier = Modifier.size(28.dp))
 
@@ -196,9 +174,10 @@ fun ChooseSignUpScreen() {
 
 @Composable
 fun textFieldWithImage(
-    painter: Int,
+    painter: Painter,
     text: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    placeHolder: String
 ) {
 
     Surface(
@@ -211,14 +190,13 @@ fun textFieldWithImage(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-
             //Postal code image with textfield
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.locationicon),
+                    painter = painter,
                     contentDescription = "",
                     modifier = Modifier
                         .padding(start = 0.dp, end = 10.dp)
@@ -230,7 +208,7 @@ fun textFieldWithImage(
                     onValueChange = onValueChange,
                     placeholder = {
                         Text(
-                            text = ("Postal code"),
+                            text = placeHolder,
                             fontSize = 17.sp,
                         )
                     },
@@ -256,12 +234,16 @@ fun textFieldWithImage(
 }
 
 @Composable
-fun myButton(color: Color, title: String, buttonColor: ButtonColors) {
+fun myButton(
+    color: Color,
+    title: String,
+    buttonColor: Color
+) {
     Button(
         onClick = { /*TODO*/ },
         colors = ButtonDefaults
             .buttonColors(
-                backgroundColor = PurpleButtonColor
+                backgroundColor = buttonColor
             ),
         modifier = Modifier.size(320.dp, 50.dp),
         shape = CircleShape,
@@ -272,6 +254,37 @@ fun myButton(color: Color, title: String, buttonColor: ButtonColors) {
             fontFamily = manropeFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 17.sp
+        )
+    }
+}
+
+@Composable
+fun buttonWithImage(bgcolor: Color, text: String, painter : Painter) {
+    Button(
+        onClick = { /*TODO*/ },
+        colors = ButtonDefaults
+            .buttonColors(
+                backgroundColor = FaceBookColor,
+            ),
+        modifier = Modifier.size(320.dp, 50.dp),
+        shape = CircleShape,
+
+
+        ) {
+        Image(
+            painter = painterResource(
+                id = R.drawable.facebook
+            ),
+            contentDescription = "",
+        )
+        Spacer(modifier = Modifier.size(15.dp))
+
+        Text(
+            "Continue with Facebook",
+            color = Color.White,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 17.sp,
         )
     }
 }
