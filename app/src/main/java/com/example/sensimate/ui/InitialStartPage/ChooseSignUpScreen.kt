@@ -1,25 +1,24 @@
 package com.example.sensimate.ui.InitialStartPage
 
+import android.widget.NumberPicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,23 +68,10 @@ fun ChooseSignUpScreen() {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Button(
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults
-                .buttonColors(
-                    backgroundColor = PurpleButtonColor
-                ),
-            modifier = Modifier.size(320.dp, 50.dp),
-            shape = CircleShape,
-        ) {
-            Text(
-                "Sign up using e-mail",
-                color = Color.White,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = 17.sp
-            )
-        }
+        
+        myButton(color = Color.White, title = "Sign up with e-mail")
+
+
         Spacer(modifier = Modifier.size(20.dp))
 
 
@@ -121,51 +107,14 @@ fun ChooseSignUpScreen() {
 
 
         //Postal code button
-        Surface(
-            modifier = Modifier.size(180.dp, 50.dp),
-            color = Color.White,
-            shape = CircleShape,
-        ) {
-            Column(verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        var textFieldState by remember { mutableStateOf("") }
+        textFieldWithImage(
+            painter = R.drawable.locationicon,
+            text = textFieldState,
+            onValueChange = { textFieldState = it }
+        )
 
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.locationicon),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .padding(start = 0.dp, end = 10.dp)
-                            .size(34.dp),
-                    )
-                    var test = "";
-
-                    TextField(
-                        value = test,
-                        onValueChange = { test = it },
-                        placeholder = {
-                            Text(
-                                text = ("Postal code"),
-                                fontSize = 17.sp,
-                                textAlign = TextAlign.Center
-                            )
-                        },
-
-                        colors = TextFieldDefaults.textFieldColors(
-                            disabledTextColor = Color.Transparent,
-                            backgroundColor = Color.White,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent
-                        ),
-                    )
-                }
-            }
-
-        }
 
         Spacer(modifier = Modifier.size(28.dp))
 
@@ -241,8 +190,88 @@ fun ChooseSignUpScreen() {
             }
 
         }
-
-
     }
+}
 
+
+@Composable
+fun textFieldWithImage(
+    painter: Int,
+    text: String,
+    onValueChange: (String) -> Unit
+) {
+
+    Surface(
+        modifier = Modifier.size(180.dp, 50.dp),
+        color = Color.White,
+        shape = CircleShape,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+
+            //Postal code image with textfield
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.locationicon),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .padding(start = 0.dp, end = 10.dp)
+                        .size(34.dp),
+                )
+
+                TextField(
+                    value = text,
+                    onValueChange = onValueChange,
+                    placeholder = {
+                        Text(
+                            text = ("Postal code"),
+                            fontSize = 17.sp,
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+
+
+                    modifier = Modifier.fillMaxSize(),
+
+
+                    colors = TextFieldDefaults.textFieldColors(
+                        disabledTextColor = Color.Transparent,
+                        backgroundColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent
+                    ),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun myButton(color: Color, title: String, buttonColor: ButtonColors) {
+    Button(
+        onClick = { /*TODO*/ },
+        colors = ButtonDefaults
+            .buttonColors(
+                backgroundColor = PurpleButtonColor
+            ),
+        modifier = Modifier.size(320.dp, 50.dp),
+        shape = CircleShape,
+    ) {
+        Text(
+            title,
+            color = color,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 17.sp
+        )
+    }
 }
