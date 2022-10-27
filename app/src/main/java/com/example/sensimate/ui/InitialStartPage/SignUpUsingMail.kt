@@ -49,7 +49,10 @@ fun SignUpUsingMail() {
             width = 300,
             height = 51,
             KeyboardType.Email,
-            visualTransformation = VisualTransformation.None
+            visualTransformation = VisualTransformation.None,
+            Color.DarkGray,
+            Color.White,
+            Color.Gray
         )
 
         Spacer(modifier = Modifier.size(20.dp))
@@ -62,7 +65,10 @@ fun SignUpUsingMail() {
             width = 300,
             height = 51,
             KeyboardType.Password,
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            Color.DarkGray,
+            Color.White,
+            Color.Gray
         )
 
 
@@ -80,7 +86,10 @@ fun MyTextField(
     width: Int,
     height: Int,
     keyboardType: KeyboardType,
-    visualTransformation: VisualTransformation
+    visualTransformation: VisualTransformation,
+    myTextColor: Color,
+    backgroundColor: Color,
+    placeHolderColor: Color
 ) {
 
     Surface(
@@ -98,6 +107,7 @@ fun MyTextField(
             TextField(
                 value = text,
                 onValueChange = onValueChange,
+                textStyle = LocalTextStyle.current.copy(color = myTextColor),
                 placeholder = {
                     Text(
                         text = placeHolder,
@@ -105,11 +115,13 @@ fun MyTextField(
                         fontWeight = FontWeight.Bold,
                         fontFamily = manropeFamily,
                         textAlign = TextAlign.Left,
+                        color = placeHolderColor,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(height = (height + 50).dp)
                     )
                 },
+
                 visualTransformation = visualTransformation,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType
@@ -119,7 +131,7 @@ fun MyTextField(
 
                 colors = TextFieldDefaults.textFieldColors(
                     disabledTextColor = Color.Transparent,
-                    backgroundColor = Color.White,
+                    backgroundColor = backgroundColor,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
