@@ -54,7 +54,9 @@ private fun Survery() {
         SurveyTitle(title = "Let's first hear about yourself")
         Information()
 
+
     }
+
 
 }
 
@@ -113,29 +115,35 @@ fun Information() {
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
         Column {
-            Row (horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 InformationAge(title = "Age")
-                var textFieldState by remember { mutableStateOf("21") }
+                var textFieldState by remember { mutableStateOf("") }
                 InputField(
                     title = textFieldState,
-                    onValueChange = { textFieldState = it }
+                    onValueChange = { textFieldState = it },
+                    "21"
                 )
 
             }
             Row {
                 InformationGender(title = "Gender")
-                var textFieldState by remember { mutableStateOf("Male") }
+                var textFieldState by remember { mutableStateOf("") }
                 InputField(
                     title = textFieldState,
-                    onValueChange = { textFieldState = it }
+                    onValueChange = { textFieldState = it },
+                    "Male"
                 )
             }
             Row {
                 InformationPostalCode(title = "Postal code")
-                var textFieldState by remember { mutableStateOf("3600") }
+                var textFieldState by remember { mutableStateOf("") }
                 InputField(
                     title = textFieldState,
-                    onValueChange = { textFieldState = it }
+                    onValueChange = { textFieldState = it },
+                    "3600"
                 )
             }
 
@@ -183,7 +191,7 @@ private fun InformationPostalCode(title: String, modifier: Modifier = Modifier) 
 }
 
 @Composable
-fun InputField(title: String, onValueChange: (String) -> Unit) {
+fun InputField(title: String, onValueChange: (String) -> Unit, placeHolder: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -194,9 +202,10 @@ fun InputField(title: String, onValueChange: (String) -> Unit) {
         TextField(
             value = title,
             onValueChange = onValueChange,
+            placeholder = { Text(text = placeHolder) },
             textStyle = TextStyle(
                 color = Color.White,
-                fontSize = 12.sp,
+                fontSize = 15.sp,
                 fontFamily = manropeFamily,
                 fontWeight = FontWeight.Bold
             ),
@@ -204,10 +213,7 @@ fun InputField(title: String, onValueChange: (String) -> Unit) {
                 .border(
                     width = 3.dp,
                     brush = Brush.horizontalGradient(
-                        listOf(
-                            GreyColor,
-                            GreyColor
-                        )
+                        listOf(GreyColor, GreyColor)
                     ),
                     shape = RoundedCornerShape(35.dp)
                 )
@@ -223,9 +229,9 @@ fun InputField(title: String, onValueChange: (String) -> Unit) {
             maxLines = 1 //TODO: maxLines not working. Fix this.
         )
     }
+
+
 }
-
-
 
 
 @Composable
@@ -244,7 +250,8 @@ fun PreviousButton() {
                 contentDescription = "Previous",
                 modifier = Modifier
                     .size(40.dp)
-                    .padding(end = 20.dp)
+                    .padding(end = 20.dp, top = 0.dp)
+
             )
             Text(
                 "Previous",
@@ -263,7 +270,7 @@ fun NextButton() {
     Button(
         onClick = { /*TODO*/ },
         shape = RoundedCornerShape(50),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
+        colors = ButtonDefaults.buttonColors(PurpleButtonColor),
         modifier = Modifier
             .height(38.dp)
             .width(130.dp)
