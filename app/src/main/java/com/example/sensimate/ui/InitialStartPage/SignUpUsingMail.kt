@@ -55,7 +55,7 @@ fun SignUpUsingMail() {
             Color.Gray
         )
 
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(45.dp))
         var password by remember { mutableStateOf("") }
         MyTextField(
             text = password,
@@ -71,8 +71,26 @@ fun SignUpUsingMail() {
             Color.Gray
         )
 
+        Spacer(modifier = Modifier.size(20.dp))
+        var retyped by remember { mutableStateOf("") }
+        MyTextField(
+            text = retyped,
+            textSize = 15,
+            onValueChange = { retyped = it },
+            placeHolder = "Confirm password",
+            width = 300,
+            height = 51,
+            KeyboardType.Password,
+            visualTransformation = PasswordVisualTransformation(),
+            Color.DarkGray,
+            Color.White,
+            Color.Gray
+        )
 
-        Spacer(modifier = Modifier.size(550.dp))
+
+
+
+        Spacer(modifier = Modifier.size(450.dp))
         myButton(color = Color.White, title = "Sign up", PurpleButtonColor)
     }
 }

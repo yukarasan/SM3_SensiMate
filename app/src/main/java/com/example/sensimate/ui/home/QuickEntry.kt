@@ -104,13 +104,17 @@ fun EventInputField() {
                     shape = RoundedCornerShape(35.dp)
                 )
                 .width(400.dp)
-                .background(Color(74, 75, 90), shape = RoundedCornerShape(35.dp)),
+                .background(
+                    Color(74, 75, 90),
+                    shape = RoundedCornerShape(35.dp)
+                ),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
             maxLines = 1 //TODO: maxLines not working. Fix this.
         )
     }
