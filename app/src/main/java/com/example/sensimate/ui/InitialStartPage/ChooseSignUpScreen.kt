@@ -1,6 +1,5 @@
 package com.example.sensimate.ui.InitialStartPage
 
-import android.widget.NumberPicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,9 +19,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.theme.BottomGradient
@@ -30,10 +32,9 @@ import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
-@OptIn(ExperimentalMaterialApi::class)
-@Preview(showBackground = true)
+
 @Composable
-fun ChooseSignUpScreen() {
+fun InitialStartBackground() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -60,10 +61,22 @@ fun ChooseSignUpScreen() {
         contentScale = ContentScale.Crop,
 
         )
+}
 
 
+object Graph {
+    const val COOKIE = "cookie"
+    const val CHOOSESIGNUPSCREEN = "choosesignupscreen"
+    const val SIGNUPWITHEMAIL = "signupwithmail"
+    const val GUEST = "guest"
+}
 
 
+@Preview(showBackground = true)
+@Composable
+fun ChooseSignUpScreen() {
+
+    InitialStartBackground()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -72,9 +85,7 @@ fun ChooseSignUpScreen() {
 
         myButton(color = Color.White, title = "Sign up with e-mail", PurpleButtonColor)
 
-
         Spacer(modifier = Modifier.size(20.dp))
-
 
         //Row start for "--or--"
         Row(
@@ -106,7 +117,6 @@ fun ChooseSignUpScreen() {
             )
         }//Or row end
 
-
         //Postal code button
         var textFieldState by remember { mutableStateOf("") }
         textFieldWithImage(
@@ -116,58 +126,25 @@ fun ChooseSignUpScreen() {
             "Postal code"
         )
 
-
         Spacer(modifier = Modifier.size(28.dp))
-
 
         // Continue with Facebook button
-        buttonWithImage(bgcolor = FaceBookColor,
+        buttonWithImage(
+            bgcolor = FaceBookColor,
             text = "Continue with Facebook",
-            painter = painterResource(id = R.drawable.facebook))
-
+            painter = painterResource(id = R.drawable.facebook),
+            Color.White
+        )
 
         Spacer(modifier = Modifier.size(28.dp))
 
-
         //Continue with google button
-        Surface(
-            modifier = Modifier.size(320.dp, 50.dp),
-            color = Color.White,
-            shape = CircleShape,
-            onClick = { print("abe") },
-            indication = rememberRipple()
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(
-                            id = R.drawable.google
-                        ),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(50.dp)
-                            .padding(start = 20.dp)
-                    )
-
-                    Text(
-                        "Continue with Google",
-                        color = Color.Gray,
-                        fontFamily = manropeFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 19.sp,
-                        modifier = Modifier
-                            .padding(start = 18.dp)
-
-                    )
-                }
-            }
-
-        }
+        buttonWithImage(
+            bgcolor = Color.White,
+            text = "Continue with Google",
+            painter = painterResource(id = R.drawable.google),
+            Color.Gray
+        )
     }
 }
 
@@ -210,15 +187,15 @@ fun textFieldWithImage(
                         Text(
                             text = placeHolder,
                             fontSize = 17.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.fillMaxHeight()
                         )
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number
                     ),
 
-
                     modifier = Modifier.fillMaxSize(),
-
 
                     colors = TextFieldDefaults.textFieldColors(
                         disabledTextColor = Color.Transparent,
@@ -258,33 +235,43 @@ fun myButton(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun buttonWithImage(bgcolor: Color, text: String, painter : Painter) {
-    Button(
-        onClick = { /*TODO*/ },
-        colors = ButtonDefaults
-            .buttonColors(
-                backgroundColor = FaceBookColor,
-            ),
+fun buttonWithImage(bgcolor: Color, text: String, painter: Painter, textColor: Color) {
+
+    Surface(
         modifier = Modifier.size(320.dp, 50.dp),
+        color = bgcolor,
         shape = CircleShape,
-
-
+        onClick = { print("abe") },
+        indication = rememberRipple()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center
         ) {
-        Image(
-            painter = painterResource(
-                id = R.drawable.facebook
-            ),
-            contentDescription = "",
-        )
-        Spacer(modifier = Modifier.size(15.dp))
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painter,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(50.dp)
+                        .padding(start = 20.dp)
+                )
 
-        Text(
-            "Continue with Facebook",
-            color = Color.White,
-            fontFamily = manropeFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 17.sp,
-        )
+                Text(
+                    text,
+                    color = textColor,
+                    fontFamily = manropeFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 19.sp,
+                    modifier = Modifier
+                        .padding(start = 18.dp)
+
+                )
+            }
+        }
     }
 }

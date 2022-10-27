@@ -16,21 +16,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sensimate.App
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
 import com.example.sensimate.ui.theme.*
-import java.time.format.TextStyle
 
 
 @Preview(showBackground = true)
 @Composable
-fun AppPreview() {
+fun CreateEventPreview() {
     CreateEventScreen()
+    //QuestionPage()
 }
 
 
@@ -50,6 +48,11 @@ fun CreateEventScreen(){
                 )
             )
     )
+    AddPhoto(modifier = Modifier
+        .padding(345.dp, 20.dp, 2.dp, 1.dp)
+        .size(20.dp), id = R.drawable.ic_add_circle_outlined
+    )
+    TextToPhoto()
     TextFiledTitleText()
     TextFiledDescriptionText()
     Card(
@@ -75,12 +78,13 @@ fun CreateEventScreen(){
         contentScale = ContentScale.Crop,
 
         )
+        TextFiledTimeText()
+        TextFiledLoctionText()
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
 
 
         Spacer(modifier = Modifier.size(250.dp))
@@ -121,11 +125,6 @@ fun CreateEventScreen(){
 
 @Composable
 fun TextFiledTitleText(){
-    Column(
-        modifier = Modifier
-            .padding(55.dp, 55.dp, 30.dp, 30.dp)
-            .fillMaxSize(),
-    ) {
         var text by remember { mutableStateOf("") }
         ContentColorComponent(contentColor = Color.White) {
         TextField(
@@ -134,23 +133,21 @@ fun TextFiledTitleText(){
             text = newText },
             label = {
                 Text(
-                    text = "TITLE",
+                    text = "Title",
                     color = Color(0xFFB874A6)
                 )
                 }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )})
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+        modifier = Modifier
+            .padding(55.dp, 55.dp, 30.dp, 30.dp)
+            )
     }}
 
-}
+
 
 @Composable
 fun TextFiledDescriptionText(){
-    Column(
-        modifier = Modifier
-            .padding(55.dp, 150.dp, 30.dp, 30.dp)
-            .fillMaxSize(),
-    ) {
         var text by remember { mutableStateOf("") }
         ContentColorComponent(contentColor = Color.White) {
             TextField(
@@ -164,12 +161,13 @@ fun TextFiledDescriptionText(){
                     )
                 }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                 singleLine = true,
-                placeholder = {Text(text = "Type here...",color = Color(0xEFFF7067))}
+                placeholder = {Text(text = "Type here...",color = Color(0xEFFF7067))},
+                modifier = Modifier
+                    .padding(55.dp, 150.dp, 30.dp, 30.dp)
             )
 
         }}
 
-}
 
 @Composable
 fun ContentColorComponent(
@@ -180,8 +178,103 @@ fun ContentColorComponent(
         content = content)
 }
 
+
+
 @Composable
-fun Tester(){
+fun AddPhoto(modifier: Modifier = Modifier,id: Int){
+    Image(
+        painter = painterResource(id = id),
+         contentDescription = "HEJ MED DIG ",
+        modifier = modifier
+    )
+
+}
+@Composable
+fun TextToPhoto(){
+    Text(text = "Add Photo",
+    color = Color(0xFFB874A6), fontSize = 11.sp,
+        maxLines = 1,
+    modifier = Modifier
+        .padding(330.dp, 44.dp, 2.dp, 1.dp)
+
+    )
+    }
+
+
+@Composable
+fun TextFiledLoctionText(){
+         var text by remember { mutableStateOf("") }
+        ContentColorComponent(contentColor = Color.White) {
+            TextField(
+                value = text,
+                onValueChange = { newText ->
+                    text = newText },
+                label = {
+                    Text(
+                        text = "Location",
+                        color = Color(0xFFB874A6)
+                    )
+                }, trailingIcon = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.redlocationicon),
+                            modifier = Modifier
+                                .size(20.dp),
+                            contentDescription = "")
+
+                    }
+                },
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                singleLine = true,
+
+                placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            modifier = Modifier
+                .padding(1.dp, 65.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+            )
+        }}
+
+
+
+@Composable
+fun TextFiledTimeText(){
+        var text by remember { mutableStateOf("") }
+        ContentColorComponent(contentColor = Color.White) {
+            TextField(
+                value = text,
+                onValueChange = { newText ->
+                    text = newText },
+                label = {
+                    Text(
+                        text = "Date and time",
+                        color = Color(0xFFB874A6)
+                    )
+                }, trailingIcon = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.yellowpencil),
+                            modifier = Modifier
+                                .size(20.dp),
+                            contentDescription = "")
+
+                    }
+                },
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+                singleLine = true,
+
+                placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+                modifier = Modifier
+                    .padding(1.dp, 2.dp, 1.dp, 1.dp)
+                    .fillMaxWidth()
+                   )
+        }}
+
+
+
+// figur 2
+
+@Composable
+fun QuestionPage(){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -194,18 +287,27 @@ fun Tester(){
                     )
                 )
             )
-    ){
-
-    Image(
-        painter = painterResource(
-            id = R.drawable.sentimatelogo
-        ),
-        contentDescription = "",
+    )
+    Card(
         modifier = Modifier
-            .size(2700.dp)
-            .blur(1.dp)
-            .alpha(0.2f),
-        contentScale = ContentScale.Crop,
+            .padding(start = 20.dp, end = 20.dp, top = 150.dp, bottom = 150.dp)
+            .fillMaxWidth()
+            .fillMaxSize(),
 
-        )
-}}
+        shape = RoundedCornerShape(14.dp),
+        backgroundColor = Color(red = 44, green = 44, blue = 59)
+
+    ) {
+            Text(
+                text = "Create your first question",
+                color = Color(0xFFB874A6),
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(30.dp, 250.dp, 2.dp, 150.dp)
+            ) //TODO
+            AddPhoto(modifier = Modifier
+                .padding(250.dp, 1.dp, 80.dp, 25.dp)
+                .size(20.dp),
+                id = R.drawable.redaddplus)
+        }
+    }
