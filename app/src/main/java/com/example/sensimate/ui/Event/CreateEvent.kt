@@ -27,8 +27,8 @@ import com.example.sensimate.ui.theme.*
 @Preview(showBackground = true)
 @Composable
 fun CreateEventPreview() {
-    CreateEventScreen()
-    //QuestionPage()
+    //CreateEventScreen()
+    QuestionPage()
 }
 
 
@@ -288,6 +288,7 @@ fun QuestionPage(){
                 )
             )
     )
+
     Card(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 150.dp, bottom = 150.dp)
@@ -303,11 +304,14 @@ fun QuestionPage(){
                 color = Color(0xFFB874A6),
                 fontSize = 18.sp,
                 modifier = Modifier
-                    .padding(30.dp, 250.dp, 2.dp, 150.dp)
-            ) //TODO
+                    .padding(40.dp, 250.dp, 110.dp, 270.dp)
+            ) }
             AddPhoto(modifier = Modifier
-                .padding(250.dp, 1.dp, 80.dp, 25.dp)
+                .padding(288.dp, 403.dp, 1.dp, 1.dp)
                 .size(20.dp),
                 id = R.drawable.redaddplus)
-        }
+
     }
+
+
+
