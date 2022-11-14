@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.event
+package com.example.sensimate.ui.Event.extendedEvent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

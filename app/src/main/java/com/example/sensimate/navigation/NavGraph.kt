@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
-import com.example.sensimate.ui.event.ExtendedEvent
+import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.home.EventScreen
 import com.example.sensimate.ui.profile.ProfileScreen
 
