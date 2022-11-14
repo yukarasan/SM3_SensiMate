@@ -1,4 +1,4 @@
-
+package com.example.sensimate.ui.survey
 /*
 package com.example.sensimate.ui.home
 

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -28,7 +29,7 @@ import com.example.sensimate.ui.theme.SensimateTheme
 @Composable
 fun App(
     // modifier: Modifier = Modifier,
-    // appViewModel: AppViewModel = viewModel()
+    appViewModel: AppViewModel = viewModel()
 ) {
     // val appUiState by appViewModel.uiState.collectAsState()
     SetUpNavigation()
