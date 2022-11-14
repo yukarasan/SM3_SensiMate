@@ -12,6 +12,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sensimate.R
+import com.example.sensimate.ui.onboarding.signUp.InitialStartBackground
+import com.example.sensimate.ui.onboarding.signUp.buttonWithImage
+import com.example.sensimate.ui.onboarding.signUp.myButton
 import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
 

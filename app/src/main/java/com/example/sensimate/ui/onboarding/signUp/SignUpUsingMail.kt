@@ -23,6 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.onboarding.signUp.InitialStartBackground
+import com.example.sensimate.ui.onboarding.signUp.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
 @Preview(showBackground = true)
