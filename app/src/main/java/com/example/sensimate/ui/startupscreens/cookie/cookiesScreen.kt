@@ -21,8 +21,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHost
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.theme.*
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -30,9 +34,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.app
 import com.google.firebase.ktx.options
 
-@Preview(showBackground = true)
+
 @Composable
-fun CookiesScreen() {
+fun CookiesScreen(navController: NavController, uiState: EventUiState) {
     val checkedState = remember { mutableStateOf(false) }
 
     Box(
@@ -119,7 +123,9 @@ fun CookiesScreen() {
         Spacer(modifier = Modifier.size(20.dp))
 
         Button(
-            onClick = { /*TODO*/ },
+
+            onClick = {
+                navController.navigate(Screen.ChooseSignUpScreen.route)},
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
             modifier = Modifier.size(200.dp, 50.dp)
@@ -137,7 +143,7 @@ fun CookiesScreen() {
         Spacer(modifier = Modifier.size(30.dp))
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {  },
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
             modifier = Modifier.size(200.dp, 50.dp)
