@@ -18,9 +18,9 @@ import com.example.sensimate.R
 import com.example.sensimate.ui.theme.SensimateTheme
 
 @Composable
-fun OrangeBackButton() {
+fun OrangeBackButton(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = RoundedCornerShape(100),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
         modifier = Modifier.height(50.dp).width(50.dp)
@@ -39,6 +39,6 @@ fun OrangeBackButton() {
 @Composable
 fun OrangeBackButtonPreview() {
     SensimateTheme {
-        OrangeBackButton()
+        OrangeBackButton({})
     }
 }

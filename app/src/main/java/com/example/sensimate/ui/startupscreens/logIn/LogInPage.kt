@@ -65,7 +65,10 @@ fun LogInMail() {
         )
         Spacer(modifier = Modifier.size(28.dp))
 
-        myButton(color = Color.White, title = "Log in", PurpleButtonColor)
+        myButton(color = Color.White,
+            title = "Log in",
+            PurpleButtonColor,
+            onClick = {})
 
         Spacer(modifier = Modifier.size(250.dp))
 
@@ -73,7 +76,8 @@ fun LogInMail() {
             bgcolor = FaceBookColor,
             text = "Log in with Facebook",
             painter = painterResource(id = R.drawable.facebook),
-            Color.White
+            Color.White,
+            onClick = {}
         )
 
         Spacer(modifier = Modifier.size(20.dp))
@@ -83,7 +87,8 @@ fun LogInMail() {
             bgcolor = Color.White,
             text = "Log in with Google",
             painter = painterResource(id = R.drawable.google),
-            Color.Gray
+            Color.Gray,
+            onClick = {}
         )
 
 

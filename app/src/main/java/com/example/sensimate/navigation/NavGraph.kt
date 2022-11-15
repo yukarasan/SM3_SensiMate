@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
+import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
 import com.example.sensimate.ui.home.EventScreen
 import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.startupscreens.signUp.ChooseSignUpScreen
@@ -19,6 +20,9 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
         composable(route = Screen.ChooseSignUpScreen.route){
             ChooseSignUpScreen(navController = navController, uiState = eventUIState)
+        }
+        composable(route = Screen.SignUpWithMail.route){
+            SignUpUsingMail(navController = navController, uiState = eventUIState)
         }
         composable(route = Screen.EventScreen.route) {
             EventScreen(navController = navController, uiState = eventUIState)

@@ -16,14 +16,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
-@Preview(showBackground = true)
+
 @Composable
-fun SignUpUsingMail() {
+fun SignUpUsingMail(navController: NavController, uiState: EventUiState) {
 
     InitialStartBackground()
 
@@ -83,11 +85,13 @@ fun SignUpUsingMail() {
             Color.Gray
         )
 
+        Spacer(modifier = Modifier.size(450.dp),)
 
-
-
-        Spacer(modifier = Modifier.size(450.dp))
-        myButton(color = Color.White, title = "Sign up", PurpleButtonColor)
+        myButton(color = Color.White,
+            title = "Sign up",
+            PurpleButtonColor,
+        onClick = {}
+        )
     }
 }
 
@@ -151,8 +155,6 @@ fun MyTextField(
                     disabledIndicatorColor = Color.Transparent
                 ),
             )
-
-
         }
     }
 }
