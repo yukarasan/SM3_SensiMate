@@ -1,7 +1,8 @@
-package com.example.sensimate.ui.Event
+package com.example.sensimate.ui.Event.createEvent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,16 +20,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
+import com.example.sensimate.navigation.Screen
+import com.example.sensimate.navigation.SetupNavGraph
 import com.example.sensimate.ui.theme.*
 
 
 @Preview(showBackground = true)
 @Composable
 fun CreateEventPreview() {
-    CreateEventScreen()
-    //QuestionPage()
+    //CreateEventScreen()
+    //QuestionPageScreen()
+    CreateMultpleChoiceQuestionScreen()
 }
 
 
@@ -93,7 +99,8 @@ fun CreateEventScreen(){
         onClick = {/*TODO*/},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-        modifier = Modifier.size(240.dp, 50.dp)
+        modifier = Modifier.size(240.dp, 50.dp),
+        enabled = true
 
     ) {
         Text(
@@ -142,7 +149,8 @@ fun TextFiledTitleText(){
         modifier = Modifier
             .padding(55.dp, 55.dp, 30.dp, 30.dp)
             )
-    }}
+    }
+}
 
 
 
@@ -166,7 +174,8 @@ fun TextFiledDescriptionText(){
                     .padding(55.dp, 150.dp, 30.dp, 30.dp)
             )
 
-        }}
+        }
+}
 
 
 @Composable
@@ -232,7 +241,8 @@ fun TextFiledLoctionText(){
                 .padding(1.dp, 65.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
             )
-        }}
+        }
+}
 
 
 
@@ -267,14 +277,57 @@ fun TextFiledTimeText(){
                     .padding(1.dp, 2.dp, 1.dp, 1.dp)
                     .fillMaxWidth()
                    )
-        }}
+        }
+}
 
+@Composable
+fun TextFiledQuestionText(modifier: Modifier){
+    var text by remember { mutableStateOf("") }
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = text,
+            onValueChange = { newText ->
+                text = newText },
+            label = {
+                Text(
+                    text = "Question",
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            modifier = modifier
 
+        )
+    }
+}
+
+@Composable
+fun TextFiledAnswerText(modifier: Modifier){
+    var text by remember { mutableStateOf("") }
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = text,
+            onValueChange = { newText ->
+                text = newText },
+            label = {
+                Text(
+                    text = "Answer",
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            modifier = modifier
+
+        )
+    }
+}
 
 // figur 2
 
 @Composable
-fun QuestionPage(){
+fun QuestionPageScreen(){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -288,6 +341,7 @@ fun QuestionPage(){
                 )
             )
     )
+
     Card(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 150.dp, bottom = 150.dp)
@@ -297,17 +351,70 @@ fun QuestionPage(){
         shape = RoundedCornerShape(14.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
 
-    ) {
+    ){} //TODO
             Text(
                 text = "Create your first question",
                 color = Color(0xFFB874A6),
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 modifier = Modifier
-                    .padding(30.dp, 250.dp, 2.dp, 150.dp)
-            ) //TODO
+                    //.padding(40.dp, 250.dp, 88.dp, 269.dp)
+                    .padding(60.dp, 400.dp, 88.dp, 269.dp)
+            )
             AddPhoto(modifier = Modifier
-                .padding(250.dp, 1.dp, 80.dp, 25.dp)
-                .size(20.dp),
+                .padding(300.dp, 405.dp, 1.dp, 1.dp)
+                .size(20.dp)
+                .clickable(enabled = true,
+                    onClick = { /*TODO*/ }),
                 id = R.drawable.redaddplus)
-        }
+
     }
+
+// Figur 3
+@Composable
+fun CreateMultpleChoiceQuestionScreen(){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .size(size = 300.dp)
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        DarkPurple,
+                        BottonGradient
+                    )
+                )
+            )
+    )
+    Text(
+        text = "Multiple-choice",
+        color = Color(0xEFFF7067),
+        fontSize = 20.sp,
+        modifier = Modifier
+            .padding(125.dp, 30.dp, 88.dp, 269.dp))
+    TextFiledQuestionText(modifier = Modifier
+        .padding(55.dp, 130.dp, 30.dp, 30.dp))
+    TextFiledAnswerText(modifier = Modifier
+        .padding(55.dp, 225.dp, 30.dp, 30.dp))
+    Divider(
+        color = Color.White,
+        thickness = 2.dp,
+        modifier = Modifier.padding(1.dp,400.dp, 1.dp, 1.dp))
+    Text(
+        text = "Settings",
+        color = Color(0xFFB874A6),
+        fontSize = 20.sp,
+        modifier = Modifier
+            .padding(10.dp, 410.dp, 88.dp, 269.dp))
+    Text(
+        text = "Require an answer",
+        color = Color(0xEFFF7067),
+        fontSize = 20.sp,
+        modifier = Modifier
+            .padding(10.dp, 450.dp, 88.dp, 269.dp))
+
+
+}
+
+
+
+
