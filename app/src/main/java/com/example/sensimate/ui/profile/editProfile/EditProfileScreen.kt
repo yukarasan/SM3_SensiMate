@@ -177,7 +177,7 @@ private fun CustomTextField(
     text: String,
     description: String,
     placeholder: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
 ) {
     Card(
         modifier = Modifier
