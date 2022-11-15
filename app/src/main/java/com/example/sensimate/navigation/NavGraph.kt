@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.ui.Event.EventUiState
+import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
+import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
@@ -32,6 +35,12 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
         composable(Screen.ProfileScreen.route) {
             ProfileScreen()
+        }
+        composable(route = Screen.CreateEventScreen.route) {
+            CreateEventScreen()
+        }
+        composable(route = Screen.QuestionPageScreen.route) {
+            QuestionPageScreen()
         }
     }
 }
