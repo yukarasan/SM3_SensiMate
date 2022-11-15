@@ -12,9 +12,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.sensimate.R
-import com.example.sensimate.ui.onboarding.signUp.InitialStartBackground
-import com.example.sensimate.ui.onboarding.signUp.buttonWithImage
-import com.example.sensimate.ui.onboarding.signUp.myButton
+import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
+import com.example.sensimate.ui.startupscreens.signUp.buttonWithImage
+import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
@@ -65,7 +65,10 @@ fun LogInMail() {
         )
         Spacer(modifier = Modifier.size(28.dp))
 
-        myButton(color = Color.White, title = "Log in", PurpleButtonColor)
+        myButton(color = Color.White,
+            title = "Log in",
+            PurpleButtonColor,
+            onClick = {})
 
         Spacer(modifier = Modifier.size(250.dp))
 
@@ -73,7 +76,8 @@ fun LogInMail() {
             bgcolor = FaceBookColor,
             text = "Log in with Facebook",
             painter = painterResource(id = R.drawable.facebook),
-            Color.White
+            Color.White,
+            onClick = {}
         )
 
         Spacer(modifier = Modifier.size(20.dp))
@@ -83,7 +87,8 @@ fun LogInMail() {
             bgcolor = Color.White,
             text = "Log in with Google",
             painter = painterResource(id = R.drawable.google),
-            Color.Gray
+            Color.Gray,
+            onClick = {}
         )
 
 

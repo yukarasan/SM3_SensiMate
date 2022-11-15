@@ -1,19 +1,13 @@
 package com.example.sensimate.ui.InitialStartPage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -22,14 +16,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.onboarding.signUp.InitialStartBackground
-import com.example.sensimate.ui.onboarding.signUp.myButton
+import com.example.sensimate.ui.Event.EventUiState
+import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
+import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
-@Preview(showBackground = true)
+
 @Composable
-fun SignUpUsingMail() {
+fun SignUpUsingMail(navController: NavController, uiState: EventUiState) {
 
     InitialStartBackground()
 
@@ -89,11 +85,13 @@ fun SignUpUsingMail() {
             Color.Gray
         )
 
+        Spacer(modifier = Modifier.size(450.dp),)
 
-
-
-        Spacer(modifier = Modifier.size(450.dp))
-        myButton(color = Color.White, title = "Sign up", PurpleButtonColor)
+        myButton(color = Color.White,
+            title = "Sign up",
+            PurpleButtonColor,
+        onClick = {}
+        )
     }
 }
 
@@ -157,8 +155,6 @@ fun MyTextField(
                     disabledIndicatorColor = Color.Transparent
                 ),
             )
-
-
         }
     }
 }

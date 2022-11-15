@@ -107,7 +107,7 @@ fun ExtendedEvent() {
     }
 
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton()
+        OrangeBackButton({})
     }
 }
 

@@ -1,5 +1,6 @@
-package com.example.sensimate.ui.onboarding.signUp
+package com.example.sensimate.ui.startupscreens.signUp
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,14 +20,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.FaceBookColor
@@ -63,18 +67,8 @@ fun InitialStartBackground() {
         )
 }
 
-
-object Graph {
-    const val COOKIE = "cookie"
-    const val CHOOSESIGNUPSCREEN = "choosesignupscreen"
-    const val SIGNUPWITHEMAIL = "signupwithmail"
-    const val GUEST = "guest"
-}
-
-
-@Preview(showBackground = true)
 @Composable
-fun ChooseSignUpScreen() {
+fun ChooseSignUpScreen(navController: NavController, uiState: EventUiState) {
 
     InitialStartBackground()
     Column(
@@ -83,7 +77,15 @@ fun ChooseSignUpScreen() {
         modifier = Modifier.fillMaxSize()
     ) {
 
-        myButton(color = Color.White, title = "Sign up with e-mail", PurpleButtonColor)
+        myButton(
+            color = Color.White,
+            title = "Sign up with e-mail",
+            PurpleButtonColor,
+            onClick = {
+                Log.d("test" ,"logging")
+                navController.navigate(Screen.SignUpWithMail.route)
+            }
+        )
 
         Spacer(modifier = Modifier.size(20.dp))
 
@@ -133,7 +135,8 @@ fun ChooseSignUpScreen() {
             bgcolor = FaceBookColor,
             text = "Continue with Facebook",
             painter = painterResource(id = R.drawable.facebook),
-            Color.White
+            Color.White,
+            onClick = {}
         )
 
         Spacer(modifier = Modifier.size(28.dp))
@@ -143,7 +146,8 @@ fun ChooseSignUpScreen() {
             bgcolor = Color.White,
             text = "Continue with Google",
             painter = painterResource(id = R.drawable.google),
-            Color.Gray
+            Color.Gray,
+            onClick = {}
         )
     }
 }
@@ -214,10 +218,11 @@ fun textFieldWithImage(
 fun myButton(
     color: Color,
     title: String,
-    buttonColor: Color
+    buttonColor: Color,
+    onClick: () -> Unit
 ) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         colors = ButtonDefaults
             .buttonColors(
                 backgroundColor = buttonColor
@@ -237,13 +242,19 @@ fun myButton(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun buttonWithImage(bgcolor: Color, text: String, painter: Painter, textColor: Color) {
+fun buttonWithImage(
+    bgcolor: Color,
+    text: String,
+    painter: Painter,
+    textColor: Color,
+    onClick: () -> Unit
+) {
 
     Surface(
         modifier = Modifier.size(320.dp, 50.dp),
         color = bgcolor,
         shape = CircleShape,
-        onClick = { print("abe") },
+        onClick = onClick,
         indication = rememberRipple()
     ) {
         Column(
@@ -274,4 +285,13 @@ fun buttonWithImage(bgcolor: Color, text: String, painter: Painter, textColor: C
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun choosesignUpPreview() {
+    ChooseSignUpScreen(
+        rememberNavController(),
+        EventUiState(",", 0, "", false)
+    )
 }
