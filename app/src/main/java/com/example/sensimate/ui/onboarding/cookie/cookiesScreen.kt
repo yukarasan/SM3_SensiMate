@@ -24,11 +24,15 @@ import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.theme.*
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.app
+import com.google.firebase.ktx.options
 
 @Preview(showBackground = true)
 @Composable
 fun CookiesScreen() {
-
     val checkedState = remember { mutableStateOf(false) }
 
     Box(

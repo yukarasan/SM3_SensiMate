@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.InitialStartPage
+package com.example.sensimate.ui.onboarding.signUp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

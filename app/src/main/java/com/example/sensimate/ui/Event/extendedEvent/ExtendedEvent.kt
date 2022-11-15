@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.event
+package com.example.sensimate.ui.Event.extendedEvent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,10 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
-import com.example.sensimate.BottomNavigationBar
 import com.example.sensimate.R
-import com.example.sensimate.data.BottomNavItem
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
@@ -31,11 +25,9 @@ import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 
-
 @Preview(showBackground = true)
 @Composable
 fun ExtendedEvent() {
-    val navController = rememberNavController()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -112,24 +104,6 @@ fun ExtendedEvent() {
         }
         Spacer(modifier = Modifier.size(20.dp))
         RegisterButton()
-        BottomNavigationBar(
-            items = listOf(
-                BottomNavItem(
-                    name = "Home",
-                    route = "home",
-                    icon = Icons.Default.Home
-                ),
-                BottomNavItem(
-                    name = "Profile",
-                    route = "profile",
-                    icon = Icons.Default.Person
-                )
-            ),
-            navController = navController,
-            onItemClick = {
-                navController.navigate(it.route)
-            }
-        )
     }
 
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
@@ -199,11 +173,8 @@ private fun Bar(progress: Float) {
     }
 }
 
-
 @Composable
 private fun RegisterButton() {
-
-
     Button(
         onClick = { /*TODO*/ },
         shape = CircleShape,

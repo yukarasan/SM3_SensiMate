@@ -14,15 +14,19 @@
         android:theme="@style/Theme.Sensimate"
         tools:targetApi="31">
         <activity
-            android:name="com.example.sensimate.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Sensimate">
+            android:theme="@style/Theme.SensiMate">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
     </application>
 
