@@ -39,7 +39,7 @@ import com.example.sensimate.ui.theme.*
 
 @Preview(showBackground = true)
 @Composable
-private fun Survey2() {
+private fun Survey4() {
     Box(
         modifier = Modifier
             .background(
@@ -57,9 +57,9 @@ private fun Survey2() {
     ) {
         OrangeBackButton({})
         ProgressPreview()
-        Question(title = "Question 2/6")
-        SurveyTitle(title = "How likely would you buy Coca Cola?")
-        Information2({})
+        Question(title = "Question 4/6")
+        SurveyTitle(title = "What other flavours of Coca Cola would you like?")
+        Information4()
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -93,7 +93,7 @@ private fun ProgressPreview() {
 
 
 @Composable
-fun Information2(onClick: () -> Unit) {
+fun Information4() {
     val checkedState = remember { mutableStateOf(false) }
 
     Card(
@@ -111,18 +111,25 @@ fun Information2(onClick: () -> Unit) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                /*
-                Button(
-                    onClick = onClick,
-                    shape = RoundedCornerShape(100),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = darkbluegrey),
-                    colors2 = ButtonDefaults.buttonColors()
-                    modifier = Modifier.height(10.dp).width(10.dp)
+                Checkbox(
+                    modifier = Modifier
+                        .padding(start = 0.dp, top = 0.dp),
+                    checked = checkedState.value,
+                    onCheckedChange = {
+                        checkedState.value = it
+                    },
+                    colors = CheckboxDefaults
+                        .colors(
+                            uncheckedColor = GreyColor,
+                            checkmarkColor = lightpurple,
+                            checkedColor = lightpurple,
+
+                            disabledColor = darkbluegrey,
+                            disabledIndeterminateColor = GreyColor,
+                        )
                 )
-                */
 
-
-                InformationVeryLikely(title = "Very Likely")
+                InformationTomato(title = "Tomato")
                 Spacer(modifier = Modifier.width((120.dp)))
             }
 
@@ -150,7 +157,7 @@ fun Information2(onClick: () -> Unit) {
                             disabledIndeterminateColor = GreyColor,
                         )
                 )
-                InformationLikely(title = "Likely")
+                InformationWatermelon(title = "Watermelon")
                 Spacer(modifier = Modifier.width((120.dp)))
 
             }
@@ -177,7 +184,35 @@ fun Information2(onClick: () -> Unit) {
                             disabledIndeterminateColor = GreyColor,
                         )
                 )
-                InformationNeutral(title = "Neutral")
+                InformationCherry(title = "Cherry")
+                Spacer(modifier = Modifier.width((120.dp)))
+
+            }
+            Row(
+                modifier = Modifier
+                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    modifier = Modifier
+                        .padding(start = 0.dp, top = 0.dp),
+
+                    checked = checkedState.value,
+                    onCheckedChange = {
+                        checkedState.value = it
+                    },
+                    colors = CheckboxDefaults
+                        .colors(
+                            uncheckedColor = GreyColor,
+                            checkmarkColor = lightpurple,
+                            checkedColor = lightpurple,
+
+                            disabledColor = darkbluegrey,
+                            disabledIndeterminateColor = GreyColor,
+                        )
+                )
+                InformationVanilla(title = "Vanilla")
                 Spacer(modifier = Modifier.width((120.dp)))
 
             }
@@ -204,35 +239,22 @@ fun Information2(onClick: () -> Unit) {
                             disabledIndeterminateColor = GreyColor,
                         )
                 )
-                InformationUnlikely(title = "Unlikely")
+                InformationOther(title = "Other: _____")
                 Spacer(modifier = Modifier.width((120.dp)))
-
-            }
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
+                var other by remember { mutableStateOf("") }
+                MyTextField(
+                    text = other,
+                    textSize = 10,
+                    onValueChange = {other = it} ,
+                    placeHolder = "" ,
+                    width = 100,
+                    height = 20,
+                    keyboardType = KeyboardType.Number,
+                    visualTransformation = VisualTransformation.None,
+                    myTextColor = Color.White,
+                    backgroundColor = GreyColor,
+                    placeHolderColor = Color.White
                 )
-                InformationVeryUnlikely(title = "Very Unlikely")
-                Spacer(modifier = Modifier.width((120.dp)))
 
 
 
@@ -244,7 +266,7 @@ fun Information2(onClick: () -> Unit) {
 
 
 @Composable
-private fun InformationVeryLikely(title: String, modifier: Modifier = Modifier) {
+private fun InformationTomato(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,
@@ -257,7 +279,7 @@ private fun InformationVeryLikely(title: String, modifier: Modifier = Modifier) 
 }
 
 @Composable
-private fun InformationLikely(title: String, modifier: Modifier = Modifier) {
+private fun InformationWatermelon(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,
@@ -270,7 +292,7 @@ private fun InformationLikely(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun InformationNeutral(title: String, modifier: Modifier = Modifier) {
+private fun InformationCherry(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,
@@ -283,7 +305,7 @@ private fun InformationNeutral(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun InformationUnlikely(title: String, modifier: Modifier = Modifier) {
+private fun InformationVanilla(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,
@@ -296,7 +318,7 @@ private fun InformationUnlikely(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun InformationVeryUnlikely(title: String, modifier: Modifier = Modifier) {
+private fun InformationOther(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,
