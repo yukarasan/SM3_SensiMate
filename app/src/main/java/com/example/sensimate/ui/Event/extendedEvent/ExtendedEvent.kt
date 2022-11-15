@@ -41,8 +41,7 @@ fun ExtendedEvent() {
             )
     )
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Card(
             modifier = Modifier
                 .padding(start = 30.dp, end = 5.dp, top = 70.dp)
@@ -107,10 +106,9 @@ fun ExtendedEvent() {
         RegisterButton()
     }
 
-    Column(modifier = Modifier.padding(7.dp, 7.dp)) {
-        OrangeBackButton()
+    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+        OrangeBackButton({})
     }
-
 }
 
 @Composable
