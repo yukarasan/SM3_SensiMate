@@ -43,7 +43,7 @@ private fun Survery() {
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
-        OrangeBackButton()
+        OrangeBackButton({})
         ProgressPreview()
         Question(title = "Question 1/6")
         SurveyTitle(title = "Let's first hear about yourself")

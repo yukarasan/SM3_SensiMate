@@ -32,13 +32,3 @@ fun OrangeBackButton(onClick: () -> Unit) {
         )
     }
 }
-
-
-// TODO: Remove later:
-@Preview(showBackground = true)
-@Composable
-fun OrangeBackButtonPreview() {
-    SensimateTheme {
-        OrangeBackButton({})
-    }
-}
