@@ -41,10 +41,11 @@ fun ExtendedEvent() {
             )
     )
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center) {
         Card(
             modifier = Modifier
-                .padding(start = 25.dp, end = 25.dp, top = 25.dp)
+                .padding(start = 30.dp, end = 5.dp, top = 70.dp)
                 .fillMaxWidth(),
             elevation = 5.dp,
             shape = RoundedCornerShape(20.dp),
@@ -102,13 +103,14 @@ fun ExtendedEvent() {
                 Bar(progress = 0.39f)
             }
         }
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(25.dp))
         RegisterButton()
     }
 
-    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+    Column(modifier = Modifier.padding(7.dp, 7.dp)) {
         OrangeBackButton()
     }
+
 }
 
 @Composable
@@ -179,7 +181,7 @@ private fun RegisterButton() {
         onClick = { /*TODO*/ },
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-        modifier = Modifier.size(350.dp, 60.dp),
+        modifier = Modifier.size(345.dp, 60.dp),
 
     ) {
         Text(
