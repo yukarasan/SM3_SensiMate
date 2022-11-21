@@ -37,7 +37,7 @@ fun QuickEntry() {
                 QuickEntryImage()
                 QuickEntryTitle("Quick Entry") //TODO: Make text as recourse
             }
-            EventInputField()
+            EventInputField({})
         }
     }
 }
@@ -70,7 +70,7 @@ private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun EventInputField() {
+fun EventInputField(onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,42 +81,46 @@ fun EventInputField() {
         //TODO: Needs state hoisting
         var text by remember { mutableStateOf(TextFieldValue("")) }
         // ---------------------------------------------------------------------------
-        TextField(
-            value = text,
-            onValueChange = { it -> text = it },
-            label = { Label() },
-            placeholder = { Placeholder() },
-            textStyle = TextStyle(
-                color = Color.White,
-                fontSize = 12.sp,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier
-                .border(
-                    width = 3.dp,
-                    brush = Brush.horizontalGradient(
-                        listOf(
-                            Color(74, 75, 90),
-                            Color(74, 75, 90)
-                        )
-                    ),
-                    shape = RoundedCornerShape(35.dp)
-                )
-                .width(400.dp)
-                .background(
-                    Color(74, 75, 90),
-                    shape = RoundedCornerShape(35.dp)
+        Button(
+            onClick = onClick,
+        ) {
+            TextField(
+                value = text,
+                onValueChange = { it -> text = it },
+                label = { Label() },
+                placeholder = { Placeholder() },
+                textStyle = TextStyle(
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontFamily = manropeFamily,
+                    fontWeight = FontWeight.Bold
                 ),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            singleLine = true,
-            maxLines = 1 //TODO: maxLines not working. Fix this.
-        )
+                modifier = Modifier
+                    .border(
+                        width = 3.dp,
+                        brush = Brush.horizontalGradient(
+                            listOf(
+                                Color(74, 75, 90),
+                                Color(74, 75, 90)
+                            )
+                        ),
+                        shape = RoundedCornerShape(35.dp)
+                    )
+                    .width(400.dp)
+                    .background(
+                        Color(74, 75, 90),
+                        shape = RoundedCornerShape(35.dp)
+                    ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                singleLine = true,
+                maxLines = 1 //TODO: maxLines not working. Fix this.
+            )
+        }
     }
 }
 
