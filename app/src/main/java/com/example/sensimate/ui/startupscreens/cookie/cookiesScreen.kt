@@ -1,6 +1,5 @@
 package com.example.sensimate.ui.InitialStartPage
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -28,7 +27,7 @@ import com.example.sensimate.ui.theme.*
 
 
 @Composable
-fun CookiesScreen(navController: NavController, uiState: EventUiState) {
+fun CookiesScreen(navController: NavController) {
     val checkedState = remember { mutableStateOf(false) }
 
     Box(
@@ -119,7 +118,9 @@ fun CookiesScreen(navController: NavController, uiState: EventUiState) {
             enabled = checkedState.value,
 
             onClick = {
-                navController.navigate(Screen.ChooseSignUpScreen.route)},
+                navController.navigate(Screen.ChooseSignUpScreen.route){
+                    restoreState = true
+                }},
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
             modifier = Modifier.size(200.dp, 50.dp)

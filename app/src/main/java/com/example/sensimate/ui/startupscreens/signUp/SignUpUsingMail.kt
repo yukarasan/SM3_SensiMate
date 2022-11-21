@@ -1,5 +1,9 @@
 package com.example.sensimate.ui.InitialStartPage
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.widget.DatePicker
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -8,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -17,15 +22,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.Event.EventUiState
+import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
+import java.util.*
 
 
 @Composable
-fun SignUpUsingMail(navController: NavController, uiState: EventUiState) {
+fun SignUpUsingMail(navController: NavController) {
 
     InitialStartBackground()
 
@@ -35,7 +43,15 @@ fun SignUpUsingMail(navController: NavController, uiState: EventUiState) {
         modifier = Modifier.fillMaxWidth()
     ) {
 
-        Spacer(modifier = Modifier.size(100.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 15.dp, top = 15.dp)
+        ) {
+            OrangeBackButton({ navController.popBackStack() })
+        }
+
+        Spacer(modifier = Modifier.size(80.dp))
 
         //email button
         var email by remember { mutableStateOf("") }
@@ -85,12 +101,16 @@ fun SignUpUsingMail(navController: NavController, uiState: EventUiState) {
             Color.Gray
         )
 
-        Spacer(modifier = Modifier.size(450.dp),)
+        Spacer(modifier = Modifier.size(30.dp))
+
+        ChooseBirthDate(LocalContext.current)
+
+        Spacer(modifier = Modifier.size(200.dp))
 
         myButton(color = Color.White,
             title = "Sign up",
             PurpleButtonColor,
-        onClick = {}
+            onClick = { navController.navigate(Screen.EventScreen.route) }
         )
     }
 }
@@ -109,7 +129,6 @@ fun MyTextField(
     backgroundColor: Color,
     placeHolderColor: Color
 ) {
-
     Surface(
         modifier = Modifier.size(width.dp, height.dp),
         color = Color.White,
@@ -120,8 +139,6 @@ fun MyTextField(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-
-
             TextField(
                 value = text,
                 onValueChange = onValueChange,
@@ -139,14 +156,11 @@ fun MyTextField(
                             .height(height = (height + 50).dp)
                     )
                 },
-
                 visualTransformation = visualTransformation,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType
                 ),
-
                 modifier = Modifier.fillMaxSize(),
-
                 colors = TextFieldDefaults.textFieldColors(
                     disabledTextColor = Color.Transparent,
                     backgroundColor = backgroundColor,
@@ -157,4 +171,46 @@ fun MyTextField(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun previewUsingMail() {
+    SignUpUsingMail(
+        rememberNavController()
+    )
+}
+
+@Composable
+fun ChooseBirthDate(context: Context) {
+    val calendar = Calendar.getInstance()
+    val myYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
+    val myMonth = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
+    val myDay = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
+
+    var text by remember { mutableStateOf(("")) }
+
+    val datePickerLog =
+        DatePickerDialog(
+            context,
+            { _: DatePicker, year: Int, month: Int, dayofMonth: Int ->
+                text = "$dayofMonth/$month/$year"
+            }, myYear.value, myMonth.value, myDay.value
+        )
+
+    //datePickerLog.datePicker.maxDate = Date().time.minus(Calendar.YEAR)
+
+
+    OutlinedTextField(
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.White,
+            disabledIndicatorColor = Color.White,
+            disabledLabelColor = Color.White
+        ),
+        enabled = false,
+        value = text,
+        label = { Text(text = "Enter Your date of Birth") },
+        onValueChange = {},
+        modifier = Modifier.clickable { datePickerLog.show() },
+    )
 }
