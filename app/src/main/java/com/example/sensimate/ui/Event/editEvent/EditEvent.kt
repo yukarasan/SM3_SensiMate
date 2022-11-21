@@ -28,6 +28,7 @@ import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
 import com.example.sensimate.ui.survey.Survery
+import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
@@ -38,8 +39,8 @@ import com.example.sensimate.ui.theme.RedColor
 fun EditEventPreview() {
     //EditEvent()
     //EditPage()
-    //EditSurvey()
-    EditSurveyPage()
+    EditSurvey()
+    //EditSurveyPage()
 }
 @Composable
 fun EditEvent(){
@@ -466,7 +467,7 @@ fun TextFiledTimeText(){
 
 @Composable
 fun EditSurvey(){
-    Survery()
+    Survey4()
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
@@ -500,9 +501,9 @@ fun EditSurveyPage(){
         modifier = Modifier
             .padding(125.dp, 30.dp, 88.dp, 269.dp))
     TextFiledQuestionText(modifier = Modifier
-        .padding(55.dp, 130.dp, 30.dp, 30.dp),"Let's first hear about yourself")
+        .padding(55.dp, 130.dp, 30.dp, 30.dp),"What other flavours of Coca Cola would you like?")
     TextFiledAnswerText(modifier = Modifier
-        .padding(55.dp, 225.dp, 30.dp, 30.dp),"??") //TODO
+        .padding(55.dp, 225.dp, 30.dp, 30.dp),"Tomato") //TODO
     Divider(
         color = Color.White,
         thickness = 2.dp,

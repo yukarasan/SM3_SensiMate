@@ -39,7 +39,7 @@ import com.example.sensimate.ui.theme.*
 
 @Preview(showBackground = true)
 @Composable
-private fun Survey4() {
+fun Survey4() {
     Box(
         modifier = Modifier
             .background(
