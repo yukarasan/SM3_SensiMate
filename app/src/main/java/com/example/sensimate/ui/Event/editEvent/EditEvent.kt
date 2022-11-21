@@ -1,5 +1,6 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -113,13 +114,22 @@ fun EditEvent(){
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp), id = R.drawable.redgobackbutton)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick =  { /*TODO*/ })
+                , id = R.drawable.redgobackbutton)
 
 
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp), id = R.drawable.yelloweditbutton)
+            .size(50.dp).clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick =  { /*TODO*/ })
+        , id = R.drawable.yelloweditbutton)
 }
 
 @Composable
@@ -204,12 +214,10 @@ private fun EditButton(title: String) {
 }
 @Composable
 fun AddPhoto(modifier: Modifier = Modifier,id: Int){
-    IconButton(onClick = { /*TODO*/ }) {
         Image(
             painter = painterResource(id = id),
             contentDescription = "HEJ MED DIG ",
             modifier = modifier
         )
-    }
 }
 
