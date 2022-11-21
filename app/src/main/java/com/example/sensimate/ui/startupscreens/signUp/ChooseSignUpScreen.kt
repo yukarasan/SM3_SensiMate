@@ -1,8 +1,8 @@
 package com.example.sensimate.ui.startupscreens.signUp
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,8 +21,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -35,7 +33,6 @@ import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
-
 
 @Composable
 fun InitialStartBackground() {
@@ -68,9 +65,10 @@ fun InitialStartBackground() {
 }
 
 @Composable
-fun ChooseSignUpScreen(navController: NavController, uiState: EventUiState) {
+fun ChooseSignUpScreen(navController: NavController) {
 
     InitialStartBackground()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -82,8 +80,8 @@ fun ChooseSignUpScreen(navController: NavController, uiState: EventUiState) {
             title = "Sign up with e-mail",
             PurpleButtonColor,
             onClick = {
-                Log.d("test" ,"logging")
-                navController.navigate(Screen.SignUpWithMail.route)
+                navController.navigate(Screen.SignUpWithMail.route) {
+                }
             }
         )
 
@@ -149,9 +147,39 @@ fun ChooseSignUpScreen(navController: NavController, uiState: EventUiState) {
             Color.Gray,
             onClick = {}
         )
-    }
-}
 
+        Spacer(modifier = Modifier.size(28.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Already a member?",
+                color = Color.White,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = manropeFamily
+            )
+            Text(
+                text = "  Sign in",
+                color = Color(0xFF5978D3),
+                fontWeight = FontWeight.Bold,
+                fontSize = 15.sp,
+                fontFamily = manropeFamily,
+                modifier = Modifier.clickable {
+                    navController.navigate(
+                        Screen.Login.route
+                    )
+                }
+            )
+        }
+
+    }
+    Spacer(modifier = Modifier.size(28.dp))
+
+
+}
 
 @Composable
 fun textFieldWithImage(
@@ -170,7 +198,6 @@ fun textFieldWithImage(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             //Postal code image with textfield
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -280,7 +307,6 @@ fun buttonWithImage(
                     fontSize = 19.sp,
                     modifier = Modifier
                         .padding(start = 18.dp)
-
                 )
             }
         }
@@ -289,9 +315,8 @@ fun buttonWithImage(
 
 @Preview
 @Composable
-fun choosesignUpPreview() {
+fun ChooseSignUpPreview() {
     ChooseSignUpScreen(
-        rememberNavController(),
-        EventUiState(",", 0, "", false)
+        rememberNavController()
     )
 }

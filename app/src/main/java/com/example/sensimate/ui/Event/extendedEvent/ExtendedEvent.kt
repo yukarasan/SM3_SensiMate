@@ -168,7 +168,7 @@ private fun Bar(progress: Float) {
                 .clip(RoundedCornerShape(30.dp)),
             backgroundColor = Color(red = 63, green = 69, blue = 81),
             color = Color(red = 199, green = 242, blue = 219), //progress color
-            progress = progress //TODO:  Needs state hoisting in future.
+            progress = progress
         )
     }
 }
@@ -181,7 +181,7 @@ private fun RegisterButton() {
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(345.dp, 60.dp),
 
-    ) {
+        ) {
         Text(
             text = "Register",
             fontWeight = FontWeight.Bold,
