@@ -279,7 +279,7 @@ private fun InformationTomato(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun InformationWatermelon(title: String, modifier: Modifier = Modifier) {
+fun InformationWatermelon(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,

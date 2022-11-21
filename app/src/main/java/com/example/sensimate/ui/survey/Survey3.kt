@@ -1,7 +1,6 @@
 package com.example.sensimate.ui.survey
 
 
-
 import android.renderscript.ScriptGroup
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
@@ -53,7 +52,7 @@ private fun Survey3() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
+            .padding(start = 20.dp, end = 20.dp, bottom = 0.dp, top = 10.dp)
     ) {
         OrangeBackButton({})
         ProgressPreview()
@@ -61,7 +60,6 @@ private fun Survey3() {
         SurveyTitle(title = "What do you think about this image?")
         SurveyImage()
         Information3()
-
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom,
@@ -91,6 +89,62 @@ private fun ProgressPreview() {
     )
 }
 
+
+@Composable
+fun Information3() {
+    val checkedState = remember { mutableStateOf(false) }
+    Card(
+        modifier = Modifier
+            .padding(start = 0.dp, top = 0.dp)
+            .fillMaxWidth(),
+        elevation = 5.dp,
+        shape = RoundedCornerShape(20.dp),
+        backgroundColor = Color(red = 44, green = 44, blue = 59)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SurveyImage2()
+                SurveyImage3()
+            }
+
+            Row(
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Information1(title = "1")
+                Information1(title = "2")
+                Information1(title = "3")
+                Information1(title = "4")
+                Information1(title = "5")
+
+            }
+            Row(
+                modifier = Modifier
+                    .padding(start = 15.dp, end = 15.dp, top = 15.dp, bottom = 15.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RoundedCheckView()
+                RoundedCheckView()
+                RoundedCheckView()
+                RoundedCheckView()
+                RoundedCheckView()
+
+            }
+        }
+    }
+}
+
+
 @Composable
 private fun SurveyImage(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.rectangle77) // Possible for hoisting in future.
@@ -98,8 +152,10 @@ private fun SurveyImage(modifier: Modifier = Modifier) {
         painter = image,
         contentDescription = null,
         modifier = modifier
-            .size(500.dp)
-            .padding(top = 0.dp, end = 20.dp)
+            .padding(top = 0.dp, end = 10.dp)
+            .size(400.dp)
+            .fillMaxWidth()
+
     )
 }
 
@@ -110,8 +166,8 @@ private fun SurveyImage2(modifier: Modifier = Modifier) {
         painter = image,
         contentDescription = null,
         modifier = modifier
-            .size(120.dp)
-            .padding(top = 10.dp, end = 20.dp)
+            .size(40.dp)
+            .padding(start = 5.dp, top = 10.dp)
     )
 }
 
@@ -122,151 +178,15 @@ private fun SurveyImage3(modifier: Modifier = Modifier) {
         painter = image,
         contentDescription = null,
         modifier = modifier
-            .size(120.dp)
-            .padding(top = 10.dp, end = 20.dp)
+            .size(40.dp)
+            .padding(top = 10.dp, end = 10.dp)
     )
 }
 
 
-@Composable
-fun Information3() {
-    val checkedState = remember { mutableStateOf(false) }
-
-    Card(
-        modifier = Modifier
-            .padding(start = 0.dp, top = 25.dp)
-            .fillMaxWidth(),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(20.dp),
-        backgroundColor = Color(red = 44, green = 44, blue = 59)
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 0.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SurveyImage2()
-                SurveyImage3()
-            }
-
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                InformationWatermelon(title = "Watermelon")
-                Spacer(modifier = Modifier.width((120.dp)))
-
-            }
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
-                InformationCherry(title = "Cherry")
-                Spacer(modifier = Modifier.width((120.dp)))
-
-            }
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
-                InformationVanilla(title = "Vanilla")
-                Spacer(modifier = Modifier.width((120.dp)))
-
-            }
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
-                InformationOther(title = "Other: _____")
-                Spacer(modifier = Modifier.width((120.dp)))
-                var other by remember { mutableStateOf("") }
-                MyTextField(
-                    text = other,
-                    textSize = 10,
-                    onValueChange = {other = it} ,
-                    placeHolder = "" ,
-                    width = 100,
-                    height = 20,
-                    keyboardType = KeyboardType.Number,
-                    visualTransformation = VisualTransformation.None,
-                    myTextColor = Color.White,
-                    backgroundColor = GreyColor,
-                    placeHolderColor = Color.White
-                )
-
-
-
-            }
-
-        }
-    }
-}
-
 
 @Composable
-private fun InformationTomato(title: String, modifier: Modifier = Modifier) {
+private fun Information1(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,
@@ -274,85 +194,6 @@ private fun InformationTomato(title: String, modifier: Modifier = Modifier) {
         fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
+            .padding(top = 5.dp, start = 20.dp, end = 20.dp)
     )
 }
-
-@Composable
-private fun InformationWatermelon(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 5.dp, start = 20.dp)
-    )
-}
-
-@Composable
-private fun InformationCherry(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
-    )
-}
-
-@Composable
-private fun InformationVanilla(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
-    )
-}
-
-@Composable
-private fun InformationOther(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
-    )
-}
-
-/*
-
-@Composable
-fun InputField2(title: String, onValueChange: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(start = 0.dp, top = 25.dp)
-            .fillMaxWidth(),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(20.dp),
-        backgroundColor = GreyColor
-    ) {
-        Column() {
-            Row() {
-            }
-
-        }
-
-    }
-
-
-*/
-
-
-
-

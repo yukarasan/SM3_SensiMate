@@ -1,17 +1,17 @@
 package com.example.sensimate.ui.survey
 
 
-
 import android.renderscript.ScriptGroup
+import androidx.compose.foundation.*
 import com.example.sensimate.ui.components.OrangeBackButton
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -30,8 +30,11 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
@@ -91,11 +94,10 @@ private fun ProgressPreview() {
 }
 
 
-
 @Composable
 fun Information2(onClick: () -> Unit) {
     val checkedState = remember { mutableStateOf(false) }
-
+    var isClicked = remember { mutableStateOf(false )}
     Card(
         modifier = Modifier
             .padding(start = 0.dp, top = 25.dp)
@@ -107,133 +109,58 @@ fun Information2(onClick: () -> Unit) {
         Column {
             Row(
                 modifier = Modifier
-                    .padding(start = 0.dp, top = 0.dp),
+                    .padding(start = 10.dp, top = 10.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                /*
-                Button(
-                    onClick = onClick,
-                    shape = RoundedCornerShape(100),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = darkbluegrey),
-                    colors2 = ButtonDefaults.buttonColors()
-                    modifier = Modifier.height(10.dp).width(10.dp)
-                )
-                */
-
-
+                RoundedCheckView()
                 InformationVeryLikely(title = "Very Likely")
                 Spacer(modifier = Modifier.width((120.dp)))
-            }
 
+            }
 
             Row(
                 modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp),
+                    .padding(start = 10.dp, top = 25.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
+                RoundedCheckView()
                 InformationLikely(title = "Likely")
                 Spacer(modifier = Modifier.width((120.dp)))
 
             }
             Row(
                 modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
+                    .padding(start = 10.dp, top = 25.dp, bottom = 15.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
+                RoundedCheckView()
                 InformationNeutral(title = "Neutral")
                 Spacer(modifier = Modifier.width((120.dp)))
 
             }
             Row(
                 modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
+                    .padding(start = 10.dp, top = 25.dp, bottom = 15.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
+                RoundedCheckView()
                 InformationUnlikely(title = "Unlikely")
                 Spacer(modifier = Modifier.width((120.dp)))
 
             }
             Row(
                 modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
+                    .padding(start = 10.dp, top = 25.dp, bottom = 15.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
+                RoundedCheckView()
                 InformationVeryUnlikely(title = "Very Unlikely")
                 Spacer(modifier = Modifier.width((120.dp)))
-
 
 
             }
@@ -241,7 +168,6 @@ fun Information2(onClick: () -> Unit) {
         }
     }
 }
-
 
 @Composable
 private fun InformationVeryLikely(title: String, modifier: Modifier = Modifier) {
@@ -252,7 +178,7 @@ private fun InformationVeryLikely(title: String, modifier: Modifier = Modifier) 
         fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
+            .padding(top = 5.dp, start = 20.dp)
     )
 }
 
@@ -278,7 +204,7 @@ private fun InformationNeutral(title: String, modifier: Modifier = Modifier) {
         fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
+            .padding(top = 5.dp, start = 20.dp)
     )
 }
 
@@ -291,7 +217,7 @@ private fun InformationUnlikely(title: String, modifier: Modifier = Modifier) {
         fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
+            .padding(top = 5.dp, start = 20.dp)
     )
 }
 
@@ -304,32 +230,64 @@ private fun InformationVeryUnlikely(title: String, modifier: Modifier = Modifier
         fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
+            .padding(top = 5.dp, start = 20.dp)
     )
 }
 
-/*
-
 @Composable
-fun InputField2(title: String, onValueChange: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(start = 0.dp, top = 25.dp)
-            .fillMaxWidth(),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(20.dp),
-        backgroundColor = GreyColor
-    ) {
-        Column() {
-            Row() {
-            }
 
+fun RoundedCheckView() {
+
+    val isChecked = remember { mutableStateOf(false) }
+    val circleSize = remember { mutableStateOf(22.dp) }
+    val circleSize2 = remember { mutableStateOf(12.dp) }
+    val circleThickness = remember { mutableStateOf(2.dp) }
+    val color = remember { mutableStateOf(GreyColor) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .toggleable(value = isChecked.value, role = Role.Checkbox) {
+                isChecked.value = it
+                if (isChecked.value) {
+                    circleSize.value = 22.dp
+                    circleThickness.value = 2.dp
+                    color.value = lightpurple
+                } else {
+                    circleSize.value = 22.dp
+                    circleThickness.value = 2.dp
+                    color.value = GreyColor
+                }
+            }) {
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(22.dp)
+                .background(GreyColor)
+                .padding(2.dp)
+                .clip(CircleShape)
+                .background(darkbluegrey) ,
+            contentAlignment = Center )
+         {
+            if (isChecked.value) {
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(12.dp)
+                        .background(GreyColor)
+                        .padding(2.dp)
+                        .clip(CircleShape)
+                        .background(lightpurple)
+                )
+            }
         }
 
     }
+}
 
 
-*/
+
+
+
 
 
 
