@@ -106,11 +106,11 @@ fun ExtendedEvent(navController: NavController) {
             }
         }
         Spacer(modifier = Modifier.size(25.dp))
-       // RegisterButton(navController.navigate(Screen.Registerscreen))
+        RegisterButton(onClick = {navController.navigate(Screen.Registerscreen.route)})
     }
 
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton({navController.popBackStack()})
+        OrangeBackButton(onClick = {navController.popBackStack()})
     }
 }
 
@@ -179,7 +179,7 @@ private fun Bar(progress: Float) {
 @Composable
 private fun RegisterButton(onClick: () -> Unit) {
     Button(
-        onClick = {onClick},
+        onClick = onClick,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(345.dp, 60.dp),
