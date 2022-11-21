@@ -22,9 +22,12 @@ import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
+import com.example.sensimate.ui.Event.createEvent.TextFiledAnswerText
+import com.example.sensimate.ui.Event.createEvent.TextFiledQuestionText
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
+import com.example.sensimate.ui.survey.Survery
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
@@ -34,7 +37,9 @@ import com.example.sensimate.ui.theme.RedColor
 @Composable
 fun EditEventPreview() {
     //EditEvent()
-    EditPage()
+    //EditPage()
+    //EditSurvey()
+    EditSurveyPage()
 }
 @Composable
 fun EditEvent(){
@@ -461,5 +466,84 @@ fun TextFiledTimeText(){
 
 @Composable
 fun EditSurvey(){
+    Survery()
+    AddPhoto(
+        modifier = Modifier
+            .padding(330.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick = { /*TODO*/ })
+        , id = R.drawable.yelloweditbutton)
+}
+
+@Composable
+fun EditSurveyPage(){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .size(size = 300.dp)
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        DarkPurple,
+                        BottonGradient
+                    )
+                )
+            )
+    )
+    Text(
+        text = "Multiple-choice",
+        color = Color(0xEFFF7067),
+        fontSize = 20.sp,
+        modifier = Modifier
+            .padding(125.dp, 30.dp, 88.dp, 269.dp))
+    TextFiledQuestionText(modifier = Modifier
+        .padding(55.dp, 130.dp, 30.dp, 30.dp),"Let's first hear about yourself")
+    TextFiledAnswerText(modifier = Modifier
+        .padding(55.dp, 225.dp, 30.dp, 30.dp),"??") //TODO
+    Divider(
+        color = Color.White,
+        thickness = 2.dp,
+        modifier = Modifier.padding(1.dp,400.dp, 1.dp, 1.dp))
+    Text(
+        text = "Settings",
+        color = Color(0xFFB874A6),
+        fontSize = 20.sp,
+        modifier = Modifier
+            .padding(10.dp, 410.dp, 88.dp, 269.dp)
+    )
+    Text(
+        text = "Require an answer",
+        color = Color(0xEFFF7067),
+        fontSize = 20.sp,
+        modifier = Modifier
+            .padding(10.dp, 450.dp, 88.dp, 269.dp)
+    )
+
+//TODO LAV EN GO BACK BUTTON
+    AddPhoto(
+        modifier = Modifier
+            .padding(15.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick = { /*TODO*/ }), id = R.drawable.redgobackbutton
+    )
+
+    AddPhoto(
+        modifier = Modifier
+            .padding(330.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick = { /*TODO*/ }), id = R.drawable.greenconfirmedbutton
+    )
+
 
 }
+
+
