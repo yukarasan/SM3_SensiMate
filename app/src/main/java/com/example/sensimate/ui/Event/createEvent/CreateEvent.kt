@@ -284,8 +284,8 @@ fun TextFiledTimeText(){
 }
 
 @Composable
-fun TextFiledQuestionText(modifier: Modifier){
-    var text by remember { mutableStateOf("") }
+fun TextFiledQuestionText(modifier: Modifier,string: String){
+    var text by remember { mutableStateOf(string) }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
@@ -306,8 +306,8 @@ fun TextFiledQuestionText(modifier: Modifier){
 }
 
 @Composable
-fun TextFiledAnswerText(modifier: Modifier){
-    var text by remember { mutableStateOf("") }
+fun TextFiledAnswerText(modifier: Modifier,string: String){
+    var text by remember { mutableStateOf(string) }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
@@ -415,9 +415,9 @@ fun CreateMultpleChoiceQuestionScreen(){
         modifier = Modifier
             .padding(125.dp, 30.dp, 88.dp, 269.dp))
     TextFiledQuestionText(modifier = Modifier
-        .padding(55.dp, 130.dp, 30.dp, 30.dp))
+        .padding(55.dp, 130.dp, 30.dp, 30.dp),"")
     TextFiledAnswerText(modifier = Modifier
-        .padding(55.dp, 225.dp, 30.dp, 30.dp))
+        .padding(55.dp, 225.dp, 30.dp, 30.dp),"")
     Divider(
         color = Color.White,
         thickness = 2.dp,

@@ -27,7 +27,7 @@ import com.example.sensimate.ui.theme.*
 
 @Preview(showBackground = true)
 @Composable
-private fun Survery() {
+ fun Survery() {
     Box(
         modifier = Modifier
             .background(
