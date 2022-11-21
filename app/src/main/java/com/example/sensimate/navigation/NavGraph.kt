@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sensimate.ui.Event.EventUiState
-import com.example.sensimate.ui.Event.RegisterScreen
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
@@ -31,7 +30,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController, uiState = eventUIState)
         }
-        composable(route = Screen.ChooseSignUpScreen.route) {
+        composable(route = Screen.ChooseSignUpScreen.route){
             BackHandler(true) {
                 // Do nothing
             }
@@ -41,7 +40,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             SignUpUsingMail(navController = navController, uiState = eventUIState)
         }
         composable(route = Screen.EventScreen.route) {
-            EventScreen(navController = navController, uiState = eventUIState)
+            EventScreen(navController = navController)
         }
         composable(route = Screen.ExtendedEventScreen.route) {
             ExtendedEvent(navController = navController)
@@ -82,14 +81,12 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EditGenderScreen(navController = navController)
         }
 
-
         // SURVERY NAVIGATION
         composable(route = Screen.Survey.route) {
             Survey(navController = navController)
         }
         composable(route = Screen.Survey2.route) {
             Survey2(navController = navController)
-
         }
         composable(route = Screen.Survey3.route) {
             Survey3(navController = navController)
@@ -98,6 +95,4 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             Survey4(navController = navController)
         }
     }
-
-
 }
