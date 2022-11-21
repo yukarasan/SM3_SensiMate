@@ -33,13 +33,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.navigation.NavController
+import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
 
-@Preview(showBackground = true)
+
 @Composable
-private fun Survey4() {
+fun Survey4(navController: NavController) {
     Box(
         modifier = Modifier
             .background(
@@ -55,7 +57,7 @@ private fun Survey4() {
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
-        OrangeBackButton({})
+        OrangeBackButton({navController.navigate(Screen.ExtendedEventScreen.route) })
         ProgressPreview()
         Question(title = "Question 4/6")
         SurveyTitle(title = "What other flavours of Coca Cola would you like?")
@@ -68,8 +70,8 @@ private fun Survey4() {
                 .fillMaxWidth()
                 .padding(top = 70.dp)
         ) {
-            PreviousButton()
-            NextButton()
+            PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
+            NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
         }
     }
 }

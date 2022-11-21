@@ -17,6 +17,10 @@ import com.example.sensimate.ui.profile.EditProfileScreen
 import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.profile.editProfile.*
 import com.example.sensimate.ui.startupscreens.signUp.ChooseSignUpScreen
+import com.example.sensimate.ui.survey.Survey
+import com.example.sensimate.ui.survey.Survey2
+import com.example.sensimate.ui.survey.Survey3
+import com.example.sensimate.ui.survey.Survey4
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
@@ -80,20 +84,20 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
 
         // SURVERY NAVIGATION
-        /*composable(route = Screen.SurveryPage1.route) {
-            Screen.SurveryPage1(navController = navController)
+        composable(route = Screen.Survey.route) {
+            Survey(navController = navController)
         }
-        composable(route = Screen.EditGenderScreen.route) {
-            EditGenderScreen(navController = navController)
+        composable(route = Screen.Survey2.route) {
+            Survey2(navController = navController)
+
         }
-        composable(route = Screen.EditGenderScreen.route) {
-            EditGenderScreen(navController = navController)
+        composable(route = Screen.Survey3.route) {
+            Survey3(navController = navController)
         }
-        composable(route = Screen.EditGenderScreen.route) {
-            EditGenderScreen(navController = navController)
+        composable(route = Screen.Survey4.route) {
+            Survey4(navController = navController)
         }
     }
 
-         */
-    }
+
 }

@@ -22,12 +22,14 @@ import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.navigation.NavController
+import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
 
-@Preview(showBackground = true)
+
 @Composable
- fun Survery() {
+ fun Survey(navController: NavController) {
     Box(
         modifier = Modifier
             .background(
@@ -43,7 +45,7 @@ import com.example.sensimate.ui.theme.*
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
-        OrangeBackButton({})
+        OrangeBackButton({navController.popBackStack()})
         ProgressPreview()
         Question(title = "Question 1/6")
         SurveyTitle(title = "Let's first hear about yourself")
@@ -57,8 +59,8 @@ import com.example.sensimate.ui.theme.*
                 .padding(top = 250.dp)
         ) {
             //TODO: Remember to Implement Scaffold so the buttons does not move, but does not move
-            PreviousButton()
-            NextButton()
+            PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
+            NextButton(onClick = { navController.navigate(Screen.Survey2.route) } )
         }
     }
 }
@@ -236,9 +238,9 @@ private fun InformationPostalCode(title: String, modifier: Modifier = Modifier) 
 
 
 @Composable
-fun PreviousButton() {
+fun PreviousButton(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = RoundedCornerShape(60),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
         modifier = Modifier
@@ -267,9 +269,9 @@ fun PreviousButton() {
 }
 
 @Composable
-fun NextButton() {
+fun NextButton(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick ,
         shape = RoundedCornerShape(50),
         colors = ButtonDefaults.buttonColors(PurpleButtonColor),
         modifier = Modifier
