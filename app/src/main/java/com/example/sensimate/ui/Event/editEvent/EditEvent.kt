@@ -39,8 +39,8 @@ import com.example.sensimate.ui.theme.RedColor
 fun EditEventPreview() {
     //EditEvent()
     //EditPage()
-    EditSurvey()
-    //EditSurveyPage()
+    //EditSurvey()
+    EditSurveyPage()
 }
 @Composable
 fun EditEvent(){
@@ -503,7 +503,7 @@ fun EditSurveyPage(){
     TextFiledQuestionText(modifier = Modifier
         .padding(55.dp, 130.dp, 30.dp, 30.dp),"What other flavours of Coca Cola would you like?")
     TextFiledAnswerText(modifier = Modifier
-        .padding(55.dp, 225.dp, 30.dp, 30.dp),"Tomato") //TODO
+        .padding(55.dp, 225.dp, 30.dp, 30.dp),"Tomato") //TODO NEED MORE ANSWER FILEDS
     Divider(
         color = Color.White,
         thickness = 2.dp,
@@ -523,7 +523,6 @@ fun EditSurveyPage(){
             .padding(10.dp, 450.dp, 88.dp, 269.dp)
     )
 
-//TODO LAV EN GO BACK BUTTON
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
