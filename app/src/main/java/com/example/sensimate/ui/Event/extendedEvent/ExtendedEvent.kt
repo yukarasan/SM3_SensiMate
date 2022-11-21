@@ -17,17 +17,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun ExtendedEvent() {
+fun ExtendedEvent(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -44,7 +47,7 @@ fun ExtendedEvent() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Card(
             modifier = Modifier
-                .padding(start = 25.dp, end = 25.dp, top = 25.dp)
+                .padding(start = 30.dp, end = 5.dp, top = 70.dp)
                 .fillMaxWidth(),
             elevation = 5.dp,
             shape = RoundedCornerShape(20.dp),
@@ -102,12 +105,12 @@ fun ExtendedEvent() {
                 Bar(progress = 0.39f)
             }
         }
-        Spacer(modifier = Modifier.size(20.dp))
-        RegisterButton()
+        Spacer(modifier = Modifier.size(25.dp))
+       // RegisterButton(navController.navigate(Screen.Registerscreen))
     }
 
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton({})
+        OrangeBackButton({navController.popBackStack()})
     }
 }
 
@@ -174,12 +177,12 @@ private fun Bar(progress: Float) {
 }
 
 @Composable
-private fun RegisterButton() {
+private fun RegisterButton(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {onClick},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-        modifier = Modifier.size(350.dp, 60.dp),
+        modifier = Modifier.size(345.dp, 60.dp),
 
     ) {
         Text(

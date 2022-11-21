@@ -29,18 +29,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.navigation.Screen
 
-@Preview
 @Composable
-fun EditProfileScreen() {
+fun EditProfileScreen(navController: NavController) {
+    /*
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
     var postalCode by remember { mutableStateOf("") }
+     */
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,56 +65,73 @@ fun EditProfileScreen() {
                     .padding(end = 5.dp),
                 horizontalArrangement = Arrangement.End
             ) {
-                DoneButton()
+                DoneButton(onClick = { navController.popBackStack() })
             }
         }
         item { ImageButton() }
         item {
-            CustomTextField(
-                text = name,
-                description = "Name",
-                placeholder = "Enter your name here",
-                onValueChange = { name = it }
+            EditField(
+                title = "E-mail",
+                description = "Edit your e-mail here",
+                onClick = { navController.navigate(Screen.EditEmailScreen.route) }
             )
         }
         item {
-            CustomTextField(
-                text = email,
-                description = "E-mail",
-                placeholder = "Enter your e-mail here",
-                onValueChange = { email = it }
+            EditField(
+                title = "Age",
+                description = "Edit your age here",
+                onClick = { navController.navigate(Screen.EditAgeScreen.route) }
             )
         }
         item {
-            CustomPasswordField(
-                text = password,
-                description = "Password",
-                placeholder = "Enter your password here",
-                onValueChange = { password = it }
+            EditField(
+                title = "Gender",
+                description = "Edit your gender here",
+                onClick = { navController.navigate(Screen.EditGenderScreen.route) }
             )
         }
         item {
-            CustomTextField(
-                text = age,
-                description = "Age",
-                placeholder = "Enter your age here",
-                onValueChange = { age = it }
+            EditField(
+                title = "Postal Code",
+                description = "Edit your postal code here",
+                onClick = { navController.navigate(Screen.EditPostalScreen.route) }
             )
         }
-        item {
-            CustomTextField(
-                text = gender,
-                description = "Gender",
-                placeholder = "Enter your gender here",
-                onValueChange = { gender = it }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun EditField(title: String, description: String, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp, bottom = 20.dp, start = 30.dp, end = 30.dp),
+        backgroundColor = Color.Transparent,
+        elevation = 0.dp,
+        onClick = onClick
+    ) {
+        Column() {
+            Text(
+                text = title,
+                fontSize = 22.sp,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.ExtraBold,
+                color = Color.White,
+                modifier = Modifier.padding(5.dp)
             )
-        }
-        item {
-            CustomTextField(
-                text = postalCode,
-                description = "Postal code",
-                placeholder = "Enter your postal code here",
-                onValueChange = { postalCode = it }
+            Text(
+                text = description,
+                fontSize = 18.sp,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.ExtraBold,
+                color = Color.White,
+                modifier = Modifier.padding(5.dp)
+            )
+            Divider(
+                color = Color.White,
+                thickness = 2.dp,
+                modifier = Modifier.padding(start = 5.dp)
             )
         }
     }
@@ -118,9 +139,9 @@ fun EditProfileScreen() {
 
 
 @Composable
-private fun DoneButton() {
+private fun DoneButton(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = RoundedCornerShape(100),
         border = BorderStroke(3.dp, Color(199, 242, 219)),
         colors = ButtonDefaults.outlinedButtonColors(
@@ -237,83 +258,8 @@ private fun CustomTextField(
     }
 }
 
-// TODO: Give the function to show and hide the password.
+@Preview
 @Composable
-private fun CustomPasswordField(
-    text: String,
-    description: String,
-    placeholder: String,
-    onValueChange: (String) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 40.dp, end = 40.dp, top = 10.dp),
-        backgroundColor = Color.Transparent,
-        elevation = 0.dp
-    ) {
-        Column() {
-            Text(
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .fillMaxWidth(),
-                text = description,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 18.sp,
-                color = Color.White
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BasicTextField(
-                    value = text,
-                    onValueChange = onValueChange,
-                    textStyle = TextStyle(
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontFamily = manropeFamily,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Start
-                    ),
-                    decorationBox = { innerTextField ->
-                        Row() {
-                            if (text.isEmpty()) {
-                                Text(
-                                    text = placeholder,
-                                    color = Color.White,
-                                    fontSize = 14.sp,
-                                    fontFamily = manropeFamily,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Start
-                                )
-                            }
-                            innerTextField()
-                        }
-                    },
-                    cursorBrush = SolidColor(Color(154, 107, 254)),
-                    modifier = Modifier
-                        .padding(top = 10.dp, bottom = 2.dp),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    maxLines = 1,
-                    singleLine = true
-                )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.eyeoff),
-                        contentDescription = "",
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-            }
-            Divider(
-                color = Color.White,
-                thickness = 2.dp,
-                modifier = Modifier.padding(bottom = 2.dp)
-            )
-        }
-    }
+fun EditProfileScreenPreview() {
+    EditProfileScreen(navController = rememberNavController())
 }

@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import com.example.sensimate.R
 
 @Composable
-fun CheckBox() {
+fun CheckBox(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = RoundedCornerShape(100),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(199, 242, 219)),
         modifier = Modifier

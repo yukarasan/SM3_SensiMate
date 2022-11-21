@@ -20,12 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.navigation.Screen
 
-@Preview(showBackground = true)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -45,12 +46,11 @@ fun ProfileScreen() {
                     .padding(bottom = 5.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                LogoutButton()
-                EditButton()
+                LogoutButton(onClick = { navController.navigate(Screen.ChooseSignUpScreen.route) })
+                EditButton(onClick = { navController.navigate(Screen.EditProfileScreen.route) })
             }
         }
         item { ImageButton() }
-        item { ProfileName() }
         item { ProfileMail() }
 
         // TODO: Make as list of items instead:
@@ -67,9 +67,9 @@ fun ProfileScreen() {
 }
 
 @Composable
-private fun LogoutButton() {
+private fun LogoutButton(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = RoundedCornerShape(100),
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
         modifier = Modifier
@@ -87,9 +87,9 @@ private fun LogoutButton() {
 }
 
 @Composable
-private fun EditButton() {
+private fun EditButton(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = RoundedCornerShape(100),
         border = BorderStroke(3.dp, Color(199, 242, 219)),
         colors = ButtonDefaults.outlinedButtonColors(
