@@ -40,7 +40,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             ExtendedEvent(navController = navController)
         }
         composable(Screen.ProfileScreen.route) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
         }
         composable(route = Screen.CreateEventScreen.route) {
             CreateEventScreen()
