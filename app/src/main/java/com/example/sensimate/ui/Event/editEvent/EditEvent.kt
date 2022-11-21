@@ -27,6 +27,7 @@ import com.example.sensimate.ui.Event.createEvent.TextFiledQuestionText
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
+import com.example.sensimate.ui.survey.Survery
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
@@ -466,7 +467,7 @@ fun TextFiledTimeText(){
 
 @Composable
 fun EditSurvey(){
-    //Survey4()
+    Survey4()
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
