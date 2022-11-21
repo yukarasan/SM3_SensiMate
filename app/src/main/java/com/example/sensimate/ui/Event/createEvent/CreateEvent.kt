@@ -29,6 +29,7 @@ import com.example.sensimate.navigation.Screen
 import com.example.sensimate.navigation.SetupNavGraph
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
+import kotlin.contracts.contract
 
 
 @Preview(showBackground = true)
@@ -324,6 +325,7 @@ fun TextFiledAnswerText(modifier: Modifier,string: String){
             modifier = modifier
 
         )
+
     }
 }
 
@@ -374,19 +376,21 @@ fun QuestionPageScreen(){
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp).clickable(
+            .size(50.dp)
+            .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick =  { /*TODO*/ })
+                onClick = { /*TODO*/ })
         ,id = R.drawable.redgobackbutton)
 
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp).clickable(
+            .size(50.dp)
+            .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick =  { /*TODO*/ })
+                onClick = { /*TODO*/ })
         , id = R.drawable.greenconfirmedbutton)
 
 
@@ -441,24 +445,25 @@ fun CreateMultpleChoiceQuestionScreen(){
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp).clickable(
+            .size(50.dp)
+            .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick =  { /*TODO*/ })
+                onClick = { /*TODO*/ })
         , id = R.drawable.redgobackbutton)
 
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp).clickable(
+            .size(50.dp)
+            .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick =  { /*TODO*/ })
+                onClick = { /*TODO*/ })
         , id = R.drawable.greenconfirmedbutton)
 
 
 }
-
 
 
 

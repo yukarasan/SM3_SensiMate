@@ -39,7 +39,7 @@ import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
 
-
+@Preview(showBackground = true)
 @Composable
 fun Survey4(navController: NavController) {
     Box(
