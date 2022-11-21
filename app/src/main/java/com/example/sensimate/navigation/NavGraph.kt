@@ -1,11 +1,12 @@
 package com.example.sensimate.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.ui.Event.EventUiState
+import com.example.sensimate.ui.Event.RegisterScreen
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
@@ -13,8 +14,14 @@ import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail
 import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
 import com.example.sensimate.ui.home.EventScreen
+import com.example.sensimate.ui.profile.EditProfileScreen
 import com.example.sensimate.ui.profile.ProfileScreen
+import com.example.sensimate.ui.profile.editProfile.*
 import com.example.sensimate.ui.startupscreens.signUp.ChooseSignUpScreen
+import com.example.sensimate.ui.survey.Survey
+import com.example.sensimate.ui.survey.Survey2
+import com.example.sensimate.ui.survey.Survey3
+import com.example.sensimate.ui.survey.Survey4
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
@@ -35,10 +42,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EventScreen(navController = navController, uiState = eventUIState)
         }
         composable(route = Screen.ExtendedEventScreen.route) {
-            ExtendedEvent()
+            ExtendedEvent(navController = navController)
         }
         composable(Screen.ProfileScreen.route) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
         }
         composable(route = Screen.CreateEventScreen.route) {
             CreateEventScreen()
@@ -46,5 +53,49 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         composable(route = Screen.QuestionPageScreen.route) {
             QuestionPageScreen()
         }
+        composable(route = Screen.Registerscreen.route) {
+            //RegisterScreen(navController = navController)
+        }
+
+        // Profile navigation:
+        composable(Screen.ProfileScreen.route) {
+            ProfileScreen(navController = navController)
+        }
+        composable(route = Screen.EditProfileScreen.route) {
+            EditProfileScreen(navController = navController)
+        }
+        composable(route = Screen.EditPostalScreen.route) {
+            EditPostalCodeScreen(navController = navController)
+        }
+        composable(route = Screen.EditAgeScreen.route) {
+            EditAgeScreen(navController = navController)
+        }
+        composable(route = Screen.EditEmailScreen.route) {
+            EditEmailScreen(navController = navController)
+        }
+        composable(route = Screen.EditPasswordScreen.route) {
+            EditPasswordScreen(navController = navController)
+        }
+        composable(route = Screen.EditGenderScreen.route) {
+            EditGenderScreen(navController = navController)
+        }
+
+
+        // SURVERY NAVIGATION
+        composable(route = Screen.Survey.route) {
+            Survey(navController = navController)
+        }
+        composable(route = Screen.Survey2.route) {
+            Survey2(navController = navController)
+
+        }
+        composable(route = Screen.Survey3.route) {
+            Survey3(navController = navController)
+        }
+        composable(route = Screen.Survey4.route) {
+            Survey4(navController = navController)
+        }
     }
+
+
 }

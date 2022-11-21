@@ -24,9 +24,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
+import com.example.sensimate.common.editProfile.CheckBox
 import com.example.sensimate.navigation.Screen
 import com.example.sensimate.navigation.SetupNavGraph
+import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
+import kotlin.contracts.contract
 
 
 @Preview(showBackground = true)
@@ -191,12 +194,13 @@ fun ContentColorComponent(
 
 @Composable
 fun AddPhoto(modifier: Modifier = Modifier,id: Int){
-    Image(
-        painter = painterResource(id = id),
-         contentDescription = "HEJ MED DIG ",
-        modifier = modifier
-    )
-
+    IconButton(onClick = { /*TODO*/ }) {
+        Image(
+            painter = painterResource(id = id),
+            contentDescription = "HEJ MED DIG ",
+            modifier = modifier
+        )
+    }
 }
 @Composable
 fun TextToPhoto(){
@@ -281,8 +285,8 @@ fun TextFiledTimeText(){
 }
 
 @Composable
-fun TextFiledQuestionText(modifier: Modifier){
-    var text by remember { mutableStateOf("") }
+fun TextFiledQuestionText(modifier: Modifier,string: String){
+    var text by remember { mutableStateOf(string) }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
@@ -303,8 +307,8 @@ fun TextFiledQuestionText(modifier: Modifier){
 }
 
 @Composable
-fun TextFiledAnswerText(modifier: Modifier){
-    var text by remember { mutableStateOf("") }
+fun TextFiledAnswerText(modifier: Modifier,string: String){
+    var text by remember { mutableStateOf(string) }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
@@ -321,6 +325,7 @@ fun TextFiledAnswerText(modifier: Modifier){
             modifier = modifier
 
         )
+
     }
 }
 
@@ -367,7 +372,29 @@ fun QuestionPageScreen(){
                     onClick = { /*TODO*/ }),
                 id = R.drawable.redaddplus)
 
-    }
+
+    AddPhoto(
+        modifier = Modifier
+            .padding(15.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick = { /*TODO*/ })
+        ,id = R.drawable.redgobackbutton)
+
+    AddPhoto(
+        modifier = Modifier
+            .padding(330.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick = { /*TODO*/ })
+        , id = R.drawable.greenconfirmedbutton)
+
+
+}
 
 // Figur 3
 @Composable
@@ -392,9 +419,9 @@ fun CreateMultpleChoiceQuestionScreen(){
         modifier = Modifier
             .padding(125.dp, 30.dp, 88.dp, 269.dp))
     TextFiledQuestionText(modifier = Modifier
-        .padding(55.dp, 130.dp, 30.dp, 30.dp))
+        .padding(55.dp, 130.dp, 30.dp, 30.dp),"")
     TextFiledAnswerText(modifier = Modifier
-        .padding(55.dp, 225.dp, 30.dp, 30.dp))
+        .padding(55.dp, 225.dp, 30.dp, 30.dp),"")
     Divider(
         color = Color.White,
         thickness = 2.dp,
@@ -404,17 +431,39 @@ fun CreateMultpleChoiceQuestionScreen(){
         color = Color(0xFFB874A6),
         fontSize = 20.sp,
         modifier = Modifier
-            .padding(10.dp, 410.dp, 88.dp, 269.dp))
+            .padding(10.dp, 410.dp, 88.dp, 269.dp)
+    )
     Text(
         text = "Require an answer",
         color = Color(0xEFFF7067),
         fontSize = 20.sp,
         modifier = Modifier
-            .padding(10.dp, 450.dp, 88.dp, 269.dp))
+            .padding(10.dp, 450.dp, 88.dp, 269.dp)
+    )
+
+//TODO LAV EN GO BACK BUTTON
+    AddPhoto(
+        modifier = Modifier
+            .padding(15.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick = { /*TODO*/ })
+        , id = R.drawable.redgobackbutton)
+
+    AddPhoto(
+        modifier = Modifier
+            .padding(330.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick = { /*TODO*/ })
+        , id = R.drawable.greenconfirmedbutton)
 
 
 }
-
 
 
 

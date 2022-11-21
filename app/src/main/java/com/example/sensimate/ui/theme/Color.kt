@@ -20,3 +20,5 @@ val PurpleButtonColor = Color(0xFF9A6BFE)
 val FaceBookColor = Color(0xFF1877F2)
 
 val GreyColor = Color(0xFF3F4551)
+
+val darkbluegrey =  Color(red = 44, green = 44, blue = 59)
