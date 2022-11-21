@@ -31,7 +31,7 @@ fun LogInMail(navController: NavController) {
         modifier = Modifier.fillMaxWidth()
     ) {
 
-        Spacer(modifier = Modifier.size(250.dp))
+        Spacer(modifier = Modifier.size(220.dp))
 
         //email button
         var email by remember { mutableStateOf("") }
@@ -71,7 +71,7 @@ fun LogInMail(navController: NavController) {
             PurpleButtonColor,
             onClick = {navController.navigate(Screen.EventScreen.route)})
 
-        Spacer(modifier = Modifier.size(250.dp))
+        Spacer(modifier = Modifier.size(175.dp))
 
         buttonWithImage(
             bgcolor = FaceBookColor,
@@ -91,6 +91,5 @@ fun LogInMail(navController: NavController) {
             Color.Gray,
             onClick = {}
         )
-        Spacer(modifier = Modifier.size(200.dp))
     }
 }
