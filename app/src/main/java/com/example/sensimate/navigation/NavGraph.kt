@@ -20,17 +20,20 @@ import com.example.sensimate.ui.startupscreens.signUp.ChooseSignUpScreen
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
-    NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
+    NavHost(
+        navController = navController,
+        startDestination = Screen.CookieScreen.route
+    ) {      // Screen.CookieScreen.route
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController, uiState = eventUIState)
         }
-        composable(route = Screen.ChooseSignUpScreen.route){
+        composable(route = Screen.ChooseSignUpScreen.route) {
             BackHandler(true) {
                 // Do nothing
             }
             ChooseSignUpScreen(navController = navController, uiState = eventUIState)
         }
-        composable(route = Screen.SignUpWithMail.route){
+        composable(route = Screen.SignUpWithMail.route) {
             SignUpUsingMail(navController = navController, uiState = eventUIState)
         }
         composable(route = Screen.EventScreen.route) {
@@ -74,5 +77,23 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         composable(route = Screen.EditGenderScreen.route) {
             EditGenderScreen(navController = navController)
         }
+
+
+        // SURVERY NAVIGATION
+        /*composable(route = Screen.SurveryPage1.route) {
+            Screen.SurveryPage1(navController = navController)
+        }
+        composable(route = Screen.EditGenderScreen.route) {
+            EditGenderScreen(navController = navController)
+        }
+        composable(route = Screen.EditGenderScreen.route) {
+            EditGenderScreen(navController = navController)
+        }
+        composable(route = Screen.EditGenderScreen.route) {
+            EditGenderScreen(navController = navController)
+        }
+    }
+
+         */
     }
 }

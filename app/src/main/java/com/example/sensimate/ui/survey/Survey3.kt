@@ -147,13 +147,14 @@ fun Information3() {
 
 @Composable
 private fun SurveyImage(modifier: Modifier = Modifier) {
-    val image = painterResource(id = R.drawable.rectangle77) // Possible for hoisting in future.
+    val image = painterResource(id = R.drawable.drinkingdude) // Possible for hoisting in future.
     Image(
         painter = image,
         contentDescription = null,
         modifier = modifier
             .padding(top = 0.dp, end = 10.dp)
-            .size(400.dp)
+            .size(350.dp)
+            .clip(RoundedCornerShape(20))
             .fillMaxWidth()
 
     )

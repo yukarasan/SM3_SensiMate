@@ -16,4 +16,8 @@ sealed class Screen(val route: String) {
     object EditPasswordScreen: Screen(route = "editPassword")
     object EditPostalScreen: Screen(route = "editPostal")
     object EditProfileScreen: Screen(route = "editProfile")
+    object SurveryPage1: Screen(route = "survey1")
+    object SurveryPage2: Screen(route = "survey2")
+    object SurveryPage3: Screen(route = "survey3")
+    object SurveryPage4: Screen(route = "survey4")
 }
