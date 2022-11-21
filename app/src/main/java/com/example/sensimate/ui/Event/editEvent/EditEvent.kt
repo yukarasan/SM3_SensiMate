@@ -1,5 +1,3 @@
-package com.example.sensimate.ui.Event.extendedEvent
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
+import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
 import com.example.sensimate.ui.theme.BottonGradient
@@ -27,7 +27,11 @@ import com.example.sensimate.ui.theme.LightColor
 
 @Preview(showBackground = true)
 @Composable
-fun ExtendedEvent() {
+fun EditEventPreview() {
+  EditEvent()
+}
+@Composable
+fun EditEvent(){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -44,7 +48,7 @@ fun ExtendedEvent() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Card(
             modifier = Modifier
-                .padding(start = 30.dp, end = 5.dp, top = 70.dp)
+                .padding(start = 15.dp, end = 15.dp, top = 70.dp)
                 .fillMaxWidth(),
             elevation = 5.dp,
             shape = RoundedCornerShape(20.dp),
@@ -103,12 +107,19 @@ fun ExtendedEvent() {
             }
         }
         Spacer(modifier = Modifier.size(25.dp))
-        RegisterButton()
+        EditButton("Edit Survey")
     }
 
-    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton({})
-    }
+    AddPhoto(
+        modifier = Modifier
+            .padding(15.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp), id = R.drawable.redgobackbutton)
+
+
+    AddPhoto(
+        modifier = Modifier
+            .padding(330.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp), id = R.drawable.yelloweditbutton)
 }
 
 @Composable
@@ -174,16 +185,16 @@ private fun Bar(progress: Float) {
 }
 
 @Composable
-private fun RegisterButton() {
+private fun EditButton(title: String) {
     Button(
         onClick = { /*TODO*/ },
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(345.dp, 60.dp),
 
-    ) {
+        ) {
         Text(
-            text = "Register",
+            text = title,
             fontWeight = FontWeight.Bold,
             fontSize = 25.sp,
             color = Color.White,
@@ -191,3 +202,14 @@ private fun RegisterButton() {
         )
     }
 }
+@Composable
+fun AddPhoto(modifier: Modifier = Modifier,id: Int){
+    IconButton(onClick = { /*TODO*/ }) {
+        Image(
+            painter = painterResource(id = id),
+            contentDescription = "HEJ MED DIG ",
+            modifier = modifier
+        )
+    }
+}
+
