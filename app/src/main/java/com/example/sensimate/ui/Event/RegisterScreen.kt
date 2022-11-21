@@ -38,8 +38,10 @@ fun RegisterScreen(navController: NavController){
         Spacer(modifier = Modifier.size(30.dp))
         Discription(discription = "We are looking forward to see you")
     }
-
-   // OrangeBackButton ({navController.popBackStack()})
+    //OrangeBackButton ({navController.popBackStack()})
+    Column(modifier = Modifier.padding(15.dp, 10.dp)) {
+        OrangeBackButton({navController.popBackStack()})
+    }
 }
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier){

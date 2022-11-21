@@ -49,7 +49,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             QuestionPageScreen()
         }
         composable(route = Screen.Registerscreen.route) {
-            RegisterScreen(navController = navController)
+            //RegisterScreen(navController = navController)
         }
 
         // Profile navigation:
