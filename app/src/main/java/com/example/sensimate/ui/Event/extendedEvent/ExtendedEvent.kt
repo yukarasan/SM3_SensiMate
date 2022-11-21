@@ -79,7 +79,7 @@ fun ExtendedEvent(navController: NavController) {
                         }
                     }
                 }
-                EventInputField()
+                EventInputField(onClick = {navController.navigate(Screen.Survey.route)})
                 Allergens(title = "Allergens")
                 Discription(discription = "N/A")
                 Spacer(modifier = Modifier.size(20.dp))
