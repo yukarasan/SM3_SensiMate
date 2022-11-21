@@ -17,17 +17,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun ExtendedEvent() {
+fun ExtendedEvent(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -103,11 +106,11 @@ fun ExtendedEvent() {
             }
         }
         Spacer(modifier = Modifier.size(25.dp))
-        RegisterButton()
+       // RegisterButton(navController.navigate(Screen.Registerscreen))
     }
 
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton({})
+        OrangeBackButton({navController.popBackStack()})
     }
 }
 
@@ -174,9 +177,9 @@ private fun Bar(progress: Float) {
 }
 
 @Composable
-private fun RegisterButton() {
+private fun RegisterButton(onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {onClick},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(345.dp, 60.dp),

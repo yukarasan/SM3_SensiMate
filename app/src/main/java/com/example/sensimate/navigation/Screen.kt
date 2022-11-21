@@ -9,4 +9,5 @@ sealed class Screen(val route: String) {
     object ProfileScreen: Screen(route = "profile")
     object CreateEventScreen: Screen(route = "createEvent")
     object QuestionPageScreen: Screen(route = "questionPage")
+    object Registerscreen: Screen(route = "register")
 }

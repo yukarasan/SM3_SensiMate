@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.ui.Event.EventUiState
+import com.example.sensimate.ui.Event.RegisterScreen
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
@@ -17,21 +18,24 @@ import com.example.sensimate.ui.startupscreens.signUp.ChooseSignUpScreen
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
-    NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
+    NavHost(
+        navController = navController,
+        startDestination = Screen.CookieScreen.route
+    ) {      // Screen.CookieScreen.route
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController, uiState = eventUIState)
         }
-        composable(route = Screen.ChooseSignUpScreen.route){
+        composable(route = Screen.ChooseSignUpScreen.route) {
             ChooseSignUpScreen(navController = navController, uiState = eventUIState)
         }
-        composable(route = Screen.SignUpWithMail.route){
+        composable(route = Screen.SignUpWithMail.route) {
             SignUpUsingMail(navController = navController, uiState = eventUIState)
         }
         composable(route = Screen.EventScreen.route) {
             EventScreen(navController = navController, uiState = eventUIState)
         }
         composable(route = Screen.ExtendedEventScreen.route) {
-            ExtendedEvent()
+            ExtendedEvent(navController = navController)
         }
         composable(Screen.ProfileScreen.route) {
             ProfileScreen()
@@ -41,6 +45,9 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
         composable(route = Screen.QuestionPageScreen.route) {
             QuestionPageScreen()
+        }
+        composable(route = Screen.Registerscreen.route) {
+            RegisterScreen(navController = navController)
         }
     }
 }
