@@ -19,6 +19,8 @@ import com.example.sensimate.ui.startupscreens.signUp.buttonWithImage
 import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
+import com.example.sensimate.ui.theme.employeelogin
+
 
 @Composable
 fun LogInMail(navController: NavController) {
@@ -69,6 +71,13 @@ fun LogInMail(navController: NavController) {
         myButton(color = Color.White,
             title = "Log in",
             PurpleButtonColor,
+            onClick = {navController.navigate(Screen.EventScreen.route)})
+
+        Spacer(modifier = Modifier.size(28.dp))
+
+        myButton(color = Color.White,
+            title = "Log in as employee",
+            employeelogin,
             onClick = {navController.navigate(Screen.EventScreen.route)})
 
         Spacer(modifier = Modifier.size(175.dp))
