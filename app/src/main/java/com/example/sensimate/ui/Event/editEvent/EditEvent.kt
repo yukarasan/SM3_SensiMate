@@ -92,7 +92,7 @@ fun EditEvent(){
                         }
                     }
                 }
-                EventInputField()
+                EventInputField({})
                 Allergens(title = "Allergens")
                 Discription(discription = "N/A")
                 Spacer(modifier = Modifier.size(20.dp))

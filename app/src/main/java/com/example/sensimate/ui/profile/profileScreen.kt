@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.components.OrangeBackButton
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -43,16 +44,16 @@ fun ProfileScreen(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 5.dp),
+                    .padding(start = 20.dp, bottom = 5.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                LogoutButton(onClick = { navController.navigate(Screen.ChooseSignUpScreen.route) })
+                OrangeBackButton(onClick = { navController.navigate(Screen.EventScreen.route) })
                 EditButton(onClick = { navController.navigate(Screen.EditProfileScreen.route) })
             }
         }
         item { ImageButton() }
         item { ProfileMail() }
-
+        item { LogoutButton(onClick = { navController.navigate(Screen.ChooseSignUpScreen.route) }) }
         // TODO: Make as list of items instead:
         item { UpcomingEvent() }
         item { UpcomingEvent() }
@@ -74,7 +75,7 @@ private fun LogoutButton(onClick: () -> Unit) {
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
         modifier = Modifier
             .height(40.dp)
-            .padding(start = 20.dp)
+            .padding()
     ) {
         Text(
             text = "Log out",

@@ -79,7 +79,7 @@ fun ExtendedEvent(navController: NavController) {
                         }
                     }
                 }
-                EventInputField()
+                EventInputField(onClick = {navController.navigate(Screen.Survey.route)})
                 Allergens(title = "Allergens")
                 Discription(discription = "N/A")
                 Spacer(modifier = Modifier.size(20.dp))
@@ -171,7 +171,7 @@ private fun Bar(progress: Float) {
                 .clip(RoundedCornerShape(30.dp)),
             backgroundColor = Color(red = 63, green = 69, blue = 81),
             color = Color(red = 199, green = 242, blue = 219), //progress color
-            progress = progress //TODO:  Needs state hoisting in future.
+            progress = progress
         )
     }
 }
@@ -184,7 +184,7 @@ private fun RegisterButton(onClick: () -> Unit) {
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(345.dp, 60.dp),
 
-    ) {
+        ) {
         Text(
             text = "Register",
             fontWeight = FontWeight.Bold,

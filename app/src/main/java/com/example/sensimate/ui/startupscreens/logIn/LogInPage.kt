@@ -11,16 +11,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.sensimate.R
+import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.buttonWithImage
 import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
-@Preview(showBackground = true)
 @Composable
-fun LogInMail() {
+fun LogInMail(navController: NavController) {
 
     InitialStartBackground()
 
@@ -30,7 +31,7 @@ fun LogInMail() {
         modifier = Modifier.fillMaxWidth()
     ) {
 
-        Spacer(modifier = Modifier.size(250.dp))
+        Spacer(modifier = Modifier.size(220.dp))
 
         //email button
         var email by remember { mutableStateOf("") }
@@ -68,9 +69,9 @@ fun LogInMail() {
         myButton(color = Color.White,
             title = "Log in",
             PurpleButtonColor,
-            onClick = {})
+            onClick = {navController.navigate(Screen.EventScreen.route)})
 
-        Spacer(modifier = Modifier.size(250.dp))
+        Spacer(modifier = Modifier.size(175.dp))
 
         buttonWithImage(
             bgcolor = FaceBookColor,
@@ -90,9 +91,5 @@ fun LogInMail() {
             Color.Gray,
             onClick = {}
         )
-
-
-        Spacer(modifier = Modifier.size(200.dp))
-
     }
 }
