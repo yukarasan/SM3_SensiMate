@@ -3,6 +3,7 @@ package com.example.sensimate.ui.Event.extendedEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -45,104 +46,119 @@ fun ExtendedEvent(navController: NavController) {
     )
 
 
+    LazyColumn() {
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Card(
-            modifier = Modifier
-                .padding(start = 30.dp, end = 5.dp, top = 70.dp)
-                .fillMaxWidth(),
-            elevation = 5.dp,
-            shape = RoundedCornerShape(20.dp),
-            backgroundColor = Color(red = 44, green = 44, blue = 59)
-        ) {
-            Column {
-                Row {
-                    Column(
-                        modifier = Modifier.padding(
-                            top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
-                        )
-                    ) {
+        item {
+            Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+                OrangeBackButton(onClick = { navController.popBackStack() })
+            }
 
+        }
+
+        item {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Card(
+                    modifier = Modifier
+                        .padding(start = 15.dp, end = 15.dp, top = 16.dp)
+                        .fillMaxWidth(),
+                    elevation = 5.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    backgroundColor = Color(red = 44, green = 44, blue = 59)
+                ) {
+                    Column {
                         Row {
-                            Column {
-                                Title(title = "Coca Cola")
-                                Discription(
-                                    discription = "Come and taste the freshing sensation " +
-                                            "of Coca Cola. Get a whole six pack for free."
+                            Column(
+                                modifier = Modifier.padding(
+                                    top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
+                                )
+                            ) {
+
+                                Row {
+                                    Column {
+                                        Title(title = "Coca Cola")
+                                        Discription(
+                                            discription = "Come and taste the freshing sensation " +
+                                                    "of Coca Cola. Get a whole six pack for free."
+                                        )
+                                    }
+                                    Image(
+                                        painter = painterResource(
+                                            id = R.drawable.beverages
+                                        ),
+                                        contentDescription = "",
+                                        modifier = Modifier.size(145.dp),
+                                    )
+                                }
+                            }
+                        }
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            EventInputField({})
+                            Button(
+                                onClick = { navController.navigate(Screen.Survey.route) },
+                                colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
+                                modifier = Modifier.size(50.dp, 50.dp),
+
+                                ) {
+                                Text(
+                                    text = "Go",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 10.sp,
+                                    color = Color.White,
+                                    fontFamily = manropeFamily
                                 )
                             }
-                            Image(
-                                painter = painterResource(
-                                    id = R.drawable.beverages
-                                ),
-                                contentDescription = "",
-                                modifier = Modifier.size(145.dp),
-                            )
+
                         }
-                    }
-                }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    Button(
-                        //onClick = { navController.navigate(Screen.Survey.route) },
-                        onClick = {},
-                        colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
-                        modifier = Modifier.size(50.dp, 50.dp),
 
+
+
+                        Allergens(title = "Allergens")
+                        Discription(discription = "N/A")
+                        Spacer(modifier = Modifier.size(20.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                        Text(
-                            text = "Go",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 10.sp,
-                            color = Color.White,
-                            fontFamily = manropeFamily
+                            Column() {
+                                Title(title = "The Circular lab")
+                            }
+                            Discription(discription = "30km")
+                        }
+                        Image(
+                            painter = painterResource(
+                                id = R.drawable.location
+                            ),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(200.dp)
                         )
+                        Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
+                        Bar(progress = 0.39f)
                     }
-                    EventInputField({})
                 }
-
-                EventInputField(onClick = {navController.navigate(Screen.Survey.route)})
-
-
-
-
-                Allergens(title = "Allergens")
-                Discription(discription = "N/A")
-                Spacer(modifier = Modifier.size(20.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Column() {
-                        Title(title = "The Circular lab")
-                    }
-                    Discription(discription = "30km")
-                }
-                Image(
-                    painter = painterResource(
-                        id = R.drawable.location
-                    ),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(200.dp)
-                )
-                Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
-                Bar(progress = 0.39f)
+                Spacer(modifier = Modifier.size(25.dp))
+                RegisterButton(onClick = { navController.navigate(Screen.Registerscreen.route) })
             }
         }
-        Spacer(modifier = Modifier.size(25.dp))
-        RegisterButton(onClick = {navController.navigate(Screen.Registerscreen.route)})
-    }
-
-    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton(onClick = {navController.popBackStack()})
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ExtendedEventP() {
+    ExtendedEvent(navController = rememberNavController())
+}
 
 
 @Composable
@@ -205,6 +221,12 @@ private fun Bar(progress: Float) {
             progress = progress
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ExtendedEventPreview() {
+    ExtendedEvent(rememberNavController())
 }
 
 @Composable

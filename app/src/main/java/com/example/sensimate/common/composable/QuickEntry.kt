@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -22,11 +23,12 @@ import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 
+@Preview(showBackground = true)
 @Composable
 fun QuickEntry() {
     Card(
         modifier = Modifier
-            .padding(start = 25.dp, end = 25.dp, top = 25.dp)
+            .padding(start = 25.dp, end = 25.dp, top = 10.dp)
             .fillMaxWidth(),
         elevation = 5.dp,
         shape = RoundedCornerShape(20.dp),
@@ -37,7 +39,14 @@ fun QuickEntry() {
                 QuickEntryImage()
                 QuickEntryTitle("Quick Entry") //TODO: Make text as recourse
             }
-            EventInputField({})
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                EventInputField({})
+            }
         }
     }
 }
@@ -72,10 +81,7 @@ private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
 @Composable
 fun EventInputField(onClick: () -> Unit) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 5.dp)
-            .height(50.dp)
+        modifier = Modifier.size(width = 270.dp, height = 50.dp)
     ) {
         // ---------------------------------------------------------------------------
         //TODO: Needs state hoisting

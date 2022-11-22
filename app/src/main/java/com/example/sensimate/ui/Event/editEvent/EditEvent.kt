@@ -42,8 +42,9 @@ fun EditEventPreview() {
     //EditSurvey()
     EditSurveyPage()
 }
+
 @Composable
-fun EditEvent(){
+fun EditEvent() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -92,6 +93,7 @@ fun EditEvent(){
                         }
                     }
                 }
+
                 EventInputField({})
                 Allergens(title = "Allergens")
                 Discription(discription = "N/A")
@@ -129,8 +131,8 @@ fun EditEvent(){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
-                , id = R.drawable.redgobackbutton)
+                onClick = { /*TODO*/ }), id = R.drawable.redgobackbutton
+    )
 
 
     AddPhoto(
@@ -140,8 +142,8 @@ fun EditEvent(){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
-        , id = R.drawable.yelloweditbutton)
+                onClick = { /*TODO*/ }), id = R.drawable.yelloweditbutton
+    )
 }
 
 @Composable
@@ -224,17 +226,18 @@ private fun EditButton(title: String) {
         )
     }
 }
+
 @Composable
-fun AddPhoto(modifier: Modifier = Modifier,id: Int){
-        Image(
-            painter = painterResource(id = id),
-            contentDescription = "HEJ MED DIG ",
-            modifier = modifier
-        )
+fun AddPhoto(modifier: Modifier = Modifier, id: Int) {
+    Image(
+        painter = painterResource(id = id),
+        contentDescription = "HEJ MED DIG ",
+        modifier = modifier
+    )
 }
 
 @Composable
-fun EditPage(){
+fun EditPage() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -248,9 +251,10 @@ fun EditPage(){
                 )
             )
     )
-    AddPhoto(modifier = Modifier
-        .padding(345.dp, 20.dp, 2.dp, 1.dp)
-        .size(20.dp), id = R.drawable.ic_add_circle_outlined
+    AddPhoto(
+        modifier = Modifier
+            .padding(345.dp, 20.dp, 2.dp, 1.dp)
+            .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
     TextToPhoto()
     TextFiledTitleText()
@@ -264,7 +268,7 @@ fun EditPage(){
         backgroundColor = Color(0xFF4D3B72)
 
 
-    ){
+    ) {
 
         Image(
             painter = painterResource(
@@ -290,7 +294,7 @@ fun EditPage(){
             Spacer(modifier = Modifier.size(250.dp))
 
             Button(
-                onClick = {/*TODO*/},
+                onClick = {/*TODO*/ },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFD7D123)),
                 modifier = Modifier.size(240.dp, 50.dp),
@@ -321,17 +325,19 @@ fun EditPage(){
                 )
             }
         }
-    }}
+    }
+}
 
 
 @Composable
-fun TextFiledTitleText(){
+fun TextFiledTitleText() {
     var text by remember { mutableStateOf("Coca Cola") }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
-                text = newText },
+                text = newText
+            },
             label = {
                 Text(
                     text = "Title",
@@ -339,7 +345,7 @@ fun TextFiledTitleText(){
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(55.dp, 55.dp, 30.dp, 30.dp)
         )
@@ -347,15 +353,15 @@ fun TextFiledTitleText(){
 }
 
 
-
 @Composable
-fun TextFiledDescriptionText(){
+fun TextFiledDescriptionText() {
     var text by remember { mutableStateOf("Come and taste the freshing sensation of Coca Cola. Get a whole six pack for free.") }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
-                text = newText },
+                text = newText
+            },
             label = {
                 Text(
                     text = "Description",
@@ -363,7 +369,7 @@ fun TextFiledDescriptionText(){
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...",color = Color(0xEFFF7067))},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(55.dp, 150.dp, 30.dp, 30.dp)
         )
@@ -377,15 +383,17 @@ fun ContentColorComponent(
     contentColor: Color = LocalContentColor.current,
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(LocalContentColor provides contentColor,
-        content = content)
+    CompositionLocalProvider(
+        LocalContentColor provides contentColor,
+        content = content
+    )
 }
 
 
-
 @Composable
-fun TextToPhoto(){
-    Text(text = "Edit Photo",
+fun TextToPhoto() {
+    Text(
+        text = "Edit Photo",
         color = Color(0xFFB874A6), fontSize = 11.sp,
         maxLines = 1,
         modifier = Modifier
@@ -396,13 +404,14 @@ fun TextToPhoto(){
 
 
 @Composable
-fun TextFiledLoctionText(){
+fun TextFiledLoctionText() {
     var text by remember { mutableStateOf("Helsingørmotervejen 15, 2500 lyngby") }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
-                text = newText },
+                text = newText
+            },
             label = {
                 Text(
                     text = "Location",
@@ -414,14 +423,15 @@ fun TextFiledLoctionText(){
                         painter = painterResource(id = R.drawable.redlocationicon),
                         modifier = Modifier
                             .size(20.dp),
-                        contentDescription = "")
+                        contentDescription = ""
+                    )
 
                 }
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
 
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 65.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -430,15 +440,15 @@ fun TextFiledLoctionText(){
 }
 
 
-
 @Composable
-fun TextFiledTimeText(){
+fun TextFiledTimeText() {
     var text by remember { mutableStateOf("??/??/?? - ??:??") }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
-                text = newText },
+                text = newText
+            },
             label = {
                 Text(
                     text = "Date and time",
@@ -450,14 +460,15 @@ fun TextFiledTimeText(){
                         painter = painterResource(id = R.drawable.yellowpencil),
                         modifier = Modifier
                             .size(20.dp),
-                        contentDescription = "")
+                        contentDescription = ""
+                    )
 
                 }
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
 
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 2.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -466,7 +477,7 @@ fun TextFiledTimeText(){
 }
 
 @Composable
-fun EditSurvey(){
+fun EditSurvey() {
     //Survey4()
     AddPhoto(
         modifier = Modifier
@@ -475,12 +486,12 @@ fun EditSurvey(){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
-        , id = R.drawable.yelloweditbutton)
+                onClick = { /*TODO*/ }), id = R.drawable.yelloweditbutton
+    )
 }
 
 @Composable
-fun EditSurveyPage(){
+fun EditSurveyPage() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -499,15 +510,22 @@ fun EditSurveyPage(){
         color = Color(0xEFFF7067),
         fontSize = 20.sp,
         modifier = Modifier
-            .padding(125.dp, 30.dp, 88.dp, 269.dp))
-    TextFiledQuestionText(modifier = Modifier
-        .padding(55.dp, 130.dp, 30.dp, 30.dp),"What other flavours of Coca Cola would you like?")
-    TextFiledAnswerText(modifier = Modifier
-        .padding(55.dp, 225.dp, 30.dp, 30.dp),"Tomato") //TODO NEED MORE ANSWER FILEDS
+            .padding(125.dp, 30.dp, 88.dp, 269.dp)
+    )
+    TextFiledQuestionText(
+        modifier = Modifier
+            .padding(55.dp, 130.dp, 30.dp, 30.dp),
+        "What other flavours of Coca Cola would you like?"
+    )
+    TextFiledAnswerText(
+        modifier = Modifier
+            .padding(55.dp, 225.dp, 30.dp, 30.dp), "Tomato"
+    ) //TODO NEED MORE ANSWER FILEDS
     Divider(
         color = Color.White,
         thickness = 2.dp,
-        modifier = Modifier.padding(1.dp,400.dp, 1.dp, 1.dp))
+        modifier = Modifier.padding(1.dp, 400.dp, 1.dp, 1.dp)
+    )
     Text(
         text = "Settings",
         color = Color(0xFFB874A6),
