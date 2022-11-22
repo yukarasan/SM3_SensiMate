@@ -27,6 +27,7 @@ import com.example.sensimate.ui.Event.createEvent.TextFiledQuestionText
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
+import com.example.sensimate.ui.survey.Survey
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple

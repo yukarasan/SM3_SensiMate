@@ -61,7 +61,7 @@ fun Survey2(navController: NavController) {
     ) {
         OrangeBackButton({navController.navigate(Screen.ExtendedEventScreen.route) })
         ProgressPreview()
-        Question(title = "Question 2/6")
+        Question(title = "Question 2/4")
         SurveyTitle(title = "How likely would you buy Coca Cola?")
         Information2({})
 
@@ -89,7 +89,7 @@ private fun ProgressPreview() {
             .clip(RoundedCornerShape(15.dp)),
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
-        progress = 0.15f //TODO:  Needs state hoisting in future.
+        progress = 0.50f //TODO:  Needs state hoisting in future.
 
     )
 }
