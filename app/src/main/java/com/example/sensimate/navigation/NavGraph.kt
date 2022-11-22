@@ -1,5 +1,9 @@
 package com.example.sensimate.navigation
 
+import EditEvent
+import EditPage
+import EditSurvey
+import EditSurveyPage
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -8,6 +12,7 @@ import androidx.navigation.compose.composable
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.Event.RegisterScreen
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
+import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
 import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
@@ -42,19 +47,34 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EventScreen(navController = navController)
         }
         composable(route = Screen.ExtendedEventScreen.route) {
-            ExtendedEvent(navController = navController)
+            //ExtendedEvent(navController = navController)
         }
         composable(Screen.ProfileScreen.route) {
             ProfileScreen(navController = navController)
         }
         composable(route = Screen.CreateEventScreen.route) {
-            CreateEventScreen()
+            CreateEventScreen(navController = navController)
         }
         composable(route = Screen.QuestionPageScreen.route) {
-            QuestionPageScreen()
+            QuestionPageScreen(navController = navController)
+        }
+        composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
+            CreateMultpleChoiceQuestionScreen(navController = navController)
         }
         composable(route = Screen.Registerscreen.route) {
-            //RegisterScreen(navController = navController)
+            RegisterScreen(navController = navController)
+        }
+        composable(route = Screen.EditEvent.route) {
+            EditEvent(navController = navController)
+        }
+        composable(route = Screen.EditPage.route) {
+            EditPage(navController = navController)
+        }
+        composable(route = Screen.EditSurvey.route) {
+            EditSurvey(navController = navController)
+        }
+        composable(route = Screen.EditSurveyPage.route) {
+            EditSurveyPage(navController = navController)
         }
 
         // Profile navigation:
