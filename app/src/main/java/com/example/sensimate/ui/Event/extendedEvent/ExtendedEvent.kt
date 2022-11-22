@@ -44,6 +44,8 @@ fun ExtendedEvent(navController: NavController) {
             )
     )
 
+
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Card(
             modifier = Modifier
@@ -79,7 +81,34 @@ fun ExtendedEvent(navController: NavController) {
                         }
                     }
                 }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Button(
+                        //onClick = { navController.navigate(Screen.Survey.route) },
+                        onClick = {},
+                        colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
+                        modifier = Modifier.size(50.dp, 50.dp),
+
+                        ) {
+                        Text(
+                            text = "Go",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 10.sp,
+                            color = Color.White,
+                            fontFamily = manropeFamily
+                        )
+                    }
+                    EventInputField({})
+                }
+
                 EventInputField(onClick = {navController.navigate(Screen.Survey.route)})
+
+
+
+
                 Allergens(title = "Allergens")
                 Discription(discription = "N/A")
                 Spacer(modifier = Modifier.size(20.dp))
@@ -113,6 +142,8 @@ fun ExtendedEvent(navController: NavController) {
         OrangeBackButton(onClick = {navController.popBackStack()})
     }
 }
+
+
 
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier) {
