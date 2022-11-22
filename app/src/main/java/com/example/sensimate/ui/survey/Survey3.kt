@@ -37,7 +37,7 @@ import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
-
+//@Preview(showBackground = true)
 @Composable
 fun Survey3(navController: NavController) {
     Box(
@@ -57,7 +57,7 @@ fun Survey3(navController: NavController) {
     ) {
         OrangeBackButton({navController.navigate(Screen.ExtendedEventScreen.route) })
         ProgressPreview()
-        Question(title = "Question 3/6")
+        Question(title = "Question 3/4")
         SurveyTitle(title = "What do you think about this image?")
         SurveyImage()
         Information3()
@@ -68,7 +68,7 @@ fun Survey3(navController: NavController) {
                 .fillMaxWidth()
                 .padding(top = 70.dp)
         ) {
-            PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
+            PreviousButton(onClick = { navController.navigate(Screen.Survey2.route) } )
             NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
         }
     }
@@ -85,7 +85,7 @@ private fun ProgressPreview() {
             .clip(RoundedCornerShape(15.dp)),
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
-        progress = 0.15f //TODO:  Needs state hoisting in future.
+        progress = 0.75f //TODO:  Needs state hoisting in future.
 
     )
 }
@@ -153,10 +153,10 @@ private fun SurveyImage(modifier: Modifier = Modifier) {
         painter = image,
         contentDescription = null,
         modifier = modifier
-            .padding(top = 0.dp, end = 10.dp)
-            .size(350.dp)
+            .size(320.dp)
             .clip(RoundedCornerShape(20))
-            .fillMaxWidth()
+            .fillMaxWidth(),
+
 
     )
 }

@@ -47,7 +47,7 @@ import com.example.sensimate.ui.theme.*
     ) {
         OrangeBackButton({navController.popBackStack()})
         ProgressPreview()
-        Question(title = "Question 1/6")
+        Question(title = "Question 1/4")
         SurveyTitle(title = "Let's first hear about yourself")
         Information()
 
@@ -76,7 +76,7 @@ private fun ProgressPreview() {
             .clip(RoundedCornerShape(15.dp)),
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
-        progress = 0.15f //TODO:  Needs state hoisting in future.
+        progress = 0.25f //TODO:  Needs state hoisting in future.
 
     )
 }
