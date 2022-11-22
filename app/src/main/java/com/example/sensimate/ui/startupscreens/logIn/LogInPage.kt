@@ -80,7 +80,6 @@ fun LogInMail(navController: NavController) {
             title = "Log in as employee",
             employeelogin,
             onClick = {navController.navigate(Screen.EventScreen.route)})
-            onClick = { navController.navigate(Screen.EventScreen.route) })
     }
 
     Column(
