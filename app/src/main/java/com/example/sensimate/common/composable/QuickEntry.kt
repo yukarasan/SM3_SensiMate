@@ -81,7 +81,9 @@ private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
 @Composable
 fun EventInputField(onClick: () -> Unit) {
     Column(
-        modifier = Modifier.size(width = 270.dp, height = 50.dp)
+        modifier = Modifier
+            .size(width = 310.dp, height = 50.dp)
+            .padding(bottom = 10.dp)
     ) {
         // ---------------------------------------------------------------------------
         //TODO: Needs state hoisting
