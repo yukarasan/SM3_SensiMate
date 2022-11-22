@@ -12,6 +12,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
@@ -69,9 +70,16 @@ fun LogInMail(navController: NavController) {
         myButton(color = Color.White,
             title = "Log in",
             PurpleButtonColor,
-            onClick = {navController.navigate(Screen.EventScreen.route)})
+            onClick = { navController.navigate(Screen.EventScreen.route) })
+    }
 
-        Spacer(modifier = Modifier.size(175.dp))
+    Column(
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 20.dp)
+    ) {
 
         buttonWithImage(
             bgcolor = FaceBookColor,
@@ -81,7 +89,7 @@ fun LogInMail(navController: NavController) {
             onClick = {}
         )
 
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(10.dp))
 
         //Continue with google button
         buttonWithImage(
@@ -92,4 +100,11 @@ fun LogInMail(navController: NavController) {
             onClick = {}
         )
     }
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LogInMailPreview() {
+    LogInMail(rememberNavController())
 }
