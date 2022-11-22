@@ -81,46 +81,42 @@ fun EventInputField(onClick: () -> Unit) {
         //TODO: Needs state hoisting
         var text by remember { mutableStateOf(TextFieldValue("")) }
         // ---------------------------------------------------------------------------
-        Button(
-            onClick = onClick,
-        ) {
-            TextField(
-                value = text,
-                onValueChange = { it -> text = it },
-                label = { Label() },
-                placeholder = { Placeholder() },
-                textStyle = TextStyle(
-                    color = Color.White,
-                    fontSize = 12.sp,
-                    fontFamily = manropeFamily,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier
-                    .border(
-                        width = 3.dp,
-                        brush = Brush.horizontalGradient(
-                            listOf(
-                                Color(74, 75, 90),
-                                Color(74, 75, 90)
-                            )
-                        ),
-                        shape = RoundedCornerShape(35.dp)
-                    )
-                    .width(400.dp)
-                    .background(
-                        Color(74, 75, 90),
-                        shape = RoundedCornerShape(35.dp)
+        TextField(
+            value = text,
+            onValueChange = { it -> text = it },
+            label = { Label() },
+            placeholder = { Placeholder() },
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 12.sp,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier
+                .border(
+                    width = 3.dp,
+                    brush = Brush.horizontalGradient(
+                        listOf(
+                            Color(74, 75, 90),
+                            Color(74, 75, 90)
+                        )
                     ),
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
+                    shape = RoundedCornerShape(35.dp)
+                )
+                .width(400.dp)
+                .background(
+                    Color(74, 75, 90),
+                    shape = RoundedCornerShape(35.dp)
                 ),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                singleLine = true,
-                maxLines = 1 //TODO: maxLines not working. Fix this.
-            )
-        }
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
+            maxLines = 1 //TODO: maxLines not working. Fix this.
+        )
     }
 }
 
