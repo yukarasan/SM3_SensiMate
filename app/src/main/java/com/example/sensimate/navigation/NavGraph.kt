@@ -116,6 +116,4 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             Survey4(navController = navController)
         }
     }
-
-
 }
