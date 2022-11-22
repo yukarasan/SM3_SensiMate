@@ -39,7 +39,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             LogInMail(navController = navController)
         }
         composable(route = Screen.EventScreen.route) {
-            EventScreen(navController = navController, uiState = eventUIState)
+            EventScreen(navController = navController)
         }
         composable(route = Screen.ExtendedEventScreen.route) {
             ExtendedEvent(navController = navController)
