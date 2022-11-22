@@ -19,8 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
 import com.example.sensimate.ui.Event.createEvent.TextFiledAnswerText
 import com.example.sensimate.ui.Event.createEvent.TextFiledQuestionText
@@ -34,16 +36,19 @@ import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 import com.example.sensimate.ui.theme.RedColor
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun EditEventPreview() {
     //EditEvent()
     //EditPage()
     //EditSurvey()
-    EditSurveyPage()
+    //EditSurveyPage()
 }
+
+ */
 @Composable
-fun EditEvent(){
+fun EditEvent(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -119,9 +124,24 @@ fun EditEvent(){
             }
         }
         Spacer(modifier = Modifier.size(25.dp))
-        EditButton("Edit Survey")
+        Button(
+            onClick = { navController.navigate(Screen.EditSurvey.route) },
+            shape = CircleShape,
+            colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
+            modifier = Modifier.size(345.dp, 60.dp),
+
+            ) {
+            Text(
+                text = "Edit Survey",
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+                color = Color.White,
+                fontFamily = manropeFamily
+            )
+        }
     }
 
+/*
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
@@ -133,6 +153,10 @@ fun EditEvent(){
                 , id = R.drawable.redgobackbutton)
 
 
+ */
+    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+    }
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
@@ -140,7 +164,7 @@ fun EditEvent(){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
+                onClick = { navController.navigate(Screen.EditPage.route)})
         , id = R.drawable.yelloweditbutton)
 }
 
@@ -206,24 +230,7 @@ private fun Bar(progress: Float) {
     }
 }
 
-@Composable
-private fun EditButton(title: String) {
-    Button(
-        onClick = { /*TODO*/ },
-        shape = CircleShape,
-        colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-        modifier = Modifier.size(345.dp, 60.dp),
 
-        ) {
-        Text(
-            text = title,
-            fontWeight = FontWeight.Bold,
-            fontSize = 25.sp,
-            color = Color.White,
-            fontFamily = manropeFamily
-        )
-    }
-}
 @Composable
 fun AddPhoto(modifier: Modifier = Modifier,id: Int){
         Image(
@@ -234,7 +241,7 @@ fun AddPhoto(modifier: Modifier = Modifier,id: Int){
 }
 
 @Composable
-fun EditPage(){
+fun EditPage(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -290,7 +297,7 @@ fun EditPage(){
             Spacer(modifier = Modifier.size(250.dp))
 
             Button(
-                onClick = {/*TODO*/},
+                onClick = {navController.navigate(Screen.EditEvent.route)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFD7D123)),
                 modifier = Modifier.size(240.dp, 50.dp),
@@ -307,7 +314,7 @@ fun EditPage(){
             }
             Spacer(modifier = Modifier.size(100.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { navController.popBackStack() },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -466,8 +473,8 @@ fun TextFiledTimeText(){
 }
 
 @Composable
-fun EditSurvey(){
-    //Survey4()
+fun EditSurvey(navController: NavController){
+    Survey4(navController)
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
@@ -475,12 +482,12 @@ fun EditSurvey(){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
+                onClick = { navController.navigate(Screen.EditSurveyPage.route)})
         , id = R.drawable.yelloweditbutton)
 }
 
 @Composable
-fun EditSurveyPage(){
+fun EditSurveyPage(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -522,7 +529,7 @@ fun EditSurveyPage(){
         modifier = Modifier
             .padding(10.dp, 450.dp, 88.dp, 269.dp)
     )
-
+/*
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
@@ -533,6 +540,10 @@ fun EditSurveyPage(){
                 onClick = { /*TODO*/ }), id = R.drawable.redgobackbutton
     )
 
+ */
+    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+    }
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
@@ -540,7 +551,7 @@ fun EditSurveyPage(){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ }), id = R.drawable.greenconfirmedbutton
+                onClick = { navController.navigate(Screen.EditEvent.route)}), id = R.drawable.greenconfirmedbutton
     )
 
 
