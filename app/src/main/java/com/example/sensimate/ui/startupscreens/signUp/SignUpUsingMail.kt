@@ -104,9 +104,15 @@ fun SignUpUsingMail(navController: NavController) {
         Spacer(modifier = Modifier.size(30.dp))
 
         ChooseBirthDate(LocalContext.current)
+    }
 
-        Spacer(modifier = Modifier.size(200.dp))
-
+    Column(
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 20.dp)
+    ) {
         myButton(color = Color.White,
             title = "Sign up",
             PurpleButtonColor,
