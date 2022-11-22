@@ -31,19 +31,19 @@ import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
 import kotlin.contracts.contract
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun CreateEventPreview() {
     //CreateEventScreen()
-    //QuestionPageScreen()
-    CreateMultpleChoiceQuestionScreen()
+    QuestionPageScreen()
+    //CreateMultpleChoiceQuestionScreen()
 }
-
+*/
 
 
 @Composable
-fun CreateEventScreen(){
+fun CreateEventScreen(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -99,7 +99,7 @@ fun CreateEventScreen(){
         Spacer(modifier = Modifier.size(250.dp))
 
     Button(
-        onClick = {/*TODO*/},
+        onClick = {navController.navigate(Screen.QuestionPageScreen.route)},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(240.dp, 50.dp),
@@ -116,7 +116,7 @@ fun CreateEventScreen(){
     }
         Spacer(modifier = Modifier.size(100.dp))
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { navController.popBackStack() },
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
         modifier = Modifier.size(240.dp, 50.dp)
@@ -332,7 +332,7 @@ fun TextFiledAnswerText(modifier: Modifier,string: String){
 // figur 2
 
 @Composable
-fun QuestionPageScreen(){
+fun QuestionPageScreen(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -369,10 +369,10 @@ fun QuestionPageScreen(){
                 .padding(300.dp, 405.dp, 1.dp, 1.dp)
                 .size(20.dp)
                 .clickable(enabled = true,
-                    onClick = { /*TODO*/ }),
+                    onClick = {navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)}),
                 id = R.drawable.redaddplus)
 
-
+    /*
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
@@ -383,6 +383,11 @@ fun QuestionPageScreen(){
                 onClick = { /*TODO*/ })
         ,id = R.drawable.redgobackbutton)
 
+     */
+    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+    }
+
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
@@ -390,7 +395,7 @@ fun QuestionPageScreen(){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
+                onClick = {navController.navigate(Screen.EventScreen.route)})
         , id = R.drawable.greenconfirmedbutton)
 
 
@@ -398,7 +403,7 @@ fun QuestionPageScreen(){
 
 // Figur 3
 @Composable
-fun CreateMultpleChoiceQuestionScreen(){
+fun CreateMultpleChoiceQuestionScreen(navController: NavController){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -442,6 +447,7 @@ fun CreateMultpleChoiceQuestionScreen(){
     )
 
 //TODO LAV EN GO BACK BUTTON
+    /*
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
@@ -452,6 +458,12 @@ fun CreateMultpleChoiceQuestionScreen(){
                 onClick = { /*TODO*/ })
         , id = R.drawable.redgobackbutton)
 
+ */
+    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+    }
+
+
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
@@ -459,7 +471,7 @@ fun CreateMultpleChoiceQuestionScreen(){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
+                onClick =  {navController.navigate(Screen.EventScreen.route)})
         , id = R.drawable.greenconfirmedbutton)
 
 
