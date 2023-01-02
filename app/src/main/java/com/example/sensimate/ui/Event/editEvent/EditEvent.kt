@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
 import com.example.sensimate.ui.Event.createEvent.TextFiledAnswerText
 import com.example.sensimate.ui.Event.createEvent.TextFiledQuestionText

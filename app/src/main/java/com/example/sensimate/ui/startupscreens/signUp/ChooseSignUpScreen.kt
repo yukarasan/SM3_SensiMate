@@ -27,7 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple

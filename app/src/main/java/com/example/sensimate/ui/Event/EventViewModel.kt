@@ -11,3 +11,4 @@ class EventViewModel: ViewModel() {
     val eventUiState: StateFlow<EventUiState> = _eventUiState.asStateFlow()
 
 }
+

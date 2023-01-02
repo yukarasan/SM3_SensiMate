@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.sensimate.navigation.SetupNavGraph
+import com.example.sensimate.ui.navigation.SetupNavGraph
 import com.example.sensimate.ui.Event.EventViewModel
 import com.example.sensimate.ui.theme.SensimateTheme
 

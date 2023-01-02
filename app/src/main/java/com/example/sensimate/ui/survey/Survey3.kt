@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*

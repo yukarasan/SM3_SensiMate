@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.sensimate.R
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 
 @Composable
 fun EventScreen(navController: NavController) {

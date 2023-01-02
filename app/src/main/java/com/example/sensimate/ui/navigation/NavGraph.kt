@@ -1,4 +1,4 @@
-package com.example.sensimate.navigation
+package com.example.sensimate.ui.navigation
 
 import EditEvent
 import EditPage
@@ -10,7 +10,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sensimate.ui.Event.EventUiState
-import com.example.sensimate.ui.Event.RegisterScreen
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
 import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
@@ -31,7 +30,7 @@ import com.example.sensimate.ui.survey.Survey4
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
-    NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
+    NavHost(navController = navController, startDestination = Screen.Survey.route) {      // Screen.CookieScreen.route
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)
         }
@@ -61,9 +60,6 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
             CreateMultpleChoiceQuestionScreen(navController = navController)
-        }
-        composable(route = Screen.Registerscreen.route) {
-            RegisterScreen(navController = navController)
         }
         composable(route = Screen.EditEvent.route) {
             EditEvent(navController = navController)
