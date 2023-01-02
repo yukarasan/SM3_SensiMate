@@ -30,7 +30,14 @@ import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
 import java.util.*
-
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.toSize
 
 @Composable
 fun SignUpUsingMail(navController: NavController) {
@@ -103,6 +110,12 @@ fun SignUpUsingMail(navController: NavController) {
 
         Spacer(modifier = Modifier.size(30.dp))
 
+        //
+        var selectedText = remember{mutableStateOf("")}
+        DropDownMenu(selectedText)
+
+        Spacer(modifier = Modifier.size(10.dp))
+
         ChooseBirthDate(LocalContext.current)
     }
 
@@ -149,6 +162,7 @@ fun MyTextField(
                 value = text,
                 onValueChange = onValueChange,
                 textStyle = LocalTextStyle.current.copy(color = myTextColor),
+                singleLine = true,
                 placeholder = {
                     Text(
                         text = placeHolder,
@@ -190,9 +204,12 @@ fun previewUsingMail() {
 @Composable
 fun ChooseBirthDate(context: Context) {
     val calendar = Calendar.getInstance()
-    val myYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
-    val myMonth = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
-    val myDay = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
+    calendar.add(Calendar.YEAR, -18)
+
+    // Create state variables to store the selected year, month, and day
+    val selectedYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
+    val selectedMonth = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
+    val selectedDay = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
 
     var text by remember { mutableStateOf(("")) }
 
@@ -200,12 +217,15 @@ fun ChooseBirthDate(context: Context) {
         DatePickerDialog(
             context,
             { _: DatePicker, year: Int, month: Int, dayofMonth: Int ->
-                text = "$dayofMonth/$month/$year"
-            }, myYear.value, myMonth.value, myDay.value
+                text = "$dayofMonth/${month + 1}/$year"
+                // Update the selected year, month, and day
+                selectedYear.value = year
+                selectedMonth.value = month
+                selectedDay.value = dayofMonth
+            }, selectedYear.value, selectedMonth.value, selectedDay.value
         )
 
-    //datePickerLog.datePicker.maxDate = Date().time.minus(Calendar.YEAR)
-
+    datePickerLog.datePicker.maxDate = calendar.timeInMillis
 
     OutlinedTextField(
         colors = TextFieldDefaults.textFieldColors(
@@ -217,6 +237,66 @@ fun ChooseBirthDate(context: Context) {
         value = text,
         label = { Text(text = "Enter Your date of Birth") },
         onValueChange = {},
-        modifier = Modifier.clickable { datePickerLog.show() },
+        modifier = Modifier.clickable {datePickerLog.show()},
     )
+}
+
+
+
+@Composable
+fun DropDownMenu(selectedGender: MutableState<String>) {
+
+    var expanded by remember { mutableStateOf(false) }
+    val suggestions = listOf("Man", "Woman", "Other")
+
+
+    var textfieldSize by remember { mutableStateOf(Size.Zero) }
+
+    val icon = if (expanded)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
+
+
+    Column(Modifier.padding(20.dp)) {
+        OutlinedTextField(
+            value = selectedGender.value,
+            onValueChange = { selectedGender.value = it },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.Black,
+                disabledLabelColor = Color.White,
+                focusedBorderColor = Color.White,
+                disabledPlaceholderColor = Color.White,
+                disabledTextColor = Color.White,
+                disabledBorderColor = Color.White
+            ),
+            enabled = false,
+            modifier = Modifier
+                .width(150.dp)
+                .onGloballyPositioned { coordinates ->
+                    //This value is used to assign to the DropDown the same width
+                    textfieldSize = coordinates.size.toSize()
+                },
+            label = { Text("Gender") },
+            trailingIcon = {
+                Icon(icon, "",
+                    Modifier.clickable { expanded = !expanded }, tint = Color.White)
+            }
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
+        ) {
+            suggestions.forEach { label ->
+                DropdownMenuItem(onClick = {
+                    selectedGender.value = label
+                    expanded = false
+                }) {
+                    Text(text = label)
+                }
+            }
+        }
+    }
 }
