@@ -116,7 +116,7 @@ fun CreateEventScreen(navController: NavController){
     }
         Spacer(modifier = Modifier.size(100.dp))
     Button(
-        onClick = { navController.popBackStack() },
+        onClick = { navController.navigate(Screen.EventScreenEmployee.route)},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
         modifier = Modifier.size(240.dp, 50.dp)
@@ -395,7 +395,7 @@ fun QuestionPageScreen(navController: NavController){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = {navController.navigate(Screen.EventScreen.route)})
+                onClick = {navController.navigate(Screen.EventScreenEmployee.route)})
         , id = R.drawable.greenconfirmedbutton)
 
 
@@ -471,7 +471,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick =  {navController.navigate(Screen.EventScreen.route)})
+                onClick =  {navController.navigate(Screen.EventScreenEmployee.route)})
         , id = R.drawable.greenconfirmedbutton)
 
 

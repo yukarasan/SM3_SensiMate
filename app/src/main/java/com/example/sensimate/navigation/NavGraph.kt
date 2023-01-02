@@ -19,6 +19,7 @@ import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail
 import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
 import com.example.sensimate.ui.home.EventScreen
+import com.example.sensimate.ui.home.EventScreenEmployee
 import com.example.sensimate.ui.profile.EditProfileScreen
 import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.profile.editProfile.*
@@ -75,6 +76,9 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
         composable(route = Screen.EditSurveyPage.route) {
             EditSurveyPage(navController = navController)
+        }
+        composable(route = Screen.EventScreenEmployee.route) {
+            EventScreenEmployee(navController = navController)
         }
 
         // Profile navigation:

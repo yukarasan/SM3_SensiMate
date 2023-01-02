@@ -79,7 +79,7 @@ fun LogInMail(navController: NavController) {
         myButton(color = Color.White,
             title = "Log in as employee",
             employeelogin,
-            onClick = {navController.navigate(Screen.EventScreen.route)})
+            onClick = {navController.navigate(Screen.EventScreenEmployee.route)})
     }
 
     Column(

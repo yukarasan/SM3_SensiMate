@@ -155,7 +155,7 @@ fun EditEvent(navController: NavController){
 
  */
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+        OrangeBackButton(onClick = {navController.navigate(Screen.EventScreenEmployee.route)}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
     }
     AddPhoto(
         modifier = Modifier
