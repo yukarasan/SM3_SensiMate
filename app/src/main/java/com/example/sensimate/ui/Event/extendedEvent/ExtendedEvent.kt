@@ -44,7 +44,6 @@ fun ExtendedEvent(navController: NavController) {
             )
     )
 
-
     LazyColumn() {
 
         item {
@@ -93,8 +92,8 @@ fun ExtendedEvent(navController: NavController) {
                                     )
                                 }
                             }
+                            Spacer(modifier = Modifier.size(170.dp))
                         }
-
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -116,6 +115,8 @@ fun ExtendedEvent(navController: NavController) {
                                 )
                             }
                         }
+                        
+                        Spacer(modifier = Modifier.size(20.dp))
 
                         Allergens(title = "Allergens")
                         Discription(discription = "N/A")
@@ -136,10 +137,10 @@ fun ExtendedEvent(navController: NavController) {
                             contentDescription = "",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .size(200.dp)
+                                .size(250.dp)
                         )
+                        Spacer(modifier = Modifier.size(15.dp))
                         Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
-                        Bar(progress = 0.39f)
                     }
                 }
                 Spacer(modifier = Modifier.size(25.dp))
