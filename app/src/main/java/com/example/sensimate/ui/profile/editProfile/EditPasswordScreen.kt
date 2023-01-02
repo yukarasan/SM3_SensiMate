@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sensimate.R
-import com.example.sensimate.common.editProfile.CheckBox
+import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.model.manropeFamily
 
 @Composable

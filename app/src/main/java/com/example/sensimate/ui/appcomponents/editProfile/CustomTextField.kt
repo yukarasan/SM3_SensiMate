@@ -1,4 +1,4 @@
-package com.example.sensimate.common.editProfile
+package com.example.sensimate.ui.appcomponents.editProfile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

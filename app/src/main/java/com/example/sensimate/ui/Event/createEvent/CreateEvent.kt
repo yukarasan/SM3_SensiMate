@@ -24,9 +24,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
-import com.example.sensimate.common.editProfile.CheckBox
-import com.example.sensimate.navigation.Screen
-import com.example.sensimate.navigation.SetupNavGraph
+import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
+import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.navigation.SetupNavGraph
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
 import kotlin.contracts.contract

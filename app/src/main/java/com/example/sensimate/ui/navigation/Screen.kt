@@ -1,4 +1,4 @@
-package com.example.sensimate.navigation
+package com.example.sensimate.ui.navigation
 
 sealed class Screen(val route: String) {
     object CookieScreen: Screen(route = "cookie")
