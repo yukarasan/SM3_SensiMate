@@ -1,10 +1,12 @@
 package com.example.sensimate.ui.home
 
+import android.content.ClipData
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
@@ -14,6 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
+import com.example.sensimate.data.db
 import com.example.sensimate.ui.navigation.Screen
 
 @Composable
@@ -29,12 +33,6 @@ fun EventScreen(navController: NavController) {
         LazyColumn(
             contentPadding = PaddingValues(bottom = 20.dp),
         ) {
-            /*
-            items(data) { item ->   // TODO: Use the commented version in the future:
-                Item(item)
-            }
-             */
-
             item {
                 ProfileLogo(
                     modifier = Modifier
@@ -49,59 +47,13 @@ fun EventScreen(navController: NavController) {
                         )
                 )
             }
-
             item { QuickEntry() }
-            item {
+
+            items(Database.getListOfEvents()) { event ->
                 EventCard(
-                    title = "Coca Cola",
-                    distance = "2 km",
-                    address = "The Circular Lab",
-                    progress = 0.5f,
-                    onClick = { navController.navigate(Screen.ExtendedEventScreen.route) }
-                )
-            }
-            item {
-                EventCard(
-                    title = "Coca Cola light med ost og kage",
-                    distance = "349991 km",
-                    address = "The Cicular lab at Roskilde universitet",
-                    progress = 0.1f,
-                    onClick = { navController.navigate(Screen.ExtendedEventScreen.route) }
-                )
-            }
-            item {
-                EventCard(
-                    title = "Coca Cola 1",
-                    distance = "2 km",
-                    address = "The Circular Lab",
-                    progress = 1.0f,
-                    onClick = { navController.navigate(Screen.ExtendedEventScreen.route) }
-                )
-            }
-            item {
-                EventCard(
-                    title = "Coca Cola 2",
-                    distance = "2 km",
-                    address = "The Circular Lab",
-                    progress = 0.0f,
-                    onClick = { navController.navigate(Screen.ExtendedEventScreen.route) }
-                )
-            }
-            item {
-                EventCard(
-                    title = "Coca Cola 3",
-                    distance = "2 km",
-                    address = "The Circular Lab",
-                    progress = 0.7f,
-                    onClick = { navController.navigate(Screen.ExtendedEventScreen.route) }
-                )
-            }
-            item {
-                EventCard(
-                    title = "Coca Cola 4",
-                    distance = "2 km",
-                    address = "The Circular Lab",
-                    progress = 0.3f,
+                    title = event.title,
+                    distance = event.distanceToEvent,
+                    address = event.address,
                     onClick = { navController.navigate(Screen.ExtendedEventScreen.route) }
                 )
             }
