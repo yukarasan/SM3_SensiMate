@@ -23,7 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
 
@@ -123,13 +123,11 @@ fun Information() {
             Row(
                 modifier = Modifier
                     .padding(start = 0.dp, top = 25.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 InformationAge(title = "Age")
-                
                 Spacer(modifier = Modifier.width((120.dp)))
-
                 var age by remember { mutableStateOf("") }
                 MyTextField(
                     text = age,

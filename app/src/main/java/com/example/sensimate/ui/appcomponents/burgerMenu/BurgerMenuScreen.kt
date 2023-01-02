@@ -1,4 +1,4 @@
-package com.example.sensimate.common.burgerMenu
+package com.example.sensimate.ui.appcomponents.burgerMenu
 
 import androidx.compose.runtime.Composable
 
