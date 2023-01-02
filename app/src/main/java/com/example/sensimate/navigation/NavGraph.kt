@@ -10,7 +10,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sensimate.ui.Event.EventUiState
-import com.example.sensimate.ui.Event.RegisterScreen
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
 import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
@@ -61,9 +60,6 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
             CreateMultpleChoiceQuestionScreen(navController = navController)
-        }
-        composable(route = Screen.Registerscreen.route) {
-            RegisterScreen(navController = navController)
         }
         composable(route = Screen.EditEvent.route) {
             EditEvent(navController = navController)

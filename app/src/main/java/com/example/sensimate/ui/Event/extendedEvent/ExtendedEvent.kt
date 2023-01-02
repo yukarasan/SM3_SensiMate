@@ -29,7 +29,6 @@ import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 
-//@Preview(showBackground = true)
 @Composable
 fun ExtendedEvent(navController: NavController) {
     Box(
@@ -116,11 +115,7 @@ fun ExtendedEvent(navController: NavController) {
                                     fontFamily = manropeFamily
                                 )
                             }
-
                         }
-
-
-
 
                         Allergens(title = "Allergens")
                         Discription(discription = "N/A")
@@ -148,16 +143,9 @@ fun ExtendedEvent(navController: NavController) {
                     }
                 }
                 Spacer(modifier = Modifier.size(25.dp))
-                RegisterButton(onClick = { navController.navigate(Screen.Registerscreen.route) })
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ExtendedEventP() {
-    ExtendedEvent(navController = rememberNavController())
 }
 
 
@@ -227,23 +215,4 @@ private fun Bar(progress: Float) {
 @Composable
 fun ExtendedEventPreview() {
     ExtendedEvent(rememberNavController())
-}
-
-@Composable
-private fun RegisterButton(onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        shape = CircleShape,
-        colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-        modifier = Modifier.size(345.dp, 60.dp),
-
-        ) {
-        Text(
-            text = "Register",
-            fontWeight = FontWeight.Bold,
-            fontSize = 25.sp,
-            color = Color.White,
-            fontFamily = manropeFamily
-        )
-    }
 }
