@@ -21,7 +21,6 @@ fun EventCard(
     title: String,
     distance: String,
     address: String,
-    progress: Float,
     onClick: () -> Unit
 ) {
     Card(
@@ -56,7 +55,6 @@ fun EventCard(
                 }
                 EventImage()
             }
-            ProgressBar(progress = progress)
         }
     }
 }
@@ -121,6 +119,7 @@ private fun EventImage(modifier: Modifier = Modifier) {
     )
 }
 
+/*
 @Composable
 private fun ProgressBar(progress: Float) {
     Column(
@@ -139,3 +138,4 @@ private fun ProgressBar(progress: Float) {
         )
     }
 }
+ */

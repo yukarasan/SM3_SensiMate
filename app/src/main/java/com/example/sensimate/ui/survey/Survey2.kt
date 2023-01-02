@@ -1,6 +1,7 @@
 package com.example.sensimate.ui.survey
 
 
+import android.media.Image
 import android.renderscript.ScriptGroup
 import androidx.compose.foundation.*
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -37,7 +38,7 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
@@ -239,7 +240,7 @@ private fun InformationVeryUnlikely(title: String, modifier: Modifier = Modifier
 
 fun RoundedCheckView() {
 
-    val isChecked = remember { mutableStateOf(false) }
+    val isChecked = remember { mutableStateOf(true) }
     val circleSize = remember { mutableStateOf(22.dp) }
     val circleSize2 = remember { mutableStateOf(12.dp) }
     val circleThickness = remember { mutableStateOf(2.dp) }
@@ -278,11 +279,53 @@ fun RoundedCheckView() {
                         .padding(2.dp)
                         .clip(CircleShape)
                         .background(lightpurple)
+                        .clickable(onClick = { isChecked.value = false
+                        })
                 )
             }
         }
 
     }
+/*
+    @Composable
+    fun RoundedCheckView(
+        onClick: () -> Unit,
+        text: String,
+        icon: Image,
+        textStyle: TextStyle,
+        iconColor: Color
+    ) {
+        val clicked = remember { mutableStateOf(false) }
+
+        if (!clicked.value) {
+            Box(
+                modifier = Modifier
+                    .clickable(onClick = {
+                        clicked.value = true
+                        onClick()
+                    })
+                    .size(50.dp)
+                    .background(
+                        color = MaterialTheme.colors.onSurface
+                    )
+                    .clip(RoundedCornerShape(20.dp))
+                    .ripple(bounded = false)
+            ) {
+                Row(
+                    verticalAlignment = CenterVertically
+                ) {
+                    icon(iconColor)
+                    Text(
+                        text = text,
+                        style = textStyle
+                    )
+                }
+            }
+        }
+    }
+
+ */
+
 }
 
 

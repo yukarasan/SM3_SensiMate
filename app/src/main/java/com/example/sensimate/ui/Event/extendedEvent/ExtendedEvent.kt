@@ -22,14 +22,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.EventInputField
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 
-//@Preview(showBackground = true)
 @Composable
 fun ExtendedEvent(navController: NavController) {
     Box(
@@ -44,7 +43,6 @@ fun ExtendedEvent(navController: NavController) {
                 )
             )
     )
-
 
     LazyColumn() {
 
@@ -94,8 +92,8 @@ fun ExtendedEvent(navController: NavController) {
                                     )
                                 }
                             }
+                            Spacer(modifier = Modifier.size(170.dp))
                         }
-
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -116,11 +114,9 @@ fun ExtendedEvent(navController: NavController) {
                                     fontFamily = manropeFamily
                                 )
                             }
-
                         }
-
-
-
+                        
+                        Spacer(modifier = Modifier.size(20.dp))
 
                         Allergens(title = "Allergens")
                         Discription(discription = "N/A")
@@ -141,23 +137,16 @@ fun ExtendedEvent(navController: NavController) {
                             contentDescription = "",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .size(200.dp)
+                                .size(250.dp)
                         )
+                        Spacer(modifier = Modifier.size(15.dp))
                         Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
-                        Bar(progress = 0.39f)
                     }
                 }
                 Spacer(modifier = Modifier.size(25.dp))
-                RegisterButton(onClick = { navController.navigate(Screen.Registerscreen.route) })
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ExtendedEventP() {
-    ExtendedEvent(navController = rememberNavController())
 }
 
 
@@ -227,23 +216,4 @@ private fun Bar(progress: Float) {
 @Composable
 fun ExtendedEventPreview() {
     ExtendedEvent(rememberNavController())
-}
-
-@Composable
-private fun RegisterButton(onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        shape = CircleShape,
-        colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-        modifier = Modifier.size(345.dp, 60.dp),
-
-        ) {
-        Text(
-            text = "Register",
-            fontWeight = FontWeight.Bold,
-            fontSize = 25.sp,
-            color = Color.White,
-            fontFamily = manropeFamily
-        )
-    }
 }

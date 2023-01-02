@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.myButton

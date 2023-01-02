@@ -34,7 +34,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
@@ -241,7 +241,7 @@ fun Information4() {
                             disabledIndeterminateColor = GreyColor,
                         )
                 )
-                InformationOther(title = "Other: _____")
+                InformationOther(title = "Other: ")
                 Spacer(modifier = Modifier.width((120.dp)))
                 var other by remember { mutableStateOf("") }
                 MyTextField(
@@ -249,7 +249,7 @@ fun Information4() {
                     textSize = 10,
                     onValueChange = {other = it} ,
                     placeHolder = "" ,
-                    width = 100,
+                    width = 0,
                     height = 20,
                     keyboardType = KeyboardType.Number,
                     visualTransformation = VisualTransformation.None,

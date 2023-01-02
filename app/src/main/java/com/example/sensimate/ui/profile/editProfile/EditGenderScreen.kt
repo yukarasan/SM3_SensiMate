@@ -14,9 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.sensimate.common.editProfile.CheckBox
-import com.example.sensimate.common.editProfile.CustomTextField
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
+import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
+import com.example.sensimate.ui.navigation.Screen
 
 @Composable
 fun EditGenderScreen(navController: NavController) {

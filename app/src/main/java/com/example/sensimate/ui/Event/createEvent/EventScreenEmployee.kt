@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
@@ -12,9 +13,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sensimate.R
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 
 @Composable
 fun EventScreenEmployee(navController: NavController) {
@@ -36,6 +38,7 @@ fun EventScreenEmployee(navController: NavController) {
              */
             item {
                 AddEventImage(navController = navController)
+                TextToCreateEvent()
             }
 
 
@@ -104,10 +107,23 @@ private fun AddEventImage(navController: NavController) {
     Image(
         painter = image,
         contentDescription = null,
-        modifier = Modifier.clickable {
-              navController.navigate(Screen.CreateEventScreen.route)
-        },
+        modifier = Modifier
+            .padding(start = 20.dp)
+            .size(40.dp)
+            .clickable {
+                navController.navigate(Screen.CreateEventScreen.route)
+            },
         alignment = Alignment.CenterEnd,
+    )
+}
+@Composable
+fun TextToCreateEvent(){
+    Text(text = "Crate Event",
+        color = Color(0xFFB874A6), fontSize = 15.sp,
+        maxLines = 1,
+        modifier = Modifier
+            .padding(start = 5.dp)
+
     )
 }
 
