@@ -17,19 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
-import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.navigation.SetupNavGraph
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
-import kotlin.contracts.contract
 
 /*
 @Preview(showBackground = true)
@@ -135,12 +130,12 @@ fun CreateEventScreen(navController: NavController){
 
 @Composable
 fun TextFiledTitleText(){
-        var text by remember { mutableStateOf("") }
+        var tittleText by remember { mutableStateOf("") }
         ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = text,
+            value = tittleText,
             onValueChange = { newText ->
-            text = newText },
+            tittleText = newText },
             label = {
                 Text(
                     text = "Title",
@@ -159,12 +154,12 @@ fun TextFiledTitleText(){
 
 @Composable
 fun TextFiledDescriptionText(){
-        var text by remember { mutableStateOf("") }
+        var descriptionText by remember { mutableStateOf("") }
         ContentColorComponent(contentColor = Color.White) {
             TextField(
-                value = text,
+                value = descriptionText,
                 onValueChange = { newText ->
-                    text = newText },
+                    descriptionText = newText },
                 label = {
                     Text(
                         text = "Description",
@@ -180,7 +175,7 @@ fun TextFiledDescriptionText(){
         }
 }
 
-
+// TODO  MAKE ALLERGIC FELT
 @Composable
 fun ContentColorComponent(
     contentColor: Color = LocalContentColor.current,
@@ -216,12 +211,12 @@ fun TextToPhoto(){
 
 @Composable
 fun TextFiledLoctionText(){
-         var text by remember { mutableStateOf("") }
+         var loctionText by remember { mutableStateOf("") }
         ContentColorComponent(contentColor = Color.White) {
             TextField(
-                value = text,
+                value = loctionText,
                 onValueChange = { newText ->
-                    text = newText },
+                    loctionText = newText },
                 label = {
                     Text(
                         text = "Location",
@@ -369,7 +364,7 @@ fun QuestionPageScreen(navController: NavController){
                 .padding(300.dp, 405.dp, 1.dp, 1.dp)
                 .size(20.dp)
                 .clickable(enabled = true,
-                    onClick = {navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)}),
+                    onClick = { navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route) }),
                 id = R.drawable.redaddplus)
 
     /*
@@ -395,7 +390,7 @@ fun QuestionPageScreen(navController: NavController){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = {navController.navigate(Screen.EventScreenEmployee.route)})
+                onClick = { navController.navigate(Screen.EventScreenEmployee.route) })
         , id = R.drawable.greenconfirmedbutton)
 
 
@@ -471,7 +466,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick =  {navController.navigate(Screen.EventScreenEmployee.route)})
+                onClick = { navController.navigate(Screen.EventScreenEmployee.route) })
         , id = R.drawable.greenconfirmedbutton)
 
 
