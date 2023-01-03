@@ -50,7 +50,6 @@ fun CreateEventScreen(navController: NavController){
     var titleText by remember { mutableStateOf("") }
     var descriptionText by remember { mutableStateOf("") }
     var locationText by remember { mutableStateOf("") }
-    var distanceText by remember { mutableStateOf("") }
     var allergensText by remember { mutableStateOf("") }
     var surveyCodeText by remember { mutableStateOf("") }
     val myYear = remember { mutableStateOf("") }
@@ -111,7 +110,6 @@ fun CreateEventScreen(navController: NavController){
         contentScale = ContentScale.Crop,
 
         )
-        TextFileDistanceText(distanceText) {distanceText = it }
         TextFiledLocationText(locationText) {locationText = it}
         TextFiledAllergensText(allergensText) {allergensText = it }
        TextFiledSurveyCodeText(surveyCodeText) {if (it.length <= maxChar) surveyCodeText = it }
@@ -143,7 +141,6 @@ fun CreateEventScreen(navController: NavController){
                                 "description" to descriptionText,
                                 "allergens" to allergensText,
                                 "location" to locationText,
-                                "distanceToEvent" to distanceText,
                                 "surveyCode" to surveyCodeText,
                                 "day" to day,
                                 "month" to month,
@@ -239,7 +236,7 @@ fun ChooseBirthDate(
             label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
             onValueChange = {},
             modifier = Modifier
-                .padding(1.dp, 254.dp, 1.dp, 1.dp)
+                .padding(1.dp, 65.dp, 1.dp, 1.dp)
                 .clickable { datePickerLog.show() },
         )
     }
@@ -342,7 +339,7 @@ fun TextFiledLocationText(locationText: String, textChange: (String) -> Unit){
 
                 placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
             modifier = Modifier
-                .padding(1.dp, 65.dp, 1.dp, 1.dp)
+                .padding(1.dp, 2.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
             )
         }
