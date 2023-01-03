@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
+import com.example.sensimate.data.db
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
@@ -39,6 +40,7 @@ fun CreateEventPreview() {
 
 @Composable
 fun CreateEventScreen(navController: NavController){
+    var titleText by remember { mutableStateOf("") }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +59,7 @@ fun CreateEventScreen(navController: NavController){
         .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
     TextToPhoto()
-    TextFiledTitleText()
+    TextFiledTitleText(titleText) { titleText = it }
     TextFiledDescriptionText()
     Card(
         modifier = Modifier
@@ -94,7 +96,11 @@ fun CreateEventScreen(navController: NavController){
         Spacer(modifier = Modifier.size(250.dp))
 
     Button(
-        onClick = {navController.navigate(Screen.QuestionPageScreen.route)},
+        onClick = {val eventTester = hashMapOf(
+                                "title" to titleText
+                                                )
+            db.collection("TESTER").add(eventTester)
+                  /*navController.navigate(Screen.QuestionPageScreen.route)*/},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(240.dp, 50.dp),
@@ -111,7 +117,7 @@ fun CreateEventScreen(navController: NavController){
     }
         Spacer(modifier = Modifier.size(100.dp))
     Button(
-        onClick = { navController.navigate(Screen.EventScreenEmployee.route)},
+        onClick = {navController.navigate(Screen.EventScreenEmployee.route)},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
         modifier = Modifier.size(240.dp, 50.dp)
@@ -129,13 +135,11 @@ fun CreateEventScreen(navController: NavController){
 
 
 @Composable
-fun TextFiledTitleText(){
-        var tittleText by remember { mutableStateOf("") }
+fun TextFiledTitleText(titleText: String, textChange: (String) -> Unit){
         ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = tittleText,
-            onValueChange = { newText ->
-            tittleText = newText },
+            value = titleText,
+            onValueChange =  textChange,
             label = {
                 Text(
                     text = "Title",
@@ -150,16 +154,13 @@ fun TextFiledTitleText(){
     }
 }
 
-
-
 @Composable
 fun TextFiledDescriptionText(){
         var descriptionText by remember { mutableStateOf("") }
         ContentColorComponent(contentColor = Color.White) {
             TextField(
                 value = descriptionText,
-                onValueChange = { newText ->
-                    descriptionText = newText },
+                onValueChange = { descriptionText = it },
                 label = {
                     Text(
                         text = "Description",
@@ -215,8 +216,7 @@ fun TextFiledLoctionText(){
         ContentColorComponent(contentColor = Color.White) {
             TextField(
                 value = loctionText,
-                onValueChange = { newText ->
-                    loctionText = newText },
+                onValueChange = {loctionText = it},
                 label = {
                     Text(
                         text = "Location",
@@ -247,12 +247,11 @@ fun TextFiledLoctionText(){
 
 @Composable
 fun TextFiledTimeText(){
-        var text by remember { mutableStateOf("") }
+        var timeDateText by remember { mutableStateOf("") }
         ContentColorComponent(contentColor = Color.White) {
             TextField(
-                value = text,
-                onValueChange = { newText ->
-                    text = newText },
+                value = timeDateText,
+                onValueChange = {timeDateText = it },
                 label = {
                     Text(
                         text = "Date and time",
