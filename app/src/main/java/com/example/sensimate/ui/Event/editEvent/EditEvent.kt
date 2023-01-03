@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
-import com.example.sensimate.data.deleteEvent
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
 import com.example.sensimate.ui.navigation.Screen
@@ -169,7 +168,7 @@ fun EditEvent(navController: NavController) {
                         }
                         Spacer(modifier = Modifier.size(20.dp))
                         Button(
-                            onClick = { deleteEvent() },
+                            onClick = {},
                             shape = CircleShape,
                             colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                             modifier = Modifier.size(345.dp, 60.dp),
