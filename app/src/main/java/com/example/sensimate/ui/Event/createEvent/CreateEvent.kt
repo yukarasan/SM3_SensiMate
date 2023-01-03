@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
+import com.example.sensimate.data.db
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
@@ -39,6 +40,11 @@ fun CreateEventPreview() {
 
 @Composable
 fun CreateEventScreen(navController: NavController){
+    var titleText by remember { mutableStateOf("") }
+    var descriptionText by remember { mutableStateOf("") }
+    var locationText by remember { mutableStateOf("") }
+    var distanceText by remember { mutableStateOf("") }
+    var allergensText by remember { mutableStateOf("") }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,8 +63,8 @@ fun CreateEventScreen(navController: NavController){
         .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
     TextToPhoto()
-    TextFiledTitleText()
-    TextFiledDescriptionText()
+    TextFiledTitleText(titleText) { titleText = it }
+    TextFiledDescriptionText(descriptionText) { descriptionText = it }
     Card(
         modifier = Modifier
             .padding(start = 1.dp, end = 1.dp, top = 300.dp)
@@ -82,8 +88,9 @@ fun CreateEventScreen(navController: NavController){
         contentScale = ContentScale.Crop,
 
         )
-        TextFiledTimeText()
-        TextFiledLoctionText()
+        TextFileDistanceText(distanceText) {distanceText = it }
+        TextFiledLocationText(locationText) {locationText = it}
+        TextFiledAllergensText(allergensText) {allergensText = it }
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,7 +101,15 @@ fun CreateEventScreen(navController: NavController){
         Spacer(modifier = Modifier.size(250.dp))
 
     Button(
-        onClick = {navController.navigate(Screen.QuestionPageScreen.route)},
+        onClick = {val eventTester = hashMapOf(
+                                "title" to titleText,
+                                "description" to descriptionText,
+                                "allergens" to allergensText,
+                                "location" to locationText,
+                                "distanceToEvent" to distanceText
+                                                )
+            db.collection("TESTER").add(eventTester)
+                  /*navController.navigate(Screen.QuestionPageScreen.route)*/},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(240.dp, 50.dp),
@@ -111,7 +126,7 @@ fun CreateEventScreen(navController: NavController){
     }
         Spacer(modifier = Modifier.size(100.dp))
     Button(
-        onClick = { navController.navigate(Screen.EventScreenEmployee.route)},
+        onClick = {navController.navigate(Screen.EventScreenEmployee.route)},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
         modifier = Modifier.size(240.dp, 50.dp)
@@ -129,13 +144,11 @@ fun CreateEventScreen(navController: NavController){
 
 
 @Composable
-fun TextFiledTitleText(){
-        var tittleText by remember { mutableStateOf("") }
+fun TextFiledTitleText(titleText: String, textChange: (String) -> Unit){
         ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = tittleText,
-            onValueChange = { newText ->
-            tittleText = newText },
+            value = titleText,
+            onValueChange =  textChange,
             label = {
                 Text(
                     text = "Title",
@@ -150,16 +163,12 @@ fun TextFiledTitleText(){
     }
 }
 
-
-
 @Composable
-fun TextFiledDescriptionText(){
-        var descriptionText by remember { mutableStateOf("") }
+fun TextFiledDescriptionText(descriptionText: String, textChange: (String) -> Unit){
         ContentColorComponent(contentColor = Color.White) {
             TextField(
                 value = descriptionText,
-                onValueChange = { newText ->
-                    descriptionText = newText },
+                onValueChange = textChange,
                 label = {
                     Text(
                         text = "Description",
@@ -210,13 +219,11 @@ fun TextToPhoto(){
 
 
 @Composable
-fun TextFiledLoctionText(){
-         var loctionText by remember { mutableStateOf("") }
+fun TextFiledLocationText(locationText: String, textChange: (String) -> Unit){
         ContentColorComponent(contentColor = Color.White) {
             TextField(
-                value = loctionText,
-                onValueChange = { newText ->
-                    loctionText = newText },
+                value = locationText,
+                onValueChange = textChange,
                 label = {
                     Text(
                         text = "Location",
@@ -246,16 +253,14 @@ fun TextFiledLoctionText(){
 
 
 @Composable
-fun TextFiledTimeText(){
-        var text by remember { mutableStateOf("") }
+fun TextFileDistanceText(distanceText: String, textChange: (String) -> Unit){
         ContentColorComponent(contentColor = Color.White) {
             TextField(
-                value = text,
-                onValueChange = { newText ->
-                    text = newText },
+                value = distanceText,
+                onValueChange = textChange,
                 label = {
                     Text(
-                        text = "Date and time",
+                        text = "Distance To Event",
                         color = Color(0xFFB874A6)
                     )
                 }, trailingIcon = {
@@ -278,6 +283,30 @@ fun TextFiledTimeText(){
                    )
         }
 }
+
+@Composable
+fun TextFiledAllergensText(allergensText: String,textChange: (String) -> Unit){
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = allergensText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Allergens",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            modifier = Modifier
+                .padding(1.dp, 128.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
 
 @Composable
 fun TextFiledQuestionText(modifier: Modifier,string: String){
