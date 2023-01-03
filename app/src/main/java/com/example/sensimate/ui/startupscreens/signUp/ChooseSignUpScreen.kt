@@ -195,13 +195,13 @@ fun textFieldWithImage(
         shape = CircleShape,
     ) {
         Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center
         ) {
             //Postal code image with textfield
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Start
             ) {
                 Image(
                     painter = painter,
@@ -226,6 +226,8 @@ fun textFieldWithImage(
                         keyboardType = KeyboardType.Number
                     ),
 
+                    singleLine = true,
+
                     modifier = Modifier.fillMaxSize(),
 
                     colors = TextFieldDefaults.textFieldColors(
@@ -235,11 +237,18 @@ fun textFieldWithImage(
                         unfocusedIndicatorColor = Color.Transparent,
                         disabledIndicatorColor = Color.Transparent
                     ),
+
                 )
             }
         }
+
+
+
     }
+
+
 }
+
 
 @Composable
 fun myButton(
