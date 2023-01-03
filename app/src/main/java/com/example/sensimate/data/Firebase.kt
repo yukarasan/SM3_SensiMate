@@ -27,7 +27,7 @@ data class EventScreenState(
     val events: MutableList<Event>? = null
 )
 
-class EventDataViewModel: ViewModel() {
+class EventDataViewModel : ViewModel() {
     val state = mutableStateOf(EventScreenState())
 
     init {
@@ -51,7 +51,12 @@ object Database {
         email: String,
         password: String,
         context: Context,
-        showLoading: MutableState<Boolean>
+        showLoading: MutableState<Boolean>,
+        postalCode: String,
+        yearBorn: String,
+        monthBorn: String,
+        dayBorn: String,
+        gender: String
     ) {
         showLoading.value = true
 
@@ -63,6 +68,9 @@ object Database {
                         context, "Account successfully created",
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    setUpProfileInfo(postalCode, yearBorn, monthBorn, dayBorn, gender)
+
                 } else {
                     showLoading.value = false
                     Toast.makeText(
@@ -71,6 +79,25 @@ object Database {
                     ).show()
                 }
             }
+    }
+
+    fun setUpProfileInfo(
+        postalCode: String,
+        yearBorn: String,
+        monthBorn: String,
+        dayBorn: String,
+        gender: String
+    ) {
+        val profile = hashMapOf(
+            "postalCode" to postalCode,
+            "yearBorn" to yearBorn,
+            "monthBorn" to monthBorn,
+            "dayBorn" to dayBorn,
+            "gender" to gender
+        )
+
+        db.collection("users").document(auth.currentUser?.email.toString())
+            .set(profile)
     }
 
 
@@ -104,7 +131,6 @@ object Database {
     } //TODO: Yusuf
 
 
-
     /*
     item.forEach { document ->
                     val eventTitle = document.get("title").toString()
@@ -122,17 +148,17 @@ object Database {
                 }
      */
 
-    fun createEvent(){} //TODO: Ahmad
-    fun editEvent(){} //TODO: Ahmad
+    fun createEvent() {} //TODO: Ahmad
+    fun editEvent() {} //TODO: Ahmad
 
 
-    fun deleteEvent(){} //TODO: Sabirin
-    fun getEmployeeProfiles(){} //TODO: Sabirin
+    fun deleteEvent() {} //TODO: Sabirin
+    fun getEmployeeProfiles() {} //TODO: Sabirin
 
-    fun createEmployee(){} //TODO: Anshjyot
-    fun getSurvey(){} //TODO: Anshjyot
-    fun answerQuestion(){} //TODO: Anshjyot
+    fun createEmployee() {} //TODO: Anshjyot
+    fun getSurvey() {} //TODO: Anshjyot
+    fun answerQuestion() {} //TODO: Anshjyot
 
-    fun exportToExcel(){} //TODO: LATER
+    fun exportToExcel() {} //TODO: LATER
 
 }

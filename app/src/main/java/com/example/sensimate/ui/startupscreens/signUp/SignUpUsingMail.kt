@@ -2,6 +2,7 @@ package com.example.sensimate.ui.InitialStartPage
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -189,7 +190,12 @@ fun SignUpUsingMail(navController: NavController) {
                                 email = email,
                                 password = password,
                                 context = context,
-                                showLoading
+                                showLoading = showLoading,
+                                postalCode = postalCode,
+                                yearBorn = myYear.value,
+                                monthBorn = myMonth.value,
+                                dayBorn = myDay.value,
+                                gender = selectedGender.value
                             )
                         }
                     }
@@ -197,7 +203,6 @@ fun SignUpUsingMail(navController: NavController) {
             )
         }
     }
-
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -285,7 +290,6 @@ fun ChooseBirthDate(
     val calendar = Calendar.getInstance()
     calendar.add(Calendar.YEAR, -18)
 
-
     // Create state variables to store the selected year, month, and day
     val selectedYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
     val selectedMonth = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
@@ -295,11 +299,11 @@ fun ChooseBirthDate(
         mutableStateOf(false)
     }
 
-    if (hasChosen.value) {
-        myYear.value = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }.toString()
-        myMonth.value = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }.toString()
-        myDay.value = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }.toString()
-    }
+
+
+    Log.d("myyear.value", myYear.value)
+    Log.d("mymonth.value", myMonth.value)
+    Log.d("myday.value", myDay.value)
 
 
     var text by remember { mutableStateOf(("")) }
@@ -316,6 +320,12 @@ fun ChooseBirthDate(
                 hasChosen.value = true
             }, selectedYear.value, selectedMonth.value, selectedDay.value
         )
+
+    if (hasChosen.value) {
+        myYear.value = selectedYear.value.toString()
+        myMonth.value = (selectedMonth.value + 1).toString()
+        myDay.value = selectedDay.value.toString()
+    }
 
     datePickerLog.datePicker.maxDate = calendar.timeInMillis
 
