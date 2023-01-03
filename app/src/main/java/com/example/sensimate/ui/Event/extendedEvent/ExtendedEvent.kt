@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -50,7 +51,6 @@ fun ExtendedEvent(navController: NavController) {
             Column(modifier = Modifier.padding(5.dp, 5.dp)) {
                 OrangeBackButton(onClick = { navController.popBackStack() })
             }
-
         }
 
         item {
@@ -147,6 +147,7 @@ fun ExtendedEvent(navController: NavController) {
             }
         }
     }
+    //Database.getOneEvent()
 }
 
 
