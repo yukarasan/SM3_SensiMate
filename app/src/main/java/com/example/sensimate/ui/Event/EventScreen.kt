@@ -72,7 +72,17 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                             title = event.title,
                             timeOfEvent = event.timeOfEvent,
                             address = event.location,
-                            onClick = { navController.navigate(Screen.ExtendedEventScreen.route) }
+                            onClick = {
+                                navController.navigate(
+                                    Screen.ExtendedEventScreen.passArguments(
+                                        time = event.timeOfEvent,
+                                        title = event.title,
+                                        description = event.description,
+                                        allergens = event.allergens,
+                                        location = event.location
+                                    )
+                                )
+                            }
                         )
                     }
                 }

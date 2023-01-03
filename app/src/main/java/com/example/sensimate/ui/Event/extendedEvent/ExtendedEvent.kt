@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
-//mport com.example.sensimate.data.Database
+import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -33,11 +33,11 @@ import com.example.sensimate.ui.theme.LightColor
 @Composable
 fun ExtendedEvent(
     navController: NavController,
-    title: String = "",
-    time: String = "",
-    location: String = "",
-    allergens: String = "",
-    description: String = ""
+    title: String,
+    time: String,
+    location: String,
+    allergens: String,
+    description: String
 ) {
 
     Box(
@@ -106,7 +106,7 @@ fun ExtendedEvent(
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                           InputField({})
+                            InputField({})
                             Button(
                                 onClick = { navController.navigate(Screen.Survey.route) },
                                 colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
@@ -133,10 +133,11 @@ fun ExtendedEvent(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
+                            //insert data
                             Column() {
-                                Title(title = "The Circular lab")
+                                Title(title = location)
                             }
-                            Discription(discription = "30km")
+                            Discription(discription = time)
                         }
 
                         //INSERT IMAGE
@@ -152,7 +153,7 @@ fun ExtendedEvent(
                         )
                          */
                         Spacer(modifier = Modifier.size(15.dp))
-                        Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
+                        Discription(discription = location)
                     }
                 }
                 Spacer(modifier = Modifier.size(25.dp))
@@ -221,10 +222,4 @@ private fun Bar(progress: Float) {
             progress = progress
         )
     }
-}
-
-@Preview
-@Composable
-fun ExtendedEventScreenPreview(){
-    ExtendedEvent(rememberNavController())
 }

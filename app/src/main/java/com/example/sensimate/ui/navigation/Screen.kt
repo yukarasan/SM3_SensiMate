@@ -1,5 +1,7 @@
 package com.example.sensimate.ui.navigation
 
+import android.util.Log
+
 const val TITLE_OF_EVENT = "titleOfEvent"
 const val TIME_OF_EVENT = "timeOfEvent"
 const val LOCATION_OF_EVENT = "locationOfEvent"
@@ -14,8 +16,7 @@ sealed class Screen(val route: String) {
 
     object EventScreen : Screen(route = "event")
     object ExtendedEventScreen :
-        Screen(route = "extendedEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/" +
-                "{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}") {
+        Screen(route = "extendedEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}") {
         fun passArguments(
             title: String,
             time: String,
@@ -23,7 +24,9 @@ sealed class Screen(val route: String) {
             allergens: String,
             description: String
         ): String {
-            return "gameWonScreen/$title/$time/$location/$allergens/$description"
+            val test = "extendedEvent/$title/$time/$location/$allergens/$description"
+            Log.d("navigation", test)
+            return test
         }
     }
 
