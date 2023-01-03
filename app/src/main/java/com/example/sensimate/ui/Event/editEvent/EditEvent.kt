@@ -28,7 +28,7 @@ import com.example.sensimate.ui.Event.createEvent.TextFiledAnswerText
 import com.example.sensimate.ui.Event.createEvent.TextFiledQuestionText
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.components.OrangeBackButton
-import com.example.sensimate.ui.home.EventInputField
+import com.example.sensimate.ui.home.InputField
 import com.example.sensimate.ui.survey.Survey
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.BottonGradient
@@ -97,7 +97,7 @@ fun EditEvent(navController: NavController){
                         }
                     }
                 }
-                EventInputField({})
+                InputField({})
                 Allergens(title = "Allergens")
                 Discription(discription = "N/A")
                 Spacer(modifier = Modifier.size(20.dp))
