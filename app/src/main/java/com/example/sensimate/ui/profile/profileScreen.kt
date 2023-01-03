@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
+import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -53,7 +55,10 @@ fun ProfileScreen(navController: NavController) {
         }
         item { ImageButton() }
         item { ProfileMail() }
-        item { LogoutButton(onClick = { navController.navigate(Screen.ChooseSignUpScreen.route) }) }
+        item { LogoutButton(onClick = {
+            Database.signOut()
+            navController.navigate(Screen.ChooseSignUpScreen.route)
+        }) }
         // TODO: Make as list of items instead:
         item { UpcomingEvent() }
         item { UpcomingEvent() }
@@ -148,7 +153,7 @@ private fun ProfileName() {
 @Composable
 private fun ProfileMail() {
     Text(
-        text = "hansjensen@gmail.com",
+        text = auth.currentUser?.email.toString(),
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 13.sp,
