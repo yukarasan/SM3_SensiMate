@@ -1,24 +1,21 @@
 package com.example.sensimate.data
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sensimate.data.Database.fetchListOfEvents
 import com.google.firebase.firestore.FirebaseFirestoreException
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
+import com.example.sensimate.data.Database.fetchListOfEvents
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-
 
 @SuppressLint("StaticFieldLeak")
 val db = Firebase.firestore
@@ -46,6 +43,19 @@ class EventDataViewModel : ViewModel() {
 val auth = Firebase.auth
 
 object Database {
+    //auth.currentUser?.email.toString()
+
+    fun getProfile(): Profile {
+        val docRef = db.collection("users").document(auth.currentUser?.email.toString())
+        var profile = Profile()
+
+        docRef.get().addOnSuccessListener { documentSnapshot ->
+            profile = documentSnapshot.toObject<Profile>()!!
+        }
+
+        return profile;
+    }
+
 
     fun signUserUp(
         email: String,
@@ -137,7 +147,7 @@ object Database {
 
     fun signOut() {
         auth.signOut()
-    } //TODO: Hussein
+    } //TODO: Yusuf & Hussein
 
     fun editUserProfile() {
 
@@ -155,8 +165,6 @@ object Database {
         } catch (e: FirebaseFirestoreException) {
             Log.d("error", "getListOfEvents: $e")
         }
-
-        Log.d("lenght", eventList.size.toString())
 
         return eventList
     } //TODO: Yusuf
