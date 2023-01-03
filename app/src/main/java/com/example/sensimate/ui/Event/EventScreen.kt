@@ -70,8 +70,8 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                     items(it.toList()) { event ->
                         EventCard(
                             title = event.title,
-                            distance = event.distanceToEvent,
-                            address = event.address,
+                            timeOfEvent = event.timeOfEvent,
+                            address = event.location,
                             onClick = { navController.navigate(Screen.ExtendedEventScreen.route) }
                         )
                     }

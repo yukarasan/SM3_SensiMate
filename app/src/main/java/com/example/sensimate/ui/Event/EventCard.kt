@@ -19,7 +19,7 @@ import com.example.sensimate.model.manropeFamily
 @Composable
 fun EventCard(
     title: String,
-    distance: String,
+    timeOfEvent: String,
     address: String,
     onClick: () -> Unit
 ) {
@@ -48,12 +48,11 @@ fun EventCard(
                     Row {
                         LocationIcon()
                         Column(modifier = Modifier.padding(start = 5.dp)) {
-                            DistanceToEvent(distance)
+                            TimeOfEvent(timeOfEvent)
                             Address(address)
                         }
                     }
                 }
-                EventImage()
             }
         }
     }
@@ -84,9 +83,9 @@ private fun LocationIcon() {
 }
 
 @Composable
-private fun DistanceToEvent(distance: String, modifier: Modifier = Modifier) {
+private fun TimeOfEvent(time: String, modifier: Modifier = Modifier) {
     Text(
-        text = distance,
+        text = time,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
@@ -107,6 +106,12 @@ private fun Address(address: String, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * The following out-commented code is functions that we could implement in the future, that would
+ * be nice to have on the app. For now, they are not necessary, which is why we have left them out.
+ */
+
+/*
 @Composable
 private fun EventImage(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.beverages)
@@ -119,7 +124,6 @@ private fun EventImage(modifier: Modifier = Modifier) {
     )
 }
 
-/*
 @Composable
 private fun ProgressBar(progress: Float) {
     Column(
@@ -134,7 +138,7 @@ private fun ProgressBar(progress: Float) {
                 .clip(RoundedCornerShape(15.dp)),
             backgroundColor = Color(red = 63, green = 69, blue = 81),
             color = Color(red = 199, green = 242, blue = 219), //progress color
-            progress = progress //TODO:  Needs state hoisting in future.
+            progress = progress
         )
     }
 }
