@@ -2,6 +2,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -20,8 +21,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.Event.createEvent.AddPhoto
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
 import com.example.sensimate.ui.Event.createEvent.TextFiledAnswerText
@@ -48,7 +51,7 @@ fun EditEventPreview() {
 
  */
 @Composable
-fun EditEvent(navController: NavController){
+fun EditEvent(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -61,85 +64,108 @@ fun EditEvent(navController: NavController){
                 )
             )
     )
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Card(
-            modifier = Modifier
-                .padding(start = 15.dp, end = 15.dp, top = 70.dp)
-                .fillMaxWidth(),
-            elevation = 5.dp,
-            shape = RoundedCornerShape(20.dp),
-            backgroundColor = Color(red = 44, green = 44, blue = 59)
-        ) {
-            Column {
-                Row {
-                    Column(
-                        modifier = Modifier.padding(
-                            top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
-                        )
-                    ) {
-
-                        Row {
-                            Column {
-                                Title(title = "Coca Cola")
-                                Discription(
-                                    discription = "Come and taste the freshing sensation " +
-                                            "of Coca Cola. Get a whole six pack for free."
-                                )
-                            }
-                            Image(
-                                painter = painterResource(
-                                    id = R.drawable.beverages
-                                ),
-                                contentDescription = "",
-                                modifier = Modifier.size(145.dp),
-                            )
-                        }
-                    }
-                }
-                InputField({})
-                Allergens(title = "Allergens")
-                Discription(discription = "N/A")
-                Spacer(modifier = Modifier.size(20.dp))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Column() {
-                        Title(title = "The Circular lab")
-                    }
-                    Discription(discription = "30km")
-                }
-                Image(
-                    painter = painterResource(
-                        id = R.drawable.location
-                    ),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(200.dp)
-                )
-                Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
-                Bar(progress = 0.39f)
+    LazyColumn() {
+        item {
+            Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+                OrangeBackButton(onClick = { navController.navigate(Screen.EventScreenEmployee.route) }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
             }
         }
-        Spacer(modifier = Modifier.size(25.dp))
-        Button(
-            onClick = { navController.navigate(Screen.EditSurvey.route) },
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-            modifier = Modifier.size(345.dp, 60.dp),
 
-            ) {
-            Text(
-                text = "Edit Survey",
-                fontWeight = FontWeight.Bold,
-                fontSize = 25.sp,
-                color = Color.White,
-                fontFamily = manropeFamily
-            )
-        }
-    }
+        item {
+
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Card(
+                    modifier = Modifier
+                        .padding(start = 15.dp, end = 15.dp, top = 70.dp)
+                        .fillMaxWidth(),
+                    elevation = 5.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    backgroundColor = Color(red = 44, green = 44, blue = 59)
+                ) {
+                    Column {
+                        Row {
+                            Column(
+                                modifier = Modifier.padding(
+                                    top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
+                                )
+                            ) {
+
+                                Row {
+                                    Column {
+                                        Title(title = "Coca Cola")
+                                        Discription(
+                                            discription = "Come and taste the freshing sensation " +
+                                                    "of Coca Cola. Get a whole six pack for free."
+                                        )
+                                    }
+                                    Image(
+                                        painter = painterResource(
+                                            id = R.drawable.beverages
+                                        ),
+                                        contentDescription = "",
+                                        modifier = Modifier.size(145.dp),
+                                    )
+                                }
+                            }
+                        }
+                        InputField({})
+                        Allergens(title = "Allergens")
+                        Discription(discription = "N/A")
+                        Spacer(modifier = Modifier.size(20.dp))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Column() {
+                                Title(title = "The Circular lab")
+                            }
+                            Discription(discription = "30km")
+                        }
+                        Image(
+                            painter = painterResource(
+                                id = R.drawable.location
+                            ),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(200.dp)
+                        )
+                        Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
+                        Bar(progress = 0.39f)
+                    }
+                }
+                Spacer(modifier = Modifier.size(25.dp))
+                Button(
+                    onClick = { navController.navigate(Screen.EditSurvey.route) },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
+                    modifier = Modifier.size(345.dp, 60.dp),
+
+                    ) {
+                    Text(
+                        text = "Edit Survey",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        color = Color.White,
+                        fontFamily = manropeFamily
+                    )
+                }
+                Spacer(modifier = Modifier.size(20.dp))
+                Button(
+                    onClick = { navController.navigate(Screen.EditSurvey.route) },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
+                    modifier = Modifier.size(345.dp, 60.dp),
+
+                    ) {
+                    Text(
+                        text = "Delete Survey",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        color = Color.White,
+                        fontFamily = manropeFamily
+                    )
+                }
 
 /*
     AddPhoto(
@@ -151,21 +177,22 @@ fun EditEvent(navController: NavController){
                 onClickLabel = "Clickable image",
                 onClick = { /*TODO*/ })
                 , id = R.drawable.redgobackbutton)
-
-
  */
-    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton(onClick = {navController.navigate(Screen.EventScreenEmployee.route)}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+            }
+        }
+        item {
+            AddPhoto(
+                modifier = Modifier
+                    .padding(330.dp, 10.dp, 2.dp, 1.dp)
+                    .size(50.dp)
+                    .clickable(
+                        enabled = true,
+                        onClickLabel = "Clickable image",
+                        onClick = { navController.navigate(Screen.EditPage.route) }),
+                id = R.drawable.yelloweditbutton
+            )
+        }
     }
-    AddPhoto(
-        modifier = Modifier
-            .padding(330.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { navController.navigate(Screen.EditPage.route)})
-        , id = R.drawable.yelloweditbutton)
 }
 
 @Composable
@@ -232,16 +259,16 @@ private fun Bar(progress: Float) {
 
 
 @Composable
-fun AddPhoto(modifier: Modifier = Modifier,id: Int){
-        Image(
-            painter = painterResource(id = id),
-            contentDescription = "HEJ MED DIG ",
-            modifier = modifier
-        )
+fun AddPhoto(modifier: Modifier = Modifier, id: Int) {
+    Image(
+        painter = painterResource(id = id),
+        contentDescription = "HEJ MED DIG ",
+        modifier = modifier
+    )
 }
 
 @Composable
-fun EditPage(navController: NavController){
+fun EditPage(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -255,9 +282,10 @@ fun EditPage(navController: NavController){
                 )
             )
     )
-    AddPhoto(modifier = Modifier
-        .padding(345.dp, 20.dp, 2.dp, 1.dp)
-        .size(20.dp), id = R.drawable.ic_add_circle_outlined
+    AddPhoto(
+        modifier = Modifier
+            .padding(345.dp, 20.dp, 2.dp, 1.dp)
+            .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
     TextToPhoto()
     TextFiledTitleText()
@@ -271,7 +299,7 @@ fun EditPage(navController: NavController){
         backgroundColor = Color(0xFF4D3B72)
 
 
-    ){
+    ) {
 
         Image(
             painter = painterResource(
@@ -297,7 +325,7 @@ fun EditPage(navController: NavController){
             Spacer(modifier = Modifier.size(250.dp))
 
             Button(
-                onClick = {navController.navigate(Screen.EditEvent.route)},
+                onClick = { navController.navigate(Screen.EditEvent.route) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFD7D123)),
                 modifier = Modifier.size(240.dp, 50.dp),
@@ -314,11 +342,11 @@ fun EditPage(navController: NavController){
             }
             Spacer(modifier = Modifier.size(100.dp))
             Button(
-                onClick = { navController.popBackStack() },
+                        onClick = { navController.popBackStack() },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
                 modifier = Modifier.size(240.dp, 50.dp)
-            ) {
+                ) {
                 Text(
                     text = "Go Back",
                     color = Color.White,
@@ -328,17 +356,19 @@ fun EditPage(navController: NavController){
                 )
             }
         }
-    }}
+    }
+}
 
 
 @Composable
-fun TextFiledTitleText(){
+fun TextFiledTitleText() {
     var text by remember { mutableStateOf("Coca Cola") }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
-                text = newText },
+                text = newText
+            },
             label = {
                 Text(
                     text = "Title",
@@ -346,7 +376,7 @@ fun TextFiledTitleText(){
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(55.dp, 55.dp, 30.dp, 30.dp)
         )
@@ -354,15 +384,15 @@ fun TextFiledTitleText(){
 }
 
 
-
 @Composable
-fun TextFiledDescriptionText(){
+fun TextFiledDescriptionText() {
     var text by remember { mutableStateOf("Come and taste the freshing sensation of Coca Cola. Get a whole six pack for free.") }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
-                text = newText },
+                text = newText
+            },
             label = {
                 Text(
                     text = "Description",
@@ -370,7 +400,7 @@ fun TextFiledDescriptionText(){
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...",color = Color(0xEFFF7067))},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(55.dp, 150.dp, 30.dp, 30.dp)
         )
@@ -384,15 +414,17 @@ fun ContentColorComponent(
     contentColor: Color = LocalContentColor.current,
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(LocalContentColor provides contentColor,
-        content = content)
+    CompositionLocalProvider(
+        LocalContentColor provides contentColor,
+        content = content
+    )
 }
 
 
-
 @Composable
-fun TextToPhoto(){
-    Text(text = "Edit Photo",
+fun TextToPhoto() {
+    Text(
+        text = "Edit Photo",
         color = Color(0xFFB874A6), fontSize = 11.sp,
         maxLines = 1,
         modifier = Modifier
@@ -403,13 +435,14 @@ fun TextToPhoto(){
 
 
 @Composable
-fun TextFiledLoctionText(){
+fun TextFiledLoctionText() {
     var text by remember { mutableStateOf("Helsingørmotervejen 15, 2500 lyngby") }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
-                text = newText },
+                text = newText
+            },
             label = {
                 Text(
                     text = "Location",
@@ -421,14 +454,15 @@ fun TextFiledLoctionText(){
                         painter = painterResource(id = R.drawable.redlocationicon),
                         modifier = Modifier
                             .size(20.dp),
-                        contentDescription = "")
+                        contentDescription = ""
+                    )
 
                 }
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
 
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 65.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -437,15 +471,15 @@ fun TextFiledLoctionText(){
 }
 
 
-
 @Composable
-fun TextFiledTimeText(){
+fun TextFiledTimeText() {
     var text by remember { mutableStateOf("??/??/?? - ??:??") }
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
-                text = newText },
+                text = newText
+            },
             label = {
                 Text(
                     text = "Date and time",
@@ -457,14 +491,15 @@ fun TextFiledTimeText(){
                         painter = painterResource(id = R.drawable.yellowpencil),
                         modifier = Modifier
                             .size(20.dp),
-                        contentDescription = "")
+                        contentDescription = ""
+                    )
 
                 }
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
 
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 2.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -473,7 +508,7 @@ fun TextFiledTimeText(){
 }
 
 @Composable
-fun EditSurvey(navController: NavController){
+fun EditSurvey(navController: NavController) {
     Survey4(navController)
     AddPhoto(
         modifier = Modifier
@@ -482,12 +517,13 @@ fun EditSurvey(navController: NavController){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { navController.navigate(Screen.EditSurveyPage.route)})
-        , id = R.drawable.yelloweditbutton)
+                onClick = { navController.navigate(Screen.EditSurveyPage.route) }),
+        id = R.drawable.yelloweditbutton
+    )
 }
 
 @Composable
-fun EditSurveyPage(navController: NavController){
+fun EditSurveyPage(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -506,15 +542,22 @@ fun EditSurveyPage(navController: NavController){
         color = Color(0xEFFF7067),
         fontSize = 20.sp,
         modifier = Modifier
-            .padding(125.dp, 30.dp, 88.dp, 269.dp))
-    TextFiledQuestionText(modifier = Modifier
-        .padding(55.dp, 130.dp, 30.dp, 30.dp),"What other flavours of Coca Cola would you like?")
-    TextFiledAnswerText(modifier = Modifier
-        .padding(55.dp, 225.dp, 30.dp, 30.dp),"Tomato") //TODO NEED MORE ANSWER FILEDS
+            .padding(125.dp, 30.dp, 88.dp, 269.dp)
+    )
+    TextFiledQuestionText(
+        modifier = Modifier
+            .padding(55.dp, 130.dp, 30.dp, 30.dp),
+        "What other flavours of Coca Cola would you like?"
+    )
+    TextFiledAnswerText(
+        modifier = Modifier
+            .padding(55.dp, 225.dp, 30.dp, 30.dp), "Tomato"
+    ) //TODO NEED MORE ANSWER FILEDS
     Divider(
         color = Color.White,
         thickness = 2.dp,
-        modifier = Modifier.padding(1.dp,400.dp, 1.dp, 1.dp))
+        modifier = Modifier.padding(1.dp, 400.dp, 1.dp, 1.dp)
+    )
     Text(
         text = "Settings",
         color = Color(0xFFB874A6),
@@ -542,7 +585,7 @@ fun EditSurveyPage(navController: NavController){
 
  */
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+        OrangeBackButton(onClick = { navController.popBackStack() }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
     }
     AddPhoto(
         modifier = Modifier
@@ -551,10 +594,17 @@ fun EditSurveyPage(navController: NavController){
             .clickable(
                 enabled = true,
                 onClickLabel = "Clickable image",
-                onClick = { navController.navigate(Screen.EditEvent.route)}), id = R.drawable.greenconfirmedbutton
+                onClick = { navController.navigate(Screen.EditEvent.route) }),
+        id = R.drawable.greenconfirmedbutton
     )
 
 
+}
+
+@Preview
+@Composable
+fun EditEventPreview(){
+    EditEvent(rememberNavController())
 }
 
 

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
-import com.example.sensimate.data.Database
+//mport com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -33,18 +33,12 @@ import com.example.sensimate.ui.theme.LightColor
 @Composable
 fun ExtendedEvent(
     navController: NavController,
-    title: String,
-    time: String,
-    location: String,
-    allergens: String,
-    description: String
+    title: String = "",
+    time: String = "",
+    location: String = "",
+    allergens: String = "",
+    description: String = ""
 ) {
-    /*
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var allergensdiscription by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
-     */
 
     Box(
         modifier = Modifier
@@ -112,7 +106,7 @@ fun ExtendedEvent(
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            InputField({})
+                           InputField({})
                             Button(
                                 onClick = { navController.navigate(Screen.Survey.route) },
                                 colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
@@ -139,7 +133,6 @@ fun ExtendedEvent(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            //insert data
                             Column() {
                                 Title(title = "The Circular lab")
                             }
@@ -228,4 +221,10 @@ private fun Bar(progress: Float) {
             progress = progress
         )
     }
+}
+
+@Preview
+@Composable
+fun ExtendedEventScreenPreview(){
+    ExtendedEvent(rememberNavController())
 }
