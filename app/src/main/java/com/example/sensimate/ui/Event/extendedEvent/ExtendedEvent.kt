@@ -35,7 +35,6 @@ fun ExtendedEvent(
     allergens: String,
     description: String
 ) {
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -62,6 +61,7 @@ fun ExtendedEvent(
                 Card(
                     modifier = Modifier
                         .padding(start = 15.dp, end = 15.dp, top = 16.dp)
+                        .height(300.dp)
                         .fillMaxWidth(),
                     elevation = 5.dp,
                     shape = RoundedCornerShape(20.dp),
@@ -82,10 +82,10 @@ fun ExtendedEvent(
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.size(10.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            modifier = Modifier.fillMaxWidth()
+                            horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
                             InputField({})
                             Button(
@@ -103,15 +103,11 @@ fun ExtendedEvent(
                                 )
                             }
                         }
-
+                        Spacer(modifier = Modifier.size(15.dp))
                         Allergens(title = "Allergens", allergen = allergens)
-
-
+                        Spacer(modifier = Modifier.size(15.dp))
                         Title(title = "Location")
-
-                        Row(
-
-                        ) {
+                        Row() {
                             Discription(discription = time)
                             Address(address = location)
                         }
@@ -196,7 +192,7 @@ private fun Allergens(title: String, allergen: String, modifier: Modifier = Modi
 private fun InputField(onClick: () -> Unit) {
     Column(
         modifier = Modifier
-            .size(width = 210.dp, height = 50.dp)
+            .size(width = 310.dp, height = 55.dp)
             .padding(bottom = 10.dp)
     ) {
         // ---------------------------------------------------------------------------
