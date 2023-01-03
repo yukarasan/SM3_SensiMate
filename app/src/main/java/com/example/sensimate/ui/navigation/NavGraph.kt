@@ -7,8 +7,10 @@ import EditSurveyPage
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
@@ -46,8 +48,34 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         composable(route = Screen.EventScreen.route) {
             EventScreen(navController = navController)
         }
-        composable(route = Screen.ExtendedEventScreen.route) {
-            ExtendedEvent(navController = navController)
+        composable(
+            route = Screen.ExtendedEventScreen.route,
+            arguments = listOf(
+                navArgument(TITLE_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(TIME_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(LOCATION_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(ALLERGENS) {
+                    type = NavType.StringType
+                },
+                navArgument(DESCRIPTION_OF_EVENT) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            ExtendedEvent(
+                navController = navController,
+                title = backStackEntry.arguments?.getString(TITLE_OF_EVENT).toString(),
+                time = backStackEntry.arguments?.getString(TIME_OF_EVENT).toString(),
+                location = backStackEntry.arguments?.getString(LOCATION_OF_EVENT).toString(),
+                allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
+                description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString()
+            )
         }
         composable(Screen.ProfileScreen.route) {
             ProfileScreen(navController = navController)
