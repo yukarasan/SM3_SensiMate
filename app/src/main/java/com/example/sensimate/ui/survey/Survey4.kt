@@ -113,24 +113,7 @@ fun Information4() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
-
+                CheckBox()
                 InformationTomato(title = "Tomato")
                 Spacer(modifier = Modifier.width((120.dp)))
             }
@@ -142,23 +125,7 @@ fun Information4() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
+                CheckBox()
                 InformationWatermelon(title = "Watermelon")
                 Spacer(modifier = Modifier.width((120.dp)))
 
@@ -169,23 +136,7 @@ fun Information4() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
+                CheckBox()
                 InformationCherry(title = "Cherry")
                 Spacer(modifier = Modifier.width((120.dp)))
 
@@ -196,24 +147,7 @@ fun Information4() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
+                CheckBox()
                 InformationVanilla(title = "Vanilla")
                 Spacer(modifier = Modifier.width((120.dp)))
 
@@ -224,25 +158,9 @@ fun Information4() {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
-                    modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    checked = checkedState.value,
-                    onCheckedChange = {
-                        checkedState.value = it
-                    },
-                    colors = CheckboxDefaults
-                        .colors(
-                            uncheckedColor = GreyColor,
-                            checkmarkColor = lightpurple,
-                            checkedColor = lightpurple,
-
-                            disabledColor = darkbluegrey,
-                            disabledIndeterminateColor = GreyColor,
-                        )
-                )
-                InformationOther(title = "Other: _____")
-                Spacer(modifier = Modifier.width((120.dp)))
+                CheckBox()
+                InformationOther(title = "Other: ")
+                Spacer(modifier = Modifier.width((20.dp)))
                 var other by remember { mutableStateOf("") }
                 MyTextField(
                     text = other,
@@ -332,6 +250,34 @@ private fun InformationOther(title: String, modifier: Modifier = Modifier) {
     )
 }
 
+
+@Composable
+fun CheckBox() {
+    //val isChecked = remember { mutableStateOf(false) }
+    val checkedState = remember { mutableStateOf(false) }
+
+    //if (isChecked.value) {
+            Checkbox(
+                modifier = Modifier
+                    .padding(start = 0.dp, top = 0.dp),
+                checked = checkedState.value,
+                onCheckedChange = {
+                    checkedState.value = it
+                },
+                colors = CheckboxDefaults
+                    .colors(
+                        uncheckedColor = GreyColor,
+                        checkmarkColor = lightpurple,
+                        checkedColor = lightpurple,
+
+                        disabledColor = darkbluegrey,
+                        disabledIndeterminateColor = GreyColor,
+                    )
+            )
+        }
+
+
+
 /*
 
 @Composable
@@ -354,6 +300,7 @@ fun InputField2(title: String, onValueChange: (String) -> Unit) {
 
 
 */
+
 
 
 
