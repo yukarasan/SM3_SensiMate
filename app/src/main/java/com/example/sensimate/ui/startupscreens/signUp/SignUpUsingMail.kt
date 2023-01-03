@@ -45,6 +45,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.toSize
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.Purple200
 
@@ -54,6 +55,9 @@ fun SignUpUsingMail(navController: NavController) {
     InitialStartBackground()
 
     val showLoading = remember {
+        mutableStateOf(false)
+    }
+    val successLoggedIn = remember {
         mutableStateOf(false)
     }
 
@@ -164,7 +168,7 @@ fun SignUpUsingMail(navController: NavController) {
             myButton(color = Color.White,
                 title = "Sign up",
                 PurpleButtonColor,
-                onClick = { /*navController.navigate(Screen.EventScreen.route)*/
+                onClick = {
                     if (password != retyped) {
                         showMessage.value = true
                     } else {
@@ -195,7 +199,8 @@ fun SignUpUsingMail(navController: NavController) {
                                 yearBorn = myYear.value,
                                 monthBorn = myMonth.value,
                                 dayBorn = myDay.value,
-                                gender = selectedGender.value
+                                gender = selectedGender.value,
+                                successLoggedIn = successLoggedIn
                             )
                         }
                     }
@@ -210,6 +215,11 @@ fun SignUpUsingMail(navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
         showLoading(showLoading)
+    }
+
+    if (successLoggedIn.value) {
+        navController.navigate(Screen.EventScreen.route)
+        successLoggedIn.value = false
     }
 }
 
