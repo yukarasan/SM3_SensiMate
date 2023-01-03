@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.InitialStartPage
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -84,14 +85,24 @@ fun LogInMail(navController: NavController) {
         myButton(color = Color.White,
             title = "Log in",
             PurpleButtonColor,
+
+
             onClick = {
-                Database.logIn(
-                    email = email,
-                    password = password,
-                    showLoading,
-                    context,
-                    successLoggedIn
-                )
+
+                if (email == "" || password == "") {
+                    Toast.makeText(
+                        context, "Remember to write in a password and email",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Database.logIn(
+                        email = email,
+                        password = password,
+                        showLoading,
+                        context,
+                        successLoggedIn
+                    )
+                }
             }
         )
         Spacer(modifier = Modifier.size(28.dp))
