@@ -107,7 +107,7 @@ fun ExtendedEvent(navController: NavController) {
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                           // EventInputField({}) //for later use, needs to go
+                           EventInputField({})
                             Button(
                                 onClick = { navController.navigate(Screen.Survey.route) },
                                 colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
