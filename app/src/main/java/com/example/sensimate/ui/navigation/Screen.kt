@@ -2,11 +2,11 @@ package com.example.sensimate.ui.navigation
 
 import android.util.Log
 
-const val TITLE_OF_EVENT = "titleOfEvent"
+const val TITLE_OF_EVENT = "title"
 const val TIME_OF_EVENT = "timeOfEvent"
-const val LOCATION_OF_EVENT = "locationOfEvent"
+const val LOCATION_OF_EVENT = "location"
 const val ALLERGENS = "allergens"
-const val DESCRIPTION_OF_EVENT = "descriptionOfEvent"
+const val DESCRIPTION_OF_EVENT = "description"
 
 sealed class Screen(val route: String) {
     object CookieScreen : Screen(route = "cookie")
