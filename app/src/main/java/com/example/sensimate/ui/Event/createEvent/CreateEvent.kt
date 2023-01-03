@@ -1,9 +1,14 @@
 package com.example.sensimate.ui.Event.createEvent
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.util.Log
+import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -15,6 +20,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,6 +32,7 @@ import com.example.sensimate.data.db
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
+import java.util.*
 
 /*
 @Preview(showBackground = true)
@@ -45,6 +52,14 @@ fun CreateEventScreen(navController: NavController){
     var locationText by remember { mutableStateOf("") }
     var distanceText by remember { mutableStateOf("") }
     var allergensText by remember { mutableStateOf("") }
+    var surveyCodeText by remember { mutableStateOf("") }
+    val myYear = remember { mutableStateOf("") }
+    val myMonth = remember { mutableStateOf("") }
+    val myDay = remember { mutableStateOf("") }
+    val maxChar = 4
+    var year: String
+    var month: String
+    var day: String
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -58,16 +73,24 @@ fun CreateEventScreen(navController: NavController){
                 )
             )
     )
+
     AddPhoto(modifier = Modifier
         .padding(345.dp, 20.dp, 2.dp, 1.dp)
         .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
     TextToPhoto()
-    TextFiledTitleText(titleText) { titleText = it }
-    TextFiledDescriptionText(descriptionText) { descriptionText = it }
-    Card(
+    LazyColumn(modifier = Modifier
+        .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center){
+
+   item { Spacer(modifier = Modifier.size(55.dp))
+       TextFiledTitleText(titleText) { titleText = it }
+       Spacer(modifier = Modifier.size(27.dp))
+      TextFiledDescriptionText(descriptionText) { descriptionText = it }
+       Spacer(modifier = Modifier.size(55.dp))
+      Card(
         modifier = Modifier
-            .padding(start = 1.dp, end = 1.dp, top = 300.dp)
             .fillMaxWidth(),
 
         shape = RoundedCornerShape(15.dp),
@@ -82,7 +105,7 @@ fun CreateEventScreen(navController: NavController){
         ),
         contentDescription = "",
         modifier = Modifier
-            .size(2700.dp)
+            .size(800.dp)
             .blur(1.dp)
             .alpha(0.2f),
         contentScale = ContentScale.Crop,
@@ -91,24 +114,42 @@ fun CreateEventScreen(navController: NavController){
         TextFileDistanceText(distanceText) {distanceText = it }
         TextFiledLocationText(locationText) {locationText = it}
         TextFiledAllergensText(allergensText) {allergensText = it }
+       TextFiledSurveyCodeText(surveyCodeText) {if (it.length <= maxChar) surveyCodeText = it }
+
+          ChooseBirthDate(
+              LocalContext.current,
+              myYear = myYear,
+              myMonth = myMonth,
+              myDay = myDay
+          )
+          day = myDay.value
+          month = myMonth.value
+        year = myYear.value
+
+
     Column(
+
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
 
-
+        Spacer(modifier = Modifier.size(75.dp))
         Spacer(modifier = Modifier.size(250.dp))
 
     Button(
-        onClick = {val eventTester = hashMapOf(
+        onClick = {val event = hashMapOf(
                                 "title" to titleText,
                                 "description" to descriptionText,
                                 "allergens" to allergensText,
                                 "location" to locationText,
-                                "distanceToEvent" to distanceText
+                                "distanceToEvent" to distanceText,
+                                "surveyCode" to surveyCodeText,
+                                "day" to day,
+                                "month" to month,
+                                "year" to year
                                                 )
-            db.collection("TESTER").add(eventTester)
+            db.collection("TESTER").add(event)
                   /*navController.navigate(Screen.QuestionPageScreen.route)*/},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -116,6 +157,7 @@ fun CreateEventScreen(navController: NavController){
         enabled = true
 
     ) {
+
         Text(
             text = "Create Event",
             color = Color.White,
@@ -124,7 +166,7 @@ fun CreateEventScreen(navController: NavController){
             fontFamily = manropeFamily
         )
     }
-        Spacer(modifier = Modifier.size(100.dp))
+        Spacer(modifier = Modifier.size(55.dp))
     Button(
         onClick = {navController.navigate(Screen.EventScreenEmployee.route)},
         shape = CircleShape,
@@ -140,7 +182,68 @@ fun CreateEventScreen(navController: NavController){
         )
     }
 }
-    }}
+    }}}}
+
+@Composable
+fun ChooseBirthDate(
+    context: Context,
+    myYear: MutableState<String>,
+    myMonth: MutableState<String>,
+    myDay: MutableState<String>,
+) {
+    val calendar = Calendar.getInstance()
+    //calendar.add(Calendar.YEAR, -18)
+
+    // Create state variables to store the selected year, month, and day
+    val selectedYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
+    val selectedMonth = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
+    val selectedDay = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
+
+    val hasChosen = remember {
+        mutableStateOf(false)
+    }
+
+
+
+    Log.d("myyear.value", myYear.value)
+    Log.d("mymonth.value", myMonth.value)
+    Log.d("myday.value", myDay.value)
+
+
+    var text by remember { mutableStateOf(("")) }
+
+    val datePickerLog =
+        DatePickerDialog(
+            context,
+            { _: DatePicker, year: Int, month: Int, dayofMonth: Int ->
+                text = "$dayofMonth/${month + 1}/$year"
+                // Update the selected year, month, and day
+                selectedYear.value = year
+                selectedMonth.value = month
+                selectedDay.value = dayofMonth
+                hasChosen.value = true
+            }, selectedYear.value, selectedMonth.value, selectedDay.value
+        )
+
+    if (hasChosen.value) {
+        myYear.value = selectedYear.value.toString()
+        myMonth.value = (selectedMonth.value + 1).toString()
+        myDay.value = selectedDay.value.toString()
+    }
+
+    //datePickerLog.datePicker.maxDate = calendar.timeInMillis
+        TextField(
+            colors = TextFieldDefaults.textFieldColors(textColor = Color.Green,backgroundColor = Color.Transparent),
+            enabled = false,
+            value = text,
+            label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
+            onValueChange = {},
+            modifier = Modifier
+                .padding(1.dp, 254.dp, 1.dp, 1.dp)
+                .clickable { datePickerLog.show() },
+        )
+    }
+
 
 
 @Composable
@@ -156,9 +259,7 @@ fun TextFiledTitleText(titleText: String, textChange: (String) -> Unit){
                 )
                 }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
-        modifier = Modifier
-            .padding(55.dp, 55.dp, 30.dp, 30.dp)
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )}
             )
     }
 }
@@ -176,15 +277,12 @@ fun TextFiledDescriptionText(descriptionText: String, textChange: (String) -> Un
                     )
                 }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                 singleLine = true,
-                placeholder = {Text(text = "Type here...",color = Color(0xEFFF7067))},
-                modifier = Modifier
-                    .padding(55.dp, 150.dp, 30.dp, 30.dp)
+                placeholder = {Text(text = "Type here...",color = Color(0xEFFF7067))}
             )
 
         }
 }
 
-// TODO  MAKE ALLERGIC FELT
 @Composable
 fun ContentColorComponent(
     contentColor: Color = LocalContentColor.current,
@@ -302,6 +400,29 @@ fun TextFiledAllergensText(allergensText: String,textChange: (String) -> Unit){
             placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
             modifier = Modifier
                 .padding(1.dp, 128.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit){
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = surveyCodeText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "4 Digit Code",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            modifier = Modifier
+                .padding(1.dp, 191.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
         )
     }
