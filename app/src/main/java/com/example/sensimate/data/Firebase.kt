@@ -1,6 +1,7 @@
 package com.example.sensimate.data
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -201,8 +202,31 @@ object Database {
     fun editEvent() {} //TODO: Ahmad
 
 
-    fun deleteEvent() {} //TODO: Sabirin
-    fun getEmployeeProfiles() {} //TODO: Sabirin
+    fun deleteEvent(eventtitle : String) {
+        //val docref = db.collection()
+
+        val data = hashMapOf(
+            "name" to "sabirin"
+        )
+        db.collection("hej").add(data)
+
+        db.collection("events").whereEqualTo("title", eventtitle)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    document.reference.delete()
+                        .addOnSuccessListener { Log.d(TAG, "Document has been deleted") }
+                        .addOnFailureListener { e -> Log.w(TAG, "Cant delete the current document", e) }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    //TODO: Sabirin
+    fun getEmployeeProfiles() {
+    } //TODO: Sabirin
 
     fun createEmployee() {} //TODO: Anshjyot
 
