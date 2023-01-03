@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.buttonWithImage
@@ -27,6 +29,14 @@ import com.example.sensimate.ui.theme.employeelogin
 fun LogInMail(navController: NavController) {
 
     InitialStartBackground()
+
+    val context = LocalContext.current
+    val showLoading = remember {
+        mutableStateOf(false)
+    }
+    val successLoggedIn = remember {
+        mutableStateOf(false)
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,17 +79,35 @@ fun LogInMail(navController: NavController) {
         )
         Spacer(modifier = Modifier.size(28.dp))
 
+
+
         myButton(color = Color.White,
             title = "Log in",
             PurpleButtonColor,
-            onClick = {navController.navigate(Screen.EventScreen.route)})
-
+            onClick = {
+                Database.logIn(
+                    email = email,
+                    password = password,
+                    showLoading,
+                    context,
+                    successLoggedIn
+                )
+            }
+        )
         Spacer(modifier = Modifier.size(28.dp))
+    }
 
-        myButton(color = Color.White,
-            title = "Log in as employee",
-            employeelogin,
-            onClick = {navController.navigate(Screen.EventScreenEmployee.route)})
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        showLoading(showLoading)
+    }
+
+    if (successLoggedIn.value) {
+        navController.navigate(Screen.EventScreen.route)
+        successLoggedIn.value = false
     }
 
     Column(
