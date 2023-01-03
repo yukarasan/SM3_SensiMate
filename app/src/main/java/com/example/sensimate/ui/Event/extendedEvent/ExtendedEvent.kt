@@ -1,34 +1,30 @@
 package com.example.sensimate.ui.Event.extendedEvent
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.sensimate.R
-import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
-import com.example.sensimate.ui.home.InputField
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
-import com.example.sensimate.ui.theme.LightColor
+
 
 @Composable
 fun ExtendedEvent(
@@ -43,7 +39,6 @@ fun ExtendedEvent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .size(size = 300.dp)
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
@@ -64,17 +59,14 @@ fun ExtendedEvent(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-
                 Card(
                     modifier = Modifier
                         .padding(start = 15.dp, end = 15.dp, top = 16.dp)
-                        .height(700.dp)
                         .fillMaxWidth(),
                     elevation = 5.dp,
                     shape = RoundedCornerShape(20.dp),
                     backgroundColor = Color(red = 44, green = 44, blue = 59)
                 ) {
-
                     Column {
                         Row {
                             Column(
@@ -87,19 +79,8 @@ fun ExtendedEvent(
                                         Title(title = title)
                                         Discription(discription = description)
                                     }
-                                    //INSERT IMAGE
-                                    /*
-                                    Image(
-                                        painter = painterResource(
-                                            id = R.drawable.beverages
-                                        ),
-                                        contentDescription = "",
-                                        modifier = Modifier.size(145.dp),
-                                        )
-                                     */
                                 }
                             }
-                            Spacer(modifier = Modifier.size(170.dp))
                         }
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -123,40 +104,20 @@ fun ExtendedEvent(
                             }
                         }
 
-                        Spacer(modifier = Modifier.size(20.dp))
+                        Allergens(title = "Allergens", allergen = allergens)
 
-                        Allergens(title = "Allergens")
-                        //insert data
-                        // Discription(discription = "N/A")
-                        Spacer(modifier = Modifier.size(20.dp))
+
+                        Title(title = "Location")
+
                         Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            //insert data
-                            Column() {
-                                Title(title = location)
-                            }
-                            Discription(discription = time)
-                        }
 
-                        //INSERT IMAGE
-                        /*
-                        Image(
-                            painter = painterResource(
-                                id = R.drawable.location
-                            ),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .size(250.dp)
-                        )
-                         */
-                        Spacer(modifier = Modifier.size(15.dp))
-                        Discription(discription = location)
+                        ) {
+                            Discription(discription = time)
+                            Address(address = location)
+                        }
                     }
                 }
-                Spacer(modifier = Modifier.size(25.dp))
+
             }
         }
     }
@@ -168,7 +129,7 @@ private fun Title(title: String, modifier: Modifier = Modifier) {
         text = title,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 25.sp,
+        fontSize = 26.sp,
         color = Color.White,
         modifier = modifier
             .padding(start = 8.dp)
@@ -181,45 +142,124 @@ private fun Discription(discription: String, modifier: Modifier = Modifier) {
     Text(
         text = discription,
         fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 17.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
         color = Color.White,
         modifier = modifier
-            .padding(start = 8.dp)
-            .width(220.dp)
-
-    )
-}
-
-@Composable
-private fun Allergens(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 20.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(start = 8.dp)
-            .width(220.dp)
-    )
-}
-
-@Composable
-private fun Bar(progress: Float) {
-    Column(
-        modifier = Modifier
+            .padding(start = 8.dp, end = 8.dp)
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
-    ) {
-        LinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(20.dp)
-                .clip(RoundedCornerShape(30.dp)),
-            backgroundColor = Color(red = 63, green = 69, blue = 81),
-            color = Color(red = 199, green = 242, blue = 219), //progress color
-            progress = progress
+
+    )
+}
+
+@Composable
+private fun Address(address: String, modifier: Modifier = Modifier) {
+    Text(
+        text = address,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(start = 8.dp, end = 8.dp, bottom = 10.dp)
+            .fillMaxWidth()
+    )
+}
+
+@Composable
+private fun Allergens(title: String, allergen: String, modifier: Modifier = Modifier) {
+    Column() {
+        Text(
+            text = title,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp,
+            color = Color.White,
+            modifier = modifier
+                .padding(start = 8.dp, bottom = 5.dp)
+                .width(220.dp)
+        )
+        Text(
+            text = allergen,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = Color.White,
+            modifier = modifier
+                .padding(start = 8.dp)
+                .width(220.dp)
         )
     }
+}
+
+@Composable
+private fun InputField(onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .size(width = 210.dp, height = 50.dp)
+            .padding(bottom = 10.dp)
+    ) {
+        // ---------------------------------------------------------------------------
+        //TODO: Needs state hoisting
+        var text by remember { mutableStateOf(TextFieldValue("")) }
+        // ---------------------------------------------------------------------------
+        TextField(
+            value = text,
+            onValueChange = { it -> text = it },
+            label = { Label() },
+            placeholder = { Placeholder() },
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 12.sp,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier
+                .border(
+                    width = 3.dp,
+                    brush = Brush.horizontalGradient(
+                        listOf(
+                            Color(74, 75, 90),
+                            Color(74, 75, 90)
+                        )
+                    ),
+                    shape = RoundedCornerShape(35.dp)
+                )
+                .width(400.dp)
+                .background(
+                    Color(74, 75, 90),
+                    shape = RoundedCornerShape(35.dp)
+                ),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            singleLine = true,
+            maxLines = 1 //TODO: maxLines not working. Fix this.
+        )
+    }
+}
+
+@Composable
+private fun Label() {
+    Text(
+        text = "Enter event code", //TODO: Make text as recourse
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
+        color = Color.White
+    )
+}
+
+@Composable
+private fun Placeholder() {
+    Text(
+        text = "Enter event code here to open the survey", //TODO: Make text as recourse
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
+        color = Color.White
+    )
 }
