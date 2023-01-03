@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.Event.extendedEvent
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -45,6 +46,11 @@ fun ExtendedEvent(
     var allergensdiscription by remember { mutableStateOf("") }
     var location by remember { mutableStateOf("") }
      */
+    Log.d("Title", title)
+    Log.d("Time", time)
+    Log.d("Location", location)
+    Log.d("Allergens", allergens)
+    Log.d("Description", description)
 
     Box(
         modifier = Modifier
@@ -141,9 +147,9 @@ fun ExtendedEvent(
                         ) {
                             //insert data
                             Column() {
-                                Title(title = "The Circular lab")
+                                Title(title = location)
                             }
-                            Discription(discription = "30km")
+                            Discription(discription = time)
                         }
 
                         //INSERT IMAGE
@@ -159,7 +165,7 @@ fun ExtendedEvent(
                         )
                          */
                         Spacer(modifier = Modifier.size(15.dp))
-                        Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
+                        Discription(discription = location)
                     }
                 }
                 Spacer(modifier = Modifier.size(25.dp))
