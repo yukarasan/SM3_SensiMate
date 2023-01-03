@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +32,11 @@ import com.example.sensimate.ui.theme.LightColor
 
 @Composable
 fun ExtendedEvent(navController: NavController) {
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var allergensdiscription by remember { mutableStateOf("") }
+    var location by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -44,29 +49,29 @@ fun ExtendedEvent(navController: NavController) {
                 )
             )
     )
-
     LazyColumn() {
-
         item {
             Column(modifier = Modifier.padding(5.dp, 5.dp)) {
                 OrangeBackButton(onClick = { navController.popBackStack() })
             }
         }
-
         item {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
+
                 Card(
                     modifier = Modifier
                         .padding(start = 15.dp, end = 15.dp, top = 16.dp)
+                        .height(700.dp)
                         .fillMaxWidth(),
                     elevation = 5.dp,
                     shape = RoundedCornerShape(20.dp),
                     backgroundColor = Color(red = 44, green = 44, blue = 59)
                 ) {
+
                     Column {
                         Row {
                             Column(
@@ -74,22 +79,25 @@ fun ExtendedEvent(navController: NavController) {
                                     top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
                                 )
                             ) {
-
                                 Row {
                                     Column {
                                         Title(title = "Coca Cola")
                                         Discription(
+                                            //insert discription
                                             discription = "Come and taste the freshing sensation " +
                                                     "of Coca Cola. Get a whole six pack for free."
                                         )
                                     }
+                                    //INSERT IMAGE
+                                    /*
                                     Image(
                                         painter = painterResource(
                                             id = R.drawable.beverages
                                         ),
                                         contentDescription = "",
                                         modifier = Modifier.size(145.dp),
-                                    )
+                                        )
+                                     */
                                 }
                             }
                             Spacer(modifier = Modifier.size(170.dp))
@@ -99,7 +107,7 @@ fun ExtendedEvent(navController: NavController) {
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            EventInputField({})
+                           // EventInputField({}) //for later use, needs to go
                             Button(
                                 onClick = { navController.navigate(Screen.Survey.route) },
                                 colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
@@ -115,21 +123,26 @@ fun ExtendedEvent(navController: NavController) {
                                 )
                             }
                         }
-                        
+
                         Spacer(modifier = Modifier.size(20.dp))
 
                         Allergens(title = "Allergens")
-                        Discription(discription = "N/A")
+                        //insert data
+                       // Discription(discription = "N/A")
                         Spacer(modifier = Modifier.size(20.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
+                            //insert data
                             Column() {
                                 Title(title = "The Circular lab")
                             }
                             Discription(discription = "30km")
                         }
+
+                        //INSERT IMAGE
+                        /*
                         Image(
                             painter = painterResource(
                                 id = R.drawable.location
@@ -139,6 +152,7 @@ fun ExtendedEvent(navController: NavController) {
                                 .fillMaxWidth()
                                 .size(250.dp)
                         )
+                         */
                         Spacer(modifier = Modifier.size(15.dp))
                         Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
                     }
@@ -147,9 +161,7 @@ fun ExtendedEvent(navController: NavController) {
             }
         }
     }
-    //Database.getOneEvent()
 }
-
 
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier) {
