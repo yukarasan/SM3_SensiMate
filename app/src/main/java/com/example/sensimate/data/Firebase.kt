@@ -228,9 +228,26 @@ object Database {
     data class Question(val text: String, val answers: List<Boolean>)
 
 
+    fun answerQuestion() {  //TODO: Anshjyot
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("answers")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val answers = snapshot.children.mapNotNull { it.getValue(Answer::class.java) }
+                updateAnswers(answers)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("error", "getListOfAnswers: $error")
+            }
+        })
+    }
+
+    fun updateAnswers(answers: List<Answer>) {
+
+    }
+    data class Answer(val questionId: String, val answer: List<Boolean>)
 
 
-    fun answerQuestion() {} //TODO: Anshjyot
 
     fun exportToExcel() {} //TODO: LATER
 
