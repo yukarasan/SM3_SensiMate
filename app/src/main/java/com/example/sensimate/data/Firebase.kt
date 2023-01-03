@@ -56,7 +56,8 @@ object Database {
         yearBorn: String,
         monthBorn: String,
         dayBorn: String,
-        gender: String
+        gender: String,
+        successLoggedIn: MutableState<Boolean>
     ) {
         showLoading.value = true
 
@@ -64,6 +65,7 @@ object Database {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     showLoading.value = false
+                    successLoggedIn.value = true
                     Toast.makeText(
                         context, "Account successfully created",
                         Toast.LENGTH_SHORT
@@ -101,12 +103,41 @@ object Database {
     }
 
 
-    fun logIn() {} //TODO: Hussein
-    fun deleteProfile() {} //TODO: Hussein
+    fun logIn(
+        email: String,
+        password: String,
+        showLoading: MutableState<Boolean>,
+        context: Context,
+        successLoggedIn: MutableState<Boolean>
+    ) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showLoading.value = false
+                    successLoggedIn.value = true
+                    Toast.makeText(
+                        context, "Account successfully logged in",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else {
+                    showLoading.value = false
+                    Toast.makeText(
+                        context, "Log in failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+    } //TODO: Hussein
+
+    fun deleteProfile() {
+
+    } //TODO: Hussein
 
     fun signOut() {
-
-    } //TODO: Yusuf
+        auth.signOut()
+    } //TODO: Hussein
 
     fun editUserProfile() {
 

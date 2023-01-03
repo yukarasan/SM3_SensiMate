@@ -9,4 +9,8 @@ data class Event(
     var allergens: String = "",
     var location: String = "",
     var timeOfEvent: String = "",
+    var day: String = "",
+    var month: String = "",
+    var year: String = "",
+    var surveyCode: String = ""
 )
