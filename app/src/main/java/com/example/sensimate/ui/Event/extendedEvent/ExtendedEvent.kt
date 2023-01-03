@@ -1,6 +1,5 @@
 package com.example.sensimate.ui.Event.extendedEvent
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -40,17 +39,6 @@ fun ExtendedEvent(
     allergens: String,
     description: String
 ) {
-    /*
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var allergensdiscription by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
-     */
-    Log.d("Title", title)
-    Log.d("Time", time)
-    Log.d("Location", location)
-    Log.d("Allergens", allergens)
-    Log.d("Description", description)
 
     Box(
         modifier = Modifier
