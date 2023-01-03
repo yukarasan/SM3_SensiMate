@@ -93,31 +93,6 @@ object Database{
     fun createEvent(){} //TODO: Ahmad
     fun editEvent(){} //TODO: Ahmad
 
-    fun getOneEvent(Eventreference : Int){
-        val tryoutdata = hashMapOf(
-            "name" to "sabirin"
-        )
-        db.collection("hej").add(tryoutdata)
-
-        val docRef = db.collection("tryout").document("try") //ID
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    Log.d(TAG, "FoUND DOCUMENT: ${document.data}")
-                } else {
-                    Log.d(TAG, "No such document")
-                }
-            }
-
-    } //TODO: Sabirin
-
-    /*
-    title
-    discription
-    event code
-    Allergens
-    Location
-     */
 
     fun deleteEvent(){} //TODO: Sabirin
     fun getEmployeeProfiles(){} //TODO: Sabirin
