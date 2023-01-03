@@ -25,17 +25,26 @@ import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
-import com.example.sensimate.ui.home.EventInputField
+import com.example.sensimate.ui.home.InputField
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 
 @Composable
-fun ExtendedEvent(navController: NavController) {
+fun ExtendedEvent(
+    navController: NavController,
+    title: String,
+    time: String,
+    location: String,
+    allergens: String,
+    description: String
+) {
+    /*
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var allergensdiscription by remember { mutableStateOf("") }
     var location by remember { mutableStateOf("") }
+     */
 
     Box(
         modifier = Modifier
@@ -81,12 +90,8 @@ fun ExtendedEvent(navController: NavController) {
                             ) {
                                 Row {
                                     Column {
-                                        Title(title = "Coca Cola")
-                                        Discription(
-                                            //insert discription
-                                            discription = "Come and taste the freshing sensation " +
-                                                    "of Coca Cola. Get a whole six pack for free."
-                                        )
+                                        Title(title = title)
+                                        Discription(discription = description)
                                     }
                                     //INSERT IMAGE
                                     /*
@@ -107,7 +112,7 @@ fun ExtendedEvent(navController: NavController) {
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                           EventInputField({})
+                            InputField({})
                             Button(
                                 onClick = { navController.navigate(Screen.Survey.route) },
                                 colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
@@ -128,7 +133,7 @@ fun ExtendedEvent(navController: NavController) {
 
                         Allergens(title = "Allergens")
                         //insert data
-                       // Discription(discription = "N/A")
+                        // Discription(discription = "N/A")
                         Spacer(modifier = Modifier.size(20.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -223,10 +228,4 @@ private fun Bar(progress: Float) {
             progress = progress
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ExtendedEventPreview() {
-    ExtendedEvent(rememberNavController())
 }
