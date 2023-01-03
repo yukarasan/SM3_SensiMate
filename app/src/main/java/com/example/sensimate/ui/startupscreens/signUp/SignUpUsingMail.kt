@@ -3,8 +3,11 @@ package com.example.sensimate.ui.InitialStartPage
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -24,7 +27,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.myButton
@@ -34,103 +36,175 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.toSize
+import com.example.sensimate.R
+import com.example.sensimate.data.Database
+import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
+import com.example.sensimate.ui.theme.Purple200
 
 @Composable
 fun SignUpUsingMail(navController: NavController) {
 
     InitialStartBackground()
 
-    Column(
+    val showLoading = remember {
+        mutableStateOf(false)
+    }
+
+    LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 15.dp, top = 15.dp)
-        ) {
-            OrangeBackButton({ navController.popBackStack() })
+        item {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 15.dp, top = 15.dp)
+            ) {
+                OrangeBackButton({ navController.popBackStack() })
+            }
+
+            Spacer(modifier = Modifier.size(80.dp))
+
+            //email button
+            var email by remember { mutableStateOf("") }
+            MyTextField(
+                text = email,
+                textSize = 15,
+                onValueChange = { email = it },
+                placeHolder = "Enter E-mail",
+                width = 300,
+                height = 51,
+                KeyboardType.Email,
+                visualTransformation = VisualTransformation.None,
+                Color.DarkGray,
+                Color.White,
+                Color.Gray
+            )
+
+            Spacer(modifier = Modifier.size(45.dp))
+            var password by remember { mutableStateOf("") }
+            MyTextField(
+                text = password,
+                textSize = 15,
+                onValueChange = { password = it },
+                placeHolder = "Enter password",
+                width = 300,
+                height = 51,
+                KeyboardType.Password,
+                visualTransformation = PasswordVisualTransformation(),
+                Color.DarkGray,
+                Color.White,
+                Color.Gray
+            )
+
+            Spacer(modifier = Modifier.size(20.dp))
+            var retyped by remember { mutableStateOf("") }
+            MyTextField(
+                text = retyped,
+                textSize = 15,
+                onValueChange = { retyped = it },
+                placeHolder = "Confirm password",
+                width = 300,
+                height = 51,
+                KeyboardType.Password,
+                visualTransformation = PasswordVisualTransformation(),
+                Color.DarkGray,
+                Color.White,
+                Color.Gray
+            )
+
+            Spacer(modifier = Modifier.size(30.dp))
+
+            var postalCode by remember { mutableStateOf("") }
+            textFieldWithImage(
+                painterResource(id = R.drawable.locationicon),
+                text = postalCode,
+                onValueChange = {
+                    if (it.length <= 4) {
+                        postalCode = it
+                    }
+                },
+                "Postal code"
+            )
+
+            Spacer(modifier = Modifier.size(20.dp))
+            val selectedGender = remember { mutableStateOf("") }
+
+            DropDownMenu(selectedGender)
+
+
+            val myYear = remember { mutableStateOf("") }
+            val myMonth = remember { mutableStateOf("") }
+            val myDay = remember { mutableStateOf("") }
+            ChooseBirthDate(
+                LocalContext.current,
+                myYear = myYear,
+                myMonth = myMonth,
+                myDay = myDay
+            )
+
+            val showMessage = mutableStateOf(false)
+            showMessage(
+                message = "Passwords do not match",
+                showMessage
+            )
+
+            val context = LocalContext.current
+            Spacer(modifier = Modifier.size(60.dp))
+            myButton(color = Color.White,
+                title = "Sign up",
+                PurpleButtonColor,
+                onClick = { /*navController.navigate(Screen.EventScreen.route)*/
+                    if (password != retyped) {
+                        showMessage.value = true
+                    } else {
+
+                        if (postalCode == "") {
+                            Toast.makeText(
+                                context,
+                                "Remember to write your postal code",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else if (selectedGender.value == "") {
+                            Toast.makeText(
+                                context, "Remember to choose your gender",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else if (myYear.value == "") {
+                            Toast.makeText(
+                                context, "Remember to choose your date of birth",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Database.signUserUp(
+                                email = email,
+                                password = password,
+                                context = context,
+                                showLoading
+                            )
+                        }
+                    }
+                }
+            )
         }
-
-        Spacer(modifier = Modifier.size(80.dp))
-
-        //email button
-        var email by remember { mutableStateOf("") }
-        MyTextField(
-            text = email,
-            textSize = 15,
-            onValueChange = { email = it },
-            placeHolder = "Enter E-mail",
-            width = 300,
-            height = 51,
-            KeyboardType.Email,
-            visualTransformation = VisualTransformation.None,
-            Color.DarkGray,
-            Color.White,
-            Color.Gray
-        )
-
-        Spacer(modifier = Modifier.size(45.dp))
-        var password by remember { mutableStateOf("") }
-        MyTextField(
-            text = password,
-            textSize = 15,
-            onValueChange = { password = it },
-            placeHolder = "Enter password",
-            width = 300,
-            height = 51,
-            KeyboardType.Password,
-            visualTransformation = PasswordVisualTransformation(),
-            Color.DarkGray,
-            Color.White,
-            Color.Gray
-        )
-
-        Spacer(modifier = Modifier.size(20.dp))
-        var retyped by remember { mutableStateOf("") }
-        MyTextField(
-            text = retyped,
-            textSize = 15,
-            onValueChange = { retyped = it },
-            placeHolder = "Confirm password",
-            width = 300,
-            height = 51,
-            KeyboardType.Password,
-            visualTransformation = PasswordVisualTransformation(),
-            Color.DarkGray,
-            Color.White,
-            Color.Gray
-        )
-
-        Spacer(modifier = Modifier.size(30.dp))
-
-        //
-        var selectedText = remember{mutableStateOf("")}
-        DropDownMenu(selectedText)
-
-        Spacer(modifier = Modifier.size(10.dp))
-
-        ChooseBirthDate(LocalContext.current)
     }
 
+
     Column(
-        verticalArrangement = Arrangement.Bottom,
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 20.dp)
+        verticalArrangement = Arrangement.Center
     ) {
-        myButton(color = Color.White,
-            title = "Sign up",
-            PurpleButtonColor,
-            onClick = { navController.navigate(Screen.EventScreen.route) }
-        )
+        showLoading(showLoading)
     }
 }
 
@@ -202,14 +276,31 @@ fun previewUsingMail() {
 }
 
 @Composable
-fun ChooseBirthDate(context: Context) {
+fun ChooseBirthDate(
+    context: Context,
+    myYear: MutableState<String>,
+    myMonth: MutableState<String>,
+    myDay: MutableState<String>,
+) {
     val calendar = Calendar.getInstance()
     calendar.add(Calendar.YEAR, -18)
+
 
     // Create state variables to store the selected year, month, and day
     val selectedYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
     val selectedMonth = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
     val selectedDay = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
+
+    val hasChosen = remember {
+        mutableStateOf(false)
+    }
+
+    if (hasChosen.value) {
+        myYear.value = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }.toString()
+        myMonth.value = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }.toString()
+        myDay.value = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }.toString()
+    }
+
 
     var text by remember { mutableStateOf(("")) }
 
@@ -222,6 +313,7 @@ fun ChooseBirthDate(context: Context) {
                 selectedYear.value = year
                 selectedMonth.value = month
                 selectedDay.value = dayofMonth
+                hasChosen.value = true
             }, selectedYear.value, selectedMonth.value, selectedDay.value
         )
 
@@ -237,10 +329,9 @@ fun ChooseBirthDate(context: Context) {
         value = text,
         label = { Text(text = "Enter Your date of Birth") },
         onValueChange = {},
-        modifier = Modifier.clickable {datePickerLog.show()},
+        modifier = Modifier.clickable { datePickerLog.show() },
     )
 }
-
 
 
 @Composable
@@ -279,8 +370,10 @@ fun DropDownMenu(selectedGender: MutableState<String>) {
                 },
             label = { Text("Gender") },
             trailingIcon = {
-                Icon(icon, "",
-                    Modifier.clickable { expanded = !expanded }, tint = Color.White)
+                Icon(
+                    icon, "",
+                    Modifier.clickable { expanded = !expanded }, tint = Color.White
+                )
             }
         )
         DropdownMenu(
@@ -298,5 +391,30 @@ fun DropDownMenu(selectedGender: MutableState<String>) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun showMessage(
+    message: String,
+    showMessage: MutableState<Boolean>,
+) {
+
+    if (showMessage.value) {
+        AlertDialog(
+            onDismissRequest = { showMessage.value = false },
+            confirmButton = {
+                TextButton(onClick = { showMessage.value = false })
+                { Text(text = "OK") }
+            },
+            title = { Text(text = message) },
+        )
+    }
+}
+
+@Composable
+fun showLoading(showloading: MutableState<Boolean>) {
+    if (showloading.value) {
+        CircularProgressIndicator(color = Purple200, modifier = Modifier.size(50.dp))
     }
 }
