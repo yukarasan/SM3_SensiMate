@@ -39,11 +39,11 @@ class EventDataViewModel: ViewModel() {
 }
 
 
-object Database {
+object Database{
 
-    fun login() {} //TODO: Hussein
-    fun signUserUp() {} //TODO: Hussein
-    fun deleteProfile() {} //TODO: Hussein
+    fun login(){} //TODO: Hussein
+    fun signUserUp(){} //TODO: Hussein
+    fun deleteProfile(){} //TODO: Hussein
 
     fun signOut() {
 
@@ -90,17 +90,42 @@ object Database {
                 }
      */
 
-    fun createEvent() {} //TODO: Ahmad
-    fun editEvent() {} //TODO: Ahmad
+    fun createEvent(){} //TODO: Ahmad
+    fun editEvent(){} //TODO: Ahmad
 
-    fun getOneEvent() {} //TODO: Sabirin
-    fun deleteEvent() {} //TODO: Sabirin
-    fun getEmployeeProfiles() {} //TODO: Sabirin
+    fun getOneEvent(Eventreference : Int){
+        val tryoutdata = hashMapOf(
+            "name" to "sabirin"
+        )
+        db.collection("hej").add(tryoutdata)
 
-    fun createEmployee() {} //TODO: Anshjyot
-    fun getSurvey() {} //TODO: Anshjyot
-    fun answerQuestion() {} //TODO: Anshjyot
+        val docRef = db.collection("tryout").document("try") //ID
+        docRef.get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.d(TAG, "FoUND DOCUMENT: ${document.data}")
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }
 
-    fun exportToExcel() {} //TODO: LATER
+    } //TODO: Sabirin
+
+    /*
+    title
+    discription
+    event code
+    Allergens
+    Location
+     */
+
+    fun deleteEvent(){} //TODO: Sabirin
+    fun getEmployeeProfiles(){} //TODO: Sabirin
+
+    fun createEmployee(){} //TODO: Anshjyot
+    fun getSurvey(){} //TODO: Anshjyot
+    fun answerQuestion(){} //TODO: Anshjyot
+
+    fun exportToExcel(){} //TODO: LATER
 
 }
