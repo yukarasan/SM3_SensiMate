@@ -44,9 +44,7 @@ fun ExtendedEvent(navController: NavController) {
                 )
             )
     )
-
     LazyColumn() {
-
         item {
             Column(modifier = Modifier.padding(5.dp, 5.dp)) {
                 OrangeBackButton(onClick = { navController.popBackStack() })
@@ -59,14 +57,17 @@ fun ExtendedEvent(navController: NavController) {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
+
                 Card(
                     modifier = Modifier
                         .padding(start = 15.dp, end = 15.dp, top = 16.dp)
+                        .height(700.dp)
                         .fillMaxWidth(),
                     elevation = 5.dp,
                     shape = RoundedCornerShape(20.dp),
                     backgroundColor = Color(red = 44, green = 44, blue = 59)
                 ) {
+
                     Column {
                         Row {
                             Column(
@@ -74,7 +75,6 @@ fun ExtendedEvent(navController: NavController) {
                                     top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
                                 )
                             ) {
-
                                 Row {
                                     Column {
                                         Title(title = "Coca Cola")
@@ -83,13 +83,17 @@ fun ExtendedEvent(navController: NavController) {
                                                     "of Coca Cola. Get a whole six pack for free."
                                         )
                                     }
+
+                                    //INSERT IMAGE
+                                    /*
                                     Image(
                                         painter = painterResource(
                                             id = R.drawable.beverages
                                         ),
                                         contentDescription = "",
                                         modifier = Modifier.size(145.dp),
-                                    )
+                                        )
+                                     */
                                 }
                             }
                             Spacer(modifier = Modifier.size(170.dp))
@@ -115,7 +119,7 @@ fun ExtendedEvent(navController: NavController) {
                                 )
                             }
                         }
-                        
+
                         Spacer(modifier = Modifier.size(20.dp))
 
                         Allergens(title = "Allergens")
@@ -130,6 +134,9 @@ fun ExtendedEvent(navController: NavController) {
                             }
                             Discription(discription = "30km")
                         }
+
+                        //INSERT IMAGE
+                        /*
                         Image(
                             painter = painterResource(
                                 id = R.drawable.location
@@ -139,6 +146,7 @@ fun ExtendedEvent(navController: NavController) {
                                 .fillMaxWidth()
                                 .size(250.dp)
                         )
+                         */
                         Spacer(modifier = Modifier.size(15.dp))
                         Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
                     }
@@ -147,8 +155,8 @@ fun ExtendedEvent(navController: NavController) {
             }
         }
     }
-    //Database.getOneEvent()
 }
+    //Database.getOneEvent()
 
 
 @Composable
