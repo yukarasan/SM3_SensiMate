@@ -12,5 +12,5 @@ data class Event(
     var day: String = "",
     var month: String = "",
     var year: String = "",
-    var surveyCode: Int = 0
+    var surveyCode: String = ""
 )
