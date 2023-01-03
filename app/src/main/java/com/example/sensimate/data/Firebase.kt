@@ -2,6 +2,7 @@ package com.example.sensimate.data
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.google.firebase.firestore.FirebaseFirestoreException
+import android.widget.Toast
+import androidx.compose.runtime.MutableState
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -38,12 +42,40 @@ class EventDataViewModel: ViewModel() {
     }
 }
 
+// Initialize Firebase Auth
+val auth = Firebase.auth
 
-object Database{
+object Database {
 
-    fun login(){} //TODO: Hussein
-    fun signUserUp(){} //TODO: Hussein
-    fun deleteProfile(){} //TODO: Hussein
+    fun signUserUp(
+        email: String,
+        password: String,
+        context: Context,
+        showLoading: MutableState<Boolean>
+    ) {
+        showLoading.value = true
+
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    showLoading.value = false
+                    Toast.makeText(
+                        context, "Account successfully created",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    showLoading.value = false
+                    Toast.makeText(
+                        context, "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
+
+    fun logIn() {} //TODO: Hussein
+    fun deleteProfile() {} //TODO: Hussein
 
     fun signOut() {
 
