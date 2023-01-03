@@ -9,5 +9,4 @@ data class Event(
     var allegerns: String = "",
     var address: String = "",
     var distanceToEvent: String = "",
-    var image: Image,
 )
