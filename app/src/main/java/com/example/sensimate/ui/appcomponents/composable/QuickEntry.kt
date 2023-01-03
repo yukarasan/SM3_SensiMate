@@ -45,7 +45,7 @@ fun QuickEntry() {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                EventInputField({})
+                InputField({})
             }
         }
     }
@@ -79,7 +79,7 @@ private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun EventInputField(onClick: () -> Unit) {
+fun InputField(onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .size(width = 310.dp, height = 50.dp)

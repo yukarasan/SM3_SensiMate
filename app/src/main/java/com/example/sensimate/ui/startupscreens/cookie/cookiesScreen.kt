@@ -15,15 +15,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.db
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.theme.*
+
+
+@Composable
+@Preview(showBackground = true)
+fun CookieScreenPreview() {
+    CookiesScreen(rememberNavController())
+}
 
 
 @Composable
@@ -118,9 +126,10 @@ fun CookiesScreen(navController: NavController) {
             enabled = checkedState.value,
 
             onClick = {
-                navController.navigate(Screen.ChooseSignUpScreen.route){
+                navController.navigate(Screen.ChooseSignUpScreen.route) {
                     restoreState = true
-                }},
+                }
+            },
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
             modifier = Modifier.size(200.dp, 50.dp)
@@ -139,7 +148,7 @@ fun CookiesScreen(navController: NavController) {
 
         var abe = ""
         Button(
-            onClick = {},
+            onClick = { System.exit(0) },
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
             modifier = Modifier.size(200.dp, 50.dp)
