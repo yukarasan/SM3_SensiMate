@@ -6,7 +6,7 @@ import android.media.Image
 data class Event(
     var title: String = "",
     var description: String = "",
-    var allegerns: String = "",
+    var allergens: String = "",
     var location: String = "",
     var timeOfEvent: String = "",
 )
