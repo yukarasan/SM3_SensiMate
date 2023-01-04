@@ -32,8 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.theme.DarkPurple
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
@@ -46,56 +48,79 @@ fun EditProfileScreen(navController: NavController) {
     var postalCode by remember { mutableStateOf("") }
      */
 
-    LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                Brush.verticalGradient(
-                    0.0f to Color(83, 58, 134, 255),
-                    0.7f to Color(22, 26, 30)
-                )
-            ),
-        contentPadding = PaddingValues(bottom = 80.dp, top = 20.dp)
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(
+            Brush.verticalGradient(
+                0.0f to Color(83, 58, 134, 255),
+                0.7f to Color(22, 26, 30)
+            )
+        )
     ) {
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 5.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                DoneButton(onClick = { navController.popBackStack() })
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.verticalGradient(
+                        0.0f to Color(83, 58, 134, 255),
+                        0.7f to Color(22, 26, 30)
+                    )
+                ),
+            contentPadding = PaddingValues(bottom = 80.dp, top = 20.dp)
+        ) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 5.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    DoneButton(onClick = { navController.popBackStack() })
+                }
             }
-        }
-        item { ImageButton() }
-        item {
-            EditField(
-                title = "E-mail",
-                description = "Edit your e-mail here",
-                onClick = { navController.navigate(Screen.EditEmailScreen.route) }
-            )
-        }
-        item {
-            EditField(
-                title = "Age",
-                description = "Edit your age here",
-                onClick = { navController.navigate(Screen.EditAgeScreen.route) }
-            )
-        }
-        item {
-            EditField(
-                title = "Gender",
-                description = "Edit your gender here",
-                onClick = { navController.navigate(Screen.EditGenderScreen.route) }
-            )
-        }
-        item {
-            EditField(
-                title = "Postal Code",
-                description = "Edit your postal code here",
-                onClick = { navController.navigate(Screen.EditPostalScreen.route) }
-            )
+            item { ImageButton() }
+            item {
+                InfoAboutUser(
+                    desc = "Edit your age here",
+                    onClick = {
+                        navController.navigate(Screen.EditAgeScreen.route)
+                    }
+                )
+            }
+            item {
+                EmailInfoAboutUser(
+                    desc = "Edit your e-mail here",
+                    info = auth.currentUser?.email.toString(),
+                    onClick = {
+                        navController.navigate(Screen.EditEmailScreen.route)
+                    }
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = "Edit password here",
+                    onClick = {
+                        navController.navigate(Screen.EditPasswordScreen.route)
+                    }
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = "Edit your gender here",
+                    onClick = {
+                        navController.navigate(Screen.EditGenderScreen.route)
+                    }
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = "Edit your postal code here",
+                    onClick = {
+                        navController.navigate(Screen.EditPostalScreen.route)
+                    }
+                )
+            }
         }
     }
 }
@@ -193,73 +218,68 @@ private fun ImageButton() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun CustomTextField(
-    text: String,
-    description: String,
-    placeholder: String,
-    onValueChange: (String) -> Unit,
-) {
+private fun EmailInfoAboutUser(desc: String, info: String, onClick: () -> Unit) {
     Card(
         modifier = Modifier
+            .padding(start = 25.dp, end = 25.dp, top = 25.dp)
             .fillMaxWidth()
-            .padding(start = 40.dp, end = 40.dp, top = 10.dp),
-        backgroundColor = Color.Transparent,
-        elevation = 0.dp
+            .height(80.dp),
+        elevation = 5.dp,
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = DarkPurple,
+        border = BorderStroke(2.dp, Color(154, 107, 254)),
+        onClick = onClick
     ) {
         Column() {
             Text(
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .fillMaxWidth(),
-                text = description,
+                text = desc,
                 fontFamily = manropeFamily,
                 fontWeight = FontWeight.ExtraBold,
-                fontSize = 18.sp,
-                color = Color.White
-            )
-            BasicTextField(
-                value = text,
-                onValueChange = onValueChange,
-                textStyle = TextStyle(
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    fontFamily = manropeFamily,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start
-                ),
-                decorationBox = { innerTextField ->
-                    Row() {
-                        if (text.isEmpty()) {
-                            Text(
-                                text = placeholder,
-                                color = Color.White,
-                                fontSize = 14.sp,
-                                fontFamily = manropeFamily,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Start
-                            )
-                        }
-                        innerTextField()
-                    }
-                },
-                cursorBrush = SolidColor(Color(154, 107, 254)),
-                modifier = Modifier
-                    .padding(top = 10.dp, bottom = 2.dp),
-                maxLines = 1,
-                singleLine = true
-            )
-            Divider(
+                fontSize = 20.sp,
                 color = Color.White,
-                thickness = 2.dp,
-                modifier = Modifier.padding(bottom = 2.dp)
+                modifier = Modifier.padding(start = 20.dp, bottom = 10.dp, top = 5.dp)
+            )
+            Text(
+                text = info,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 20.sp,
+                color = Color.White,
+                modifier = Modifier.padding(start = 20.dp)
             )
         }
     }
 }
 
-@Preview
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun EditProfileScreenPreview() {
-    EditProfileScreen(navController = rememberNavController())
+private fun InfoAboutUser(desc: String, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .padding(start = 25.dp, end = 25.dp, top = 25.dp)
+            .fillMaxWidth()
+            .height(80.dp),
+        elevation = 5.dp,
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = DarkPurple,
+        border = BorderStroke(2.dp, Color(154, 107, 254)),
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = desc,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 23.sp,
+                color = Color.White,
+                modifier = Modifier.padding(start = 20.dp)
+            )
+        }
+    }
 }
