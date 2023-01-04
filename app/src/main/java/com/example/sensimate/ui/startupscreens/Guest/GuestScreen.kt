@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.ChooseBirthDate
 import com.example.sensimate.ui.InitialStartPage.DropDownMenu
@@ -103,13 +104,14 @@ fun GuestScreen(navController: NavController) {
                         ).show()
                     } else {
                         navController.popBackStack()
+
+                        Database.loginAnonymously(context)
                         navController.navigate(Screen.EventScreen.route)
                     }
 
                 }
             )
             Spacer(modifier = Modifier.size(30.dp))
-
         }
     }
 }

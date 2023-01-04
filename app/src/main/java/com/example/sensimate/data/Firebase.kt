@@ -85,6 +85,7 @@ object Database {
         return profile
     }
 
+
     suspend fun fetchListOfEvents(): MutableList<Event> {
         val eventReference = db.collection("events")
         val eventList: MutableList<Event> = mutableListOf()
@@ -100,6 +101,7 @@ object Database {
 
         return eventList
     }
+
 
     fun signUserUp(
         email: String,
@@ -187,6 +189,43 @@ object Database {
             }
 
     } //TODO: Hussein
+
+    fun loginAnonymously(context: Context) {
+        auth.signInAnonymously().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(
+                    context, "Successfully logged in anonymously",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    context, "Log in failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+
+        /*
+    .addOnCompleteListener(this) { task ->
+        if (task.isSuccessful) {
+            // Sign in success, update UI with the signed-in user's information
+            Log.d(TAG, "signInAnonymously:success")
+            val user = auth.currentUser
+            updateUI(user)
+        } else {
+            // If sign in fails, display a message to the user.
+            Log.w(TAG, "signInAnonymously:failure", task.exception)
+            Toast.makeText(
+                baseContext, "Authentication failed.",
+                Toast.LENGTH_SHORT
+            ).show()
+            updateUI(null)
+        }
+    }
+
+         */
+    }
 
     fun forgotPassword(
         email: String,

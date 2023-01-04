@@ -38,7 +38,7 @@ import com.example.sensimate.ui.survey.Survey4
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
-    NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
+    NavHost(navController = navController, startDestination = Screen.Survey.route) {      // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)

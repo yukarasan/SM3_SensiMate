@@ -21,6 +21,8 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Rotate
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 import com.example.sensimate.ui.navigation.Screen
@@ -56,7 +58,7 @@ import com.example.sensimate.ui.theme.*
             verticalAlignment = Alignment.Bottom,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 250.dp)
+                .padding(top = 150.dp)
         ) {
             //TODO: Remember to Implement Scaffold so the buttons does not move, but does not move
             PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
@@ -119,81 +121,106 @@ fun Information() {
         shape = RoundedCornerShape(20.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
-        Column() {
+        Column(modifier = Modifier
+            .fillMaxWidth()) {
             Row(
                 modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                    .padding(start = 0.dp, top = 25.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                InformationAge(title = "Age")
-                Spacer(modifier = Modifier.width((120.dp)))
-                var age by remember { mutableStateOf("") }
-                MyTextField(
-                    text = age,
-                    textSize = 10,
-                    onValueChange = {age = it} ,
-                    placeHolder = "" ,
-                    width = 100,
-                    height = 20,
-                    keyboardType = KeyboardType.Number,
-                    visualTransformation = VisualTransformation.None,
-                    myTextColor = Color.White,
-                    backgroundColor = GreyColor,
-                    placeHolderColor = Color.White
+                InformationAge(title = "Age", modifier = Modifier.padding(vertical = 10.dp))
+
+            Column(
+                    horizontalAlignment = Alignment.End,
+                    modifier = Modifier.padding(end = 30.dp)
                 )
+                {
+                    var age by remember { mutableStateOf("") }
+                    MyTextField(
+                        text = age,
+                        textSize = 10,
+                        onValueChange = { age = it },
+                        placeHolder = "",
+                        width = 100,
+                        height = 20,
+                        keyboardType = KeyboardType.Number,
+                        visualTransformation = VisualTransformation.None,
+                        myTextColor = Color.White,
+                        backgroundColor = GreyColor,
+                        placeHolderColor = Color.White,
+
+
+                        )
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .padding(start = 0.dp, top = 25.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                InformationGender(title = "Gender", modifier = Modifier.padding(vertical = 10.dp))
+
+                Column(horizontalAlignment = Alignment.End,
+                    modifier = Modifier.padding(end = 30.dp)) {
+                    var gender by remember { mutableStateOf("") }
+                        com.example.sensimate.ui.InitialStartPage.MyTextField(
+                            text = gender,
+                            textSize = 12,
+                            onValueChange = { gender = it },
+                            placeHolder = "",
+                            width = 100,
+                            height = 20,
+                            keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                            visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
+                            myTextColor = androidx.compose.ui.graphics.Color.White,
+                            backgroundColor = com.example.sensimate.ui.theme.GreyColor,
+                            placeHolderColor = androidx.compose.ui.graphics.Color.Gray
+                        )
+                    }
 
             }
+
             Row(
                 modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp),
-                horizontalArrangement = Arrangement.Center,
+                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                InformationGender(title = "Gender")
-                Spacer(modifier = Modifier.width((120.dp)))
-                var gender by remember { mutableStateOf("") }
-                MyTextField(
-                    text = gender,
-                    textSize = 12,
-                    onValueChange = {gender = it} ,
-                    placeHolder = "" ,
-                    width = 100,
-                    height = 20,
-                    keyboardType = KeyboardType.Number,
-                    visualTransformation = VisualTransformation.None,
-                    myTextColor = Color.White,
-                    backgroundColor = GreyColor,
-                    placeHolderColor = Color.Gray
+                InformationPostalCode(
+                    title = "Postal code",
+                    modifier = Modifier.padding(vertical = 10.dp)
                 )
-            }
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                InformationPostalCode(title = "Postal code")
-                Spacer(modifier = Modifier.width((120.dp)))
-                var postalcode by remember { mutableStateOf("") }
-                MyTextField(
-                    text = postalcode ,
-                    textSize = 12,
-                    onValueChange = {postalcode = it} ,
-                    placeHolder = "" ,
-                    width = 100,
-                    height = 20,
-                    keyboardType = KeyboardType.Number,
-                    visualTransformation = VisualTransformation.None,
-                    myTextColor = Color.White,
-                    backgroundColor = GreyColor,
-                    placeHolderColor = Color.Gray
-                )
+
+                Column(horizontalAlignment = Alignment.End,
+                    modifier = Modifier.padding(end = 30.dp)) {
+                    var postalcode by remember { mutableStateOf("") }
+                    MyTextField(
+                        text = postalcode,
+                        textSize = 12,
+                        onValueChange = { postalcode = it },
+                        placeHolder = "",
+                        width = 100,
+                        height = 20,
+                        keyboardType = KeyboardType.Number,
+                        visualTransformation = VisualTransformation.None,
+                        myTextColor = Color.White,
+                        backgroundColor = GreyColor,
+                        placeHolderColor = Color.Gray,
+                    )
+                }
+
             }
 
         }
     }
 }
+
 
 @Composable
 private fun InformationAge(title: String, modifier: Modifier = Modifier) {
@@ -245,7 +272,11 @@ fun PreviousButton(onClick: () -> Unit) {
             .height(38.dp)
             .width(130.dp)
     ) {
-        Row() {
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
                 contentDescription = "Previous",
@@ -276,21 +307,31 @@ fun NextButton(onClick: () -> Unit) {
             .height(38.dp)
             .width(130.dp)
     ) {
-        Text(
-            "Next",
-            color = Color.White,
-            fontSize = 12.sp,
-            modifier = Modifier.padding(start = 0.dp)
-        )
-
-        Image(
-            painter = painterResource(id = R.drawable.vector),
-            contentDescription = "Next",
+        Row(
             modifier = Modifier
-                .size(25.dp)
-                .padding(start = 10.dp)
-        )
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
 
+        ) {
+            Text(
+                "Next",
+                color = Color.White,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(start = 0.dp)
+            )
+
+
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_baseline_arrow_front2_24),
+                contentDescription = "Next",
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 10.dp)
+                    .rotate(180f)
+            )
+
+        }
     }
 
 }
