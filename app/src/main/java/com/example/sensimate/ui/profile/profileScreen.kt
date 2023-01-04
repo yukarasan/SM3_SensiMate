@@ -87,7 +87,9 @@ fun ProfileScreen(navController: NavController, dataViewModel: ProfileDataViewMo
         item {
             LogoutButton(onClick = {
                 Database.signOut()
-                navController.navigate(Screen.ChooseSignUpScreen.route)
+                navController.popBackStack()
+
+                navController.navigate(Screen.Login.route)
             })
         }
 

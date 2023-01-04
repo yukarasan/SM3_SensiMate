@@ -24,6 +24,7 @@ import com.example.sensimate.ui.home.EventScreenEmployee
 import com.example.sensimate.ui.profile.EditProfileScreen
 import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.profile.editProfile.*
+import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.startupscreens.signUp.ChooseSignUpScreen
 import com.example.sensimate.ui.survey.Survey
@@ -46,6 +47,9 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
         composable(route = Screen.Guest.route) {
             GuestScreen(navController = navController)
+        }
+        composable(route = Screen.ForgotPassword.route) {
+            ForgotPassword(navController = navController)
         }
         ///
 

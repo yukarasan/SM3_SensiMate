@@ -11,9 +11,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.ChooseBirthDate
@@ -26,12 +28,17 @@ import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
+@Preview(showBackground = true)
+@Composable
+fun GuestScreenPrev() {
+    GuestScreen(navController = rememberNavController())
+}
+
+
 @Composable
 fun GuestScreen(navController: NavController) {
 
     InitialStartBackground()
-
-
 
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
