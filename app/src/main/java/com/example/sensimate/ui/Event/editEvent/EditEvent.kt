@@ -110,8 +110,8 @@ fun EditEvent(navController: NavController) {
 
                                         Row {
                                             Column {
-                                                Title(title = eventTitle)
-                                                //Title(title = "Coca Cola")
+                                                //Title(title = eventTitle)
+                                                Title(title = "Coca Cola")
                                                 Discription(
                                                     discription = "Come and taste the freshing sensation " +
                                                             "of Coca Cola. Get a whole six pack for free."

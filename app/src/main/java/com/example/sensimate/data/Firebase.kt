@@ -123,7 +123,6 @@ object Database {
             .set(profile)
     }
 
-
     fun logIn(
         email: String,
         password: String,
@@ -131,6 +130,8 @@ object Database {
         context: Context,
         successLoggedIn: MutableState<Boolean>
     ) {
+        showLoading.value = true
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -202,21 +203,20 @@ object Database {
     fun editEvent() {} //TODO: Ahmad
 
 
-    fun deleteEvent(eventtitle : String) {
+    fun deleteEvent(eventtitle: String) {
         //val docref = db.collection()
-
-        val data = hashMapOf(
-            "name" to "sabirin"
-        )
-        db.collection("hej").add(data)
-
         db.collection("events").whereEqualTo("title", eventtitle)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     document.reference.delete()
                         .addOnSuccessListener { Log.d(TAG, "Document has been deleted") }
-                        .addOnFailureListener { e -> Log.w(TAG, "Cant delete the current document", e) }
+                        .addOnFailureListener { e ->
+                            Log.w(
+                                TAG,
+                                "Cant delete the current document", e
+                            )
+                        }
                 }
             }
             .addOnFailureListener { exception ->
@@ -230,26 +230,28 @@ object Database {
 
     fun createEmployee() {} //TODO: Anshjyot
 
-    fun getSurvey() { //TODO: Anshjyot
-        val questions = mutableListOf<Question>()
-        val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("questions")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val questionSnapshots = snapshot.children
-                for (questionSnapshot in questionSnapshots) {
-                    val question = questionSnapshot.getValue(Question::class.java)
-                    if (question != null) {
-                        questions.add(question)
-                    }
+fun getSurvey() { //TODO: Anshjyot
+    val questions = mutableListOf<Question>()
+    val database = FirebaseDatabase.getInstance()
+    val ref = database.getReference("questions")
+    ref.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val questionSnapshots = snapshot.children
+            for (questionSnapshot in questionSnapshots) {
+                val question = questionSnapshot.getValue(Question::class.java)
+                if (question != null) {
+                    questions.add(question)
                 }
             }
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("error", "getListOfQuestions: $error")
-            }
-        })
-    }
-    data class Question(val text: String, val answers: List<Boolean>)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Log.d("error", "getListOfQuestions: $error")
+        }
+    })
+}
+
+data class Question(val text: String, val answers: List<Boolean>)
 
 
     fun answerQuestion() {  //TODO: Anshjyot
