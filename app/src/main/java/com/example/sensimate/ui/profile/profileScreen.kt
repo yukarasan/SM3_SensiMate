@@ -20,15 +20,19 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.theme.BottomGradient
+import com.example.sensimate.ui.theme.DarkPurple
 import java.util.Calendar
 import kotlinx.coroutines.launch
 
@@ -59,56 +63,60 @@ fun ProfileScreen(navController: NavController, dataViewModel: ProfileDataViewMo
         }
     }
 
-    LazyColumn(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(
                 Brush.verticalGradient(
                     0.0f to Color(83, 58, 134, 255),
                     0.7f to Color(22, 26, 30)
                 )
-            ),
-        contentPadding = PaddingValues(bottom = 80.dp, top = 20.dp)
+            )
     ) {
-        item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, bottom = 5.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                OrangeBackButton(onClick = { navController.navigate(Screen.EventScreen.route) })
-                EditButton(onClick = { navController.navigate(Screen.EditProfileScreen.route) })
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(bottom = 80.dp, top = 20.dp)
+        ) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, bottom = 5.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    OrangeBackButton(onClick = { navController.navigate(Screen.EventScreen.route) })
+                    EditButton(onClick = { navController.navigate(Screen.EditProfileScreen.route) })
+                }
             }
+            item { ImageButton() }
+            item { ProfileMail() }
+            item {
+                LogoutButton(onClick = {
+                    Database.signOut()
+                    navController.popBackStack()
+
+                    navController.navigate(Screen.Login.route)
+                })
+            }
+
+            // val age = Calendar.getInstance().get(Calendar.YEAR) - ((Database.fetchProfile()?.yearBorn
+            //    ?: 0))
+
+            /*
+            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+            val age = Database.fetchProfile()?.let { currentYear - it.yearBorn }
+
+            val profile = async { Database.fetchProfile() }.await()
+            val age = profile?.let { currentYear - it.yearBorn }
+             */
+
+            item { InfoAboutUser(desc = "Age", info = age.value) }
+            item { InfoAboutUser(desc = "Day Born", info = dayBorn.value.toString()) }
+            item { InfoAboutUser(desc = "Month Born", info = monthBorn.value.toString()) }
+            item { InfoAboutUser(desc = "Postal Code", info = postalCode.value.toString()) }
+            item { InfoAboutUser(desc = "Gender", info = gender.value.toString()) }
         }
-        item { ImageButton() }
-        item { ProfileMail() }
-        item {
-            LogoutButton(onClick = {
-                Database.signOut()
-                navController.popBackStack()
-
-                navController.navigate(Screen.Login.route)
-            })
-        }
-
-        // val age = Calendar.getInstance().get(Calendar.YEAR) - ((Database.fetchProfile()?.yearBorn
-        //    ?: 0))
-
-        /*
-        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val age = Database.fetchProfile()?.let { currentYear - it.yearBorn }
-
-        val profile = async { Database.fetchProfile() }.await()
-        val age = profile?.let { currentYear - it.yearBorn }
-         */
-
-        item { InfoAboutUser(desc = "Age", info = age.value) }
-        item { InfoAboutUser(desc = "Day Born", info = dayBorn.value.toString()) }
-        item { InfoAboutUser(desc = "Month Born", info = monthBorn.value.toString()) }
-        item { InfoAboutUser(desc = "Postal Code", info = postalCode.value.toString()) }
-        item { InfoAboutUser(desc = "Gender", info = gender.value.toString()) }
     }
 }
 
@@ -223,7 +231,8 @@ private fun InfoAboutUser(desc: String, info: String) {
             .height(80.dp),
         elevation = 5.dp,
         shape = RoundedCornerShape(10.dp),
-        backgroundColor = Color(red = 44, green = 44, blue = 59)
+        backgroundColor = DarkPurple,
+        border = BorderStroke(2.dp, Color(154, 107, 254))
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

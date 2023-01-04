@@ -1,3 +1,4 @@
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,12 +27,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
+import com.example.sensimate.data.Database.UpdateEvent
+import com.example.sensimate.data.Event
+import com.example.sensimate.data.db
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
-import com.example.sensimate.ui.Event.createEvent.TextFiledAnswerText
-import com.example.sensimate.ui.Event.createEvent.TextFiledQuestionText
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.home.InputField
@@ -53,8 +56,7 @@ fun EditEventPreview() {
 
  */
 @Composable
-fun EditEvent(navController: NavController) {
-    var eventTitle by remember { mutableStateOf("") }
+fun EditEvent(navController: NavController, eventtitle : String) {
 
     Box(
         modifier = Modifier
@@ -68,123 +70,123 @@ fun EditEvent(navController: NavController) {
                 )
             )
     )
-        LazyColumn(Modifier.fillMaxWidth()) {
-            item {
-                LazyRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    item {
-                        Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-                            OrangeBackButton(onClick = { navController.navigate(Screen.EventScreenEmployee.route) }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
-                        }
-                    }
-                    item {
-                        AddPhoto(
-                            modifier = Modifier
-                                .padding(5.dp)
-                                .size(50.dp)
-                                .clickable(
-                                    enabled = true,
-                                    onClickLabel = "Clickable image",
-                                    onClick = { navController.navigate(Screen.EditPage.route) }),
-                            id = R.drawable.yelloweditbutton
-                        )
+    LazyColumn(Modifier.fillMaxWidth()) {
+        item {
+            LazyRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                item {
+                    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+                        OrangeBackButton(onClick = { navController.navigate(Screen.EventScreenEmployee.route) }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
                     }
                 }
-            }
                 item {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Card(
-                            modifier = Modifier
-                                .padding(start = 15.dp, end = 15.dp)
-                                .fillMaxWidth(),
-                            elevation = 5.dp,
-                            shape = RoundedCornerShape(20.dp),
-                            backgroundColor = Color(red = 44, green = 44, blue = 59)
-                        ) {
-                            Column {
-                                Row {
-                                    Column(
-                                        modifier = Modifier.padding(
-                                            top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
-                                        )
-                                    ) {
-
-                                        Row {
-                                            Column {
-                                                //Title(title = eventTitle)
-                                                Title(title = "Coca Cola")
-                                                Discription(
-                                                    discription = "Come and taste the freshing sensation " +
-                                                            "of Coca Cola. Get a whole six pack for free."
-                                                )
-                                            }
-                                            Image(
-                                                painter = painterResource(
-                                                    id = R.drawable.beverages
-                                                ),
-                                                contentDescription = "",
-                                                modifier = Modifier.size(145.dp),
-                                            )
-                                        }
-                                    }
-                                }
-                                InputField({})
-                                Allergens(title = "Allergens")
-                                Discription(discription = "N/A")
-                                Spacer(modifier = Modifier.size(20.dp))
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center
-                                ) {
-                                    Column() {
-                                        Title(title = "The Circular lab")
-                                    }
-                                    Discription(discription = "30km")
-                                }
-                                Image(
-                                    painter = painterResource(
-                                        id = R.drawable.location
-                                    ),
-                                    contentDescription = "",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .size(200.dp)
+                    AddPhoto(
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .size(50.dp)
+                            .clickable(
+                                enabled = true,
+                                onClickLabel = "Clickable image",
+                                onClick = { navController.navigate(Screen.EditPage.route) }),
+                        id = R.drawable.yelloweditbutton
+                    )
+                }
+            }
+        }
+        item {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Card(
+                    modifier = Modifier
+                        .padding(start = 15.dp, end = 15.dp)
+                        .fillMaxWidth(),
+                    elevation = 5.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    backgroundColor = Color(red = 44, green = 44, blue = 59)
+                ) {
+                    Column {
+                        Row {
+                            Column(
+                                modifier = Modifier.padding(
+                                    top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
                                 )
-                                Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
-                                Bar(progress = 0.39f)
+                            ) {
+
+                                Row {
+                                    Column {
+                                        //Title(title = eventTitle)
+                                        Title(title = "Coca Cola")
+                                        Discription(
+                                            discription = "Come and taste the freshing sensation " +
+                                                    "of Coca Cola. Get a whole six pack for free."
+                                        )
+                                    }
+                                    Image(
+                                        painter = painterResource(
+                                            id = R.drawable.beverages
+                                        ),
+                                        contentDescription = "",
+                                        modifier = Modifier.size(145.dp),
+                                    )
+                                }
                             }
                         }
-                        Spacer(modifier = Modifier.size(25.dp))
-                        Button(
-                            onClick = { navController.navigate(Screen.EditSurvey.route) },
-                            shape = CircleShape,
-                            colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-                            modifier = Modifier.size(345.dp, 60.dp),
-
-                            ) {
-                            Text(
-                                text = "Edit Survey",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 25.sp,
-                                color = Color.White,
-                                fontFamily = manropeFamily
-                            )
-                        }
+                        InputField({})
+                        Allergens(title = "Allergens")
+                        Discription(discription = "N/A")
                         Spacer(modifier = Modifier.size(20.dp))
-                        Button(
-                            onClick = { Database.deleteEvent(eventTitle)},
-                            shape = CircleShape,
-                            colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
-                            modifier = Modifier.size(345.dp, 60.dp),
-
-                            ) {
-                            Text(
-                                text = "Delete Survey",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 25.sp,
-                                color = Color.White,
-                                fontFamily = manropeFamily
-                            )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Column() {
+                                Title(title = "The Circular lab")
+                            }
+                            Discription(discription = "30km")
                         }
+                        Image(
+                            painter = painterResource(
+                                id = R.drawable.location
+                            ),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .size(200.dp)
+                        )
+                        Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
+                        Bar(progress = 0.39f)
+                    }
+                }
+                Spacer(modifier = Modifier.size(25.dp))
+                Button(
+                    onClick = { navController.navigate(Screen.EditSurvey.route) },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
+                    modifier = Modifier.size(345.dp, 60.dp),
+
+                    ) {
+                    Text(
+                        text = "Edit Survey",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        color = Color.White,
+                        fontFamily = manropeFamily
+                    )
+                }
+                Spacer(modifier = Modifier.size(20.dp))
+                Button(
+                    onClick = { Database.deleteEvent(eventtitle) },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
+                    modifier = Modifier.size(345.dp, 60.dp),
+
+                    ) {
+                    Text(
+                        text = "Delete Survey",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        color = Color.White,
+                        fontFamily = manropeFamily
+                    )
+                }
 /*
     AddPhoto(
         modifier = Modifier
@@ -196,10 +198,10 @@ fun EditEvent(navController: NavController) {
                 onClick = { /*TODO*/ })
                 , id = R.drawable.redgobackbutton)
  */
-                    }
-                }
             }
+        }
     }
+}
 
 
 @Composable
@@ -274,8 +276,38 @@ fun AddPhoto(modifier: Modifier = Modifier, id: Int) {
     )
 }
 
+/*
+@Preview
 @Composable
-fun EditPage(navController: NavController) {
+fun EditPagePreview() {
+    EditPage(navController = rememberNavController())
+}
+
+ */
+
+
+@Composable
+fun EditPage(navController: NavController,
+             title: String,
+             description: String,
+             location: String,
+             allergens: String) {
+
+    var titleText by remember { mutableStateOf(title) }
+    var descriptionText by remember { mutableStateOf(description) }
+    var locationText by remember { mutableStateOf(location) }
+    var allergensText by remember { mutableStateOf(allergens) }
+    var surveyCodeText by remember { mutableStateOf("") }
+    val myYear = remember { mutableStateOf("") }
+    val myMonth = remember { mutableStateOf("") }
+    val myDay = remember { mutableStateOf("") }
+    val maxChar = 4
+    var year: String
+    var month: String
+    var day: String
+
+
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -289,78 +321,161 @@ fun EditPage(navController: NavController) {
                 )
             )
     )
+
     AddPhoto(
         modifier = Modifier
             .padding(345.dp, 20.dp, 2.dp, 1.dp)
             .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
-    TextToPhoto()
-    TextFiledTitleText()
-    TextFiledDescriptionText()
-    Card(
+    com.example.sensimate.ui.Event.createEvent.TextToPhoto()
+    LazyColumn(
         modifier = Modifier
-            .padding(start = 1.dp, end = 1.dp, top = 300.dp)
-            .fillMaxWidth(),
-
-        shape = RoundedCornerShape(15.dp),
-        backgroundColor = Color(0xFF4D3B72)
-
-
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
 
-        Image(
-            painter = painterResource(
-                id = R.drawable.sentimatelogo
-            ),
-            contentDescription = "",
-            modifier = Modifier
-                .size(2700.dp)
-                .blur(1.dp)
-                .alpha(0.2f),
-            contentScale = ContentScale.Crop,
+        item {
+            Spacer(modifier = Modifier.size(55.dp))
+            TextFiledTitleText(titleText) { titleText = it }
+            Spacer(modifier = Modifier.size(27.dp))
+            TextFiledDescriptionText(descriptionText) { descriptionText = it }
+            Spacer(modifier = Modifier.size(55.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(),
 
-            )
-        TextFiledTimeText()
-        TextFiledLoctionText()
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
+                shape = RoundedCornerShape(15.dp),
+                backgroundColor = Color(0xFF4D3B72)
 
-
-            Spacer(modifier = Modifier.size(250.dp))
-
-            Button(
-                onClick = { navController.navigate(Screen.EditEvent.route) },
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFD7D123)),
-                modifier = Modifier.size(240.dp, 50.dp),
-                enabled = true
 
             ) {
-                Text(
-                    text = "Confirmed Edit",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = manropeFamily
+
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.sentimatelogo
+                    ),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(800.dp)
+                        .blur(1.dp)
+                        .alpha(0.2f),
+                    contentScale = ContentScale.Crop,
+
+                    )
+                TextFiledLocationText(locationText) { locationText = it }
+                TextFiledAllergensText(allergensText) { allergensText = it }
+                TextFiledSurveyCodeText(surveyCodeText) {
+                    if (it.length <= maxChar) surveyCodeText = it
+                }
+
+                ChooseBirthDate(
+                    LocalContext.current,
+                    myYear = myYear,
+                    myMonth = myMonth,
+                    myDay = myDay
                 )
-            }
-            Spacer(modifier = Modifier.size(100.dp))
-            Button(
-                onClick = { navController.popBackStack() },
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
-                modifier = Modifier.size(240.dp, 50.dp)
-            ) {
-                Text(
-                    text = "Go Back",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = manropeFamily
-                )
+                day = myDay.value
+                month = myMonth.value
+                year = myYear.value
+
+
+                Column(
+
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+
+                    Spacer(modifier = Modifier.size(75.dp))
+                    Spacer(modifier = Modifier.size(250.dp))
+
+                    Button(
+                        onClick = {
+                            if (titleText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Title was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (descriptionText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Description was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (locationText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Location was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (myYear.value == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Date was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (allergensText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Allergens was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (surveyCodeText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "SurveyCode was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+
+                                val event = hashMapOf(
+                                    "title" to titleText,
+                                    "description" to descriptionText,
+                                    "allergens" to allergensText,
+                                    "location" to locationText,
+                                    "surveyCode" to surveyCodeText,
+                                    "day" to day,
+                                    "month" to month,
+                                    "year" to year
+                                )
+                                db.collection("TESTER").add(event)
+                                UpdateEvent(event)
+                                /*navController.navigate(Screen.QuestionPageScreen.route)*/
+                            }
+                        },
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
+                        modifier = Modifier.size(240.dp, 50.dp),
+                        enabled = true
+
+                    ) {
+
+                        Text(
+                            text = "Finish Edited",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = manropeFamily
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(55.dp))
+                    Button(
+                        onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
+                        modifier = Modifier.size(240.dp, 50.dp)
+                    ) {
+                        Text(
+                            text = "Go Back",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = manropeFamily
+                        )
+                    }
+                }
             }
         }
     }
@@ -607,8 +722,9 @@ fun EditSurveyPage(navController: NavController) {
 
 
 }
+
 @Composable
-fun TextFiledEditQuestionText(modifier: Modifier,string: String){
+fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
     var text by remember { mutableStateOf(string) }
     com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
         TextField(
@@ -627,12 +743,12 @@ fun TextFiledEditQuestionText(modifier: Modifier,string: String){
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = modifier
 
-            )
+        )
     }
 }
 
 @Composable
-fun TextFiledEditAnswerText(modifier: Modifier,string: String) {
+fun TextFiledEditAnswerText(modifier: Modifier, string: String) {
     var text by remember { mutableStateOf(string) }
     com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
         TextField(
@@ -654,11 +770,3 @@ fun TextFiledEditAnswerText(modifier: Modifier,string: String) {
         )
     }
 }
-
-        @Preview
-        @Composable
-        fun EditEventPreview() {
-            EditEvent(rememberNavController())
-        }
-
-
