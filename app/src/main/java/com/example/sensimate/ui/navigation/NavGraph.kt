@@ -16,6 +16,7 @@ import androidx.navigation.compose.navArgument
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
+import com.example.sensimate.ui.Event.createEvent.CreateTextAnswerQuestionScreen
 import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
@@ -100,6 +101,9 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
             CreateMultpleChoiceQuestionScreen(navController = navController)
+        }
+        composable(route = Screen.CreateTextAnswerQuestionScreen.route) {
+            CreateTextAnswerQuestionScreen(navController = navController)
         }
         composable(
             route = Screen.EditEvent.route,

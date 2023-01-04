@@ -206,7 +206,7 @@ fun CreateEventScreen(navController: NavController){
                                 "month" to month,
                                 "year" to year
                                                 )
-            db.collection("events").add(event)
+            db.collection("TESTER").add(event)
                   /*navController.navigate(Screen.QuestionPageScreen.route)*/}},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -299,7 +299,7 @@ fun ChooseBirthDate(
                 .padding(1.dp, 65.dp, 1.dp, 1.dp)
                 .clickable { datePickerLog.show() },
         )
-    }
+}
 
 
 
@@ -370,7 +370,7 @@ fun TextToPhoto(){
         .padding(330.dp, 44.dp, 2.dp, 1.dp)
 
     )
-    }
+}
 
 
 @Composable
@@ -508,7 +508,7 @@ fun QuestionPageScreen(navController: NavController){
     )
 
     Column(modifier = Modifier.padding(25.dp, 30.dp,1.dp,1.dp) ){
-        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+        OrangeBackButton(onClick = {navController.popBackStack()})
     }
 
 
@@ -541,25 +541,6 @@ fun QuestionPageScreen(navController: NavController){
             id = R.drawable.redaddplus
         )
     }
-
-        /*
-    AddPhoto(
-        modifier = Modifier
-            .padding(15.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
-        ,id = R.drawable.redgobackbutton)
-
-     */
-
-
-
-
-
-
 }
 
 // Figur 3
@@ -601,10 +582,8 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
         TextFiledQuestionText(questionText) {questionText = it}
            Spacer(modifier = Modifier.size(27.dp))
         TextFiledAnswerText( "Answer 1", answerText1) {answerText1 = it}
-            if (answerText1 != ""){
                 Spacer(modifier = Modifier.size(27.dp))
                 TextFiledAnswerText("Answer 2",answerText2) {answerText2 = it}
-            }
             if (answerText2 != ""){
                 Spacer(modifier = Modifier.size(27.dp))
                 TextFiledAnswerText("Answer 3",answerText3) {answerText3 = it}
@@ -651,26 +630,77 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
             }
 
     }}
-
-
-
-//TODO LAV EN GO BACK BUTTON
-    /*
-    AddPhoto(
-        modifier = Modifier
-            .padding(15.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
-        , id = R.drawable.redgobackbutton)
-
- */
-
-
-
 }
+
+
+// FIGUR 4
+@Composable
+fun CreateTextAnswerQuestionScreen(navController: NavController){
+    var questionText by remember { mutableStateOf("") }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .size(size = 300.dp)
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        DarkPurple,
+                        BottonGradient
+                    )
+                )
+            )
+    )
+    LazyColumn(modifier = Modifier
+        .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        /*verticalArrangement = Arrangement.Center*/) {
+        item {
+            Spacer(modifier = Modifier.size(27.dp))
+            Text(
+                text = "Multiple-choice",
+                color = Color(0xEFFF7067),
+                fontSize = 20.sp
+
+            )
+            Spacer(modifier = Modifier.size(55.dp))
+
+            TextFiledQuestionText(questionText) {questionText = it}
+            Spacer(modifier = Modifier.size(55.dp))
+
+            Button(
+                onClick = {/*TODO*/},
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
+                modifier = Modifier.size(240.dp, 50.dp)
+            ) {
+                Text(
+                    text = "Create Question",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = manropeFamily
+                )
+            }
+
+            Spacer(modifier = Modifier.size(55.dp))
+            Button(
+                onClick = {navController.popBackStack()},
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
+                modifier = Modifier.size(240.dp, 50.dp)
+            ) {
+                Text(
+                    text = "Go Back",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = manropeFamily
+                )
+            }
+
+        }}
+}
+
 @Composable
 fun TextFiledQuestionText(questionText: String,textChange: (String) -> Unit){
     ContentColorComponent(contentColor = Color.White) {
@@ -711,6 +741,8 @@ fun TextFiledAnswerText( text: String, answerText: String,textChange: (String) -
 
     }
 }
+
+
 
 
 
