@@ -164,7 +164,6 @@ fun Information() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 InformationGender(title = "Gender", modifier = Modifier.padding(vertical = 10.dp))
-                //Spacer(modifier = Modifier.width((120.dp)))
 
                 Column(horizontalAlignment = Alignment.End,
                     modifier = Modifier.padding(end = 30.dp)) {
@@ -215,7 +214,6 @@ fun Information() {
                         placeHolderColor = Color.Gray,
                     )
                 }
-                //Spacer(modifier = Modifier.width((120.dp)))
 
             }
 
@@ -332,18 +330,6 @@ fun NextButton(onClick: () -> Unit) {
                     .padding(start = 10.dp)
                     .rotate(180f)
             )
-
-            /*
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_baseline_arrow_front2_24),
-                contentDescription = "Next",
-                modifier = Modifier
-                    .size(25.dp)
-                    .padding(start = 10.dp)
-            )
-
-             */
 
         }
     }

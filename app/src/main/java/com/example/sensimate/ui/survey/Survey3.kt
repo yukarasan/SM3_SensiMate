@@ -21,8 +21,8 @@ import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
-import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
 //@Preview(showBackground = true)

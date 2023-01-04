@@ -1,13 +1,13 @@
 package com.example.sensimate.ui.survey
 
-
-import android.media.Image
-import android.renderscript.ScriptGroup
 import androidx.compose.foundation.*
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.navigation.NavController
-import com.example.sensimate.navigation.Screen
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.*
 
 
