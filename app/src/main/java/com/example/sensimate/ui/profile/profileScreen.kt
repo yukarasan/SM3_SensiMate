@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ProfileScreen(navController: NavController, dataViewModel: ProfileDataViewModel = viewModel()) {
+fun ProfileScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     val yearBorn = remember { mutableStateOf("") }
