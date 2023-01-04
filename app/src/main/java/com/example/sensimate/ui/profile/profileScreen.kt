@@ -1,5 +1,8 @@
 package com.example.sensimate.ui.profile
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,7 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,19 +20,45 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.R
-import com.example.sensimate.data.Database
-import com.example.sensimate.data.auth
+import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
+import java.util.Calendar
+import kotlinx.coroutines.launch
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, dataViewModel: ProfileDataViewModel = viewModel()) {
+    val scope = rememberCoroutineScope()
+
+    val yearBorn = remember { mutableStateOf("") }
+    val age = remember { mutableStateOf("") }
+    val dayBorn = remember { mutableStateOf("") }
+    val monthBorn = remember { mutableStateOf("") }
+    val postalCode = remember { mutableStateOf("") }
+    val gender = remember { mutableStateOf("") }
+
+    LaunchedEffect(key1 = true) {
+        scope.launch {
+            val profile = profile()
+
+            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+            age.value = (currentYear - profile.yearBorn.toInt()).toString()
+
+            dayBorn.value = profile.dayBorn
+            monthBorn.value = profile.monthBorn
+            postalCode.value = profile.postalCode
+            gender.value = profile.gender
+        }
+    }
+
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -55,22 +84,43 @@ fun ProfileScreen(navController: NavController) {
         }
         item { ImageButton() }
         item { ProfileMail() }
-        item { LogoutButton(onClick = {
-            Database.signOut()
-            navController.navigate(Screen.ChooseSignUpScreen.route)
-        }) }
-        // TODO: Make as list of items instead:
-        item { UpcomingEvent() }
-        item { UpcomingEvent() }
-        item { UpcomingEvent() }
-        item { UpcomingEvent() }
-        item { UpcomingEvent() }
-        item { UpcomingEvent() }
-        item { UpcomingEvent() }
-        item { UpcomingEvent() }
-        item { UpcomingEvent() }
+        item {
+            LogoutButton(onClick = {
+                Database.signOut()
+                navController.navigate(Screen.ChooseSignUpScreen.route)
+            })
+        }
+
+        // val age = Calendar.getInstance().get(Calendar.YEAR) - ((Database.fetchProfile()?.yearBorn
+        //    ?: 0))
+
+        /*
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val age = Database.fetchProfile()?.let { currentYear - it.yearBorn }
+
+        val profile = async { Database.fetchProfile() }.await()
+        val age = profile?.let { currentYear - it.yearBorn }
+         */
+
+        item { InfoAboutUser(desc = "Age", info = age.value) }
+        item { InfoAboutUser(desc = "Day Born", info = dayBorn.value.toString()) }
+        item { InfoAboutUser(desc = "Month Born", info = monthBorn.value.toString()) }
+        item { InfoAboutUser(desc = "Postal Code", info = postalCode.value.toString()) }
+        item { InfoAboutUser(desc = "Gender", info = gender.value.toString()) }
     }
 }
+
+private suspend fun profile(): Profile {
+    val profile = Database.fetchProfile()
+    return Profile(
+        yearBorn = profile?.yearBorn.toString(),
+        dayBorn = profile?.dayBorn.toString(),
+        monthBorn = profile?.monthBorn.toString(),
+        gender = profile?.gender.toString(),
+        postalCode = profile?.postalCode.toString()
+    )
+}
+
 
 @Composable
 private fun LogoutButton(onClick: () -> Unit) {
@@ -163,7 +213,7 @@ private fun ProfileMail() {
 }
 
 @Composable
-private fun UpcomingEvent() {
+private fun InfoAboutUser(desc: String, info: String) {
     Card(
         modifier = Modifier
             .padding(start = 25.dp, end = 25.dp, top = 25.dp)
@@ -179,19 +229,20 @@ private fun UpcomingEvent() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Coca Cola",
+                text = desc,
                 fontFamily = manropeFamily,
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 23.sp,
                 color = Color.White,
                 modifier = Modifier.padding(start = 20.dp)
             )
-            Image(
-                painter = painterResource(id = R.drawable.beverages),
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(end = 10.dp)
-                    .size(60.dp)
+            Text(
+                text = info,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 23.sp,
+                color = Color.White,
+                modifier = Modifier.padding(end = 20.dp)
             )
         }
     }

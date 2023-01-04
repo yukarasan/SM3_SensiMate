@@ -10,18 +10,27 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import com.example.sensimate.data.Database.fetchListOfEvents
+import com.example.sensimate.data.Database.fetchProfile
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 @SuppressLint("StaticFieldLeak")
 val db = Firebase.firestore
 
 data class EventScreenState(
     val events: MutableList<Event>? = null
+)
+
+data class ProfileScreenState(
+    val profile: Profile? = null
 )
 
 class EventDataViewModel : ViewModel() {
@@ -39,13 +48,29 @@ class EventDataViewModel : ViewModel() {
     }
 }
 
+class ProfileDataViewModel : ViewModel() {
+    val state = mutableStateOf(ProfileScreenState())
+
+    init {
+        getProfile()
+    }
+
+    private fun getProfile() {
+        viewModelScope.launch {
+            val profile = fetchProfile()
+            state.value = state.value.copy(profile = profile)
+        }
+    }
+}
+
 // Initialize Firebase Auth
 val auth = Firebase.auth
 
 object Database {
     //auth.currentUser?.email.toString()
 
-    fun getProfile(): Profile {
+    /*
+    fun fetchProfile(): Profile {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         var profile = Profile()
 
@@ -53,7 +78,63 @@ object Database {
             profile = documentSnapshot.toObject<Profile>()!!
         }
 
+        Log.d("age", profile.yearBorn)
+
         return profile;
+    }
+     */
+
+    /*
+    fun fetchProfile(): Profile {
+        val docRef = db.collection("users").document(auth.currentUser?.email.toString())
+        // var profile = Profile()
+
+        var profile: MutableState<Profile> = mutableStateOf(Profile())
+
+        docRef.get()
+
+        docRef.get().addOnSuccessListener { documentSnapshot ->
+            profile = documentSnapshot.toObject<Profile>()!!
+        }
+
+        return profile;
+    }
+     */
+
+    suspend fun fetchProfile(): Profile? {
+        val docRef = db.collection("users").document(auth.currentUser?.email.toString())
+        var profile: Profile?
+
+        /*
+        docRef.get()
+            .addOnSuccessListener { snapshot ->
+                profile = snapshot.toObject(Profile::class.java)
+            }
+         */
+
+        withContext(Dispatchers.IO) {
+            val snapshot = docRef.get().await()
+            profile = snapshot.toObject(Profile::class.java)
+        }
+
+        return profile
+    }
+
+
+    suspend fun fetchListOfEvents(): MutableList<Event> {
+        val eventReference = db.collection("events")
+        val eventList: MutableList<Event> = mutableListOf()
+
+        try {
+            eventReference.get().await().map {
+                val result = it.toObject(Event::class.java)
+                eventList.add(result)
+            }
+        } catch (e: FirebaseFirestoreException) {
+            Log.d("error", "getListOfEvents: $e")
+        }
+
+        return eventList
     }
 
 
@@ -112,7 +193,6 @@ object Database {
             .set(profile)
     }
 
-
     fun logIn(
         email: String,
         password: String,
@@ -153,21 +233,7 @@ object Database {
 
     } //TODO: Yusuf
 
-    suspend fun fetchListOfEvents(): MutableList<Event> {
-        val eventReference = db.collection("events")
-        val eventList: MutableList<Event> = mutableListOf()
 
-        try {
-            eventReference.get().await().map {
-                val result = it.toObject(Event::class.java)
-                eventList.add(result)
-            }
-        } catch (e: FirebaseFirestoreException) {
-            Log.d("error", "getListOfEvents: $e")
-        }
-
-        return eventList
-    } //TODO: Yusuf
 
 
     /*
