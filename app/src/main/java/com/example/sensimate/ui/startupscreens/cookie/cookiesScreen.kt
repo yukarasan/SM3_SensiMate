@@ -98,13 +98,13 @@ fun CookiesScreen(navController: NavController) {
             Text(
                 text = "Continue using cookie",
                 color = Color.White,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Light,
                 fontFamily = manropeFamily
             )
             Text(
                 text = " *",
                 color = Color.Red,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Light,
                 fontFamily = manropeFamily
             )
         }
@@ -126,7 +126,7 @@ fun CookiesScreen(navController: NavController) {
             enabled = checkedState.value,
 
             onClick = {
-                navController.navigate(Screen.ChooseSignUpScreen.route) {
+                navController.navigate(Screen.Login.route) {
                     restoreState = true
                 }
             },
@@ -137,7 +137,7 @@ fun CookiesScreen(navController: NavController) {
         ) {
             Text(
                 text = "Continue",
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Medium,
                 fontSize = 20.sp,
                 color = Color.White,
                 fontFamily = manropeFamily
@@ -156,7 +156,7 @@ fun CookiesScreen(navController: NavController) {
         ) {
             Text(
                 text = "Exit",
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Medium,
                 fontSize = 20.sp,
                 color = Color.White,
                 fontFamily = manropeFamily

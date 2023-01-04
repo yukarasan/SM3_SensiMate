@@ -68,14 +68,15 @@ fun SignUpUsingMail(navController: NavController) {
     ) {
 
         item {
+            Spacer(modifier = Modifier.size(100.dp))
+            SignMenus(
+                navController = navController,
+                screen = Screen.SignUpWithMail
+            )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 15.dp, top = 15.dp)
-            ) {
-                OrangeBackButton({ navController.popBackStack() })
-            }
+        }
+
+        item {
 
             Spacer(modifier = Modifier.size(80.dp))
 
@@ -256,7 +257,7 @@ fun MyTextField(
                     Text(
                         text = placeHolder,
                         fontSize = textSize.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Light,
                         fontFamily = manropeFamily,
                         textAlign = TextAlign.Left,
                         color = placeHolderColor,

@@ -24,6 +24,7 @@ import com.example.sensimate.ui.home.EventScreenEmployee
 import com.example.sensimate.ui.profile.EditProfileScreen
 import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.profile.editProfile.*
+import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.startupscreens.signUp.ChooseSignUpScreen
 import com.example.sensimate.ui.survey.Survey
 import com.example.sensimate.ui.survey.Survey2
@@ -33,21 +34,25 @@ import com.example.sensimate.ui.survey.Survey4
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
     NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
+        //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)
-        }
-        composable(route = Screen.ChooseSignUpScreen.route){
-            ChooseSignUpScreen(navController = navController)
-        }
-        composable(route = Screen.SignUpWithMail.route){
-            SignUpUsingMail(navController = navController)
         }
         composable(route = Screen.Login.route){
             LogInMail(navController = navController)
         }
+        composable(route = Screen.SignUpWithMail.route){
+            SignUpUsingMail(navController = navController)
+        }
+        composable(route = Screen.Guest.route) {
+            GuestScreen(navController = navController)
+        }
+        ///
+
         composable(route = Screen.EventScreen.route) {
             EventScreen(navController = navController)
         }
+
         composable(
             route = Screen.ExtendedEventScreen.route,
             arguments = listOf(
