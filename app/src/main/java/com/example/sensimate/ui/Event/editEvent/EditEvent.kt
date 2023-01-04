@@ -56,7 +56,15 @@ fun EditEventPreview() {
 
  */
 @Composable
-fun EditEvent(navController: NavController, eventtitle : String) {
+fun EditEvent(
+    navController: NavController,
+    title: String,
+    time: String,
+    location: String,
+    allergens: String,
+    description: String
+) {
+    var eventTitle by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -113,7 +121,7 @@ fun EditEvent(navController: NavController, eventtitle : String) {
                                 Row {
                                     Column {
                                         //Title(title = eventTitle)
-                                        Title(title = "Coca Cola")
+                                        Title(title = title)
                                         Discription(
                                             discription = "Come and taste the freshing sensation " +
                                                     "of Coca Cola. Get a whole six pack for free."
@@ -130,15 +138,15 @@ fun EditEvent(navController: NavController, eventtitle : String) {
                             }
                         }
                         InputField({})
-                        Allergens(title = "Allergens")
-                        Discription(discription = "N/A")
+                        Allergens(title = allergens)
+                        Discription(discription = description)
                         Spacer(modifier = Modifier.size(20.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Column() {
-                                Title(title = "The Circular lab")
+                                Title(title = "Location")
                             }
                             Discription(discription = "30km")
                         }
@@ -151,7 +159,7 @@ fun EditEvent(navController: NavController, eventtitle : String) {
                                 .fillMaxWidth()
                                 .size(200.dp)
                         )
-                        Discription(discription = "Helsingørmotervejen 15, 2500 lyngby")
+                        Discription(discription = location)
                         Bar(progress = 0.39f)
                     }
                 }
@@ -173,7 +181,8 @@ fun EditEvent(navController: NavController, eventtitle : String) {
                 }
                 Spacer(modifier = Modifier.size(20.dp))
                 Button(
-                    onClick = { Database.deleteEvent(eventtitle) },
+                    onClick = { //Database.deleteEvent(eventtitle) },
+                    },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                     modifier = Modifier.size(345.dp, 60.dp),
@@ -287,16 +296,12 @@ fun EditPagePreview() {
 
 
 @Composable
-fun EditPage(navController: NavController,
-             title: String,
-             description: String,
-             location: String,
-             allergens: String) {
+fun EditPage(navController: NavController) {
 
-    var titleText by remember { mutableStateOf(title) }
-    var descriptionText by remember { mutableStateOf(description) }
-    var locationText by remember { mutableStateOf(location) }
-    var allergensText by remember { mutableStateOf(allergens) }
+    var titleText by remember { mutableStateOf("") }
+    var descriptionText by remember { mutableStateOf("") }
+    var locationText by remember { mutableStateOf("") }
+    var allergensText by remember { mutableStateOf("") }
     var surveyCodeText by remember { mutableStateOf("") }
     val myYear = remember { mutableStateOf("") }
     val myMonth = remember { mutableStateOf("") }
@@ -743,12 +748,12 @@ fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = modifier
 
-        )
+            )
     }
 }
 
 @Composable
-fun TextFiledEditAnswerText(modifier: Modifier, string: String) {
+fun TextFiledEditAnswerText(modifier: Modifier,string: String) {
     var text by remember { mutableStateOf(string) }
     com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
         TextField(

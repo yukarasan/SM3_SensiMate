@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.home
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.theme.DarkPurple
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -29,7 +31,8 @@ fun EventCard(
             .fillMaxWidth(),
         elevation = 5.dp,
         shape = RoundedCornerShape(20.dp),
-        backgroundColor = Color(red = 44, green = 44, blue = 59),
+        backgroundColor = DarkPurple,
+        border = BorderStroke(2.dp, Color(154, 107, 254)),
         onClick = onClick
     ) {
         Column {

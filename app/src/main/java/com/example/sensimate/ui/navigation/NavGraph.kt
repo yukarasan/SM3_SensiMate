@@ -101,11 +101,38 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
             CreateMultpleChoiceQuestionScreen(navController = navController)
         }
-        composable(route = Screen.EditEvent.route) {
-            //EditEvent(navController = navController)
+        composable(
+            route = Screen.EditEvent.route,
+            arguments = listOf(
+                navArgument(TITLE_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(TIME_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(LOCATION_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(ALLERGENS) {
+                    type = NavType.StringType
+                },
+                navArgument(DESCRIPTION_OF_EVENT) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            EditEvent(
+                navController = navController,
+                title = backStackEntry.arguments?.getString(TITLE_OF_EVENT).toString(),
+                time = backStackEntry.arguments?.getString(TIME_OF_EVENT).toString(),
+                location = backStackEntry.arguments?.getString(LOCATION_OF_EVENT).toString(),
+                allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
+                description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString()
+            )
         }
-        composable(route = Screen.EditPage.route) {
-            //EditPage(navController = navController)
+
+        composable(route = Screen.EditPage.route,) {
+            EditPage(navController = navController)
         }
         composable(route = Screen.EditSurvey.route) {
             EditSurvey(navController = navController)
