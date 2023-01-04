@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,8 +39,9 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 @Composable
 fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel = viewModel()) {
     val state = dataViewModel.state.value
-    var test = false
+    var checked by remember { mutableStateOf(false) }
 
+    Log.d("jdjd", "EventScreen: " + checked)
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -50,40 +52,44 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                 )
             )
     ) {
-        if (test) {
-            Dialog(onDismissRequest = { /*TODO*/ }) {
-                EventQuickEntry()
-            }
-        }
         Column() {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 20.dp),
             ) {
                 item {
-                    QuickEntryImage(
+                    Row(
                         modifier = Modifier
-                            .size(95.dp)
-                            .padding(top = 20.dp, end = 20.dp)
-                            .clickable(enabled = true,
-                                onClickLabel = "quick entry",
-                                onClick = {
-                                    test = true
-                                }
-                            ))
-                    ProfileLogo(
-                        modifier = Modifier
-                            .size(95.dp)
-                            .padding(top = 20.dp, end = 10.dp)
-                            .clickable(enabled = true,
-                                onClickLabel = "profile",
-                                onClick = {
-                                    navController.navigate(Screen.ProfileScreen.route)
-                                }
-                            )
-                    )
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ){
+                        if (checked) {
+                            Dialog(onDismissRequest = { /*TODO*/ }) {
+                                EventQuickEntry()
+                            }
+                        }
+                        QuickEntryImage(
+                            modifier = Modifier
+                                .size(65.dp)
+                                .padding(top = 12.dp, start = 10.dp)
+                                .clickable(enabled = true,
+                                    onClickLabel = "quick entry",
+                                    onClick = {
+                                        checked = true
+                                    }
+                                ))
+                        ProfileLogo(
+                            modifier = Modifier
+                                .size(72.dp)
+                                .padding(top = 20.dp, end = 20.dp)
+                                .clickable(enabled = true,
+                                    onClickLabel = "profile",
+                                    onClick = {
+                                        navController.navigate(Screen.ProfileScreen.route)
+                                    }
+                                )
+                        )
+                    }
                 }
-
-                item { EventQuickEntry() }
 
                 state.events?.let {
                     items(it.toList()) { event ->
@@ -125,8 +131,12 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                  */
             }
         }
+
     }
+
 }
+
+
 
 @Composable
 private fun ProfileLogo(modifier: Modifier = Modifier) {
@@ -149,18 +159,31 @@ private fun EventQuickEntry() {
         shape = RoundedCornerShape(20.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
-        Column() {
-            Row() {
-                QuickEntryImage()
+        Column(
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                QuickEntryImage2()
                 QuickEntryTitle("Quick Entry") //TODO: Make text as recourse
             }
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp, top = 20.dp)
             ) {
-                EventInputField({})
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    EventInputField({})
+                }
             }
         }
     }
@@ -169,13 +192,28 @@ private fun EventQuickEntry() {
 @Composable
 private fun QuickEntryImage(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.ic_add_circle_outlined)
-    Box(modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 10.dp, bottom = 5.dp)) {
+    Box(modifier = Modifier.padding(top = 5.dp, start = 20.dp)) {
         Image(
             painter = image,
             contentDescription = null,
-            modifier = Modifier
+            modifier = modifier
+               // .fillMaxSize()
+                .size(90.dp)
+        )
+    }
+}
+
+
+@Composable
+private fun QuickEntryImage2(modifier: Modifier = Modifier) {
+    val image = painterResource(id = R.drawable.ic_add_circle_outlined)
+    Box(modifier = Modifier.padding(top = 5.dp, start = 15.dp)) {
+        Image(
+            painter = image,
+            contentDescription = null,
+            modifier = modifier
+                // .fillMaxSize()
                 .size(50.dp)
-                .fillMaxSize()
         )
     }
 }
@@ -189,7 +227,7 @@ private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
         fontSize = 25.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 25.dp, start = 0.dp)
+            .padding(top = 5.dp, end = 30.dp)
     )
 }
 
