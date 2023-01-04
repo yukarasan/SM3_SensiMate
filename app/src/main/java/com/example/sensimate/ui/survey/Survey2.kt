@@ -6,45 +6,28 @@ import android.renderscript.ScriptGroup
 import androidx.compose.foundation.*
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
-import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.InitialStartPage.MyTextField
-import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
+import com.example.sensimate.navigation.Screen
 import com.example.sensimate.ui.theme.*
+
 
 @Composable
 fun Survey2(navController: NavController) {
+    var selectedOption by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
             .background(
@@ -64,7 +47,7 @@ fun Survey2(navController: NavController) {
         ProgressPreview()
         Question(title = "Question 2/4")
         SurveyTitle(title = "How likely would you buy Coca Cola?")
-        Information2({})
+        Information2()
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -96,10 +79,147 @@ private fun ProgressPreview() {
 }
 
 
+
 @Composable
-fun Information2(onClick: () -> Unit) {
-    val checkedState = remember { mutableStateOf(false) }
-    var isClicked = remember { mutableStateOf(false )}
+fun Information2() {
+    // Add a state variable to track the selected option
+    var selectedOption by remember { mutableStateOf(0) }
+    var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
+        selectedOption = i
+    }
+    Card(
+        modifier = Modifier
+            .padding(start = 0.dp, top = 25.dp)
+            .fillMaxWidth(),
+        elevation = 5.dp,
+        shape = RoundedCornerShape(20.dp),
+        backgroundColor = Color(red = 44, green = 44, blue = 59)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 10.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Pass the selectedOption state variable as a parameter to RoundedCheckView
+                RoundedCheckView(listener, selectedOption, option = 0)
+                InformationVeryLikely(title = "Very Likely")
+                Spacer(modifier = Modifier.width((120.dp)))
+
+            }
+
+            Row(
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 25.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Pass the selectedOption state variable as a parameter to RoundedCheckView
+                RoundedCheckView(listener, selectedOption, option = 1)
+                InformationLikely(title = "Likely")
+                Spacer(modifier = Modifier.width((120.dp)))
+
+            }
+            Row(
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 25.dp, bottom = 15.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Pass the selectedOption state variable as a parameter to RoundedCheckView
+                RoundedCheckView(listener, selectedOption, option = 2)
+                InformationNeutral(title = "Neutral")
+                Spacer(modifier = Modifier.width((120.dp)))
+
+
+            }
+            Row(
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 25.dp, bottom = 15.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Pass the selectedOption state variable as a parameter to RoundedCheckView
+                RoundedCheckView(listener, selectedOption, option = 3)
+                InformationUnlikely(title = "Unlikely")
+                Spacer(modifier = Modifier.width((120.dp)))
+            }
+            Row(
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 25.dp, bottom = 15.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Pass the selectedOption state variable as a parameter to RoundedCheckView
+                RoundedCheckView(listener, selectedOption, option = 4)
+                InformationVeryUnlikely(title = "Very Unlikely")
+                Spacer(modifier = Modifier.width((120.dp)))
+            }
+        }
+    }
+}
+
+@Composable
+fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, option: Int) {
+    // Add a state variable to track whether the checkbox is checked
+    val isChecked = (state == option)
+    val circleSize = remember { mutableStateOf(22.dp) }
+    val circleSize2 = remember { mutableStateOf(12.dp) }
+    val circleThickness = remember { mutableStateOf(2.dp) }
+    val color = remember { mutableStateOf(GreyColor) }
+
+    if (isChecked) {
+        circleSize.value = 22.dp
+        circleThickness.value = 2.dp
+        color.value = lightpurple
+    }
+    else {
+    circleSize.value = 22.dp
+    circleThickness.value = 2.dp
+    color.value = GreyColor
+    }
+
+        Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            // Add a clickable modifier to the Row element
+            .clickable(onClick = {
+                // Update the isChecked state variable
+              //  isChecked.value = !isChecked.value
+
+                listener?.invoke(option, isChecked)
+            })
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(22.dp)
+                .background(if(isChecked) color.value else GreyColor)
+                .padding(2.dp)
+                .clip(CircleShape)
+                .background(darkbluegrey) ,
+            contentAlignment = Center
+        ) {
+             if (isChecked || state == option) {
+                Box(
+                    modifier = Modifier
+                        .size(circleSize2.value)
+                        .clip(CircleShape)
+                        .background(color.value)
+                )
+            }
+        }
+    }
+}
+
+
+
+
+
+/*
+@Composable
+fun Information2() {
     Card(
         modifier = Modifier
             .padding(start = 0.dp, top = 25.dp)
@@ -171,6 +291,8 @@ fun Information2(onClick: () -> Unit) {
     }
 }
 
+ */
+
 @Composable
 private fun InformationVeryLikely(title: String, modifier: Modifier = Modifier) {
     Text(
@@ -235,9 +357,121 @@ private fun InformationVeryUnlikely(title: String, modifier: Modifier = Modifier
             .padding(top = 5.dp, start = 20.dp)
     )
 }
-
+/*
 @Composable
+fun RoundedCheckView(selectedOption: MutableState<Int>, optionId: Int) {
+    // Add a state variable to track whether the current RoundedCheckView is checked
+    val isChecked = remember { mutableStateOf(false) }
+    val circleSize = remember { mutableStateOf(22.dp) }
+    val circleSize2 = remember { mutableStateOf(12.dp) }
+    val circleThickness = remember { mutableStateOf(2.dp) }
+    val color = remember { mutableStateOf(GreyColor) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            // Add a clickable modifier to the Row element
+            .clickable(onClick = {
+                selectedOption.value = optionId // Update the selectedOption state variable
+                isChecked.value = !isChecked.value
+                if (isChecked.value) {
+                    circleSize.value = 22.dp
+                    circleThickness.value = 2.dp
+                    color.value = lightpurple
+                } else {
+                    circleSize.value = 22.dp
+                    circleThickness.value = 2.dp
+                    color.value = GreyColor
+                }
+            })
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(22.dp)
+                .background(GreyColor)
+                .padding(2.dp)
+                .clip(CircleShape)
+                .background(darkbluegrey) ,
+            contentAlignment = Center )
+        {
+            if (isChecked.value) {
+                circleSize.value = 22.dp
+                circleThickness.value = 2.dp
+                color.value = lightpurple
+              /*  circle(
+                    modifier = Modifier.size(circleSize2).background(color),
+                    stroke = circleThickness,
+                    strokeColor = lightpurple
+                )
 
+               */
+            }
+        }
+    }
+}
+
+ */
+
+
+/*
+@Composable
+fun RoundedCheckView(selectedOption: ModifierLocal<Int>) {
+    val isChecked = remember { mutableStateOf(false) }
+    val circleSize = remember { mutableStateOf(22.dp) }
+    val circleSize2 = remember { mutableStateOf(12.dp) }
+    val circleThickness = remember { mutableStateOf(2.dp) }
+    val color = remember { mutableStateOf(GreyColor) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            // Add a clickable modifier to the Row element
+            .clickable(onClick = {
+                selectedOption.value = 0 // Update the selectedOption state variable
+                isChecked.value = !isChecked.value
+                if (isChecked.value) {
+                    circleSize.value = 22.dp
+                    circleThickness.value = 2.dp
+                    color.value = lightpurple
+                } else {
+                    circleSize.value = 22.dp
+                    circleThickness.value = 2.dp
+                    color.value = GreyColor
+                }
+            })
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(22.dp)
+                .background(GreyColor)
+                .padding(2.dp)
+                .clip(CircleShape)
+                .background(darkbluegrey) ,
+            contentAlignment = Center )
+        {
+            if (isChecked.value) {
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(12.dp)
+                        .background(GreyColor)
+                        .padding(2.dp)
+                        .clip(CircleShape)
+                        .background(lightpurple)
+                )
+            }
+
+        }
+
+    }
+}
+
+ */
+
+
+
+/*
+@Composable
 fun RoundedCheckView() {
 
     val isChecked = remember { mutableStateOf(true) }
@@ -279,54 +513,20 @@ fun RoundedCheckView() {
                         .padding(2.dp)
                         .clip(CircleShape)
                         .background(lightpurple)
-                        .clickable(onClick = { isChecked.value = false
-                        })
                 )
             }
+
         }
 
     }
-/*
-    @Composable
-    fun RoundedCheckView(
-        onClick: () -> Unit,
-        text: String,
-        icon: Image,
-        textStyle: TextStyle,
-        iconColor: Color
-    ) {
-        val clicked = remember { mutableStateOf(false) }
-
-        if (!clicked.value) {
-            Box(
-                modifier = Modifier
-                    .clickable(onClick = {
-                        clicked.value = true
-                        onClick()
-                    })
-                    .size(50.dp)
-                    .background(
-                        color = MaterialTheme.colors.onSurface
-                    )
-                    .clip(RoundedCornerShape(20.dp))
-                    .ripple(bounded = false)
-            ) {
-                Row(
-                    verticalAlignment = CenterVertically
-                ) {
-                    icon(iconColor)
-                    Text(
-                        text = text,
-                        style = textStyle
-                    )
-                }
-            }
-        }
-    }
+}
 
  */
 
-}
+
+
+
+
 
 
 
