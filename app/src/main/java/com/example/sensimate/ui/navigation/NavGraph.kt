@@ -2,17 +2,22 @@ package com.example.sensimate.ui.navigation
 
 import EditEvent
 import EditPage
+
 import EditSurvey
 import EditSurveyPage
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
+import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
@@ -38,15 +43,54 @@ import com.example.sensimate.ui.survey.Survey4
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
-    NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
+
+
+    val context = LocalContext.current
+
+    val screen =
+        if (getBooleanFromLocalStorage(
+                "acceptedCookie",
+                context
+            )
+        ) {
+            if (getBooleanFromLocalStorage(
+                    "isLoggedIn",
+                    context
+                )
+            ) {
+                if (getBooleanFromLocalStorage(
+                        "isEmployee",
+                        context
+                    )
+                ) {
+                    Screen.EventScreenEmployee
+                } else {
+                    Screen.EventScreen
+                }
+
+            } else {
+                Screen.Login
+            }
+
+        } else {
+            Screen.CookieScreen
+        }
+
+
+
+
+    NavHost(
+        navController = navController,
+        startDestination = screen.route
+    ) {      // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)
         }
-        composable(route = Screen.Login.route){
+        composable(route = Screen.Login.route) {
             LogInMail(navController = navController)
         }
-        composable(route = Screen.SignUpWithMail.route){
+        composable(route = Screen.SignUpWithMail.route) {
             SignUpUsingMail(navController = navController)
         }
         composable(route = Screen.Guest.route) {
@@ -135,7 +179,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             )
         }
 
-        composable(route = Screen.EditPage.route,) {
+        composable(route = Screen.EditPage.route) {
             EditPage(navController = navController)
         }
         composable(route = Screen.EditSurvey.route) {
@@ -188,3 +232,4 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
     }
 }
+

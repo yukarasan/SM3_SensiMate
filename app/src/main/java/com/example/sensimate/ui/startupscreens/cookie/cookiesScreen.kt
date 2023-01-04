@@ -29,17 +29,17 @@ import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.*
 
-
 @Composable
 @Preview(showBackground = true)
 fun CookieScreenPreview() {
     CookiesScreen(rememberNavController())
 }
 
-
 @Composable
 fun CookiesScreen(navController: NavController) {
-    val checkedState = remember { mutableStateOf(false) }
+    val checkedState = remember {
+        mutableStateOf(false)
+    }
 
     Box(
         modifier = Modifier
@@ -128,17 +128,13 @@ fun CookiesScreen(navController: NavController) {
             val context = LocalContext.current
 
             Button(
-
                 enabled = checkedState.value,
-
                 onClick = {
-
                     SaveBoolToLocalStorage(
-                        key = "acceltedCookie",
+                        key = "acceptedCookie",
                         value = true,
                         context = context
                     )
-
                     navController.navigate(Screen.Login.route) {
                         restoreState = true
                     }
@@ -146,7 +142,6 @@ fun CookiesScreen(navController: NavController) {
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(200.dp, 50.dp)
-
             ) {
                 Text(
                     text = "Continue",

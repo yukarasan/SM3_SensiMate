@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.InitialStartPage
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.Profile
+import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.db
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
@@ -142,7 +144,6 @@ fun LogInMail(navController: NavController) {
             PurpleButtonColor,
 
             onClick = {
-
                 if (email == "" || password == "") {
                     Toast.makeText(
                         context, "Remember to write in a password and email",
@@ -172,7 +173,11 @@ fun LogInMail(navController: NavController) {
 
     if (successLoggedIn.value) {
         successLoggedIn.value = false
-        checkIfUserIsEmployeeOrNot(email = email, navController)
+        checkIfUserIsEmployeeOrNot(
+            email = email,
+            navController,
+            context
+        )
     }
 
     /*
@@ -207,7 +212,7 @@ fun LogInMail(navController: NavController) {
      */
 }
 
-fun checkIfUserIsEmployeeOrNot(email: String, navController: NavController) {
+fun checkIfUserIsEmployeeOrNot(email: String, navController: NavController, context: Context) {
     val userRef = db.collection("users").document(email)
 
     // Get the 'isEmployee' field from the document
@@ -216,10 +221,23 @@ fun checkIfUserIsEmployeeOrNot(email: String, navController: NavController) {
         // Check if the user is an employee
         if (isEmployee == true) {
             // Go to the employee page
+
+            SaveBoolToLocalStorage(
+                "isEmployee",
+                true,
+                context = context
+            )
+
             navController.navigate(Screen.EventScreenEmployee.route)
         } else {
             // Go to normal user page
             navController.navigate(Screen.EventScreen.route)
+
+            SaveBoolToLocalStorage(
+                "isLoggedIn",
+                true,
+                context = context
+            )
         }
     }
 }

@@ -264,8 +264,13 @@ object Database {
 
     } //TODO: Hussein
 
-    fun signOut() {
+    fun signOut(context: Context) {
         auth.signOut()
+        SaveBoolToLocalStorage(
+            "isLoggedIn",
+            false,
+            context = context
+        )
     } //TODO: Hussein
 
     /*
@@ -310,7 +315,7 @@ object Database {
             }
     }
 
-    fun UpdateEvent(data : Map<String, String>, documentID: String){
+    fun UpdateEvent(data: Map<String, String>, documentID: String) {
         val docref = db.collection("TESTER").document(documentID)
         docref.update(data)
             .addOnSuccessListener {
@@ -321,8 +326,6 @@ object Database {
             }
 
     } //TODO: Sabirin
-
-
 
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
@@ -353,7 +356,6 @@ object Database {
     data class Question(val text: List<String>, val answers: List<Boolean>)
 
 
-
     fun answerQuestion() {  //TODO: Anshjyot
         val database = FirebaseDatabase.getInstance()
         val ref = database.getReference("answers")
@@ -376,12 +378,11 @@ object Database {
     data class Answer(val questionId: List<String>, val answer: List<Boolean>)
 
 
-
     fun exportToExcel() {} //TODO: LATER
 
 }
 
-object OurCalendar{
+object OurCalendar {
     fun getMonthName(month: Int): String? {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.MONTH, month)

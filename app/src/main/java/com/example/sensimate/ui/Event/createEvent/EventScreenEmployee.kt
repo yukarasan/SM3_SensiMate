@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -137,15 +138,17 @@ private fun MyDialog(
 ) {
 
 
+    val context = LocalContext.current
+
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
             title = { Text(text = "Do you want to log out of your profile?") },
             confirmButton = {
-
                 TextButton(onClick = {
                     showDialog.value = false
-                    Database.signOut()
+
+                    Database.signOut(context = context)
 
                     navController.popBackStack()
                     navController.popBackStack()

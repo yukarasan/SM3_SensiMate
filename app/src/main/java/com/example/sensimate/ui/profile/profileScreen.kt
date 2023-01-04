@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -93,8 +94,11 @@ fun ProfileScreen(navController: NavController) {
             item { ImageButton() }
             item { ProfileMail() }
             item {
+                val context = LocalContext.current
                 LogoutButton(onClick = {
-                    Database.signOut()
+                    Database.signOut(
+                        context = context
+                    )
                     navController.popBackStack()
 
                     navController.navigate(Screen.Login.route)
