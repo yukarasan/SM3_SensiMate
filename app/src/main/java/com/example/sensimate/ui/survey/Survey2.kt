@@ -194,7 +194,7 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
             modifier = Modifier
                 .clip(CircleShape)
                 .size(22.dp)
-                .background(GreyColor)
+                .background(if(isChecked) color.value else GreyColor)
                 .padding(2.dp)
                 .clip(CircleShape)
                 .background(darkbluegrey) ,
@@ -203,7 +203,7 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
              if (isChecked || state == option) {
                 Box(
                     modifier = Modifier
-                        .size(circleSize2.value * 2)
+                        .size(circleSize2.value)
                         .clip(CircleShape)
                         .background(color.value)
                 )
@@ -211,6 +211,8 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
         }
     }
 }
+
+
 
 
 

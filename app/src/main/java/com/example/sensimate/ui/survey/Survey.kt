@@ -21,6 +21,8 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Rotate
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 import com.example.sensimate.navigation.Screen
@@ -320,13 +322,28 @@ fun NextButton(onClick: () -> Unit) {
                 modifier = Modifier.padding(start = 0.dp)
             )
 
+
+
             Image(
-                painter = painterResource(id = R.drawable.ic_baseline_arrow_front_24),
+                painter = painterResource(id = R.drawable.ic_baseline_arrow_front2_24),
+                contentDescription = "Next",
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 10.dp)
+                    .rotate(180f)
+            )
+
+            /*
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_baseline_arrow_front2_24),
                 contentDescription = "Next",
                 modifier = Modifier
                     .size(25.dp)
                     .padding(start = 10.dp)
             )
+
+             */
 
         }
     }

@@ -81,6 +81,9 @@ private fun ProgressPreview() {
 fun Information3() {
     val checkedState = remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(0) }
+    var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
+        selectedOption = i
+    }
     Card(
         modifier = Modifier
             .padding(start = 0.dp, top = 0.dp)
@@ -121,14 +124,16 @@ fun Information3() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                /*
-                RoundedCheckView(state = selectedOption, option = 0)
-                RoundedCheckView(state = selectedOption, option = 1)
-                RoundedCheckView(state = = selectedOption, option = 2)
-                RoundedCheckView(selectedOption = selectedOption, option = 3)
-                RoundedCheckView(selectedOption = selectedOption, option = 4)
 
-                 */
+                RoundedCheckView(listener, selectedOption, option = 0)
+                RoundedCheckView(listener, selectedOption, option = 1)
+                RoundedCheckView(listener,selectedOption, option = 2)
+                RoundedCheckView(listener, selectedOption, option = 3)
+                RoundedCheckView(listener,selectedOption, option = 4)
+
+
+
+
 
             }
         }
