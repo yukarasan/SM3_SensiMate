@@ -7,8 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestoreException
 import android.widget.Toast
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -51,15 +55,17 @@ val auth = Firebase.auth
 object Database {
     //auth.currentUser?.email.toString()
 
-   /* fun getProfile(): Profile {
+    fun getProfile(): Profile {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
+        var profile = Profile()
 
-        var profile: Profile? = null
-        profile = docRef.get().addOnSuccessListener { snapshot -> snapshot.toObject<Profile>() }
-        return profile!!
+        docRef.get().addOnSuccessListener { documentSnapshot ->
+            profile = documentSnapshot.toObject<Profile>()!!
+        }
+
+        return profile;
     }
 
-    */
 
     fun signUserUp(
         email: String,
@@ -175,54 +181,76 @@ object Database {
     } //TODO: Yusuf
 
 
-/*
-item.forEach { document ->
-                val eventTitle = document.get("title").toString()
-                val eventAddress = document.get("address").toString()
-                val eventDescription = document.get("description").toString()
-                val eventDistance = document.get("distanceToEvent").toString()
+    /*
+    item.forEach { document ->
+                    val eventTitle = document.get("title").toString()
+                    val eventAddress = document.get("address").toString()
+                    val eventDescription = document.get("description").toString()
+                    val eventDistance = document.get("distanceToEvent").toString()
 
-                val event = Event(
-                    title = eventTitle,
-                    address = eventAddress,
-                    description = eventDescription,
-                    distanceToEvent = eventDistance
-                )
-                events.add(event)
-            }
- */
+                    val event = Event(
+                        title = eventTitle,
+                        address = eventAddress,
+                        description = eventDescription,
+                        distanceToEvent = eventDistance
+                    )
+                    events.add(event)
+                }
+     */
 
     fun createEvent() {} //TODO: Ahmad
     fun editEvent() {} //TODO: Ahmad
 
 
-    fun deleteEvent() {} //TODO: Sabirin
-    fun getEmployeeProfiles() {} //TODO: Sabirin
+    fun deleteEvent(eventtitle: String) {
+        //val docref = db.collection()
+        db.collection("events").whereEqualTo("title", eventtitle)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    document.reference.delete()
+                        .addOnSuccessListener { Log.d(TAG, "Document has been deleted") }
+                        .addOnFailureListener { e ->
+                            Log.w(
+                                TAG,
+                                "Cant delete the current document", e
+                            )
+                        }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    //TODO: Sabirin
+    fun getEmployeeProfiles() {
+    } //TODO: Sabirin
 
     fun createEmployee() {} //TODO: Anshjyot
 
-    fun getSurvey() { //TODO: Anshjyot
-        val questions = mutableListOf<Question>()
-        val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("questions")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val questionSnapshots = snapshot.children
-                for (questionSnapshot in questionSnapshots) {
-                    val question = questionSnapshot.getValue(Question::class.java)
-                    if (question != null) {
-                        questions.add(question)
-                    }
+fun getSurvey() { //TODO: Anshjyot
+    val questions = mutableListOf<Question>()
+    val database = FirebaseDatabase.getInstance()
+    val ref = database.getReference("questions")
+    ref.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val questionSnapshots = snapshot.children
+            for (questionSnapshot in questionSnapshots) {
+                val question = questionSnapshot.getValue(Question::class.java)
+                if (question != null) {
+                    questions.add(question)
                 }
             }
+        }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("error", "getListOfQuestions: $error")
-            }
-        })
-    }
+        override fun onCancelled(error: DatabaseError) {
+            Log.d("error", "getListOfQuestions: $error")
+        }
+    })
+}
 
-    data class Question(val text: String, val answers: List<Boolean>)
+data class Question(val text: String, val answers: List<Boolean>)
 
 
     fun answerQuestion() {  //TODO: Anshjyot
@@ -233,7 +261,6 @@ item.forEach { document ->
                 val answers = snapshot.children.mapNotNull { it.getValue(Answer::class.java) }
                 updateAnswers(answers)
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.d("error", "getListOfAnswers: $error")
             }
@@ -243,9 +270,10 @@ item.forEach { document ->
     fun updateAnswers(answers: List<Answer>) {
 
     }
-
     data class Answer(val questionId: String, val answer: List<Boolean>)
 
 
+
     fun exportToExcel() {} //TODO: LATER
+
 }

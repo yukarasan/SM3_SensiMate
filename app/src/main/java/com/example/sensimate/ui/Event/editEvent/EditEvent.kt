@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
 import com.example.sensimate.ui.navigation.Screen
@@ -53,6 +54,7 @@ fun EditEventPreview() {
  */
 @Composable
 fun EditEvent(navController: NavController) {
+    var eventTitle by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -108,6 +110,7 @@ fun EditEvent(navController: NavController) {
 
                                         Row {
                                             Column {
+                                                //Title(title = eventTitle)
                                                 Title(title = "Coca Cola")
                                                 Discription(
                                                     discription = "Come and taste the freshing sensation " +
@@ -168,7 +171,7 @@ fun EditEvent(navController: NavController) {
                         }
                         Spacer(modifier = Modifier.size(20.dp))
                         Button(
-                            onClick = {},
+                            onClick = { Database.deleteEvent(eventTitle)},
                             shape = CircleShape,
                             colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                             modifier = Modifier.size(345.dp, 60.dp),
