@@ -320,9 +320,25 @@ object Database {
             }
     }
 
-    //TODO: Sabirin
-    fun getEmployeeProfiles() {
+
+
+    fun UpdateEvent(data : Map<String, String>){
+        val docref = db.collection("TESTER").document("\n" +
+                "C5447XmywAPeF70GUbBv")
+        docref.update(data)
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error updating document", e)
+            }
+
     } //TODO: Sabirin
+
+
+
+
+    fun getEmployeeProfiles() {} //TODO: Sabirin
 
     fun createEmployee() {} //TODO: Anshjyot
 
