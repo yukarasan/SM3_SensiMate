@@ -134,7 +134,7 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
 
 
 @Composable
-private fun ProfileLogo(modifier: Modifier = Modifier) {
+fun ProfileLogo(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.person_circle)
     Image(
         painter = image,
