@@ -206,7 +206,7 @@ fun CreateEventScreen(navController: NavController){
                                 "month" to month,
                                 "year" to year
                                                 )
-            db.collection("events").add(event)
+            db.collection("TESTER").add(event)
                   /*navController.navigate(Screen.QuestionPageScreen.route)*/}},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -299,7 +299,7 @@ fun ChooseBirthDate(
                 .padding(1.dp, 65.dp, 1.dp, 1.dp)
                 .clickable { datePickerLog.show() },
         )
-    }
+}
 
 
 
@@ -370,7 +370,7 @@ fun TextToPhoto(){
         .padding(330.dp, 44.dp, 2.dp, 1.dp)
 
     )
-    }
+}
 
 
 @Composable
@@ -508,7 +508,7 @@ fun QuestionPageScreen(navController: NavController){
     )
 
     Column(modifier = Modifier.padding(25.dp, 30.dp,1.dp,1.dp) ){
-        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+        OrangeBackButton(onClick = {navController.popBackStack()})
     }
 
 
@@ -541,25 +541,6 @@ fun QuestionPageScreen(navController: NavController){
             id = R.drawable.redaddplus
         )
     }
-
-        /*
-    AddPhoto(
-        modifier = Modifier
-            .padding(15.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
-        ,id = R.drawable.redgobackbutton)
-
-     */
-
-
-
-
-
-
 }
 
 // Figur 3
@@ -651,25 +632,6 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
             }
 
     }}
-
-
-
-//TODO LAV EN GO BACK BUTTON
-    /*
-    AddPhoto(
-        modifier = Modifier
-            .padding(15.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
-        , id = R.drawable.redgobackbutton)
-
- */
-
-
-
 }
 @Composable
 fun TextFiledQuestionText(questionText: String,textChange: (String) -> Unit){

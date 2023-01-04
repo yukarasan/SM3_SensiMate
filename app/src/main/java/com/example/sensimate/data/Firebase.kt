@@ -61,58 +61,10 @@ class EventDataViewModel : ViewModel() {
     }
 }
 
-class ProfileDataViewModel : ViewModel() {
-    val state = mutableStateOf(ProfileScreenState())
-
-    init {
-        getProfile()
-    }
-
-    private fun getProfile() {
-        viewModelScope.launch {
-            val profile = fetchProfile()
-            state.value = state.value.copy(profile = profile)
-        }
-    }
-}
-
 // Initialize Firebase Auth
 val auth = Firebase.auth
 
 object Database {
-    //auth.currentUser?.email.toString()
-
-    /*
-    fun fetchProfile(): Profile {
-        val docRef = db.collection("users").document(auth.currentUser?.email.toString())
-        var profile = Profile()
-
-        docRef.get().addOnSuccessListener { documentSnapshot ->
-            profile = documentSnapshot.toObject<Profile>()!!
-        }
-
-        Log.d("age", profile.yearBorn)
-
-        return profile;
-    }
-     */
-
-    /*
-    fun fetchProfile(): Profile {
-        val docRef = db.collection("users").document(auth.currentUser?.email.toString())
-        // var profile = Profile()
-
-        var profile: MutableState<Profile> = mutableStateOf(Profile())
-
-        docRef.get()
-
-        docRef.get().addOnSuccessListener { documentSnapshot ->
-            profile = documentSnapshot.toObject<Profile>()!!
-        }
-
-        return profile;
-    }
-     */
 
     suspend fun fetchProfile(): Profile? {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
@@ -133,7 +85,6 @@ object Database {
         return profile
     }
 
-
     suspend fun fetchListOfEvents(): MutableList<Event> {
         val eventReference = db.collection("events")
         val eventList: MutableList<Event> = mutableListOf()
@@ -149,7 +100,6 @@ object Database {
 
         return eventList
     }
-
 
     fun signUserUp(
         email: String,
@@ -272,13 +222,6 @@ object Database {
         auth.signOut()
     } //TODO: Hussein
 
-    fun editUserProfile() {
-
-    } //TODO: Yusuf
-
-
-
-
     /*
     item.forEach { document ->
                     val eventTitle = document.get("title").toString()
@@ -321,11 +264,8 @@ object Database {
             }
     }
 
-
-
-    fun UpdateEvent(data : Map<String, String>){
-        val docref = db.collection("TESTER").document("\n" +
-                "C5447XmywAPeF70GUbBv")
+    fun UpdateEvent(data : Map<String, String>, documentID: String){
+        val docref = db.collection("TESTER").document(documentID)
         docref.update(data)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
