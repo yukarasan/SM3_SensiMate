@@ -1,6 +1,5 @@
 package com.example.sensimate.ui.InitialStartPage
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -82,7 +81,6 @@ fun LogInMail(navController: NavController) {
         Spacer(modifier = Modifier.size(100.dp))
 
         //email button
-
         MyTextField(
             text = email,
             textSize = 15,
@@ -212,7 +210,7 @@ fun LogInMail(navController: NavController) {
 fun checkIfUserIsEmployeeOrNot(email: String, navController: NavController) {
     val userRef = db.collection("users").document(email)
 
-// Get the 'isEmployee' field from the document
+    // Get the 'isEmployee' field from the document
     userRef.get().addOnSuccessListener { snapshot ->
         val isEmployee = snapshot.getBoolean("isEmployee")
         // Check if the user is an employee

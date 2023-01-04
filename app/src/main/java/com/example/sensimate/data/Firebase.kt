@@ -238,6 +238,43 @@ object Database {
 
     } //TODO: Hussein
 
+    fun loginAnonymously(context: Context) {
+        auth.signInAnonymously().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(
+                    context, "Successfully logged in anonymously",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    context, "Log in failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+
+        /*
+    .addOnCompleteListener(this) { task ->
+        if (task.isSuccessful) {
+            // Sign in success, update UI with the signed-in user's information
+            Log.d(TAG, "signInAnonymously:success")
+            val user = auth.currentUser
+            updateUI(user)
+        } else {
+            // If sign in fails, display a message to the user.
+            Log.w(TAG, "signInAnonymously:failure", task.exception)
+            Toast.makeText(
+                baseContext, "Authentication failed.",
+                Toast.LENGTH_SHORT
+            ).show()
+            updateUI(null)
+        }
+    }
+
+         */
+    }
+
     fun forgotPassword(
         email: String,
         context: Context,
@@ -275,8 +312,6 @@ object Database {
     fun editUserProfile() {
 
     } //TODO: Yusuf
-
-
 
 
     /*
@@ -322,10 +357,11 @@ object Database {
     }
 
 
-
-    fun UpdateEvent(data : Map<String, String>){
-        val docref = db.collection("TESTER").document("\n" +
-                "C5447XmywAPeF70GUbBv")
+    fun UpdateEvent(data: Map<String, String>) {
+        val docref = db.collection("TESTER").document(
+            "\n" +
+                    "C5447XmywAPeF70GUbBv"
+        )
         docref.update(data)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
@@ -335,8 +371,6 @@ object Database {
             }
 
     } //TODO: Sabirin
-
-
 
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
@@ -367,7 +401,6 @@ object Database {
     data class Question(val text: List<String>, val answers: List<Boolean>)
 
 
-
     fun answerQuestion() {  //TODO: Anshjyot
         val database = FirebaseDatabase.getInstance()
         val ref = database.getReference("answers")
@@ -390,12 +423,11 @@ object Database {
     data class Answer(val questionId: List<String>, val answer: List<Boolean>)
 
 
-
     fun exportToExcel() {} //TODO: LATER
 
 }
 
-object OurCalendar{
+object OurCalendar {
     fun getMonthName(month: Int): String? {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.MONTH, month)
