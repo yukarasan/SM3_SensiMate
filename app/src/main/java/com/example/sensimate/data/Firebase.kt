@@ -28,6 +28,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+
 @SuppressLint("StaticFieldLeak")
 val db = Firebase.firestore
 
@@ -249,7 +250,7 @@ object Database {
             }
         })
     }
-    data class Question(val text: String, val answers: List<Boolean>)
+    data class Question(val text: List<String>, val answers: List<Boolean>)
 
 
     fun answerQuestion() {  //TODO: Anshjyot
@@ -269,7 +270,7 @@ object Database {
     fun updateAnswers(answers: List<Answer>) {
 
     }
-    data class Answer(val questionId: String, val answer: List<Boolean>)
+    data class Answer(val questionId: List<String>, val answer: List<Boolean>)
 
 
 

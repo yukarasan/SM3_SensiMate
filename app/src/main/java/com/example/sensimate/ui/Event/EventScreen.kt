@@ -23,18 +23,22 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel = viewModel()) {
     val state = dataViewModel.state.value
+    var test = false
 
     Box(
         modifier = Modifier
@@ -46,16 +50,30 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                 )
             )
     ) {
+        if (test) {
+            Dialog(onDismissRequest = { /*TODO*/ }) {
+                EventQuickEntry()
+            }
+        }
         Column() {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 20.dp),
             ) {
                 item {
+                    QuickEntryImage(
+                        modifier = Modifier
+                            .size(95.dp)
+                            .padding(top = 20.dp, end = 20.dp)
+                            .clickable(enabled = true,
+                                onClickLabel = "quick entry",
+                                onClick = {
+                                    test = true
+                                }
+                            ))
                     ProfileLogo(
                         modifier = Modifier
                             .size(95.dp)
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, top = 20.dp)
+                            .padding(top = 20.dp, end = 10.dp)
                             .clickable(enabled = true,
                                 onClickLabel = "profile",
                                 onClick = {
@@ -64,6 +82,7 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                             )
                     )
                 }
+
                 item { EventQuickEntry() }
 
                 state.events?.let {
@@ -116,7 +135,7 @@ private fun ProfileLogo(modifier: Modifier = Modifier) {
         painter = image,
         contentDescription = null,
         modifier = modifier,
-        alignment = Alignment.CenterEnd
+        alignment = Alignment.TopEnd
     )
 }
 
@@ -148,7 +167,7 @@ private fun EventQuickEntry() {
 }
 
 @Composable
-private fun QuickEntryImage() {
+private fun QuickEntryImage(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.ic_add_circle_outlined)
     Box(modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 10.dp, bottom = 5.dp)) {
         Image(
