@@ -4,7 +4,9 @@ import EditEvent
 import EditPage
 import EditSurvey
 import EditSurveyPage
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -32,6 +34,7 @@ import com.example.sensimate.ui.survey.Survey2
 import com.example.sensimate.ui.survey.Survey3
 import com.example.sensimate.ui.survey.Survey4
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
     NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
