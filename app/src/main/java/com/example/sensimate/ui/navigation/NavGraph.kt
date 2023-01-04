@@ -37,18 +37,15 @@ import com.example.sensimate.ui.survey.Survey4
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
-    NavHost(
-        navController = navController,
-        startDestination = Screen.EventScreenEmployee.route
-    ) {      // Screen.CookieScreen.route
+    NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)
         }
-        composable(route = Screen.Login.route) {
+        composable(route = Screen.Login.route){
             LogInMail(navController = navController)
         }
-        composable(route = Screen.SignUpWithMail.route) {
+        composable(route = Screen.SignUpWithMail.route){
             SignUpUsingMail(navController = navController)
         }
         composable(route = Screen.Guest.route) {
