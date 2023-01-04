@@ -162,30 +162,32 @@ fun Information2() {
 @Composable
 fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, option: Int) {
     // Add a state variable to track whether the checkbox is checked
-    val isChecked = remember { mutableStateOf(state == option) }
+    val isChecked = (state == option)
     val circleSize = remember { mutableStateOf(22.dp) }
     val circleSize2 = remember { mutableStateOf(12.dp) }
     val circleThickness = remember { mutableStateOf(2.dp) }
     val color = remember { mutableStateOf(GreyColor) }
-    Row(
+
+    if (isChecked) {
+        circleSize.value = 22.dp
+        circleThickness.value = 2.dp
+        color.value = lightpurple
+    }
+    else {
+    circleSize.value = 22.dp
+    circleThickness.value = 2.dp
+    color.value = GreyColor
+    }
+
+        Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             // Add a clickable modifier to the Row element
             .clickable(onClick = {
                 // Update the isChecked state variable
-                isChecked.value = !isChecked.value
-                if (isChecked.value) {
-                    circleSize.value = 22.dp
-                    circleThickness.value = 2.dp
-                    color.value = lightpurple
+              //  isChecked.value = !isChecked.value
 
-
-                } else {
-                    circleSize.value = 22.dp
-                    circleThickness.value = 2.dp
-                    color.value = GreyColor
-                }
-                listener?.invoke(option, isChecked.value)
+                listener?.invoke(option, isChecked)
             })
     ) {
         Box(
@@ -198,7 +200,7 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
                 .background(darkbluegrey) ,
             contentAlignment = Center
         ) {
-             if (isChecked.value || state == option) {
+             if (isChecked || state == option) {
                 Box(
                     modifier = Modifier
                         .size(circleSize2.value * 2)
