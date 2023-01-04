@@ -39,7 +39,6 @@ import com.example.sensimate.ui.theme.employeelogin
 import kotlinx.coroutines.launch
 import java.util.*
 
-
 @Composable
 fun LogInMail(navController: NavController) {
 
@@ -370,4 +369,3 @@ fun MyOtherOption(
         )
     }
 }
-

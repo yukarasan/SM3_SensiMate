@@ -18,6 +18,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
+import com.example.sensimate.data.SaveBoolToLocalStorage
+import com.example.sensimate.data.SaveStringToLocalStorage
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.ChooseBirthDate
 import com.example.sensimate.ui.InitialStartPage.DropDownMenu
@@ -95,7 +97,6 @@ fun GuestScreen(navController: NavController) {
                 title = "Continue as guest",
                 PurpleButtonColor,
                 onClick = {
-
                     if (selectedGender.value == "" || postalCode.length < 4 || myYear.value == "") {
                         Toast.makeText(
                             context,
@@ -104,6 +105,42 @@ fun GuestScreen(navController: NavController) {
                         ).show()
                     } else {
                         navController.popBackStack()
+
+                        SaveBoolToLocalStorage(
+                            "isGuest",
+                            true,
+                            context
+                        )
+
+                        SaveStringToLocalStorage(
+                            "postalCode",
+                            postalCode,
+                            context
+                        )
+
+                        SaveStringToLocalStorage(
+                            "gender",
+                            selectedGender.value,
+                            context
+                        )
+
+                        SaveStringToLocalStorage(
+                            "yearBorn",
+                            myYear.value,
+                            context
+                        )
+
+                        SaveStringToLocalStorage(
+                            "monthBorn",
+                            myMonth.value,
+                            context
+                        )
+
+                        SaveStringToLocalStorage(
+                            "dayBorn",
+                            myDay.value,
+                            context
+                        )
 
                         Database.loginAnonymously(context)
                         navController.navigate(Screen.EventScreen.route)

@@ -271,6 +271,13 @@ object Database {
             false,
             context = context
         )
+
+        SaveBoolToLocalStorage(
+            "isGuest",
+            false,
+            context
+        )
+
     } //TODO: Hussein
 
     /*
