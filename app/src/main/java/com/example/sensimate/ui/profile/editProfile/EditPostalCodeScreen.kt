@@ -46,7 +46,12 @@ fun EditPostalCodeScreen(navController: NavController) {
             text = postalCode,
             description = "Postal code",
             placeholder = "Enter your postal code here",
-            onValueChange = { postalCode = it }
+            onValueChange = {
+                val pattern = "^[0-9]*\$".toRegex()
+                if (it.length <= 4 && pattern.matches(it)) {
+                    postalCode = it
+                }
+            }
         )
         Text(
             text = "To give more insightful information to the company, we would like to now about" +

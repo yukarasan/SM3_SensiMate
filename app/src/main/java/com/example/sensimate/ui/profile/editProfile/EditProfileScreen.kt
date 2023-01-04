@@ -89,9 +89,8 @@ fun EditProfileScreen(navController: NavController) {
                 )
             }
             item {
-                EmailInfoAboutUser(
+                InfoAboutUser(
                     desc = "Edit your e-mail here",
-                    info = auth.currentUser?.email.toString(),
                     onClick = {
                         navController.navigate(Screen.EditEmailScreen.route)
                     }
