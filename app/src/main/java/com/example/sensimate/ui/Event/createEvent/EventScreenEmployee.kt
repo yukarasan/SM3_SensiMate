@@ -6,23 +6,53 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
 import com.example.sensimate.data.EventDataViewModel
 import com.example.sensimate.ui.navigation.Screen
 
+
+@Preview(showBackground = true)
 @Composable
-fun EventScreenEmployee(navController: NavController, dataViewModel: EventDataViewModel = viewModel()) {
+fun EventScreenEmployeePreview() {
+    EventScreenEmployee(rememberNavController())
+}
+
+
+@Composable
+fun EventScreenEmployee(
+    navController: NavController,
+    dataViewModel: EventDataViewModel = viewModel()
+) {
+    val showDialog = remember {
+        mutableStateOf(false)
+    }
+
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        MyDialog(navController = navController, showDialog)
+    }
+
     Column(
         modifier = Modifier.background(
             Brush.verticalGradient(
@@ -39,12 +69,24 @@ fun EventScreenEmployee(navController: NavController, dataViewModel: EventDataVi
 
 
             item {
-                AddEventImage(navController = navController)
-                TextToCreateEvent()
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AddEventImage(navController = navController)
+                    ProfileLogo(
+                        Modifier
+                            .clickable { showDialog.value = true }
+                            .size(64.dp)
+                            .padding(end = 13.dp, top = 15.dp))
+                }
+
             }
 
 
             item { QuickEntry() }
+
 
 
             state.events?.let {
@@ -78,7 +120,7 @@ private fun AddEventImage(navController: NavController) {
         painter = image,
         contentDescription = null,
         modifier = Modifier
-            .padding(start = 20.dp)
+            .padding(start = 20.dp, top = 10.dp)
             .size(40.dp)
             .clickable {
                 navController.navigate(Screen.CreateEventScreen.route)
@@ -86,14 +128,37 @@ private fun AddEventImage(navController: NavController) {
         alignment = Alignment.CenterEnd,
     )
 }
-@Composable
-fun TextToCreateEvent(){
-    Text(text = "Crate Event",
-        color = Color(0xFFB874A6), fontSize = 15.sp,
-        maxLines = 1,
-        modifier = Modifier
-            .padding(start = 5.dp)
 
-    )
+@Preview(showBackground = true)
+@Composable
+private fun MyDialog(
+    navController: NavController = rememberNavController(),
+    showDialog: MutableState<Boolean> = mutableStateOf(true)
+) {
+
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            title = { Text(text = "Do you want to log out of your profile?") },
+            confirmButton = {
+
+                TextButton(onClick = {
+                    showDialog.value = false
+                    Database.signOut()
+
+                    navController.popBackStack()
+                    navController.popBackStack()
+
+                    navController.navigate(Screen.Login.route)
+                })
+                { Text(text = "Yes") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog.value = false })
+                { Text(text = "No") }
+            },
+        )
+    }
 }
 
