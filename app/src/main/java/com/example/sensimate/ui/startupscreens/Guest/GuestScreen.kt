@@ -107,6 +107,12 @@ fun GuestScreen(navController: NavController) {
                         navController.popBackStack()
 
                         SaveBoolToLocalStorage(
+                            "isLoggedIn",
+                            true,
+                            context
+                        )
+
+                        SaveBoolToLocalStorage(
                             "isGuest",
                             true,
                             context

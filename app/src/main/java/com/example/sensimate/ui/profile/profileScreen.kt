@@ -49,19 +49,32 @@ fun ProfileScreen(navController: NavController) {
     val monthBorn = remember { mutableStateOf("") }
     val postalCode = remember { mutableStateOf("") }
     val gender = remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
-        scope.launch {
-            val profile = profile()
 
+        if (!getBooleanFromLocalStorage("isGuest", context = context)) {
+            scope.launch {
+                val profile = profile()
+
+                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+                age.value = (currentYear - profile.yearBorn.toInt()).toString()
+
+                dayBorn.value = profile.dayBorn
+                yearBorn.value = profile.yearBorn
+                monthBorn.value = profile.monthBorn
+                postalCode.value = profile.postalCode
+                gender.value = profile.gender
+            }
+        } else {
             val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-            age.value = (currentYear - profile.yearBorn.toInt()).toString()
+            yearBorn.value = getStringFromLocalStorage("yearBorn", context)
 
-            dayBorn.value = profile.dayBorn
-            yearBorn.value = profile.yearBorn
-            monthBorn.value = profile.monthBorn
-            postalCode.value = profile.postalCode
-            gender.value = profile.gender
+            age.value = (currentYear - yearBorn.value.toInt()).toString()
+            dayBorn.value = getStringFromLocalStorage("dayBorn", context)
+            monthBorn.value = getStringFromLocalStorage("monthBorn", context)
+            postalCode.value = getStringFromLocalStorage("postalCode", context)
+            gender.value = getStringFromLocalStorage("gender", context)
         }
     }
 
@@ -88,7 +101,10 @@ fun ProfileScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     OrangeBackButton(onClick = { navController.navigate(Screen.EventScreen.route) })
-                    EditButton(onClick = { navController.navigate(Screen.EditProfileScreen.route) })
+
+                    if(!getBooleanFromLocalStorage("isGuest", context)){
+                        EditButton(onClick = { navController.navigate(Screen.EditProfileScreen.route) })
+                    }
                 }
             }
             item { ImageButton() }
@@ -219,7 +235,14 @@ private fun ProfileName() {
 @Composable
 private fun ProfileMail() {
     Text(
-        text = auth.currentUser?.email.toString(),
+        //text = auth.currentUser?.email.toString() ?: "Guest profile",
+
+        text = if (auth.currentUser?.email != null) {
+            auth.currentUser!!.email.toString()
+        } else {
+            ""
+        },
+
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 13.sp,
