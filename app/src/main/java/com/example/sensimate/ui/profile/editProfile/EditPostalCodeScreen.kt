@@ -14,12 +14,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditPostalCodeScreen(navController: NavController) {
     var postalCode by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -32,13 +35,23 @@ fun EditPostalCodeScreen(navController: NavController) {
             )
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            CheckBox(onClick = { navController.popBackStack() })
+            CheckBox(onClick = {
+                navController.popBackStack()
+                scope.launch {
+                    updateProfile(postalCode = postalCode)
+                }
+            })
         }
         CustomTextField(
             text = postalCode,
             description = "Postal code",
             placeholder = "Enter your postal code here",
-            onValueChange = { postalCode = it }
+            onValueChange = {
+                val pattern = "^[0-9]*\$".toRegex()
+                if (it.length <= 4 && pattern.matches(it)) {
+                    postalCode = it
+                }
+            }
         )
         Text(
             text = "To give more insightful information to the company, we would like to now about" +
@@ -47,4 +60,12 @@ fun EditPostalCodeScreen(navController: NavController) {
             modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 30.dp)
         )
     }
+}
+
+private suspend fun updateProfile(postalCode: String) {
+    val fields = mapOf(
+        "postalCode" to postalCode,
+    )
+
+    Database.updateProfile(fields)
 }

@@ -13,20 +13,27 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
@@ -41,9 +48,10 @@ import java.util.*
 @Preview(showBackground = true)
 @Composable
 fun CreateEventPreview() {
-    CreateEventScreen(rememberNavController())
-    //QuestionPageScreen(rememberNavController())
+    //CreateEventScreen(rememberNavController())
+    QuestionPageScreen(rememberNavController())
     //CreateMultpleChoiceQuestionScreen(rememberNavController())
+    //CreateTextAnswerQuestionScreen(rememberNavController())
 }
 
 
@@ -207,7 +215,7 @@ fun CreateEventScreen(navController: NavController){
                                 "year" to year
                                                 )
             db.collection("TESTER").add(event)
-                  /*navController.navigate(Screen.QuestionPageScreen.route)*/}},
+                  navController.navigate(Screen.QuestionPageScreen.route)}},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(240.dp, 50.dp),
@@ -483,6 +491,8 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
 
 @Composable
 fun QuestionPageScreen(navController: NavController){
+    val selectedQuestion = remember { mutableStateOf("") }
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -523,7 +533,6 @@ fun QuestionPageScreen(navController: NavController){
         backgroundColor = Color(red = 44, green = 44, blue = 59)
 
     ) {  //TODO
-
         Text(
             text = "Create an Question",
             color = Color(0xFFB874A6),
@@ -537,9 +546,24 @@ fun QuestionPageScreen(navController: NavController){
                 .padding(240.dp, 1.dp, 1.dp, 1.dp)
                 .size(20.dp)
                 .clickable(enabled = true,
-                    onClick = { navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route) }),
+                    onClick = {
+                        if (selectedQuestion.value == "Multiple-Choice"){
+                            navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
+                        }
+                        else if(selectedQuestion.value == "Text Answer Question"){
+                            navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
+                        }
+                        else{
+                            Toast.makeText(
+                                context,
+                                "Please Choose a Question Type",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }),
             id = R.drawable.redaddplus
         )
+        DropDownMenu(selectedQuestion = selectedQuestion)
     }
 }
 
@@ -599,7 +623,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
            Spacer(modifier = Modifier.size(55.dp))
 
             Button(
-                onClick = {/*TODO*/},
+                onClick = {navController.navigate(Screen.EventScreenEmployee.route)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -657,7 +681,7 @@ fun CreateTextAnswerQuestionScreen(navController: NavController){
         item {
             Spacer(modifier = Modifier.size(27.dp))
             Text(
-                text = "Multiple-choice",
+                text = "Text Answer Question",
                 color = Color(0xEFFF7067),
                 fontSize = 20.sp
 
@@ -668,7 +692,7 @@ fun CreateTextAnswerQuestionScreen(navController: NavController){
             Spacer(modifier = Modifier.size(55.dp))
 
             Button(
-                onClick = {/*TODO*/},
+                onClick = {navController.navigate(Screen.EventScreenEmployee.route)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -741,8 +765,62 @@ fun TextFiledAnswerText( text: String, answerText: String,textChange: (String) -
 
     }
 }
+@Composable
+fun DropDownMenu(selectedQuestion: MutableState<String>) {
+
+    var expanded by remember { mutableStateOf(false) }
+    val suggestions = listOf("Multiple-Choice", "Text Answer Question")
 
 
+    var textfieldSize by remember { mutableStateOf(Size.Zero) }
 
+    val icon = if (expanded)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
 
-
+    Column(Modifier.padding(20.dp)) {
+        OutlinedTextField(
+            value = selectedQuestion.value,
+            onValueChange = { selectedQuestion.value = it },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = Color.Black,
+                disabledLabelColor = Color.White,
+                focusedBorderColor = Color.White,
+                disabledPlaceholderColor = Color.White,
+                disabledTextColor = Color.White,
+                disabledBorderColor = Color.White
+            ),
+            enabled = false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .width(150.dp)
+                .onGloballyPositioned { coordinates ->
+                    //This value is used to assign to the DropDown the same width
+                    textfieldSize = coordinates.size.toSize()
+                },
+            label = { Text("Question Type") },
+            trailingIcon = {
+                Icon(
+                    icon, "",
+                    Modifier.clickable { expanded = !expanded }, tint = Color.White
+                )
+            }
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
+        ) {
+            suggestions.forEach { label ->
+                DropdownMenuItem(onClick = {
+                    selectedQuestion.value = label
+                    expanded = false
+                }) {
+                    Text(text = label)
+                }
+            }
+        }
+    }
+}

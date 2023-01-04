@@ -12,8 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.sensimate.data.Database.updateProfile
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sensimate.data.Database
+import com.example.sensimate.data.Profile
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
 import com.example.sensimate.ui.navigation.Screen
@@ -33,12 +36,17 @@ fun EditAgeScreen(navController: NavController) {
             )
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            CheckBox(onClick = { navController.popBackStack() })
+            CheckBox(onClick = {
+                navController.popBackStack()
+
+
+
+            })
         }
         CustomTextField(
             text = age,
             description = "Age",
-            placeholder = "Enter your age here",
+            placeholder = "Enter the year that you were born",
             onValueChange = { age = it }
         )
         Text(
@@ -48,4 +56,22 @@ fun EditAgeScreen(navController: NavController) {
             modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 30.dp)
         )
     }
+}
+
+private suspend fun updateProfile(
+    dayBorn: String,
+    gender: String,
+    monthBorn: String,
+    postalCode: String,
+    yearBorn: String
+) {
+    val fields = mapOf(
+        "dayBorn" to dayBorn,
+        "gender" to gender,
+        "monthBorn" to monthBorn,
+        "postalCode" to postalCode,
+        "yearBorn" to yearBorn
+    )
+
+    updateProfile(fields)
 }

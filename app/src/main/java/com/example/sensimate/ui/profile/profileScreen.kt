@@ -57,6 +57,7 @@ fun ProfileScreen(navController: NavController) {
             age.value = (currentYear - profile.yearBorn.toInt()).toString()
 
             dayBorn.value = profile.dayBorn
+            yearBorn.value = profile.yearBorn
             monthBorn.value = profile.monthBorn
             postalCode.value = profile.postalCode
             gender.value = profile.gender
@@ -112,6 +113,7 @@ fun ProfileScreen(navController: NavController) {
              */
 
             item { InfoAboutUser(desc = "Age", info = age.value) }
+            item { InfoAboutUser(desc = "Year Born", info = yearBorn.value) }
             item { InfoAboutUser(desc = "Day Born", info = dayBorn.value.toString()) }
             item { InfoAboutUser(desc = "Month Born", info = monthBorn.value.toString()) }
             item { InfoAboutUser(desc = "Postal Code", info = postalCode.value.toString()) }

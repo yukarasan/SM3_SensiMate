@@ -103,6 +103,13 @@ object Database {
     }
 
 
+    suspend fun updateProfile(fields: Map<String, Any>) {
+        val docRef = db.collection("users").document(auth.currentUser?.email.toString())
+        withContext(Dispatchers.IO) {
+            docRef.update(fields)
+        }
+    }
+
     fun signUserUp(
         email: String,
         password: String,
