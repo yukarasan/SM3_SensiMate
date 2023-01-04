@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.db
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
@@ -123,11 +125,20 @@ fun CookiesScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.size(20.dp))
 
+            val context = LocalContext.current
+
             Button(
 
                 enabled = checkedState.value,
 
                 onClick = {
+
+                    SaveBoolToLocalStorage(
+                        key = "acceltedCookie",
+                        value = true,
+                        context = context
+                    )
+
                     navController.navigate(Screen.Login.route) {
                         restoreState = true
                     }
