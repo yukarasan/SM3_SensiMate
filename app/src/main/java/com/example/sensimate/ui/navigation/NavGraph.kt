@@ -37,15 +37,18 @@ import com.example.sensimate.ui.survey.Survey4
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
-    NavHost(navController = navController, startDestination = Screen.CookieScreen.route) {      // Screen.CookieScreen.route
+    NavHost(
+        navController = navController,
+        startDestination = Screen.EventScreenEmployee.route
+    ) {      // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)
         }
-        composable(route = Screen.Login.route){
+        composable(route = Screen.Login.route) {
             LogInMail(navController = navController)
         }
-        composable(route = Screen.SignUpWithMail.route){
+        composable(route = Screen.SignUpWithMail.route) {
             SignUpUsingMail(navController = navController)
         }
         composable(route = Screen.Guest.route) {
@@ -101,10 +104,37 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
             CreateMultpleChoiceQuestionScreen(navController = navController)
         }
-        composable(route = Screen.EditEvent.route) {
-            EditEvent(navController = navController)
+        composable(
+            route = Screen.EditEvent.route,
+            arguments = listOf(
+                navArgument(TITLE_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(TIME_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(LOCATION_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(ALLERGENS) {
+                    type = NavType.StringType
+                },
+                navArgument(DESCRIPTION_OF_EVENT) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            EditEvent(
+                navController = navController,
+                title = backStackEntry.arguments?.getString(TITLE_OF_EVENT).toString(),
+                time = backStackEntry.arguments?.getString(TIME_OF_EVENT).toString(),
+                location = backStackEntry.arguments?.getString(LOCATION_OF_EVENT).toString(),
+                allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
+                description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString()
+            )
         }
-        composable(route = Screen.EditPage.route) {
+
+        composable(route = Screen.EditPage.route,) {
             EditPage(navController = navController)
         }
         composable(route = Screen.EditSurvey.route) {

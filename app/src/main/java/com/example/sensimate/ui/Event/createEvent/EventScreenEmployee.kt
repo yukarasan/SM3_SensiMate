@@ -55,7 +55,7 @@ fun EventScreenEmployee(navController: NavController, dataViewModel: EventDataVi
                         address = event.location,
                         onClick = {
                             navController.navigate(
-                                Screen.ExtendedEventScreen.passArguments(
+                                Screen.EditEvent.passArguments(
                                     time = event.timeOfEvent,
                                     title = event.title,
                                     description = event.description,

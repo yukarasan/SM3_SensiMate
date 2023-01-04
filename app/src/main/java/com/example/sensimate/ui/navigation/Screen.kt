@@ -25,18 +25,27 @@ sealed class Screen(val route: String) {
             allergens: String,
             description: String
         ): String {
-            val test = "extendedEvent/$title/$time/$location/$allergens/$description"
-            Log.d("navigation", test)
-            return test
+            return  "extendedEvent/$title/$time/$location/$allergens/$description"
         }
     }
-
 
     object ProfileScreen : Screen(route = "profile")
     object CreateEventScreen : Screen(route = "createEvent")
     object QuestionPageScreen : Screen(route = "questionPage")
     object CreateMultpleChoiceQuestionScreen : Screen(route = "CreateMultpleChoiceQuestion")
-    object EditEvent : Screen(route = "editEvent")
+
+    object EditEvent : Screen(route = "editEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}") {
+        fun passArguments(
+            title: String,
+            time: String,
+            location: String,
+            allergens: String,
+            description: String
+        ): String {
+            return "editEvent/$title/$time/$location/$allergens/$description"
+        }
+    }
+
     object EditPage : Screen(route = "editPage")
     object EditSurvey : Screen(route = "editSurvey")
     object EditSurveyPage : Screen(route = "editSurveyPage")

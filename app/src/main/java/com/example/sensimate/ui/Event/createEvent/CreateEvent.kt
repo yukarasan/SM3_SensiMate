@@ -195,7 +195,7 @@ fun CreateEventScreen(navController: NavController){
                                 "month" to month,
                                 "year" to year
                                                 )
-            db.collection("TESTER").add(event)
+            db.collection("events").add(event)
                   /*navController.navigate(Screen.QuestionPageScreen.route)*/}},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
