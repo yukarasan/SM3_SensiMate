@@ -52,13 +52,24 @@ fun LogInMail(navController: NavController) {
         modifier = Modifier.fillMaxWidth()
     ) {
 
-        Spacer(modifier = Modifier.size(100.dp))
+        Spacer(modifier = Modifier.size(50.dp))
         SignMenus(
             navController = navController,
             Screen.Login
         )
 
-        Spacer(modifier = Modifier.size(220.dp))
+        Spacer(modifier = Modifier.size(50.dp))
+        MySensimateLogo()
+
+        Text(
+            text = "SensiMate",
+            color = Color.White,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = manropeFamily
+        )
+
+        Spacer(modifier = Modifier.size(100.dp))
 
         //email button
         var email by remember { mutableStateOf("zz@zz.zz") }
@@ -92,8 +103,6 @@ fun LogInMail(navController: NavController) {
             Color.Gray
         )
         Spacer(modifier = Modifier.size(28.dp))
-
-
 
         myButton(color = Color.White,
             title = "Sign in",

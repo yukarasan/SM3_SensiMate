@@ -144,7 +144,6 @@ fun textFieldWithImage(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
-            //Postal code image with textfield
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
@@ -163,8 +162,8 @@ fun textFieldWithImage(
                     placeholder = {
                         Text(
                             text = placeHolder,
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Light,
                             modifier = Modifier.fillMaxHeight()
                         )
                     },
