@@ -102,10 +102,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             CreateMultpleChoiceQuestionScreen(navController = navController)
         }
         composable(route = Screen.EditEvent.route) {
-            EditEvent(navController = navController)
+            //EditEvent(navController = navController)
         }
         composable(route = Screen.EditPage.route) {
-            EditPage(navController = navController)
+            //EditPage(navController = navController)
         }
         composable(route = Screen.EditSurvey.route) {
             EditSurvey(navController = navController)

@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.InitialStartPage
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
+import com.example.sensimate.data.Profile
+import com.example.sensimate.data.db
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
@@ -32,6 +35,8 @@ import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
 import com.example.sensimate.ui.theme.employeelogin
+import kotlinx.coroutines.launch
+import java.util.*
 
 
 @Composable
@@ -46,6 +51,10 @@ fun LogInMail(navController: NavController) {
     val successLoggedIn = remember {
         mutableStateOf(false)
     }
+
+    var email by remember { mutableStateOf("zz@zz.zz") }
+    var password by remember { mutableStateOf("12345678") }
+
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,7 +82,7 @@ fun LogInMail(navController: NavController) {
         Spacer(modifier = Modifier.size(100.dp))
 
         //email button
-        var email by remember { mutableStateOf("zz@zz.zz") }
+
         MyTextField(
             text = email,
             textSize = 15,
@@ -89,7 +98,7 @@ fun LogInMail(navController: NavController) {
         )
 
         Spacer(modifier = Modifier.size(20.dp))
-        var password by remember { mutableStateOf("12345678") }
+
         MyTextField(
             text = password,
             textSize = 15,
@@ -107,18 +116,22 @@ fun LogInMail(navController: NavController) {
         Spacer(modifier = Modifier.size(5.dp))
 
         Row(
-            horizontalArrangement = Arrangement.End, modifier = Modifier
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(end = 50.dp)
         ) {
-
             Text(
                 "Forgot password?",
                 color = Color.White,
                 fontFamily = manropeFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 13.sp,
-                modifier = Modifier.clickable { navController.navigate(Screen.ForgotPassword.route) }
+                modifier = Modifier.clickable {
+                    navController.navigate(
+                        Screen.ForgotPassword.route
+                    )
+                }
             )
         }
 
@@ -160,8 +173,8 @@ fun LogInMail(navController: NavController) {
     }
 
     if (successLoggedIn.value) {
-        navController.navigate(Screen.EventScreen.route)
         successLoggedIn.value = false
+        checkIfUserIsEmployeeOrNot(email = email, navController)
     }
 
     /*
@@ -194,8 +207,25 @@ fun LogInMail(navController: NavController) {
     }
 
      */
-
 }
+
+fun checkIfUserIsEmployeeOrNot(email: String, navController: NavController) {
+    val userRef = db.collection("users").document(email)
+
+// Get the 'isEmployee' field from the document
+    userRef.get().addOnSuccessListener { snapshot ->
+        val isEmployee = snapshot.getBoolean("isEmployee")
+        // Check if the user is an employee
+        if (isEmployee == true) {
+            // Go to the employee page
+            navController.navigate(Screen.EventScreenEmployee.route)
+        } else {
+            // Go to normal user page
+            navController.navigate(Screen.EventScreen.route)
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
