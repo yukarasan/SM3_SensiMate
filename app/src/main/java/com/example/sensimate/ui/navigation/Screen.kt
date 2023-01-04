@@ -10,10 +10,10 @@ const val DESCRIPTION_OF_EVENT = "description"
 
 sealed class Screen(val route: String) {
     object CookieScreen : Screen(route = "cookie")
-    object ChooseSignUpScreen : Screen(route = "chooseSignup")
     object SignUpWithMail : Screen(route = "mailSignup")
     object Login : Screen(route = "login")
     object Guest : Screen(route = "guest")
+    object ForgotPassword : Screen(route = "password")
 
     object EventScreen : Screen(route = "event")
     object ExtendedEventScreen :

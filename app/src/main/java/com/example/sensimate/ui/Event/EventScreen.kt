@@ -1,19 +1,13 @@
 package com.example.sensimate.ui.home
 
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
@@ -64,7 +58,7 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                     ){
                         if (checked) {
                             Dialog(onDismissRequest = { /*TODO*/ }) {
-                                EventQuickEntry()
+                                EventQuickEntry(navController = navController)
                             }
                         }
                         QuickEntryImage(
@@ -150,7 +144,7 @@ private fun ProfileLogo(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EventQuickEntry() {
+private fun EventQuickEntry(navController: NavController) {
     Card(
         modifier = Modifier
             .padding(start = 25.dp, end = 25.dp, top = 10.dp)
@@ -176,13 +170,22 @@ private fun EventQuickEntry() {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp, top = 20.dp)
+                    .padding(bottom = 30.dp, top = 20.dp)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     EventInputField({})
+                    Button (
+                        modifier = Modifier.width(50.dp),
+                        shape = MaterialTheme.shapes.medium,
+                        onClick = {
+                            navController.navigate(Screen.EventScreen.route)
+                        },
+                    ){
+
+                    }
                 }
             }
         }
