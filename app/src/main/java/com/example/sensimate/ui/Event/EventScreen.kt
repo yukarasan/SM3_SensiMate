@@ -1,10 +1,12 @@
 package com.example.sensimate.ui.home
 
+import android.graphics.Color.WHITE
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -18,7 +20,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -170,27 +171,40 @@ private fun EventQuickEntry(navController: NavController) {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 30.dp, top = 20.dp)
+                    .padding(bottom = 60.dp, top = 20.dp)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     EventInputField({})
-                    Button (
-                        modifier = Modifier.width(50.dp),
-                        shape = MaterialTheme.shapes.medium,
-                        onClick = {
-                            navController.navigate(Screen.EventScreen.route)
-                        },
-                    ){
+                }
+                Row(horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom,
+                    modifier = Modifier
+                    .padding(top = 20.dp)
+                )
 
+                {
+                    myButton(
+                        onClick = { navController.navigate(Screen.Survey.route) },
+                        color = Color.Black, title = "Enter", buttonColor = Color(199, 242, 219)
+                    )
+                }
+                Row(horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom,
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                ) {
+                    myButton(onClick  ={ navController.navigate(Screen.EventScreen.route)},
+                        color = Color.Black, title = "Back", buttonColor = Color.White
+                    )
                     }
                 }
             }
         }
     }
-}
+
 
 @Composable
 private fun QuickEntryImage(modifier: Modifier = Modifier) {
@@ -305,4 +319,30 @@ private fun Placeholder() {
         fontSize = 12.sp,
         color = Color.White
     )
+}
+
+@Composable
+fun myButton(
+    color: Color,
+    title: String,
+    buttonColor: Color,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(
+                backgroundColor = buttonColor
+            ),
+        modifier = Modifier.size(110.dp, 35.dp),
+        shape = CircleShape,
+    ) {
+        Text(
+            title,
+            color = color,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp
+        )
+    }
 }

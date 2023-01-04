@@ -74,7 +74,7 @@ fun ForgotPassword(navController: NavController) {
                     fontFamily = manropeFamily
                 )
 
-                Spacer(modifier = Modifier.size(80.dp))
+                Spacer(modifier = Modifier.size(150.dp))
 
 
                 MyTextField(
@@ -90,14 +90,18 @@ fun ForgotPassword(navController: NavController) {
                     Color.White,
                     Color.Gray
                 )
+
+                Spacer(modifier = Modifier.size(25.dp))
+
+                val context = LocalContext.current
+                myButton(color = Color.White,
+                    title = "Send recovery to mail",
+                    PurpleButtonColor,
+                    onClick = {Database.forgotPassword(email = email, context, showLoading)}
+                )
             }
 
-            val context = LocalContext.current
-            myButton(color = Color.White,
-                title = "Sign up",
-                PurpleButtonColor,
-                onClick = {Database.forgotPassword(email = email, context, showLoading)}
-            )
+
 
         }
     }

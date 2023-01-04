@@ -24,9 +24,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
 import com.example.sensimate.data.db
@@ -35,15 +37,15 @@ import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
 import java.util.*
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun CreateEventPreview() {
-    //CreateEventScreen()
-    QuestionPageScreen()
-    //CreateMultpleChoiceQuestionScreen()
+    CreateEventScreen(rememberNavController())
+    //QuestionPageScreen(rememberNavController())
+    //CreateMultpleChoiceQuestionScreen(rememberNavController())
 }
-*/
+
 
 
 @Composable
@@ -53,6 +55,7 @@ fun CreateEventScreen(navController: NavController){
     var locationText by remember { mutableStateOf("") }
     var allergensText by remember { mutableStateOf("") }
     var surveyCodeText by remember { mutableStateOf("") }
+    var timeText by remember { mutableStateOf("") }
     val myYear = remember { mutableStateOf("") }
     val myMonth = remember { mutableStateOf("") }
     val myDay = remember { mutableStateOf("") }
@@ -126,7 +129,7 @@ fun CreateEventScreen(navController: NavController){
           month = myMonth.value
         year = myYear.value
 
-
+        TextFileTimeText(timeText) {timeText = it}
     Column(
 
         modifier = Modifier.fillMaxSize(),
@@ -167,6 +170,13 @@ fun CreateEventScreen(navController: NavController){
                     Toast.LENGTH_SHORT
                 ).show()
             }
+            else if (timeText == "") {
+                Toast.makeText(
+                    context,
+                    "Time was not entered",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             else if (allergensText == ""){
                 Toast.makeText(
                     context,
@@ -191,6 +201,7 @@ fun CreateEventScreen(navController: NavController){
                                 "allergens" to allergensText,
                                 "location" to locationText,
                                 "surveyCode" to surveyCodeText,
+                                "timeOfEvent" to timeText,
                                 "day" to day,
                                 "month" to month,
                                 "year" to year
@@ -397,32 +408,23 @@ fun TextFiledLocationText(locationText: String, textChange: (String) -> Unit){
 
 
 @Composable
-fun TextFileDistanceText(distanceText: String, textChange: (String) -> Unit){
+fun TextFileTimeText(TimeText: String, textChange: (String) -> Unit){
         ContentColorComponent(contentColor = Color.White) {
             TextField(
-                value = distanceText,
+                value = TimeText,
                 onValueChange = textChange,
                 label = {
                     Text(
-                        text = "Distance To Event",
+                        text = "Time Of The Event",
                         color = Color(0xFFB874A6)
                     )
-                }, trailingIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.yellowpencil),
-                            modifier = Modifier
-                                .size(20.dp),
-                            contentDescription = "")
-
-                    }
                 },
                 colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                 singleLine = true,
 
                 placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
                 modifier = Modifier
-                    .padding(1.dp, 2.dp, 1.dp, 1.dp)
+                    .padding(1.dp, 128.dp, 1.dp, 1.dp)
                     .fillMaxWidth()
                    )
         }
@@ -445,7 +447,7 @@ fun TextFiledAllergensText(allergensText: String,textChange: (String) -> Unit){
 
             placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
             modifier = Modifier
-                .padding(1.dp, 128.dp, 1.dp, 1.dp)
+                .padding(1.dp, 191.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
         )
     }
@@ -468,57 +470,14 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
 
             placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
             modifier = Modifier
-                .padding(1.dp, 191.dp, 1.dp, 1.dp)
+                .padding(1.dp, 254.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
         )
     }
 }
 
 
-@Composable
-fun TextFiledQuestionText(modifier: Modifier,string: String){
-    var text by remember { mutableStateOf(string) }
-    ContentColorComponent(contentColor = Color.White) {
-        TextField(
-            value = text,
-            onValueChange = { newText ->
-                text = newText },
-            label = {
-                Text(
-                    text = "Question",
-                    color = Color(0xFFB874A6)
-                )
-            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
-            modifier = modifier
 
-        )
-    }
-}
-
-@Composable
-fun TextFiledAnswerText(modifier: Modifier,string: String){
-    var text by remember { mutableStateOf(string) }
-    ContentColorComponent(contentColor = Color.White) {
-        TextField(
-            value = text,
-            onValueChange = { newText ->
-                text = newText },
-            label = {
-                Text(
-                    text = "Answer",
-                    color = Color(0xFFB874A6)
-                )
-            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
-            modifier = modifier
-
-        )
-
-    }
-}
 
 // figur 2
 
@@ -537,6 +496,22 @@ fun QuestionPageScreen(navController: NavController){
                 )
             )
     )
+    AddPhoto(
+        modifier = Modifier
+            .padding(322.dp, 30.dp, 1.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = "Clickable image",
+                onClick = { navController.navigate(Screen.EventScreenEmployee.route) }),
+        id = R.drawable.greenconfirmedbutton
+    )
+
+    Column(modifier = Modifier.padding(25.dp, 30.dp,1.dp,1.dp) ){
+        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+    }
+
+
 
     Card(
         modifier = Modifier
@@ -547,23 +522,27 @@ fun QuestionPageScreen(navController: NavController){
         shape = RoundedCornerShape(14.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
 
-    ){} //TODO
-            Text(
-                text = "Create your first question",
-                color = Color(0xFFB874A6),
-                fontSize = 20.sp,
-                modifier = Modifier
-                    //.padding(40.dp, 250.dp, 88.dp, 269.dp)
-                    .padding(60.dp, 400.dp, 88.dp, 269.dp)
-            )
-            AddPhoto(modifier = Modifier
-                .padding(300.dp, 405.dp, 1.dp, 1.dp)
+    ) {  //TODO
+
+        Text(
+            text = "Create an Question",
+            color = Color(0xFFB874A6),
+            fontSize = 26.sp,
+            modifier = Modifier
+                .padding(30.dp, 240.dp, 1.dp, 1.dp)
+
+        )
+        AddPhoto(
+            modifier = Modifier
+                .padding(240.dp, 1.dp, 1.dp, 1.dp)
                 .size(20.dp)
                 .clickable(enabled = true,
                     onClick = { navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route) }),
-                id = R.drawable.redaddplus)
+            id = R.drawable.redaddplus
+        )
+    }
 
-    /*
+        /*
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
@@ -575,19 +554,10 @@ fun QuestionPageScreen(navController: NavController){
         ,id = R.drawable.redgobackbutton)
 
      */
-    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
-    }
 
-    AddPhoto(
-        modifier = Modifier
-            .padding(330.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { navController.navigate(Screen.EventScreenEmployee.route) })
-        , id = R.drawable.greenconfirmedbutton)
+
+
+
 
 
 }
@@ -595,6 +565,12 @@ fun QuestionPageScreen(navController: NavController){
 // Figur 3
 @Composable
 fun CreateMultpleChoiceQuestionScreen(navController: NavController){
+    var questionText by remember { mutableStateOf("") }
+    var answerText1 by remember { mutableStateOf("") }
+    var answerText2 by remember { mutableStateOf("") }
+    var answerText3 by remember { mutableStateOf("") }
+    var answerText4 by remember { mutableStateOf("") }
+    var answerText5 by remember { mutableStateOf("") }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -608,34 +584,75 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
                 )
             )
     )
-    Text(
-        text = "Multiple-choice",
-        color = Color(0xEFFF7067),
-        fontSize = 20.sp,
-        modifier = Modifier
-            .padding(125.dp, 30.dp, 88.dp, 269.dp))
-    TextFiledQuestionText(modifier = Modifier
-        .padding(55.dp, 130.dp, 30.dp, 30.dp),"")
-    TextFiledAnswerText(modifier = Modifier
-        .padding(55.dp, 225.dp, 30.dp, 30.dp),"")
-    Divider(
-        color = Color.White,
-        thickness = 2.dp,
-        modifier = Modifier.padding(1.dp,400.dp, 1.dp, 1.dp))
-    Text(
-        text = "Settings",
-        color = Color(0xFFB874A6),
-        fontSize = 20.sp,
-        modifier = Modifier
-            .padding(10.dp, 410.dp, 88.dp, 269.dp)
-    )
-    Text(
-        text = "Require an answer",
-        color = Color(0xEFFF7067),
-        fontSize = 20.sp,
-        modifier = Modifier
-            .padding(10.dp, 450.dp, 88.dp, 269.dp)
-    )
+    LazyColumn(modifier = Modifier
+        .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        /*verticalArrangement = Arrangement.Center*/) {
+        item {
+            Spacer(modifier = Modifier.size(27.dp))
+       Text(
+            text = "Multiple-choice",
+            color = Color(0xEFFF7067),
+            fontSize = 20.sp
+
+        )
+            Spacer(modifier = Modifier.size(55.dp))
+
+        TextFiledQuestionText(questionText) {questionText = it}
+           Spacer(modifier = Modifier.size(27.dp))
+        TextFiledAnswerText( "Answer 1", answerText1) {answerText1 = it}
+            if (answerText1 != ""){
+                Spacer(modifier = Modifier.size(27.dp))
+                TextFiledAnswerText("Answer 2",answerText2) {answerText2 = it}
+            }
+            if (answerText2 != ""){
+                Spacer(modifier = Modifier.size(27.dp))
+                TextFiledAnswerText("Answer 3",answerText3) {answerText3 = it}
+            }
+             if (answerText3 != ""){
+                Spacer(modifier = Modifier.size(27.dp))
+                TextFiledAnswerText("Answer 4",answerText4) {answerText4 = it}
+            }
+             if (answerText4 != ""){
+                Spacer(modifier = Modifier.size(27.dp))
+                TextFiledAnswerText("Answer 5",answerText5) {answerText5 = it}
+            }
+           Spacer(modifier = Modifier.size(55.dp))
+
+            Button(
+                onClick = {/*TODO*/},
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
+                modifier = Modifier.size(240.dp, 50.dp)
+            ) {
+                Text(
+                    text = "Create Question",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = manropeFamily
+                )
+            }
+
+            Spacer(modifier = Modifier.size(55.dp))
+            Button(
+                onClick = {navController.popBackStack()},
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
+                modifier = Modifier.size(240.dp, 50.dp)
+            ) {
+                Text(
+                    text = "Go Back",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = manropeFamily
+                )
+            }
+
+    }}
+
+
 
 //TODO LAV EN GO BACK BUTTON
     /*
@@ -650,22 +667,49 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
         , id = R.drawable.redgobackbutton)
 
  */
-    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton(onClick = {navController.popBackStack()}) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+
+
+
+}
+@Composable
+fun TextFiledQuestionText(questionText: String,textChange: (String) -> Unit){
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = questionText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Question",
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+
+
+            )
     }
+}
+
+@Composable
+fun TextFiledAnswerText( text: String, answerText: String,textChange: (String) -> Unit){
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = answerText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = text,
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
 
 
-    AddPhoto(
-        modifier = Modifier
-            .padding(330.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { navController.navigate(Screen.EventScreenEmployee.route) })
-        , id = R.drawable.greenconfirmedbutton)
+            )
 
-
+    }
 }
 
 

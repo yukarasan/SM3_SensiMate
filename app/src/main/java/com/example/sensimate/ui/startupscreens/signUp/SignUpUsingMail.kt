@@ -382,7 +382,6 @@ fun DropDownMenu(selectedGender: MutableState<String>) {
     else
         Icons.Filled.KeyboardArrowDown
 
-
     Column(Modifier.padding(20.dp)) {
         OutlinedTextField(
             value = selectedGender.value,
@@ -433,7 +432,6 @@ fun showMessage(
     message: String,
     showMessage: MutableState<Boolean>,
 ) {
-
     if (showMessage.value) {
         AlertDialog(
             onDismissRequest = { showMessage.value = false },
