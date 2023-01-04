@@ -56,7 +56,7 @@ fun EditEventPreview() {
 
  */
 @Composable
-fun EditEvent(navController: NavController, eventtitle : String) {
+fun EditEvent(navController: NavController) {
 
     Box(
         modifier = Modifier
@@ -173,7 +173,8 @@ fun EditEvent(navController: NavController, eventtitle : String) {
                 }
                 Spacer(modifier = Modifier.size(20.dp))
                 Button(
-                    onClick = { Database.deleteEvent(eventtitle) },
+                    onClick = { //Database.deleteEvent(eventtitle) },
+                    },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                     modifier = Modifier.size(345.dp, 60.dp),
@@ -287,16 +288,12 @@ fun EditPagePreview() {
 
 
 @Composable
-fun EditPage(navController: NavController,
-             title: String,
-             description: String,
-             location: String,
-             allergens: String) {
+fun EditPage(navController: NavController) {
 
-    var titleText by remember { mutableStateOf(title) }
-    var descriptionText by remember { mutableStateOf(description) }
-    var locationText by remember { mutableStateOf(location) }
-    var allergensText by remember { mutableStateOf(allergens) }
+    var titleText by remember { mutableStateOf("") }
+    var descriptionText by remember { mutableStateOf("") }
+    var locationText by remember { mutableStateOf("") }
+    var allergensText by remember { mutableStateOf("") }
     var surveyCodeText by remember { mutableStateOf("") }
     val myYear = remember { mutableStateOf("") }
     val myMonth = remember { mutableStateOf("") }
