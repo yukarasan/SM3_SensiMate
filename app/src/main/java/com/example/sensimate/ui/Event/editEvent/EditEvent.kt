@@ -64,7 +64,6 @@ fun EditEvent(
     allergens: String,
     description: String
 ) {
-    var eventTitle by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -120,24 +119,15 @@ fun EditEvent(
 
                                 Row {
                                     Column {
-                                        //Title(title = eventTitle)
                                         Title(title = title)
                                         Discription(
-                                            discription = "Come and taste the freshing sensation " +
-                                                    "of Coca Cola. Get a whole six pack for free."
+                                            discription = description
                                         )
                                     }
-                                    Image(
-                                        painter = painterResource(
-                                            id = R.drawable.beverages
-                                        ),
-                                        contentDescription = "",
-                                        modifier = Modifier.size(145.dp),
-                                    )
                                 }
                             }
                         }
-                        InputField({})
+                        Spacer(modifier = Modifier.size(10.dp))
                         Allergens(title = allergens)
                         Discription(discription = description)
                         Spacer(modifier = Modifier.size(20.dp))
@@ -148,19 +138,11 @@ fun EditEvent(
                             Column() {
                                 Title(title = "Location")
                             }
-                            Discription(discription = "30km")
+                            Discription(discription = time)
                         }
-                        Image(
-                            painter = painterResource(
-                                id = R.drawable.location
-                            ),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .size(200.dp)
-                        )
+                        Spacer(modifier = Modifier.size(20.dp))
                         Discription(discription = location)
-                        Bar(progress = 0.39f)
+
                     }
                 }
                 Spacer(modifier = Modifier.size(25.dp))
@@ -181,32 +163,20 @@ fun EditEvent(
                 }
                 Spacer(modifier = Modifier.size(20.dp))
                 Button(
-                    onClick = { //Database.deleteEvent(eventtitle) },
-                    },
+                    onClick = { Database.deleteEvent(title) },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                     modifier = Modifier.size(345.dp, 60.dp),
 
                     ) {
                     Text(
-                        text = "Delete Survey",
+                        text = "Delete Event",
                         fontWeight = FontWeight.Bold,
                         fontSize = 25.sp,
                         color = Color.White,
                         fontFamily = manropeFamily
                     )
                 }
-/*
-    AddPhoto(
-        modifier = Modifier
-            .padding(15.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { /*TODO*/ })
-                , id = R.drawable.redgobackbutton)
- */
             }
         }
     }

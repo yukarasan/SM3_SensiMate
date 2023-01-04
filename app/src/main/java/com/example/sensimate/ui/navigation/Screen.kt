@@ -32,7 +32,8 @@ sealed class Screen(val route: String) {
     object ProfileScreen : Screen(route = "profile")
     object CreateEventScreen : Screen(route = "createEvent")
     object QuestionPageScreen : Screen(route = "questionPage")
-    object CreateMultpleChoiceQuestionScreen : Screen(route = "CreateMultpleChoiceQuestion")
+    object CreateMultpleChoiceQuestionScreen : Screen(route = "createMultpleChoiceQuestion")
+    object CreateTextAnswerQuestionScreen: Screen(route = "createTextAnswerQuestionScreen")
 
     object EditEvent : Screen(route = "editEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}") {
         fun passArguments(
