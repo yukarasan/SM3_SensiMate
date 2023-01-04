@@ -110,8 +110,8 @@ fun EditEvent(navController: NavController) {
 
                                         Row {
                                             Column {
-                                                Title(title = eventTitle)
-                                                //Title(title = "Coca Cola")
+                                                //Title(title = eventTitle)
+                                                Title(title = "Coca Cola")
                                                 Discription(
                                                     discription = "Come and taste the freshing sensation " +
                                                             "of Coca Cola. Get a whole six pack for free."
@@ -551,12 +551,12 @@ fun EditSurveyPage(navController: NavController) {
         modifier = Modifier
             .padding(125.dp, 30.dp, 88.dp, 269.dp)
     )
-    TextFiledQuestionText(
+    TextFiledEditQuestionText(
         modifier = Modifier
             .padding(55.dp, 130.dp, 30.dp, 30.dp),
         "What other flavours of Coca Cola would you like?"
     )
-    TextFiledAnswerText(
+    TextFiledEditAnswerText(
         modifier = Modifier
             .padding(55.dp, 225.dp, 30.dp, 30.dp), "Tomato"
     ) //TODO NEED MORE ANSWER FILEDS
@@ -607,11 +607,58 @@ fun EditSurveyPage(navController: NavController) {
 
 
 }
-
-@Preview
 @Composable
-fun EditEventPreview() {
-    EditEvent(rememberNavController())
+fun TextFiledEditQuestionText(modifier: Modifier,string: String){
+    var text by remember { mutableStateOf(string) }
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = text,
+            onValueChange = { newText ->
+                text = newText
+            },
+            label = {
+                Text(
+                    text = "Question",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = modifier
+
+            )
+    }
 }
+
+@Composable
+fun TextFiledEditAnswerText(modifier: Modifier,string: String) {
+    var text by remember { mutableStateOf(string) }
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = text,
+            onValueChange = { newText ->
+                text = newText
+            },
+            label = {
+                Text(
+                    text = "Answer",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = modifier
+
+        )
+    }
+}
+
+        @Preview
+        @Composable
+        fun EditEventPreview() {
+            EditEvent(rememberNavController())
+        }
 
 

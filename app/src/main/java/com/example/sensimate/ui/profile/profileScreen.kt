@@ -57,7 +57,9 @@ fun ProfileScreen(navController: NavController) {
         item { ProfileMail() }
         item { LogoutButton(onClick = {
             Database.signOut()
-            navController.navigate(Screen.ChooseSignUpScreen.route)
+            navController.popBackStack()
+            navController.popBackStack()
+            navController.navigate(Screen.Login.route)
         }) }
         // TODO: Make as list of items instead:
         item { UpcomingEvent() }

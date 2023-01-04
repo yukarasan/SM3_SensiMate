@@ -2,21 +2,28 @@ package com.example.sensimate.ui.InitialStartPage
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
+import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.buttonWithImage
@@ -45,10 +52,27 @@ fun LogInMail(navController: NavController) {
         modifier = Modifier.fillMaxWidth()
     ) {
 
-        Spacer(modifier = Modifier.size(220.dp))
+        Spacer(modifier = Modifier.size(50.dp))
+        SignMenus(
+            navController = navController,
+            Screen.Login
+        )
+
+        Spacer(modifier = Modifier.size(50.dp))
+        MySensimateLogo()
+
+        Text(
+            text = "SensiMate",
+            color = Color.White,
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = manropeFamily
+        )
+
+        Spacer(modifier = Modifier.size(100.dp))
 
         //email button
-        var email by remember { mutableStateOf("") }
+        var email by remember { mutableStateOf("zz@zz.zz") }
         MyTextField(
             text = email,
             textSize = 15,
@@ -64,7 +88,7 @@ fun LogInMail(navController: NavController) {
         )
 
         Spacer(modifier = Modifier.size(20.dp))
-        var password by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("12345678") }
         MyTextField(
             text = password,
             textSize = 15,
@@ -80,12 +104,9 @@ fun LogInMail(navController: NavController) {
         )
         Spacer(modifier = Modifier.size(28.dp))
 
-
-
         myButton(color = Color.White,
-            title = "Log in",
+            title = "Sign in",
             PurpleButtonColor,
-
 
             onClick = {
 
@@ -121,6 +142,7 @@ fun LogInMail(navController: NavController) {
         successLoggedIn.value = false
     }
 
+    /*
     Column(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -149,6 +171,8 @@ fun LogInMail(navController: NavController) {
         )
     }
 
+     */
+
 }
 
 @Preview(showBackground = true)
@@ -156,3 +180,126 @@ fun LogInMail(navController: NavController) {
 fun LogInMailPreview() {
     LogInMail(rememberNavController())
 }
+
+
+@Composable
+fun SignMenus(
+    navController: NavController,
+    screen: Screen
+) {
+    Row(
+        //horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 10.dp, end = 10.dp)
+    ) {
+
+        if (screen == Screen.Login) {
+            MyOptionChosen(
+                color = Color.White,
+                title = "Sign in",
+                buttonColor = PurpleButtonColor,
+                onClick = {}
+            )
+        } else {
+            MyOtherOption(
+                color = Color.White,
+                title = "Sign in",
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.Login.route)
+                }
+            )
+        }
+
+        if (screen == Screen.SignUpWithMail) {
+            MyOptionChosen(
+                color = Color.White,
+                title = "Sign up",
+                buttonColor = PurpleButtonColor,
+                onClick = {}
+            )
+        } else {
+            MyOtherOption(
+                color = Color.White,
+                title = "Sign up",
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.SignUpWithMail.route)
+                }
+            )
+        }
+
+        if (screen == Screen.Guest) {
+            MyOptionChosen(
+                color = Color.White,
+                title = "Guest",
+                buttonColor = PurpleButtonColor,
+                onClick = {}
+            )
+        } else {
+            MyOtherOption(
+                color = Color.White,
+                title = "Guest",
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.Guest.route)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun MyOptionChosen(
+    color: Color,
+    title: String,
+    buttonColor: Color,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(
+                backgroundColor = buttonColor
+            ),
+        modifier = Modifier.size(103.dp, 40.dp),
+        shape = CircleShape,
+    ) {
+        Text(
+            title,
+            color = color,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
+    }
+}
+
+@Composable
+fun MyOtherOption(
+    color: Color,
+    title: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(
+                backgroundColor = Color.Transparent
+            ),
+        modifier = Modifier.size(103.dp, 40.dp),
+        shape = CircleShape,
+    ) {
+        Text(
+            title,
+            color = color,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 16.sp
+        )
+    }
+}
+
