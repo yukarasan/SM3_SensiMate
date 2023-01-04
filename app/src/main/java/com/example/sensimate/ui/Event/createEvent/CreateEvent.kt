@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.util.Log
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -59,6 +60,7 @@ fun CreateEventScreen(navController: NavController){
     var year: String
     var month: String
     var day: String
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -136,7 +138,54 @@ fun CreateEventScreen(navController: NavController){
         Spacer(modifier = Modifier.size(250.dp))
 
     Button(
-        onClick = {val event = hashMapOf(
+        onClick = {
+            if (titleText == ""){
+                Toast.makeText(
+                    context,
+                    "Title was not entered",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else if (descriptionText == ""){
+                Toast.makeText(
+                    context,
+                    "Description was not entered",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else if (locationText == ""){
+                Toast.makeText(
+                    context,
+                    "Location was not entered",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else if (myYear.value == ""){
+                Toast.makeText(
+                    context,
+                    "Date was not entered",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else if (allergensText == ""){
+                Toast.makeText(
+                    context,
+                    "Allergens was not entered",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else if (surveyCodeText == ""){
+                Toast.makeText(
+                    context,
+                    "SurveyCode was not entered",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else{
+
+            val event = hashMapOf(
                                 "title" to titleText,
                                 "description" to descriptionText,
                                 "allergens" to allergensText,
@@ -147,7 +196,7 @@ fun CreateEventScreen(navController: NavController){
                                 "year" to year
                                                 )
             db.collection("TESTER").add(event)
-                  /*navController.navigate(Screen.QuestionPageScreen.route)*/},
+                  /*navController.navigate(Screen.QuestionPageScreen.route)*/}},
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
         modifier = Modifier.size(240.dp, 50.dp),
@@ -410,7 +459,7 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
             onValueChange = textChange,
             label = {
                 Text(
-                    text = "4 Digit Code",
+                    text = "Survey Code (4 Digit Code)",
                     color = Color(0xFFB874A6)
                 )
             },

@@ -1,6 +1,7 @@
 package com.example.sensimate.data
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -8,15 +9,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestoreException
 import android.widget.Toast
-import androidx.compose.runtime.MutableState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.example.sensimate.data.Database.fetchProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -193,6 +205,7 @@ object Database {
             .set(profile)
     }
 
+
     fun logIn(
         email: String,
         password: String,
@@ -200,6 +213,8 @@ object Database {
         context: Context,
         successLoggedIn: MutableState<Boolean>
     ) {
+        showLoading.value = true
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -257,13 +272,77 @@ object Database {
     fun editEvent() {} //TODO: Ahmad
 
 
-    fun deleteEvent() {} //TODO: Sabirin
-    fun getEmployeeProfiles() {} //TODO: Sabirin
+    fun deleteEvent(eventtitle: String) {
+        //val docref = db.collection()
+        db.collection("events").whereEqualTo("title", eventtitle)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    document.reference.delete()
+                        .addOnSuccessListener { Log.d(TAG, "Document has been deleted") }
+                        .addOnFailureListener { e ->
+                            Log.w(
+                                TAG,
+                                "Cant delete the current document", e
+                            )
+                        }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    //TODO: Sabirin
+    fun getEmployeeProfiles() {
+    } //TODO: Sabirin
 
     fun createEmployee() {} //TODO: Anshjyot
-    fun getSurvey() {} //TODO: Anshjyot
 
-    fun answerQuestion() {} //TODO: Anshjyot
+fun getSurvey() { //TODO: Anshjyot
+    val questions = mutableListOf<Question>()
+    val database = FirebaseDatabase.getInstance()
+    val ref = database.getReference("questions")
+    ref.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val questionSnapshots = snapshot.children
+            for (questionSnapshot in questionSnapshots) {
+                val question = questionSnapshot.getValue(Question::class.java)
+                if (question != null) {
+                    questions.add(question)
+                }
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Log.d("error", "getListOfQuestions: $error")
+        }
+    })
+}
+
+data class Question(val text: String, val answers: List<Boolean>)
+
+
+    fun answerQuestion() {  //TODO: Anshjyot
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("answers")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val answers = snapshot.children.mapNotNull { it.getValue(Answer::class.java) }
+                updateAnswers(answers)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("error", "getListOfAnswers: $error")
+            }
+        })
+    }
+
+    fun updateAnswers(answers: List<Answer>) {
+
+    }
+    data class Answer(val questionId: String, val answer: List<Boolean>)
+
+
 
     fun exportToExcel() {} //TODO: LATER
 

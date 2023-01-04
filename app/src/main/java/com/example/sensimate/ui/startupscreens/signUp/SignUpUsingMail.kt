@@ -68,16 +68,27 @@ fun SignUpUsingMail(navController: NavController) {
     ) {
 
         item {
+            Spacer(modifier = Modifier.size(50.dp))
+            SignMenus(
+                navController = navController,
+                screen = Screen.SignUpWithMail
+            )
+            Spacer(modifier = Modifier.size(50.dp))
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 15.dp, top = 15.dp)
-            ) {
-                OrangeBackButton({ navController.popBackStack() })
-            }
+            MySensimateLogo()
+            Text(
+                text = "SensiMate",
+                color = Color.White,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = manropeFamily
+            )
 
-            Spacer(modifier = Modifier.size(80.dp))
+            Spacer(modifier = Modifier.size(40.dp))
+
+        }
+
+        item {
 
             //email button
             var email by remember { mutableStateOf("") }
@@ -127,24 +138,27 @@ fun SignUpUsingMail(navController: NavController) {
                 Color.Gray
             )
 
-            Spacer(modifier = Modifier.size(30.dp))
-
-            var postalCode by remember { mutableStateOf("") }
-            textFieldWithImage(
-                painterResource(id = R.drawable.locationicon),
-                text = postalCode,
-                onValueChange = {
-                    if (it.length <= 4) {
-                        postalCode = it
-                    }
-                },
-                "Postal code"
-            )
-
-            Spacer(modifier = Modifier.size(20.dp))
             val selectedGender = remember { mutableStateOf("") }
+            var postalCode by remember { mutableStateOf("") }
 
-            DropDownMenu(selectedGender)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 20.dp, end = 10.dp)
+            ) {
+                textFieldWithImage(
+                    painterResource(id = R.drawable.locationicon),
+                    text = postalCode,
+                    onValueChange = {
+                        if (it.length <= 4) {
+                            postalCode = it
+                        }
+                    },
+                    "Postal code"
+                )
+                Spacer(modifier = Modifier.size(20.dp))
+                DropDownMenu(selectedGender)
+            }
 
 
             val myYear = remember { mutableStateOf("") }
@@ -164,7 +178,7 @@ fun SignUpUsingMail(navController: NavController) {
             )
 
             val context = LocalContext.current
-            Spacer(modifier = Modifier.size(60.dp))
+            Spacer(modifier = Modifier.size(30.dp))
             myButton(color = Color.White,
                 title = "Sign up",
                 PurpleButtonColor,
@@ -172,7 +186,6 @@ fun SignUpUsingMail(navController: NavController) {
                     if (password != retyped) {
                         showMessage.value = true
                     } else {
-
                         if (postalCode == "") {
                             Toast.makeText(
                                 context,
@@ -206,6 +219,7 @@ fun SignUpUsingMail(navController: NavController) {
                     }
                 }
             )
+            Spacer(modifier = Modifier.size(100.dp))
         }
     }
 
@@ -256,7 +270,7 @@ fun MyTextField(
                     Text(
                         text = placeHolder,
                         fontSize = textSize.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Light,
                         fontFamily = manropeFamily,
                         textAlign = TextAlign.Left,
                         color = placeHolderColor,

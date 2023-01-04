@@ -13,6 +13,7 @@ sealed class Screen(val route: String) {
     object ChooseSignUpScreen : Screen(route = "chooseSignup")
     object SignUpWithMail : Screen(route = "mailSignup")
     object Login : Screen(route = "login")
+    object Guest : Screen(route = "guest")
 
     object EventScreen : Screen(route = "event")
     object ExtendedEventScreen :

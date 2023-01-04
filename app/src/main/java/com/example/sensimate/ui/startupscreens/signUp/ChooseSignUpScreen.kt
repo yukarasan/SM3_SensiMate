@@ -85,8 +85,6 @@ fun ChooseSignUpScreen(navController: NavController) {
             }
         )
 
-        Spacer(modifier = Modifier.size(20.dp))
-
         //Row start for "--or--"
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -117,63 +115,11 @@ fun ChooseSignUpScreen(navController: NavController) {
             )
         }//Or row end
 
-        //Postal code button
-        var textFieldState by remember { mutableStateOf("") }
-        textFieldWithImage(
-            painterResource(id = R.drawable.locationicon),
-            text = textFieldState,
-            onValueChange = { textFieldState = it },
-            "Postal code"
-        )
+        Spacer(modifier = Modifier.size(28.dp))
 
         Spacer(modifier = Modifier.size(28.dp))
 
-        // Continue with Facebook button
-        buttonWithImage(
-            bgcolor = FaceBookColor,
-            text = "Continue with Facebook",
-            painter = painterResource(id = R.drawable.facebook),
-            Color.White,
-            onClick = {}
-        )
-
-        Spacer(modifier = Modifier.size(28.dp))
-
-        //Continue with google button
-        buttonWithImage(
-            bgcolor = Color.White,
-            text = "Continue with Google",
-            painter = painterResource(id = R.drawable.google),
-            Color.Gray,
-            onClick = {}
-        )
-
-        Spacer(modifier = Modifier.size(28.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Already a member?",
-                color = Color.White,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = manropeFamily
-            )
-            Text(
-                text = "  Sign in",
-                color = Color(0xFF5978D3),
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp,
-                fontFamily = manropeFamily,
-                modifier = Modifier.clickable {
-                    navController.navigate(
-                        Screen.Login.route
-                    )
-                }
-            )
-        }
+        /////////navController.navigate(Screen.Login.route)
 
     }
     Spacer(modifier = Modifier.size(28.dp))
@@ -198,7 +144,6 @@ fun textFieldWithImage(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
-            //Postal code image with textfield
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
@@ -217,8 +162,8 @@ fun textFieldWithImage(
                     placeholder = {
                         Text(
                             text = placeHolder,
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Light,
                             modifier = Modifier.fillMaxHeight()
                         )
                     },
@@ -238,10 +183,9 @@ fun textFieldWithImage(
                         disabledIndicatorColor = Color.Transparent
                     ),
 
-                )
+                    )
             }
         }
-
 
 
     }
@@ -270,11 +214,13 @@ fun myButton(
             title,
             color = color,
             fontFamily = manropeFamily,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.SemiBold,
             fontSize = 17.sp
         )
     }
 }
+
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
