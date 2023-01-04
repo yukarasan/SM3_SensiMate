@@ -303,6 +303,7 @@ fun EditPage(navController: NavController) {
     var locationText by remember { mutableStateOf("") }
     var allergensText by remember { mutableStateOf("") }
     var surveyCodeText by remember { mutableStateOf("") }
+    var timeText by remember { mutableStateOf("") }
     val myYear = remember { mutableStateOf("") }
     val myMonth = remember { mutableStateOf("") }
     val myDay = remember { mutableStateOf("") }
@@ -384,7 +385,7 @@ fun EditPage(navController: NavController) {
                 month = myMonth.value
                 year = myYear.value
 
-
+                TextFileTimeText(timeText) {timeText = it}
                 Column(
 
                     modifier = Modifier.fillMaxSize(),
@@ -441,12 +442,16 @@ fun EditPage(navController: NavController) {
                                     "allergens" to allergensText,
                                     "location" to locationText,
                                     "surveyCode" to surveyCodeText,
+                                    "timeOfEvent" to timeText,
                                     "day" to day,
                                     "month" to month,
                                     "year" to year
                                 )
                                 db.collection("TESTER").add(event)
-                                UpdateEvent(event)
+                                    .addOnSuccessListener { docRef ->
+                                        run {
+                                        UpdateEvent(event, docRef.id)
+                                    } }
                                 /*navController.navigate(Screen.QuestionPageScreen.route)*/
                             }
                         },

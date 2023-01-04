@@ -61,58 +61,10 @@ class EventDataViewModel : ViewModel() {
     }
 }
 
-class ProfileDataViewModel : ViewModel() {
-    val state = mutableStateOf(ProfileScreenState())
-
-    init {
-        getProfile()
-    }
-
-    private fun getProfile() {
-        viewModelScope.launch {
-            val profile = fetchProfile()
-            state.value = state.value.copy(profile = profile)
-        }
-    }
-}
-
 // Initialize Firebase Auth
 val auth = Firebase.auth
 
 object Database {
-    //auth.currentUser?.email.toString()
-
-    /*
-    fun fetchProfile(): Profile {
-        val docRef = db.collection("users").document(auth.currentUser?.email.toString())
-        var profile = Profile()
-
-        docRef.get().addOnSuccessListener { documentSnapshot ->
-            profile = documentSnapshot.toObject<Profile>()!!
-        }
-
-        Log.d("age", profile.yearBorn)
-
-        return profile;
-    }
-     */
-
-    /*
-    fun fetchProfile(): Profile {
-        val docRef = db.collection("users").document(auth.currentUser?.email.toString())
-        // var profile = Profile()
-
-        var profile: MutableState<Profile> = mutableStateOf(Profile())
-
-        docRef.get()
-
-        docRef.get().addOnSuccessListener { documentSnapshot ->
-            profile = documentSnapshot.toObject<Profile>()!!
-        }
-
-        return profile;
-    }
-     */
 
     suspend fun fetchProfile(): Profile? {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
@@ -309,11 +261,6 @@ object Database {
         auth.signOut()
     } //TODO: Hussein
 
-    fun editUserProfile() {
-
-    } //TODO: Yusuf
-
-
     /*
     item.forEach { document ->
                     val eventTitle = document.get("title").toString()
@@ -356,12 +303,8 @@ object Database {
             }
     }
 
-
-    fun UpdateEvent(data: Map<String, String>) {
-        val docref = db.collection("TESTER").document(
-            "\n" +
-                    "C5447XmywAPeF70GUbBv"
-        )
+    fun UpdateEvent(data : Map<String, String>, documentID: String){
+        val docref = db.collection("TESTER").document(documentID)
         docref.update(data)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
@@ -371,6 +314,8 @@ object Database {
             }
 
     } //TODO: Sabirin
+
+
 
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
@@ -401,6 +346,7 @@ object Database {
     data class Question(val text: List<String>, val answers: List<Boolean>)
 
 
+
     fun answerQuestion() {  //TODO: Anshjyot
         val database = FirebaseDatabase.getInstance()
         val ref = database.getReference("answers")
@@ -423,11 +369,12 @@ object Database {
     data class Answer(val questionId: List<String>, val answer: List<Boolean>)
 
 
+
     fun exportToExcel() {} //TODO: LATER
 
 }
 
-object OurCalendar {
+object OurCalendar{
     fun getMonthName(month: Int): String? {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.MONTH, month)
