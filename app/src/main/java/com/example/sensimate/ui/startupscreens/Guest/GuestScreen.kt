@@ -34,7 +34,6 @@ fun GuestScreenPrev() {
     GuestScreen(navController = rememberNavController())
 }
 
-
 @Composable
 fun GuestScreen(navController: NavController) {
 

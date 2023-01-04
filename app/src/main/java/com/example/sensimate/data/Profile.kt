@@ -5,5 +5,6 @@ data class Profile(
     var gender: String = "",
     var monthBorn: String = "",
     var postalCode: String = "",
-    var yearBorn: String = ""
+    var yearBorn: String = "",
+    var isEmployee: Boolean = false
 )

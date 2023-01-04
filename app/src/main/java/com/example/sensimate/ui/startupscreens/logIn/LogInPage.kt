@@ -1,6 +1,7 @@
 package com.example.sensimate.ui.InitialStartPage
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
@@ -102,7 +103,28 @@ fun LogInMail(navController: NavController) {
             Color.White,
             Color.Gray
         )
+
+        Spacer(modifier = Modifier.size(5.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.End, modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 50.dp)
+        ) {
+
+            Text(
+                "Forgot password?",
+                color = Color.White,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 13.sp,
+                modifier = Modifier.clickable { navController.navigate(Screen.ForgotPassword.route) }
+            )
+        }
+
+
         Spacer(modifier = Modifier.size(28.dp))
+
 
         myButton(color = Color.White,
             title = "Sign in",

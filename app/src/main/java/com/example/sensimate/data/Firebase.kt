@@ -199,7 +199,8 @@ object Database {
             "yearBorn" to yearBorn,
             "monthBorn" to monthBorn,
             "dayBorn" to dayBorn,
-            "gender" to gender
+            "gender" to gender,
+            "isEmployee" to false
         )
 
         db.collection("users").document(auth.currentUser?.email.toString())
