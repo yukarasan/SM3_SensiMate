@@ -43,6 +43,10 @@ import kotlinx.coroutines.launch
 fun ProfileScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
 
+    val showDialog = remember {
+        mutableStateOf(false)
+    }
+
     val yearBorn = remember { mutableStateOf("") }
     val age = remember { mutableStateOf("") }
     val dayBorn = remember { mutableStateOf("") }
@@ -88,6 +92,13 @@ fun ProfileScreen(navController: NavController) {
                 )
             )
     ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            MyDialog(navController = navController, showDialog)
+        }
+
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth(),
@@ -102,7 +113,7 @@ fun ProfileScreen(navController: NavController) {
                 ) {
                     OrangeBackButton(onClick = { navController.navigate(Screen.EventScreen.route) })
 
-                    if(!getBooleanFromLocalStorage("isGuest", context)){
+                    if (!getBooleanFromLocalStorage("isGuest", context)) {
                         EditButton(onClick = { navController.navigate(Screen.EditProfileScreen.route) })
                     }
                 }
@@ -138,6 +149,8 @@ fun ProfileScreen(navController: NavController) {
             item { InfoAboutUser(desc = "Month Born", info = monthBorn.value.toString()) }
             item { InfoAboutUser(desc = "Postal Code", info = postalCode.value.toString()) }
             item { InfoAboutUser(desc = "Gender", info = gender.value.toString()) }
+
+            item { DeleteUserProfileButton(navController = navController, showDialog = showDialog) }
         }
     }
 }
@@ -285,5 +298,56 @@ private fun InfoAboutUser(desc: String, info: String) {
                 modifier = Modifier.padding(end = 20.dp)
             )
         }
+    }
+}
+
+@Composable
+fun DeleteUserProfileButton(navController: NavController, showDialog: MutableState<Boolean>) {
+    val context = LocalContext.current
+
+    Button(
+        onClick = {
+            showDialog.value = true
+        },
+        shape = RoundedCornerShape(100),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(255, 0, 0)),
+        modifier = Modifier
+            .height(40.dp)
+            .padding()
+    ) {
+        Text(
+            text = "Delete profile",
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+private fun MyDialog(
+    navController: NavController = rememberNavController(),
+    showDialog: MutableState<Boolean> = mutableStateOf(true)
+) {
+    val context = LocalContext.current
+
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            title = { Text(text = "Are you sure you want to delete your profile?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDialog.value = false
+                    navController.navigate(Screen.Login.route)
+                    Database.deleteProfile(context = context)
+                })
+                { Text(text = "Yes") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog.value = false })
+                { Text(text = "No") }
+            },
+        )
     }
 }
