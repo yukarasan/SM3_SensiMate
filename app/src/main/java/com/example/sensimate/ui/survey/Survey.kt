@@ -47,7 +47,7 @@ import com.example.sensimate.ui.theme.*
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
-        OrangeBackButton({navController.popBackStack()})
+        OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
         ProgressPreview()
         Question(title = "Question 1/4")
         SurveyTitle(title = "Let's first hear about yourself")
@@ -168,18 +168,18 @@ fun Information() {
                 Column(horizontalAlignment = Alignment.End,
                     modifier = Modifier.padding(end = 30.dp)) {
                     var gender by remember { mutableStateOf("") }
-                        com.example.sensimate.ui.InitialStartPage.MyTextField(
+                        MyTextField(
                             text = gender,
                             textSize = 12,
                             onValueChange = { gender = it },
                             placeHolder = "",
                             width = 100,
                             height = 20,
-                            keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
-                            visualTransformation = androidx.compose.ui.text.input.VisualTransformation.None,
-                            myTextColor = androidx.compose.ui.graphics.Color.White,
-                            backgroundColor = com.example.sensimate.ui.theme.GreyColor,
-                            placeHolderColor = androidx.compose.ui.graphics.Color.Gray
+                            keyboardType = KeyboardType.Text,
+                            visualTransformation = VisualTransformation.None,
+                            myTextColor = Color.White,
+                            backgroundColor = GreyColor,
+                            placeHolderColor = Color.Gray
                         )
                     }
 

@@ -26,7 +26,7 @@ import com.example.sensimate.ui.theme.*
 
 
 @Composable
-fun Survey2(navController: NavController) {
+fun Survey2(title: String, navController: NavController) {
     var selectedOption by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
@@ -43,11 +43,11 @@ fun Survey2(navController: NavController) {
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
-        OrangeBackButton({navController.navigate(Screen.ExtendedEventScreen.route) })
+        OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
         ProgressPreview()
         Question(title = "Question 2/4")
-        SurveyTitle(title = "How likely would you buy Coca Cola?")
-        Information2()
+        SurveyTitle(title)
+        Information2(title)
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -81,7 +81,7 @@ private fun ProgressPreview() {
 
 
 @Composable
-fun Information2() {
+fun Information2(title: String) {
     // Add a state variable to track the selected option
     var selectedOption by remember { mutableStateOf(0) }
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
@@ -104,7 +104,7 @@ fun Information2() {
             ) {
                 // Pass the selectedOption state variable as a parameter to RoundedCheckView
                 RoundedCheckView(listener, selectedOption, option = 0)
-                InformationVeryLikely(title = "Very Likely")
+                Option(title)
                 Spacer(modifier = Modifier.width((120.dp)))
 
             }
@@ -117,7 +117,7 @@ fun Information2() {
             ) {
                 // Pass the selectedOption state variable as a parameter to RoundedCheckView
                 RoundedCheckView(listener, selectedOption, option = 1)
-                InformationLikely(title = "Likely")
+                Option(title)
                 Spacer(modifier = Modifier.width((120.dp)))
 
             }
@@ -129,7 +129,7 @@ fun Information2() {
             ) {
                 // Pass the selectedOption state variable as a parameter to RoundedCheckView
                 RoundedCheckView(listener, selectedOption, option = 2)
-                InformationNeutral(title = "Neutral")
+                Option(title)
                 Spacer(modifier = Modifier.width((120.dp)))
 
 
@@ -142,7 +142,7 @@ fun Information2() {
             ) {
                 // Pass the selectedOption state variable as a parameter to RoundedCheckView
                 RoundedCheckView(listener, selectedOption, option = 3)
-                InformationUnlikely(title = "Unlikely")
+                Option(title)
                 Spacer(modifier = Modifier.width((120.dp)))
             }
             Row(
@@ -153,7 +153,7 @@ fun Information2() {
             ) {
                 // Pass the selectedOption state variable as a parameter to RoundedCheckView
                 RoundedCheckView(listener, selectedOption, option = 4)
-                InformationVeryUnlikely(title = "Very Unlikely")
+                Option(title)
                 Spacer(modifier = Modifier.width((120.dp)))
             }
         }
@@ -294,7 +294,7 @@ fun Information2() {
  */
 
 @Composable
-private fun InformationVeryLikely(title: String, modifier: Modifier = Modifier) {
+private fun Option(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,
@@ -306,6 +306,7 @@ private fun InformationVeryLikely(title: String, modifier: Modifier = Modifier) 
     )
 }
 
+/*
 @Composable
 private fun InformationLikely(title: String, modifier: Modifier = Modifier) {
     Text(
@@ -357,6 +358,8 @@ private fun InformationVeryUnlikely(title: String, modifier: Modifier = Modifier
             .padding(top = 5.dp, start = 20.dp)
     )
 }
+
+ */
 /*
 @Composable
 fun RoundedCheckView(selectedOption: MutableState<Int>, optionId: Int) {

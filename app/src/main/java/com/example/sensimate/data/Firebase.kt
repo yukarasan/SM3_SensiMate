@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -339,6 +340,38 @@ object Database {
 
     fun createEmployee() {} //TODO: Anshjyot
 
+
+    suspend fun getSurveyQuestions(): List<SurveyQuestion> {
+        val surveyQuestions = mutableListOf<SurveyQuestion>()
+        val querySnapshot = db.collection("Survey").get().await()
+        for (document in querySnapshot.documents) {
+            val data = document.data
+            val question = data?.get("Questions") as List<String>
+            val answers = data["answers"] as List<Boolean>
+            val surveyQuestion = SurveyQuestion(question, answers)
+            surveyQuestions.add(surveyQuestion)
+        }
+        return surveyQuestions
+    }
+
+    data class SurveyQuestion(val text: List<String>, val answers: List<Boolean>)
+
+
+    suspend fun updateSurveyAnswers(questionId: String, answers: List<Boolean>) {
+        val db = FirebaseFirestore.getInstance()
+        val surveyRef = db.collection("Survey").document(questionId)
+        surveyRef.update("answers", answers)
+            .addOnSuccessListener {
+                Log.d(TAG, "Successfully updated!")
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Updated failed", exception)
+            }
+    }
+
+
+
+/*
     fun getSurvey() { //TODO: Anshjyot
         val questions = mutableListOf<Question>()
         val database = FirebaseDatabase.getInstance()
@@ -363,6 +396,11 @@ object Database {
     data class Question(val text: List<String>, val answers: List<Boolean>)
 
 
+
+ */
+
+
+    /*
     fun answerQuestion() {  //TODO: Anshjyot
         val database = FirebaseDatabase.getInstance()
         val ref = database.getReference("answers")
@@ -394,5 +432,13 @@ object OurCalendar {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.MONTH, month)
         return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+     */
+
+    object OurCalendar {
+        fun getMonthName(month: Int): String? {
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.MONTH, month)
+            return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+        }
     }
 }

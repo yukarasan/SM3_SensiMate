@@ -43,7 +43,7 @@ fun Survey3(navController: NavController) {
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 0.dp, top = 10.dp)
     ) {
-        OrangeBackButton({navController.navigate(Screen.ExtendedEventScreen.route) })
+        OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
         ProgressPreview()
         Question(title = "Question 3/4")
         SurveyTitle(title = "What do you think about this image?")
