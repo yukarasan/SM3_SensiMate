@@ -102,8 +102,7 @@ fun ProfileScreen(navController: NavController) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp),
+                .fillMaxWidth(),
             contentPadding = PaddingValues(bottom = 80.dp, top = 20.dp)
         ) {
             item {
@@ -152,6 +151,8 @@ fun ProfileScreen(navController: NavController) {
             item { InfoAboutUser(desc = "Postal Code", info = postalCode.value.toString()) }
             item { InfoAboutUser(desc = "Gender", info = gender.value.toString()) }
 
+            item { Spacer(modifier = Modifier.height(20.dp)) }
+            
             item { DeleteUserProfileButton(showDialog = showDialog) }
         }
     }
@@ -313,7 +314,6 @@ fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(255, 0, 0)),
         modifier = Modifier
             .height(40.dp)
-            .padding()
     ) {
         Text(
             text = "Delete profile",
