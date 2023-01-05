@@ -10,7 +10,10 @@ class QuestionViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(QuestionsUiState())
     val uiState: StateFlow<QuestionsUiState> = _uiState.asStateFlow()
 
-    fun insertQuestions(questionsUiState: QuestionsUiState) {
+    fun insertQuestions(
+        questionsUiState: QuestionsUiState,
+
+    ) {
         _uiState.value = QuestionsUiState(
             //questions = Database.getSurveyAsList(), //FÅ DEN HER TIL AT TAGE LISTE AF QUESTIONS FRA DATABASE
         )

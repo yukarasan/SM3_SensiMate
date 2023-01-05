@@ -263,8 +263,6 @@ object Database {
     }//TODO: Hussein
 
     fun deleteProfile(context: Context) {
-
-
         db.collection("users")
             .document(
                 auth.currentUser?.email.toString()
@@ -295,6 +293,12 @@ object Database {
 
         SaveBoolToLocalStorage(
             "isGuest",
+            false,
+            context
+        )
+
+        SaveBoolToLocalStorage(
+            "isEmployee",
             false,
             context
         )
@@ -466,8 +470,6 @@ object Database {
     data class Question(val main: String, val sub: List<String>, val type: String)
 
 
-
-
     fun exportToExcel() {} //TODO: LATER
 
 
@@ -478,7 +480,6 @@ object Database {
             return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
 
         }
-
 
         fun getSurveyAsList(eventId: String) {
             val questionsRef = db.collection("events").document(eventId).collection("questions")
