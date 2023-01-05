@@ -38,7 +38,11 @@ fun EditPostalCodeScreen(navController: NavController) {
             CheckBox(onClick = {
                 navController.popBackStack()
                 scope.launch {
-                    updateProfile(postalCode = postalCode)
+                    if (postalCode == "") {
+                        // Dont do anything
+                    } else {
+                        updateProfile(postalCode = postalCode)
+                    }
                 }
             })
         }
