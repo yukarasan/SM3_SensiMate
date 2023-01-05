@@ -447,12 +447,12 @@ fun EditPage(
                                     "year" to year
                                 )
 
-                                db.collection("events").add(event)
+                                db.collection("events").document().set(event)
                                     .addOnSuccessListener { docRef ->
                                         run {
-                                            UpdateEvent(event, docRef.id)
+                                            //UpdateEvent(event, docRef.id)
                                             //checking for docref.
-                                            Log.d("DocReference", docRef.id)
+                                            //Log.d("DocReference", docRef.id)
                                         }
                                     }
                                 /*navController.navigate(Screen.QuestionPageScreen.route)*/

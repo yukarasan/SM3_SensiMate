@@ -88,6 +88,7 @@ fun EventScreenEmployee(
 
                 state.events?.let {
                     items(it.toList()) { event ->
+
                         EventCard(
                             title = event.title,
                             timeOfEvent = event.timeOfEvent,

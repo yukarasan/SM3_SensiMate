@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.example.sensimate.data.Database.fetchProfile
+import com.example.sensimate.data.questionandsurvey.Question
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -94,8 +95,8 @@ object Database {
         try {
             eventReference.get().await().map {
                 val result = it.toObject(Event::class.java)
+                result.eventId = it.id
                 eventList.add(result)
-                it.id
             }
         } catch (e: FirebaseFirestoreException) {
             Log.d("error", "getListOfEvents: $e")
@@ -360,6 +361,27 @@ object Database {
 
     fun createEmployee() {} //TODO: Anshjyot
 
+    fun getSurveyAsList(surveyId: String): List<Question> {
+
+        val questions = mutableListOf<Question>()
+
+        val questionsRef = db.collection("surveys").document(surveyId).collection("questions")
+        questionsRef.get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val question = Question()
+                    document.getString("")
+
+                    questions.add(question)
+                }
+            }
+            .addOnFailureListener { exception ->
+                // handle failure
+            }
+        return questions
+    }
+}
+
 
     suspend fun getSurveyQuestions(): List<SurveyQuestion> {
         val surveyQuestions = mutableListOf<SurveyQuestion>()
@@ -402,18 +424,6 @@ object Database {
         }
 
 
-        fun getSurveyAsList(eventId: String) {
-            val questionsRef = db.collection("events").document(eventId).collection("questions")
-            questionsRef.get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        // document contains a question data
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    // handle failure
-                }
-        }
+
     }
 
-}

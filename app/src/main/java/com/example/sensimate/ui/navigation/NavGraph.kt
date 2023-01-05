@@ -6,11 +6,8 @@ import EditPage
 import EditSurvey
 import EditSurveyPage
 import android.os.Build
-import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -20,6 +17,7 @@ import androidx.navigation.compose.navArgument
 import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
 import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
@@ -36,7 +34,6 @@ import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.profile.editProfile.*
 import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
-import com.example.sensimate.ui.startupscreens.signUp.ChooseSignUpScreen
 import com.example.sensimate.ui.survey.Survey
 import com.example.sensimate.ui.survey.Survey2
 import com.example.sensimate.ui.survey.Survey3
@@ -45,6 +42,8 @@ import com.example.sensimate.ui.survey.Survey4
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
+
+    val questionViewModel = QuestionViewModel()
 
 
     val context = LocalContext.current
@@ -260,7 +259,11 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
         // SURVERY NAVIGATION
         composable(route = Screen.Survey.route) {
-            Survey(navController = navController, title = "")
+            Survey(
+                navController = navController,
+                title = "",
+                questionViewModel = questionViewModel
+            )
         }
         composable(route = Screen.Survey2.route) {
             Survey2(navController = navController, title = "")

@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.survey
 
+import android.annotation.SuppressLint
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
@@ -22,18 +22,22 @@ import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Rotate
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
 
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
  fun Survey(
     title: String,
-    navController: NavController) {
+    navController: NavController,
+    questionViewModel: QuestionViewModel
+) {
+
     Box(
         modifier = Modifier
             .background(

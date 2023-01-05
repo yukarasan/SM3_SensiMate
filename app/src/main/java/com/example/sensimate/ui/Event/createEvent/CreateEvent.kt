@@ -216,9 +216,12 @@ fun CreateEventScreen(navController: NavController) {
                                     "timeOfEvent" to timeText,
                                     "day" to day,
                                     "month" to month,
-                                    "year" to year
+                                    "year" to year,
                                 )
-                                db.collection("TESTER").add(event)
+                                db.collection("TESTER").add(event).addOnSuccessListener { docRef ->
+                                    event.set("eventId", docRef.id)
+                                    db.collection("TESTER").document(docRef.id).set(event)
+                                }
                                 navController.navigate(Screen.QuestionPageScreen.route)
                             }
                         },

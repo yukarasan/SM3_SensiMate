@@ -88,6 +88,8 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
 
                 state.events?.let {
                     items(it.toList()) {  event ->
+
+
                         EventCard(
                             title = event.title,
                             timeOfEvent = event.timeOfEvent,
