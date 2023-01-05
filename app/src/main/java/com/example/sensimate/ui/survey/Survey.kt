@@ -31,7 +31,9 @@ import com.example.sensimate.ui.theme.*
 
 
 @Composable
- fun Survey(navController: NavController) {
+ fun Survey(
+    title: String,
+    navController: NavController) {
     Box(
         modifier = Modifier
             .background(
@@ -49,8 +51,8 @@ import com.example.sensimate.ui.theme.*
     ) {
         OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
         ProgressPreview()
-        Question(title = "Question 1/4")
-        SurveyTitle(title = "Let's first hear about yourself")
+        Question(title)
+        SurveyTitle(title)
         Information()
 
         Row(
@@ -221,6 +223,19 @@ fun Information() {
     }
 }
 
+
+@Composable
+private fun Option(title: String, modifier: Modifier = Modifier) {
+    Text(
+        text = title,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 18.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(top = 20.dp, start = 20.dp)
+    )
+}
 
 @Composable
 private fun InformationAge(title: String, modifier: Modifier = Modifier) {

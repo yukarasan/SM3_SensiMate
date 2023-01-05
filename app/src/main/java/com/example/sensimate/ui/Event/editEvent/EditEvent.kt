@@ -326,10 +326,13 @@ fun EditPage(
 
     AddPhoto(
         modifier = Modifier
-            .padding(345.dp, 20.dp, 2.dp, 1.dp)
+            .fillMaxWidth()
+            .padding(320.dp, 20.dp, 1.dp, 1.dp)
             .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
-    com.example.sensimate.ui.Event.createEvent.TextToPhoto()
+    com.example.sensimate.ui.Event.createEvent.TextToPhoto(modifier = Modifier
+        .fillMaxWidth()
+        .padding(341.dp, 43.dp, 1.dp, 1.dp))
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -443,10 +446,12 @@ fun EditPage(
                                     "month" to month,
                                     "year" to year
                                 )
+
                                 db.collection("events").add(event)
                                     .addOnSuccessListener { docRef ->
                                         run {
                                             UpdateEvent(event, docRef.id)
+                                            //checking for docref.
                                             Log.d("DocReference", docRef.id)
                                         }
                                     }
@@ -461,7 +466,7 @@ fun EditPage(
                     ) {
 
                         Text(
-                            text = "Finish Edited",
+                            text = "Finish Editing",
                             color = Color.White,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Medium,
