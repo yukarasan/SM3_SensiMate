@@ -1,10 +1,12 @@
 package com.example.sensimate.data.questionandsurvey
 
+import com.example.sensimate.data.Database
+
 data class QuestionsUiState(
-    var questions: MutableList<Question> = emptyList<Question>().toMutableList()
+    var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList()
 )
 
-class Question(
+class MyQuestion(
     var mainQuestion: String = "",
     var options: MutableList<String> = emptyList<String>().toMutableList(),
     var oneChoice: Boolean = false

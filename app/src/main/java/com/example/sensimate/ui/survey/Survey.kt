@@ -5,6 +5,7 @@ import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -39,7 +40,6 @@ import com.example.sensimate.ui.theme.*
     navController: NavController,
     questionViewModel: QuestionViewModel
 ) {
-
     Box(
         modifier = Modifier
             .background(
@@ -50,31 +50,35 @@ import com.example.sensimate.ui.theme.*
             )
             .fillMaxSize()
     )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
-    ) {
-        OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
-        ProgressPreview()
-        Question(title)
-        SurveyTitle(title)
-        Information(
-            titles = listOf("Age", "Gender", "Postal code"),
-            placeholders = listOf("", "", "")
-        )
+    LazyColumn(){
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
+            ) {
+                OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
+                ProgressPreview()
+                Question(title)
+                SurveyTitle(title)
+                Information(
+                    titles = listOf("Age", "Gender", "Postal code"),
+                    placeholders = listOf("", "", "")
+                )
 
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 150.dp)
-        ) {
-            //TODO: Remember to Implement Scaffold so the buttons does not move, but does not move
-            PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
-            NextButton(onClick = { navController.navigate(Screen.Survey2.route) } )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 150.dp)
+                ) {
+                    //TODO: Remember to Implement Scaffold so the buttons does not move, but does not move
+                    PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
+                    NextButton(onClick = { navController.navigate(Screen.Survey2.route) } )
+                }
+            }
         }
     }
 }

@@ -4,32 +4,20 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
+import android.widget.Toast
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.FirebaseFirestoreException
-import android.widget.Toast
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 import com.example.sensimate.data.Database.fetchListOfEvents
-import com.example.sensimate.data.Database.fetchProfile
+import com.example.sensimate.data.questionandsurvey.MyQuestion
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -41,10 +29,6 @@ val db = Firebase.firestore
 
 data class EventScreenState(
     val events: MutableList<Event>? = null
-)
-
-data class ProfileScreenState(
-    val profile: Profile? = null
 )
 
 class EventDataViewModel : ViewModel() {
@@ -60,7 +44,7 @@ class EventDataViewModel : ViewModel() {
             state.value = state.value.copy(events = eventList)
         }
     }
-}
+} // TODO: Yusuf
 
 // Initialize Firebase Auth
 val auth = Firebase.auth
@@ -84,7 +68,7 @@ object Database {
         }
 
         return profile
-    }
+    } // TODO: Yusuf
 
 
     suspend fun fetchListOfEvents(): MutableList<Event> {
@@ -102,7 +86,7 @@ object Database {
         }
 
         return eventList
-    }
+    } // TODO: Yusuf
 
 
     suspend fun updateProfile(fields: Map<String, Any>) {
@@ -110,7 +94,35 @@ object Database {
         withContext(Dispatchers.IO) {
             docRef.update(fields)
         }
-    }
+    } // TODO: Yusuf
+
+    fun updatePassword(currentPassword: String, newPassword: String, context: Context) {
+        val user = FirebaseAuth.getInstance().currentUser
+        val credential = EmailAuthProvider
+            .getCredential(auth.currentUser?.email.toString(), currentPassword)
+
+        user?.reauthenticate(credential)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                user.updatePassword(newPassword).addOnCompleteListener {
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Password updated")
+                        Toast.makeText(
+                            context, "Successfully updated your password",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Log.d(TAG, "Error password not updated")
+                    }
+                }
+            } else {
+                Log.d(TAG, "Error auth failed")
+                Toast.makeText(
+                    context, "Failed. Input does not match current password",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    } // TODO: Yusuf
 
     fun signUserUp(
         email: String,
@@ -263,8 +275,6 @@ object Database {
     }//TODO: Hussein
 
     fun deleteProfile(context: Context) {
-
-
         db.collection("users")
             .document(
                 auth.currentUser?.email.toString()
@@ -295,6 +305,12 @@ object Database {
 
         SaveBoolToLocalStorage(
             "isGuest",
+            false,
+            context
+        )
+
+        SaveBoolToLocalStorage(
+            "isEmployee",
             false,
             context
         )
@@ -356,10 +372,34 @@ object Database {
     } //TODO: Sabirin
 
 
+    fun getSurveyAsList(eventId: String): List<MyQuestion> {
+
+        val questions: MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList()
+        val questionsRef = db.collection("events").document(eventId).collection("questions")
+
+        questionsRef.get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    // document contains a question data
+
+                    val newQuestion = MyQuestion()
+
+                    newQuestion.mainQuestion = document.getString("mainQuestion").toString()
+                    newQuestion.oneChoice = document.getBoolean("oneChoice") == true
+
+                    questionsRef.document(document.id).collection("type")
+                        .get()
+                        .addOnSuccessListener { option ->
+                            newQuestion.options.add(option.toString())
+                        }
+                }
+            }
+        return questions
+    }
+
     fun getEmployeeProfiles() {} //TODO: Sabirin
 
     fun createEmployee() {} //TODO: Anshjyot
-
 
     suspend fun getSurveyQuestions(): List<SurveyQuestion> {
         val surveyQuestions = mutableListOf<SurveyQuestion>()
@@ -462,10 +502,7 @@ object Database {
  */
 
 
-
     data class Question(val main: String, val sub: List<String>, val type: String)
-
-
 
 
     fun exportToExcel() {} //TODO: LATER
@@ -477,20 +514,6 @@ object Database {
             calendar.set(Calendar.MONTH, month)
             return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
 
-        }
-
-
-        fun getSurveyAsList(eventId: String) {
-            val questionsRef = db.collection("events").document(eventId).collection("questions")
-            questionsRef.get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        // document contains a question data
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    // handle failure
-                }
         }
 
     }

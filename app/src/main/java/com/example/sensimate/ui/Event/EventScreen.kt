@@ -27,12 +27,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
-fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel = viewModel()) {
+fun EventScreen(
+    navController: NavController,
+    dataViewModel: EventDataViewModel = viewModel(),
+) {
+
     val state = dataViewModel.state.value
     var checked by remember { mutableStateOf(false) }
 
@@ -56,7 +61,7 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                         modifier = Modifier
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
-                    ){
+                    ) {
                         if (checked) {
                             Dialog(onDismissRequest = { /*TODO*/ }) {
                                 EventQuickEntry(navController = navController)
@@ -87,8 +92,7 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                 }
 
                 state.events?.let {
-                    items(it.toList()) {  event ->
-
+                    items(it.toList()) { event ->
 
                         EventCard(
                             title = event.title,
@@ -103,9 +107,6 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                                         allergens = event.allergens,
                                         location = event.location,
                                         surveyCode = event.surveyCode,
-                                        day = event.day,
-                                        year = event.year,
-                                        month = event.month
                                     )
                                 )
                             }
@@ -136,7 +137,6 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
     }
 
 }
-
 
 
 @Composable
@@ -185,10 +185,11 @@ private fun EventQuickEntry(navController: NavController) {
                 ) {
                     EventInputField({})
                 }
-                Row(horizontalArrangement = Arrangement.Center,
+                Row(
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Bottom,
                     modifier = Modifier
-                    .padding(top = 20.dp)
+                        .padding(top = 20.dp)
                 )
 
                 {
@@ -197,19 +198,21 @@ private fun EventQuickEntry(navController: NavController) {
                         color = Color.Black, title = "Enter", buttonColor = Color(199, 242, 219)
                     )
                 }
-                Row(horizontalArrangement = Arrangement.Center,
+                Row(
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Bottom,
                     modifier = Modifier
                         .padding(top = 20.dp)
                 ) {
-                    myButton(onClick  ={ navController.navigate(Screen.EventScreen.route)},
+                    myButton(
+                        onClick = { navController.navigate(Screen.EventScreen.route) },
                         color = Color.Black, title = "Back", buttonColor = Color.White
                     )
-                    }
                 }
             }
         }
     }
+}
 
 
 @Composable
@@ -220,7 +223,7 @@ private fun QuickEntryImage(modifier: Modifier = Modifier) {
             painter = image,
             contentDescription = null,
             modifier = modifier
-               // .fillMaxSize()
+                // .fillMaxSize()
                 .size(90.dp)
         )
     }
