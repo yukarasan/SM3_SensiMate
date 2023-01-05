@@ -85,7 +85,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
     NavHost(
         navController = navController,
         startDestination = screen.route
-    ) {
+    ) {      // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)

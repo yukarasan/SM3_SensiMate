@@ -261,8 +261,20 @@ object Database {
 
     }//TODO: Hussein
 
-    fun deleteProfile() {
-
+    fun deleteProfile(context: Context) {
+        auth.currentUser?.delete()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(
+                    context, "Account successfully deleted",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    context, "Something went wrong",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     } //TODO: Hussein
 
     fun signOut(context: Context) {
@@ -324,7 +336,7 @@ object Database {
     }
 
     fun UpdateEvent(data: Map<String, String>, documentID: String) {
-        val docref = db.collection("TESTER").document(documentID)
+        val docref = db.collection("events").document(documentID)
         docref.update(data)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
