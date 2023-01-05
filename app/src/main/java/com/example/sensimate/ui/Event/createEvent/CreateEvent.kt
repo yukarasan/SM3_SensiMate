@@ -42,6 +42,7 @@ import com.example.sensimate.data.db
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
+import com.google.firebase.firestore.DocumentReference
 import java.util.*
 
 
@@ -499,7 +500,7 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
 
 
 // figur 2
-
+var questionnum: Int = 0
 @Composable
 fun QuestionPageScreen(navController: NavController) {
     val selectedQuestion = remember { mutableStateOf("") }
@@ -525,7 +526,8 @@ fun QuestionPageScreen(navController: NavController) {
                 .clickable(
                     enabled = true,
                     onClickLabel = "Clickable image",
-                    onClick = { navController.navigate(Screen.EventScreenEmployee.route) }),
+                    onClick = { questionnum = 0
+                        navController.navigate(Screen.EventScreenEmployee.route) }),
             id = R.drawable.greenconfirmedbutton
         )
 
@@ -571,6 +573,19 @@ fun QuestionPageScreen(navController: NavController) {
                         onClick = {
                             when (selectedQuestion.value) {
                                 "Multiple-Choice Question" -> {
+                                    questionnum+=1
+                                    val questionNumText: String = "q$questionnum"
+                                    val questtest = hashMapOf(
+                                        "question" to questionNumText
+                                    )//e5JR5TtTdc0pK0xs3WSa
+                                    /*//TODO SKAL FÅ DET TIL AT VIRKE
+                                    db.collection("TESTER").document("jZzi1Tdi05MGk2qdDcC7").collection("surveyTest").add(questtest).addOnSuccessListener { docRef ->
+                                        questtest.set("eventId", docRef.id)
+                                        db.collection("TESTER").document(docRef.id).set(questtest)
+
+                                        db.collection("TESTER").document(docRef.id)
+                                            .update(docRef.id, questtest)
+                                    }*/
                                     navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
                                 }
                                 "Text Answer Question" -> {
