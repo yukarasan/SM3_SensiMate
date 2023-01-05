@@ -37,7 +37,6 @@ import com.example.sensimate.ui.theme.DarkPurple
 import java.util.Calendar
 import kotlinx.coroutines.launch
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(navController: NavController) {

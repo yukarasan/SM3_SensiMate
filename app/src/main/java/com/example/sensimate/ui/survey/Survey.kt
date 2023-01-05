@@ -64,9 +64,6 @@ fun Survey(
 
     val questions = questionViewModel.uiState.value.questions
 
-
-
-
     Box(
         modifier = Modifier
             .background(

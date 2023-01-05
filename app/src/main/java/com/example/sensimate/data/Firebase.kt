@@ -373,19 +373,14 @@ object Database {
 
 
     suspend fun getSurveyAsList(eventId: String): List<MyQuestion> { //TODO: Hussein
-
         val questions: MutableList<MyQuestion> = mutableListOf()
         val questionsRef = db.collection("events").document(eventId).collection("questions")
-
         questionsRef.get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     // document contains a question data
-
                     val newQuestion = MyQuestion()
-
                     newQuestion.mainQuestion = document.getString("mainQuestion").toString()
-
                     newQuestion.oneChoice = document.getBoolean("oneChoice") == true
 
                     questionsRef.document(document.id)
@@ -403,8 +398,11 @@ object Database {
                     questions.add(newQuestion)
                 }
             }.await()
+        Log.d("LENGTH", questions.size.toString())
         return questions
     }
+
+    fun insertAnswer(){} //TODO: Ansh (& Hussein)?
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
 
@@ -441,20 +439,18 @@ object Database {
             }
     }
 
-    data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
-
-
     fun exportToExcel() {} //TODO: LATER
+}
 
 
-    object OurCalendar {
-        fun getMonthName(month: Int): String? {
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.MONTH, month)
-            return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
 
-        }
+
+object OurCalendar {
+    fun getMonthName(month: Int): String? {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.MONTH, month)
+        return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
 
     }
-
 }
