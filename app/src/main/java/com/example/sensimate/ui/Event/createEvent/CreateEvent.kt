@@ -48,8 +48,8 @@ import java.util.*
 @Preview(showBackground = true)
 @Composable
 fun CreateEventPreview() {
-    CreateEventScreen(rememberNavController())
-    //QuestionPageScreen(rememberNavController())
+   //CreateEventScreen(rememberNavController())
+    QuestionPageScreen(rememberNavController())
     //CreateMultpleChoiceQuestionScreen(rememberNavController())
     //CreateTextAnswerQuestionScreen(rememberNavController())
 }
@@ -86,19 +86,17 @@ fun CreateEventScreen(navController: NavController) {
     )
 
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-        AddPhoto2(
+        AddPhoto(
             modifier = Modifier
                 .padding(end = 25.dp, top = 20.dp)
                 .size(20.dp), id = R.drawable.ic_add_circle_outlined
         )
+        TextToPhoto(
+            modifier = Modifier.padding(end = 10.dp))
     }
 
 
-    TextToPhoto(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(330.dp, 43.dp, 1.dp, 1.dp)
-    )
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -373,24 +371,14 @@ fun ContentColorComponent(
     )
 }
 
-@Composable
-fun AddPhoto2(modifier: Modifier = Modifier, id: Int) {
-    Image(
-        painter = painterResource(id = id),
-        contentDescription = "HEJ MED DIG ",
-        modifier = modifier
-    )
-}
 
 @Composable
 fun AddPhoto(modifier: Modifier = Modifier, id: Int) {
-    IconButton(onClick = { /*TODO*/ }) {
         Image(
             painter = painterResource(id = id),
             contentDescription = "HEJ MED DIG ",
             modifier = modifier
         )
-    }
 }
 
 @Composable
@@ -529,20 +517,28 @@ fun QuestionPageScreen(navController: NavController) {
                 )
             )
     )
-    AddPhoto(
-        modifier = Modifier
-            .padding(322.dp, 30.dp, 1.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { navController.navigate(Screen.EventScreenEmployee.route) }),
-        id = R.drawable.greenconfirmedbutton
-    )
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+        AddPhoto(
+            modifier = Modifier
+                .padding(end = 25.dp, top = 55.dp)
+                .size(50.dp)
+                .clickable(
+                    enabled = true,
+                    onClickLabel = "Clickable image",
+                    onClick = { navController.navigate(Screen.EventScreenEmployee.route) }),
+            id = R.drawable.greenconfirmedbutton
+        )
 
-    Column(modifier = Modifier.padding(25.dp, 30.dp, 1.dp, 1.dp)) {
+    }
+
+/* //TODO ved ikke om jeg skal bruge den
+    Column(modifier = Modifier
+        .padding(start = 25.dp, top = 55.dp)
+        .fillMaxWidth(), horizontalAlignment = Alignment.Start) {
         OrangeBackButton(onClick = { navController.popBackStack() })
     }
+
+ */
 
 
 
@@ -556,40 +552,45 @@ fun QuestionPageScreen(navController: NavController) {
         backgroundColor = Color(red = 44, green = 44, blue = 59)
 
     ) {  //TODO
-        Text(
-            text = "Create an Question",
-            color = Color(0xFFB874A6),
-            fontSize = 26.sp,
-            modifier = Modifier
-                .padding(40.dp, 240.dp, 1.dp, 1.dp)
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+            Text(
+                text = "Create an Question",
+                color = Color(0xFFB874A6),
+                fontSize = 26.sp,
+                modifier = Modifier
+                    .padding(start = 35.dp, top = 255.dp)
 
-        )
-        AddPhoto(
-            modifier = Modifier
-                .padding(240.dp, 1.dp, 1.dp, 1.dp)
-                .size(25.dp)
-                .clickable(enabled = true,
-                    onClick = {
-                        when (selectedQuestion.value) {
-                            "Multiple-Choice Question" -> {
-                                navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
+            )
+        }
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+            AddPhoto(
+                modifier = Modifier
+                    .padding(end = 55.dp, top = 260.dp)
+                    .size(25.dp)
+                    .clickable(enabled = true,
+                        onClick = {
+                            when (selectedQuestion.value) {
+                                "Multiple-Choice Question" -> {
+                                    navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
+                                }
+                                "Text Answer Question" -> {
+                                    navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
+                                }
+                                else -> {
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "Please Choose a Question Type",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        .show()
+                                }
                             }
-                            "Text Answer Question" -> {
-                                navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
-                            }
-                            else -> {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        "Please Choose a Question Type",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                    .show()
-                            }
-                        }
-                    }),
-            id = R.drawable.redaddplus
-        )
+                        }),
+                id = R.drawable.redaddplus
+            )
+        }
+
         DropDownMenu(selectedQuestion = selectedQuestion)
     }
 }
@@ -652,7 +653,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
             Spacer(modifier = Modifier.size(55.dp))
 
             Button(
-                onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                onClick = { navController.navigate(Screen.QuestionPageScreen.route) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -724,7 +725,7 @@ fun CreateTextAnswerQuestionScreen(navController: NavController) {
             Spacer(modifier = Modifier.size(55.dp))
 
             Button(
-                onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                onClick = { navController.navigate(Screen.QuestionPageScreen.route) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)

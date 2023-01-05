@@ -127,7 +127,25 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 },
                 navArgument(SURVEYCODE) {
                     type = NavType.StringType
+                },
+                /*
+                navArgument(DAY) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+
+                 */
+                /*
+                navArgument(MONTH) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument(YEAR) {
+                    type = NavType.StringType
+                    nullable = true
                 }
+
+                 */
             )
         ) { backStackEntry ->
             ExtendedEvent(
@@ -138,6 +156,11 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
                 description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString(),
                 surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString()
+                //day = backStackEntry.arguments?.getString(DAY).toString()
+                /*year = backStackEntry.arguments?.getString(MONTH).toString(),
+                month = backStackEntry.arguments?.getString(YEAR).toString()
+
+                 */
             )
         }
         composable(Screen.ProfileScreen.route) {
@@ -175,7 +198,24 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 },
                 navArgument(SURVEYCODE) {
                     type = NavType.StringType
+                },
+                /*
+                navArgument(DAY) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+
+                 */
+                /*navArgument(MONTH) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument(YEAR) {
+                    type = NavType.StringType
+                    nullable = true
                 }
+
+                 */
             )
         ) { backStackEntry ->
             EditEvent(
@@ -185,7 +225,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 location = backStackEntry.arguments?.getString(LOCATION_OF_EVENT).toString(),
                 allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
                 description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString(),
-                surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString()
+                surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString(),
+                day = backStackEntry.arguments?.getString(DAY).toString()
+                //month = backStackEntry.arguments?.getString(MONTH).toString(),
+                //year = backStackEntry.arguments?.getString(YEAR).toString()
             )
         }
 
@@ -209,7 +252,21 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 },
                 navArgument(SURVEYCODE) {
                     type = NavType.StringType
+                },
+                navArgument(DAY) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+               /* navArgument(MONTH) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument(YEAR) {
+                    type = NavType.StringType
+                    nullable = true
                 }
+
+                */
             )
         ) { backStackEntry ->
             EditPage(
@@ -220,7 +277,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
                 description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT)
                     .toString(),
-                surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString()
+                surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString(),
+                day = backStackEntry.arguments?.getString(DAY).toString(),
+                //month = backStackEntry.arguments?.getString(MONTH).toString(),
+                //year = backStackEntry.arguments?.getString(YEAR).toString()
             )
         }
         composable(route = Screen.EditSurvey.route) {
@@ -270,10 +330,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
         }
         composable(route = Screen.Survey3.route) {
-            Survey3(navController = navController)
+            Survey3(navController = navController, title = "")
         }
         composable(route = Screen.Survey4.route) {
-            Survey4(navController = navController)
+            Survey4(navController = navController, title = "")
         }
     }
 }

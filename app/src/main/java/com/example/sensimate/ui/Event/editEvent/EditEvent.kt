@@ -69,6 +69,9 @@ fun EditEvent(
     allergens: String,
     description: String,
     surveyCode: String,
+    day : String,
+    //year: String,
+    //month: String,
     dataViewModel: EventDataViewModel = viewModel()
 ) {
     val state = dataViewModel.state.value
@@ -109,7 +112,10 @@ fun EditEvent(
                                             description = description,
                                             allergens = allergens,
                                             location = location,
-                                            surveyCode = surveyCode
+                                            surveyCode = surveyCode,
+                                            day = day
+                                            //year = year,
+                                            //month = month
                                         )
                                     )
                                 }),
@@ -292,7 +298,10 @@ fun EditPage(
     location: String,
     allergens: String,
     description: String,
-    surveyCode: String
+    surveyCode: String,
+    day : String,
+    //year : String,
+    //month : String
 ) {
     var titleText by remember { mutableStateOf(title) }
     var descriptionText by remember { mutableStateOf(description) }
@@ -324,15 +333,15 @@ fun EditPage(
             )
     )
 
-    AddPhoto(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(320.dp, 20.dp, 1.dp, 1.dp)
-            .size(20.dp), id = R.drawable.ic_add_circle_outlined
-    )
-    com.example.sensimate.ui.Event.createEvent.TextToPhoto(modifier = Modifier
-        .fillMaxWidth()
-        .padding(341.dp, 43.dp, 1.dp, 1.dp))
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+        AddPhoto(
+            modifier = Modifier
+                .padding(end = 25.dp, top = 20.dp)
+                .size(20.dp), id = R.drawable.ic_add_circle_outlined
+        )
+        TextToPhoto(
+            modifier = Modifier.padding(end = 10.dp))
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -644,7 +653,7 @@ fun TextFiledTimeText() {
 
 @Composable
 fun EditSurvey(navController: NavController) {
-    Survey4(navController)
+    Survey4(title = "", navController)
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
