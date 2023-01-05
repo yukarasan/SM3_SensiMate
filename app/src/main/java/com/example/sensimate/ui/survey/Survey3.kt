@@ -5,6 +5,7 @@ import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -27,7 +28,7 @@ import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
 //@Preview(showBackground = true)
 @Composable
-fun Survey3(navController: NavController) {
+fun Survey3(title: String, navController: NavController) {
     Box(
         modifier = Modifier
             .background(
@@ -38,26 +39,40 @@ fun Survey3(navController: NavController) {
             )
             .fillMaxSize()
     )
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 0.dp, top = 10.dp)
     ) {
-        OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
-        ProgressPreview()
-        Question(title = "Question 3/4")
-        SurveyTitle(title = "What do you think about this image?")
-        SurveyImage()
-        Information3()
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 70.dp)
-        ) {
-            PreviousButton(onClick = { navController.navigate(Screen.Survey2.route) } )
-            NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
+        items(1) {
+            OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
+        }
+        items(1) {
+            ProgressPreview()
+        }
+        items(1) {
+            Question(title)
+        }
+        items(1) {
+            SurveyTitle(title)
+        }
+        items(1) {
+            SurveyImage()
+        }
+        items(1) {
+            Information3(options = listOf("1", "2", "3", "4", "5"))
+        }
+        items(1) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 70.dp)
+            ) {
+                PreviousButton(onClick = { navController.navigate(Screen.Survey2.route) } )
+                NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
+            }
         }
     }
 }
@@ -78,9 +93,8 @@ private fun ProgressPreview() {
     )
 }
 
-
 @Composable
-fun Information3() {
+fun Information3(options: List<String>) {
     val checkedState = remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(0) }
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
@@ -112,12 +126,9 @@ fun Information3() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Information1(title = "1")
-                Information1(title = "2")
-                Information1(title = "3")
-                Information1(title = "4")
-                Information1(title = "5")
-
+                options.forEachIndexed { index, option ->
+                    Information1(title = option)
+                }
             }
             Row(
                 modifier = Modifier
@@ -126,21 +137,16 @@ fun Information3() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                RoundedCheckView(listener, selectedOption, option = 0)
-                RoundedCheckView(listener, selectedOption, option = 1)
-                RoundedCheckView(listener,selectedOption, option = 2)
-                RoundedCheckView(listener, selectedOption, option = 3)
-                RoundedCheckView(listener,selectedOption, option = 4)
-
-
-
-
-
+                options.forEachIndexed { index, _ ->
+                    RoundedCheckView(listener, selectedOption, option = index)
+                }
             }
         }
     }
 }
+
+
+
 
 
 @Composable
