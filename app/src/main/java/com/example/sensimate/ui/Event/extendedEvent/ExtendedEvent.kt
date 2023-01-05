@@ -34,7 +34,10 @@ fun ExtendedEvent(
     location: String,
     allergens: String,
     description: String,
-    surveyCode: String
+    surveyCode: String,
+    //day : String,
+    //year : String,
+    //month : String
 ) {
     Box(
         modifier = Modifier

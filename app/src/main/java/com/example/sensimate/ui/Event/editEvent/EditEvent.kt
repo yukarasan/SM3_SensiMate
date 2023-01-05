@@ -69,6 +69,9 @@ fun EditEvent(
     allergens: String,
     description: String,
     surveyCode: String,
+    day : String,
+    //year: String,
+    //month: String,
     dataViewModel: EventDataViewModel = viewModel()
 ) {
     val state = dataViewModel.state.value
@@ -109,7 +112,10 @@ fun EditEvent(
                                             description = description,
                                             allergens = allergens,
                                             location = location,
-                                            surveyCode = surveyCode
+                                            surveyCode = surveyCode,
+                                            day = day
+                                            //year = year,
+                                            //month = month
                                         )
                                     )
                                 }),
@@ -292,7 +298,10 @@ fun EditPage(
     location: String,
     allergens: String,
     description: String,
-    surveyCode: String
+    surveyCode: String,
+    day : String,
+    //year : String,
+    //month : String
 ) {
     var titleText by remember { mutableStateOf(title) }
     var descriptionText by remember { mutableStateOf(description) }

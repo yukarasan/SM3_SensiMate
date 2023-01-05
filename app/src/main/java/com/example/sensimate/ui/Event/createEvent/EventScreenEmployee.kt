@@ -100,7 +100,10 @@ fun EventScreenEmployee(
                                         description = event.description,
                                         allergens = event.allergens,
                                         location = event.location,
-                                        surveyCode = event.surveyCode
+                                        surveyCode = event.surveyCode,
+                                        day = event.day,
+                                        month = event.month,
+                                        year = event.year
                                     ),
                                 )
                             }
