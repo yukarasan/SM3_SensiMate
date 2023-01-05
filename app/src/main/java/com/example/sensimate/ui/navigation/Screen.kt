@@ -7,6 +7,7 @@ const val TIME_OF_EVENT = "timeOfEvent"
 const val LOCATION_OF_EVENT = "location"
 const val ALLERGENS = "allergens"
 const val DESCRIPTION_OF_EVENT = "description"
+const val SURVEYCODE = "surveyCode"
 
 sealed class Screen(val route: String) {
     object CookieScreen : Screen(route = "cookie")
@@ -17,15 +18,16 @@ sealed class Screen(val route: String) {
 
     object EventScreen : Screen(route = "event")
     object ExtendedEventScreen :
-        Screen(route = "extendedEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}") {
+        Screen(route = "extendedEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}/{$SURVEYCODE}") {
         fun passArguments(
             title: String,
             time: String,
             location: String,
             allergens: String,
-            description: String
+            description: String,
+            surveyCode: String
         ): String {
-            return  "extendedEvent/$title/$time/$location/$allergens/$description"
+            return  "extendedEvent/$title/$time/$location/$allergens/$description/$surveyCode"
         }
     }
 
@@ -35,19 +37,32 @@ sealed class Screen(val route: String) {
     object CreateMultpleChoiceQuestionScreen : Screen(route = "createMultpleChoiceQuestion")
     object CreateTextAnswerQuestionScreen: Screen(route = "createTextAnswerQuestionScreen")
 
-    object EditEvent : Screen(route = "editEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}") {
+    object EditEvent : Screen(route = "editEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}/{$SURVEYCODE}") {
         fun passArguments(
             title: String,
             time: String,
             location: String,
             allergens: String,
-            description: String
+            description: String,
+            surveyCode: String
         ): String {
-            return "editEvent/$title/$time/$location/$allergens/$description"
+            return "editEvent/$title/$time/$location/$allergens/$description/$surveyCode"
         }
     }
 
-    object EditPage : Screen(route = "editPage")
+    object EditPage : Screen(route = "editPage/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}/{$SURVEYCODE}") {
+        fun passArguments(
+            title: String,
+            time: String,
+            location: String,
+            allergens: String,
+            description: String,
+            surveyCode: String
+        ): String {
+            return "editPage/$title/$time/$location/$allergens/$description/$surveyCode"
+        }
+    }
+
     object EditSurvey : Screen(route = "editSurvey")
     object EditSurveyPage : Screen(route = "editSurveyPage")
     object EventScreenEmployee : Screen(route = "eventScreenEmployee")

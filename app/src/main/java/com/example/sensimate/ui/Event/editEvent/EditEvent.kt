@@ -1,3 +1,4 @@
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,12 +24,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.Database.UpdateEvent
 import com.example.sensimate.data.Event
+import com.example.sensimate.data.EventDataViewModel
 import com.example.sensimate.data.db
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
@@ -43,6 +47,7 @@ import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 import com.example.sensimate.ui.theme.RedColor
+import kotlin.math.log
 
 /*
 @Preview(showBackground = true)
@@ -62,8 +67,11 @@ fun EditEvent(
     time: String,
     location: String,
     allergens: String,
-    description: String
+    description: String,
+    surveyCode: String,
+    dataViewModel: EventDataViewModel = viewModel()
 ) {
+    val state = dataViewModel.state.value
 
     Box(
         modifier = Modifier
@@ -93,7 +101,18 @@ fun EditEvent(
                             .clickable(
                                 enabled = true,
                                 onClickLabel = "Clickable image",
-                                onClick = { navController.navigate(Screen.EditPage.route) }),
+                                onClick = {
+                                    navController.navigate(
+                                        Screen.EditPage.passArguments(
+                                            time = time,
+                                            title = title,
+                                            description = description,
+                                            allergens = allergens,
+                                            location = location,
+                                            surveyCode = surveyCode
+                                        )
+                                    )
+                                }),
                         id = R.drawable.yelloweditbutton
                     )
                 }
@@ -266,14 +285,21 @@ fun EditPagePreview() {
 
 
 @Composable
-fun EditPage(navController: NavController) {
-
-    var titleText by remember { mutableStateOf("") }
-    var descriptionText by remember { mutableStateOf("") }
-    var locationText by remember { mutableStateOf("") }
-    var allergensText by remember { mutableStateOf("") }
-    var surveyCodeText by remember { mutableStateOf("") }
-    var timeText by remember { mutableStateOf("") }
+fun EditPage(
+    navController: NavController,
+    title: String,
+    time: String,
+    location: String,
+    allergens: String,
+    description: String,
+    surveyCode: String
+) {
+    var titleText by remember { mutableStateOf(title) }
+    var descriptionText by remember { mutableStateOf(description) }
+    var locationText by remember { mutableStateOf(location) }
+    var allergensText by remember { mutableStateOf(allergens) }
+    var surveyCodeText by remember { mutableStateOf(surveyCode) }
+    var timeText by remember { mutableStateOf(time) }
     val myYear = remember { mutableStateOf("") }
     val myMonth = remember { mutableStateOf("") }
     val myDay = remember { mutableStateOf("") }
@@ -355,7 +381,7 @@ fun EditPage(navController: NavController) {
                 month = myMonth.value
                 year = myYear.value
 
-                TextFileTimeText(timeText) {timeText = it}
+                TextFileTimeText(timeText) { timeText = it }
                 Column(
 
                     modifier = Modifier.fillMaxSize(),
@@ -417,11 +443,13 @@ fun EditPage(navController: NavController) {
                                     "month" to month,
                                     "year" to year
                                 )
-                                db.collection("TESTER").add(event)
+                                db.collection("events").add(event)
                                     .addOnSuccessListener { docRef ->
                                         run {
-                                        UpdateEvent(event, docRef.id)
-                                    } }
+                                            UpdateEvent(event, docRef.id)
+                                            Log.d("DocReference", docRef.id)
+                                        }
+                                    }
                                 /*navController.navigate(Screen.QuestionPageScreen.route)*/
                             }
                         },
@@ -723,12 +751,12 @@ fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = modifier
 
-            )
+        )
     }
 }
 
 @Composable
-fun TextFiledEditAnswerText(modifier: Modifier,string: String) {
+fun TextFiledEditAnswerText(modifier: Modifier, string: String) {
     var text by remember { mutableStateOf(string) }
     com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
         TextField(

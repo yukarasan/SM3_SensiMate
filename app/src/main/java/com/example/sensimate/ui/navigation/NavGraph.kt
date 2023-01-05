@@ -81,7 +81,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
     NavHost(
         navController = navController,
-        startDestination = screen.route
+        startDestination = Screen.EventScreenEmployee.route
     ) {      // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
@@ -122,6 +122,9 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 },
                 navArgument(DESCRIPTION_OF_EVENT) {
                     type = NavType.StringType
+                },
+                navArgument(SURVEYCODE) {
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
@@ -131,7 +134,8 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 time = backStackEntry.arguments?.getString(TIME_OF_EVENT).toString(),
                 location = backStackEntry.arguments?.getString(LOCATION_OF_EVENT).toString(),
                 allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
-                description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString()
+                description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString(),
+                surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString()
             )
         }
         composable(Screen.ProfileScreen.route) {
@@ -166,6 +170,9 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 },
                 navArgument(DESCRIPTION_OF_EVENT) {
                     type = NavType.StringType
+                },
+                navArgument(SURVEYCODE) {
+                    type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
@@ -175,12 +182,44 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 time = backStackEntry.arguments?.getString(TIME_OF_EVENT).toString(),
                 location = backStackEntry.arguments?.getString(LOCATION_OF_EVENT).toString(),
                 allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
-                description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString()
+                description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT).toString(),
+                surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString()
             )
         }
 
-        composable(route = Screen.EditPage.route) {
-            EditPage(navController = navController)
+        composable(
+            route = Screen.EditPage.route,
+            arguments = listOf(
+                navArgument(TITLE_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(TIME_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(LOCATION_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(ALLERGENS) {
+                    type = NavType.StringType
+                },
+                navArgument(DESCRIPTION_OF_EVENT) {
+                    type = NavType.StringType
+                },
+                navArgument(SURVEYCODE) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            EditPage(
+                navController = navController,
+                title = backStackEntry.arguments?.getString(TITLE_OF_EVENT).toString(),
+                time = backStackEntry.arguments?.getString(TIME_OF_EVENT).toString(),
+                location = backStackEntry.arguments?.getString(LOCATION_OF_EVENT).toString(),
+                allergens = backStackEntry.arguments?.getString(ALLERGENS).toString(),
+                description = backStackEntry.arguments?.getString(DESCRIPTION_OF_EVENT)
+                    .toString(),
+                surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString()
+            )
         }
         composable(route = Screen.EditSurvey.route) {
             EditSurvey(navController = navController)

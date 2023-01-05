@@ -46,72 +46,71 @@ fun EventScreenEmployee(
         mutableStateOf(false)
     }
 
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        MyDialog(navController = navController, showDialog)
-    }
-
-    Column(
-        modifier = Modifier.background(
-            Brush.verticalGradient(
-                0.0f to Color(83, 58, 134, 255),
-                0.7f to Color(22, 26, 30)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    0.0f to Color(83, 58, 134, 255),
+                    0.7f to Color(22, 26, 30)
+                )
             )
-        )
     ) {
-        LazyColumn(
-            contentPadding = PaddingValues(bottom = 20.dp),
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            val state = dataViewModel.state.value
+            MyDialog(navController = navController, showDialog)
+        }
 
+        Column() {
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 20.dp),
+            ) {
+                val state = dataViewModel.state.value
 
+                item {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AddEventImage(navController = navController)
+                        ProfileLogo(
+                            Modifier
+                                .clickable { showDialog.value = true }
+                                .size(64.dp)
+                                .padding(end = 13.dp, top = 15.dp))
+                    }
 
-            item {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AddEventImage(navController = navController)
-                    ProfileLogo(
-                        Modifier
-                            .clickable { showDialog.value = true }
-                            .size(64.dp)
-                            .padding(end = 13.dp, top = 15.dp))
                 }
+                item { QuickEntry() }
 
-            }
-
-
-            item { QuickEntry() }
-
-
-
-            state.events?.let {
-                items(it.toList()) { event ->
-                    EventCard(
-                        title = event.title,
-                        timeOfEvent = event.timeOfEvent,
-                        address = event.location,
-                        onClick = {
-                            navController.navigate(
-                                Screen.EditEvent.passArguments(
-                                    time = event.timeOfEvent,
-                                    title = event.title,
-                                    description = event.description,
-                                    allergens = event.allergens,
-                                    location = event.location
+                state.events?.let {
+                    items(it.toList()) { event ->
+                        EventCard(
+                            title = event.title,
+                            timeOfEvent = event.timeOfEvent,
+                            address = event.location,
+                            onClick = {
+                                navController.navigate(
+                                    Screen.EditEvent.passArguments(
+                                        time = event.timeOfEvent,
+                                        title = event.title,
+                                        description = event.description,
+                                        allergens = event.allergens,
+                                        location = event.location,
+                                        surveyCode = event.surveyCode
+                                    ),
                                 )
-                            )
-                        }
-                    )
+                            }
+                        )
+                    }
                 }
             }
         }
     }
+
 }
 
 @Composable
