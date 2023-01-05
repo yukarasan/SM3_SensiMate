@@ -86,14 +86,14 @@ fun CreateEventScreen(navController: NavController){
             )
     )
 
-    AddPhoto(modifier = Modifier
+    AddPhoto2(modifier = Modifier
         .fillMaxWidth()
         .padding(320.dp, 20.dp, 1.dp, 1.dp)
         .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
     TextToPhoto(modifier = Modifier
-        .fillMaxWidth()
-        .padding(341.dp, 43.dp, 1.dp, 1.dp))
+        .fillMaxSize()
+        .padding(330.dp, 43.dp, 1.dp, 1.dp))
     LazyColumn(modifier = Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -360,8 +360,14 @@ fun ContentColorComponent(
         content = content)
 }
 
-
-
+@Composable
+fun AddPhoto2(modifier: Modifier = Modifier,id: Int){
+    Image(
+        painter = painterResource(id = id),
+        contentDescription = "HEJ MED DIG ",
+        modifier = modifier
+    )
+}
 @Composable
 fun AddPhoto(modifier: Modifier = Modifier,id: Int){
     IconButton(onClick = { /*TODO*/ }) {
