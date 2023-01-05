@@ -44,7 +44,11 @@ fun EditGenderScreen(navController: NavController) {
             CheckBox(onClick = {
                 navController.popBackStack()
                 scope.launch {
-                    updateProfile(gender = selectedGender.value)
+                    if (selectedGender.value == "") {
+                        // Dont do anything
+                    } else {
+                        updateProfile(gender = selectedGender.value)
+                    }
                 }
             })
         }

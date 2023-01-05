@@ -48,8 +48,8 @@ import java.util.*
 @Preview(showBackground = true)
 @Composable
 fun CreateEventPreview() {
-    //CreateEventScreen(rememberNavController())
-    QuestionPageScreen(rememberNavController())
+    CreateEventScreen(rememberNavController())
+    //QuestionPageScreen(rememberNavController())
     //CreateMultpleChoiceQuestionScreen(rememberNavController())
     //CreateTextAnswerQuestionScreen(rememberNavController())
 }
@@ -87,10 +87,13 @@ fun CreateEventScreen(navController: NavController){
     )
 
     AddPhoto(modifier = Modifier
-        .padding(345.dp, 20.dp, 2.dp, 1.dp)
+        .fillMaxWidth()
+        .padding(320.dp, 20.dp, 1.dp, 1.dp)
         .size(20.dp), id = R.drawable.ic_add_circle_outlined
     )
-    TextToPhoto()
+    TextToPhoto(modifier = Modifier
+        .fillMaxWidth()
+        .padding(341.dp, 43.dp, 1.dp, 1.dp))
     LazyColumn(modifier = Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -370,12 +373,12 @@ fun AddPhoto(modifier: Modifier = Modifier,id: Int){
     }
 }
 @Composable
-fun TextToPhoto(){
+fun TextToPhoto(modifier: Modifier){
     Text(text = "Add Photo",
     color = Color(0xFFB874A6), fontSize = 11.sp,
         maxLines = 1,
-    modifier = Modifier
-        .padding(330.dp, 44.dp, 2.dp, 1.dp)
+    modifier = modifier
+
 
     )
 }
