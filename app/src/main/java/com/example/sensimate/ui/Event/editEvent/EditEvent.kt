@@ -443,10 +443,12 @@ fun EditPage(
                                     "month" to month,
                                     "year" to year
                                 )
+
                                 db.collection("events").add(event)
                                     .addOnSuccessListener { docRef ->
                                         run {
                                             UpdateEvent(event, docRef.id)
+                                            //checking for docref.
                                             Log.d("DocReference", docRef.id)
                                         }
                                     }
@@ -461,7 +463,7 @@ fun EditPage(
                     ) {
 
                         Text(
-                            text = "Finish Edited",
+                            text = "Finish Editing",
                             color = Color.White,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Medium,
