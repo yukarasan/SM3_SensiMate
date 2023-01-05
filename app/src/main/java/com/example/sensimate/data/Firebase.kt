@@ -372,9 +372,9 @@ object Database {
     } //TODO: Sabirin
 
 
-    fun getSurveyAsList(eventId: String): List<MyQuestion> {
+    suspend fun getSurveyAsList(eventId: String): List<MyQuestion> { //TODO: Hussein
 
-        val questions: MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList()
+        val questions: MutableList<MyQuestion> = mutableListOf()
         val questionsRef = db.collection("events").document(eventId).collection("questions")
 
         questionsRef.get()
@@ -385,15 +385,24 @@ object Database {
                     val newQuestion = MyQuestion()
 
                     newQuestion.mainQuestion = document.getString("mainQuestion").toString()
+
                     newQuestion.oneChoice = document.getBoolean("oneChoice") == true
 
-                    questionsRef.document(document.id).collection("type")
-                        .get()
-                        .addOnSuccessListener { option ->
-                            newQuestion.options.add(option.toString())
+                    questionsRef.document(document.id)
+                        .collection("type")
+                        .document("options")
+                        .get().addOnSuccessListener { option ->
+                            val myOptions = option.data
+                            if (myOptions != null) {
+                                for (field in myOptions.keys) {
+                                    val value = myOptions[field]
+                                    newQuestion.options.add(value.toString())
+                                }
+                            }
                         }
+                    questions.add(newQuestion)
                 }
-            }
+            }.await()
         return questions
     }
 
@@ -425,7 +434,7 @@ object Database {
                             answerRef.get()
                                 .addOnSuccessListener { result ->
                                     val answer = result.getString("answer")
-                                   // val question = Question2(mainQuestion, oneChoice, answer)
+                                    // val question = Question2(mainQuestion, oneChoice, answer)
                                 }
                         }
                 }
@@ -433,9 +442,6 @@ object Database {
     }
 
     data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
-
-
-
 
 
     fun exportToExcel() {} //TODO: LATER

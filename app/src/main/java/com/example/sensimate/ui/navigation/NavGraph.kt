@@ -2,7 +2,6 @@ package com.example.sensimate.ui.navigation
 
 import EditEvent
 import EditPage
-
 import EditSurvey
 import EditSurveyPage
 import android.os.Build
@@ -277,13 +276,13 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EditGenderScreen(navController = navController)
         }
 
-
         // SURVERY NAVIGATION
         composable(route = Screen.Survey.route) {
             Survey(
                 navController = navController,
                 title = "",
-                questionViewModel = questionViewModel
+                questionViewModel = questionViewModel,
+                eventViewModel = eventViewModel
             )
         }
         composable(route = Screen.Survey2.route) {
@@ -298,4 +297,3 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         }
     }
 }
-

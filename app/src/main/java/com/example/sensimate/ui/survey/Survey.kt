@@ -1,6 +1,7 @@
 package com.example.sensimate.ui.survey
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,22 +27,45 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Rotate
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 
-@SuppressLint("StateFlowValueCalledInComposition")
+@SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
- fun Survey(
+fun Survey(
     title: String,
     navController: NavController,
-    questionViewModel: QuestionViewModel
+    questionViewModel: QuestionViewModel,
+    eventViewModel: EventViewModel
 ) {
+    val surveyId = eventViewModel.uiState.value.chosenSurveyId
 
     val state = questionViewModel.uiState.value
+
+    // Returns a scope that's cancelled when F is removed from composition
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = true) {
+        coroutineScope.launch {
+            questionViewModel
+                .insertQuestions(
+                    questionViewModel.uiState.value, surveyId
+                )
+        }
+    }
+
+    val questions = questionViewModel.uiState.value.questions
+
+
+
 
     Box(
         modifier = Modifier
@@ -53,14 +77,14 @@ import com.example.sensimate.ui.theme.*
             )
             .fillMaxSize()
     )
-    LazyColumn(){
+    LazyColumn() {
         item {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
             ) {
-                OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
+                OrangeBackButton({ navController.navigate(Screen.EventScreen.route) })
                 ProgressPreview()
                 Question(title)
                 SurveyTitle(title)
@@ -78,8 +102,8 @@ import com.example.sensimate.ui.theme.*
                         .padding(top = 150.dp)
                 ) {
                     //TODO: Remember to Implement Scaffold so the buttons does not move, but does not move
-                    PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
-                    NextButton(onClick = { navController.navigate(Screen.Survey2.route) } )
+                    PreviousButton(onClick = { navController.navigate(Screen.Survey.route) })
+                    NextButton(onClick = { navController.navigate(Screen.Survey2.route) })
                 }
             }
         }
@@ -140,8 +164,10 @@ fun Information(titles: List<String>, placeholders: List<String>) {
         shape = RoundedCornerShape(20.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
-        Column(modifier = Modifier
-            .fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
             titles.forEachIndexed { index, title ->
                 val placeholder = placeholders[index]
                 Row(
@@ -201,8 +227,9 @@ fun PreviousButton(onClick: () -> Unit) {
             .height(38.dp)
             .width(130.dp)
     ) {
-        Row(modifier = Modifier
-            .fillMaxWidth(),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
 
         ) {
@@ -229,7 +256,7 @@ fun PreviousButton(onClick: () -> Unit) {
 @Composable
 fun NextButton(onClick: () -> Unit) {
     Button(
-        onClick = onClick ,
+        onClick = onClick,
         shape = RoundedCornerShape(50),
         colors = ButtonDefaults.buttonColors(PurpleButtonColor),
         modifier = Modifier

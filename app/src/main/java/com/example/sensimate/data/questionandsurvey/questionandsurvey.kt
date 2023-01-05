@@ -1,9 +1,8 @@
 package com.example.sensimate.data.questionandsurvey
 
-import com.example.sensimate.data.Database
-
 data class QuestionsUiState(
-    var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList()
+    var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList(),
+    var questionsStarted: Boolean = false,
 )
 
 class MyQuestion(
