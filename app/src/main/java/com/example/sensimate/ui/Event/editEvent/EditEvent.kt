@@ -324,15 +324,15 @@ fun EditPage(
             )
     )
 
-    AddPhoto(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(320.dp, 20.dp, 1.dp, 1.dp)
-            .size(20.dp), id = R.drawable.ic_add_circle_outlined
-    )
-    com.example.sensimate.ui.Event.createEvent.TextToPhoto(modifier = Modifier
-        .fillMaxWidth()
-        .padding(341.dp, 43.dp, 1.dp, 1.dp))
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+        AddPhoto(
+            modifier = Modifier
+                .padding(end = 25.dp, top = 20.dp)
+                .size(20.dp), id = R.drawable.ic_add_circle_outlined
+        )
+        TextToPhoto(
+            modifier = Modifier.padding(end = 10.dp))
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),

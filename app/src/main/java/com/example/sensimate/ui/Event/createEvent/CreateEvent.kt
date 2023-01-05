@@ -48,16 +48,15 @@ import java.util.*
 @Preview(showBackground = true)
 @Composable
 fun CreateEventPreview() {
-    CreateEventScreen(rememberNavController())
-    //QuestionPageScreen(rememberNavController())
+   //CreateEventScreen(rememberNavController())
+    QuestionPageScreen(rememberNavController())
     //CreateMultpleChoiceQuestionScreen(rememberNavController())
     //CreateTextAnswerQuestionScreen(rememberNavController())
 }
 
 
-
 @Composable
-fun CreateEventScreen(navController: NavController){
+fun CreateEventScreen(navController: NavController) {
     var titleText by remember { mutableStateOf("") }
     var descriptionText by remember { mutableStateOf("") }
     var locationText by remember { mutableStateOf("") }
@@ -86,171 +85,176 @@ fun CreateEventScreen(navController: NavController){
             )
     )
 
-    AddPhoto(modifier = Modifier
-        .fillMaxWidth()
-        .padding(320.dp, 20.dp, 1.dp, 1.dp)
-        .size(20.dp), id = R.drawable.ic_add_circle_outlined
-    )
-    TextToPhoto(modifier = Modifier
-        .fillMaxWidth()
-        .padding(341.dp, 43.dp, 1.dp, 1.dp))
-    LazyColumn(modifier = Modifier
-        .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center){
-
-   item { Spacer(modifier = Modifier.size(55.dp))
-       TextFiledTitleText(titleText) { titleText = it }
-       Spacer(modifier = Modifier.size(27.dp))
-      TextFiledDescriptionText(descriptionText) { descriptionText = it }
-       Spacer(modifier = Modifier.size(55.dp))
-      Card(
-        modifier = Modifier
-            .fillMaxWidth(),
-
-        shape = RoundedCornerShape(15.dp),
-        backgroundColor = Color(0xFF4D3B72)
-
-
-    ){
-
-    Image(
-        painter = painterResource(
-            id = R.drawable.sentimatelogo
-        ),
-        contentDescription = "",
-        modifier = Modifier
-            .size(800.dp)
-            .blur(1.dp)
-            .alpha(0.2f),
-        contentScale = ContentScale.Crop,
-
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+        AddPhoto(
+            modifier = Modifier
+                .padding(end = 25.dp, top = 20.dp)
+                .size(20.dp), id = R.drawable.ic_add_circle_outlined
         )
-        TextFiledLocationText(locationText) {locationText = it}
-        TextFiledAllergensText(allergensText) {allergensText = it }
-       TextFiledSurveyCodeText(surveyCodeText) {if (it.length <= maxChar) surveyCodeText = it }
+        TextToPhoto(
+            modifier = Modifier.padding(end = 10.dp))
+    }
 
-          ChooseBirthDate(
-              LocalContext.current,
-              myYear = myYear,
-              myMonth = myMonth,
-              myDay = myDay
-          )
-          day = myDay.value
-          month = myMonth.value
-        year = myYear.value
 
-        TextFileTimeText(timeText) {timeText = it}
-    Column(
 
-        modifier = Modifier.fillMaxSize(),
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
 
-        Spacer(modifier = Modifier.size(75.dp))
-        Spacer(modifier = Modifier.size(250.dp))
+        item {
+            Spacer(modifier = Modifier.size(55.dp))
+            TextFiledTitleText(titleText) { titleText = it }
+            Spacer(modifier = Modifier.size(27.dp))
+            TextFiledDescriptionText(descriptionText) { descriptionText = it }
+            Spacer(modifier = Modifier.size(55.dp))
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(),
 
-    Button(
-        onClick = {
-            if (titleText == ""){
-                Toast.makeText(
-                    context,
-                    "Title was not entered",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            else if (descriptionText == ""){
-                Toast.makeText(
-                    context,
-                    "Description was not entered",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            else if (locationText == ""){
-                Toast.makeText(
-                    context,
-                    "Location was not entered",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            else if (myYear.value == ""){
-                Toast.makeText(
-                    context,
-                    "Date was not entered",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            else if (timeText == "") {
-                Toast.makeText(
-                    context,
-                    "Time was not entered",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            else if (allergensText == ""){
-                Toast.makeText(
-                    context,
-                    "Allergens was not entered",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                shape = RoundedCornerShape(15.dp),
+                backgroundColor = Color(0xFF4D3B72)
 
-            else if (surveyCodeText == ""){
-                Toast.makeText(
-                    context,
-                    "SurveyCode was not entered",
-                    Toast.LENGTH_SHORT
-                ).show()
+
+            ) {
+
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.sentimatelogo
+                    ),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(800.dp)
+                        .blur(1.dp)
+                        .alpha(0.2f),
+                    contentScale = ContentScale.Crop,
+
+                    )
+                TextFiledLocationText(locationText) { locationText = it }
+                TextFiledAllergensText(allergensText) { allergensText = it }
+                TextFiledSurveyCodeText(surveyCodeText) {
+                    if (it.length <= maxChar) surveyCodeText = it
+                }
+
+                ChooseBirthDate(
+                    LocalContext.current,
+                    myYear = myYear,
+                    myMonth = myMonth,
+                    myDay = myDay
+                )
+                day = myDay.value
+                month = myMonth.value
+                year = myYear.value
+
+                TextFileTimeText(timeText) { timeText = it }
+                Column(
+
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+
+                    Spacer(modifier = Modifier.size(75.dp))
+                    Spacer(modifier = Modifier.size(250.dp))
+
+                    Button(
+                        onClick = {
+                            if (titleText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Title was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (descriptionText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Description was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (locationText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Location was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (myYear.value == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Date was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (timeText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Time was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (allergensText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "Allergens was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (surveyCodeText == "") {
+                                Toast.makeText(
+                                    context,
+                                    "SurveyCode was not entered",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+
+                                val event = hashMapOf(
+                                    "title" to titleText,
+                                    "description" to descriptionText,
+                                    "allergens" to allergensText,
+                                    "location" to locationText,
+                                    "surveyCode" to surveyCodeText,
+                                    "timeOfEvent" to timeText,
+                                    "day" to day,
+                                    "month" to month,
+                                    "year" to year
+                                )
+                                db.collection("TESTER").add(event)
+                                navController.navigate(Screen.QuestionPageScreen.route)
+                            }
+                        },
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
+                        modifier = Modifier.size(240.dp, 50.dp),
+                        enabled = true
+
+                    ) {
+
+                        Text(
+                            text = "Create Event",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = manropeFamily
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(55.dp))
+                    Button(
+                        onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
+                        modifier = Modifier.size(240.dp, 50.dp)
+                    ) {
+                        Text(
+                            text = "Go Back",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = manropeFamily
+                        )
+                    }
+                }
             }
-
-            else{
-
-            val event = hashMapOf(
-                                "title" to titleText,
-                                "description" to descriptionText,
-                                "allergens" to allergensText,
-                                "location" to locationText,
-                                "surveyCode" to surveyCodeText,
-                                "timeOfEvent" to timeText,
-                                "day" to day,
-                                "month" to month,
-                                "year" to year
-                                                )
-            db.collection("TESTER").add(event)
-                  navController.navigate(Screen.QuestionPageScreen.route)}},
-        shape = CircleShape,
-        colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-        modifier = Modifier.size(240.dp, 50.dp),
-        enabled = true
-
-    ) {
-
-        Text(
-            text = "Create Event",
-            color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium,
-            fontFamily = manropeFamily
-        )
-    }
-        Spacer(modifier = Modifier.size(55.dp))
-    Button(
-        onClick = {navController.navigate(Screen.EventScreenEmployee.route)},
-        shape = CircleShape,
-        colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
-        modifier = Modifier.size(240.dp, 50.dp)
-    ) {
-        Text(
-            text = "Go Back",
-            color = Color.White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium,
-            fontFamily = manropeFamily
-        )
+        }
     }
 }
-    }}}}
 
 @Composable
 fun ChooseBirthDate(
@@ -300,55 +304,57 @@ fun ChooseBirthDate(
     }
 
     //datePickerLog.datePicker.maxDate = calendar.timeInMillis
-        TextField(
-            colors = TextFieldDefaults.textFieldColors(textColor = Color.Green,backgroundColor = Color.Transparent),
-            enabled = false,
-            value = text,
-            label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
-            onValueChange = {},
-            modifier = Modifier
-                .padding(1.dp, 65.dp, 1.dp, 1.dp)
-                .clickable { datePickerLog.show() },
-        )
+    TextField(
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.Green,
+            backgroundColor = Color.Transparent
+        ),
+        enabled = false,
+        value = text,
+        label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
+        onValueChange = {},
+        modifier = Modifier
+            .padding(1.dp, 65.dp, 1.dp, 1.dp)
+            .clickable { datePickerLog.show() },
+    )
 }
 
 
-
 @Composable
-fun TextFiledTitleText(titleText: String, textChange: (String) -> Unit){
-        ContentColorComponent(contentColor = Color.White) {
+fun TextFiledTitleText(titleText: String, textChange: (String) -> Unit) {
+    ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = titleText,
-            onValueChange =  textChange,
+            onValueChange = textChange,
             label = {
                 Text(
                     text = "Title",
                     color = Color(0xFFB874A6)
                 )
-                }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )}
-            )
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+        )
     }
 }
 
 @Composable
-fun TextFiledDescriptionText(descriptionText: String, textChange: (String) -> Unit){
-        ContentColorComponent(contentColor = Color.White) {
-            TextField(
-                value = descriptionText,
-                onValueChange = textChange,
-                label = {
-                    Text(
-                        text = "Description",
-                        color = Color(0xFFB874A6)
-                    )
-                }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-                singleLine = true,
-                placeholder = {Text(text = "Type here...",color = Color(0xEFFF7067))}
-            )
+fun TextFiledDescriptionText(descriptionText: String, textChange: (String) -> Unit) {
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = descriptionText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Description",
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+        )
 
-        }
+    }
 }
 
 @Composable
@@ -356,28 +362,29 @@ fun ContentColorComponent(
     contentColor: Color = LocalContentColor.current,
     content: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(LocalContentColor provides contentColor,
-        content = content)
+    CompositionLocalProvider(
+        LocalContentColor provides contentColor,
+        content = content
+    )
 }
 
 
-
 @Composable
-fun AddPhoto(modifier: Modifier = Modifier,id: Int){
-    IconButton(onClick = { /*TODO*/ }) {
+fun AddPhoto(modifier: Modifier = Modifier, id: Int) {
         Image(
             painter = painterResource(id = id),
             contentDescription = "HEJ MED DIG ",
             modifier = modifier
         )
-    }
 }
+
 @Composable
-fun TextToPhoto(modifier: Modifier){
-    Text(text = "Add Photo",
-    color = Color(0xFFB874A6), fontSize = 11.sp,
+fun TextToPhoto(modifier: Modifier) {
+    Text(
+        text = "Add Photo",
+        color = Color(0xFFB874A6), fontSize = 11.sp,
         maxLines = 1,
-    modifier = modifier
+        modifier = modifier
 
 
     )
@@ -385,64 +392,64 @@ fun TextToPhoto(modifier: Modifier){
 
 
 @Composable
-fun TextFiledLocationText(locationText: String, textChange: (String) -> Unit){
-        ContentColorComponent(contentColor = Color.White) {
-            TextField(
-                value = locationText,
-                onValueChange = textChange,
-                label = {
-                    Text(
-                        text = "Location",
-                        color = Color(0xFFB874A6)
+fun TextFiledLocationText(locationText: String, textChange: (String) -> Unit) {
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = locationText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Location",
+                    color = Color(0xFFB874A6)
+                )
+            }, trailingIcon = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.redlocationicon),
+                        modifier = Modifier
+                            .size(20.dp),
+                        contentDescription = ""
                     )
-                }, trailingIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.redlocationicon),
-                            modifier = Modifier
-                                .size(20.dp),
-                            contentDescription = "")
 
-                    }
-                },
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-                singleLine = true,
+                }
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
 
-                placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 2.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
-            )
-        }
+        )
+    }
 }
 
 
-
 @Composable
-fun TextFileTimeText(TimeText: String, textChange: (String) -> Unit){
-        ContentColorComponent(contentColor = Color.White) {
-            TextField(
-                value = TimeText,
-                onValueChange = textChange,
-                label = {
-                    Text(
-                        text = "Time Of The Event",
-                        color = Color(0xFFB874A6)
-                    )
-                },
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-                singleLine = true,
+fun TextFileTimeText(TimeText: String, textChange: (String) -> Unit) {
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = TimeText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Time Of The Event",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
 
-                placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
-                modifier = Modifier
-                    .padding(1.dp, 128.dp, 1.dp, 1.dp)
-                    .fillMaxWidth()
-                   )
-        }
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = Modifier
+                .padding(1.dp, 128.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
 }
 
 @Composable
-fun TextFiledAllergensText(allergensText: String,textChange: (String) -> Unit){
+fun TextFiledAllergensText(allergensText: String, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = allergensText,
@@ -456,7 +463,7 @@ fun TextFiledAllergensText(allergensText: String,textChange: (String) -> Unit){
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
 
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 191.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -465,7 +472,7 @@ fun TextFiledAllergensText(allergensText: String,textChange: (String) -> Unit){
 }
 
 @Composable
-fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit){
+fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = surveyCodeText,
@@ -479,7 +486,7 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
 
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 254.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -488,12 +495,10 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
 }
 
 
-
-
 // figur 2
 
 @Composable
-fun QuestionPageScreen(navController: NavController){
+fun QuestionPageScreen(navController: NavController) {
     val selectedQuestion = remember { mutableStateOf("") }
     val context = LocalContext.current
     Box(
@@ -509,20 +514,28 @@ fun QuestionPageScreen(navController: NavController){
                 )
             )
     )
-    AddPhoto(
-        modifier = Modifier
-            .padding(322.dp, 30.dp, 1.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = "Clickable image",
-                onClick = { navController.navigate(Screen.EventScreenEmployee.route) }),
-        id = R.drawable.greenconfirmedbutton
-    )
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+        AddPhoto(
+            modifier = Modifier
+                .padding(end = 25.dp, top = 55.dp)
+                .size(50.dp)
+                .clickable(
+                    enabled = true,
+                    onClickLabel = "Clickable image",
+                    onClick = { navController.navigate(Screen.EventScreenEmployee.route) }),
+            id = R.drawable.greenconfirmedbutton
+        )
 
-    Column(modifier = Modifier.padding(25.dp, 30.dp,1.dp,1.dp) ){
-        OrangeBackButton(onClick = {navController.popBackStack()})
     }
+
+/* //TODO ved ikke om jeg skal bruge den
+    Column(modifier = Modifier
+        .padding(start = 25.dp, top = 55.dp)
+        .fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+        OrangeBackButton(onClick = { navController.popBackStack() })
+    }
+
+ */
 
 
 
@@ -536,45 +549,52 @@ fun QuestionPageScreen(navController: NavController){
         backgroundColor = Color(red = 44, green = 44, blue = 59)
 
     ) {  //TODO
-        Text(
-            text = "Create an Question",
-            color = Color(0xFFB874A6),
-            fontSize = 26.sp,
-            modifier = Modifier
-                .padding(40.dp, 240.dp, 1.dp, 1.dp)
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+            Text(
+                text = "Create an Question",
+                color = Color(0xFFB874A6),
+                fontSize = 26.sp,
+                modifier = Modifier
+                    .padding(start = 35.dp, top = 255.dp)
 
-        )
-        AddPhoto(
-            modifier = Modifier
-                .padding(240.dp, 1.dp, 1.dp, 1.dp)
-                .size(25.dp)
-                .clickable(enabled = true,
-                    onClick = {
-                        when (selectedQuestion.value) {
-                            "Multiple-Choice Question" -> {
-                                navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
+            )
+        }
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+            AddPhoto(
+                modifier = Modifier
+                    .padding(end = 55.dp, top = 260.dp)
+                    .size(25.dp)
+                    .clickable(enabled = true,
+                        onClick = {
+                            when (selectedQuestion.value) {
+                                "Multiple-Choice Question" -> {
+                                    navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
+                                }
+                                "Text Answer Question" -> {
+                                    navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
+                                }
+                                else -> {
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "Please Choose a Question Type",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        .show()
+                                }
                             }
-                            "Text Answer Question" -> {
-                                navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
-                            }
-                            else -> {
-                                Toast.makeText(
-                                    context,
-                                    "Please Choose a Question Type",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }),
-            id = R.drawable.redaddplus
-        )
+                        }),
+                id = R.drawable.redaddplus
+            )
+        }
+
         DropDownMenu(selectedQuestion = selectedQuestion)
     }
 }
 
 // Figur 3
 @Composable
-fun CreateMultpleChoiceQuestionScreen(navController: NavController){
+fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
     var questionText by remember { mutableStateOf("") }
     var answerText1 by remember { mutableStateOf("") }
     var answerText2 by remember { mutableStateOf("") }
@@ -594,41 +614,43 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
                 )
             )
     )
-    LazyColumn(modifier = Modifier
-        .fillMaxSize(),
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        /*verticalArrangement = Arrangement.Center*/) {
+        /*verticalArrangement = Arrangement.Center*/
+    ) {
         item {
             Spacer(modifier = Modifier.size(27.dp))
-       Text(
-            text = "Multiple-choice",
-            color = Color(0xEFFF7067),
-            fontSize = 20.sp
+            Text(
+                text = "Multiple-choice",
+                color = Color(0xEFFF7067),
+                fontSize = 20.sp
 
-        )
+            )
             Spacer(modifier = Modifier.size(55.dp))
 
-        TextFiledQuestionText(questionText) {questionText = it}
-           Spacer(modifier = Modifier.size(27.dp))
-        TextFiledAnswerText( "Answer 1", answerText1) {answerText1 = it}
+            TextFiledQuestionText(questionText) { questionText = it }
+            Spacer(modifier = Modifier.size(27.dp))
+            TextFiledAnswerText("Answer 1", answerText1) { answerText1 = it }
+            Spacer(modifier = Modifier.size(27.dp))
+            TextFiledAnswerText("Answer 2", answerText2) { answerText2 = it }
+            if (answerText2 != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 2",answerText2) {answerText2 = it}
-            if (answerText2 != ""){
-                Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 3",answerText3) {answerText3 = it}
+                TextFiledAnswerText("Answer 3", answerText3) { answerText3 = it }
             }
-             if (answerText3 != ""){
+            if (answerText3 != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 4",answerText4) {answerText4 = it}
+                TextFiledAnswerText("Answer 4", answerText4) { answerText4 = it }
             }
-             if (answerText4 != ""){
+            if (answerText4 != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 5",answerText5) {answerText5 = it}
+                TextFiledAnswerText("Answer 5", answerText5) { answerText5 = it }
             }
-           Spacer(modifier = Modifier.size(55.dp))
+            Spacer(modifier = Modifier.size(55.dp))
 
             Button(
-                onClick = {navController.navigate(Screen.EventScreenEmployee.route)},
+                onClick = { navController.navigate(Screen.QuestionPageScreen.route) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -644,7 +666,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
 
             Spacer(modifier = Modifier.size(55.dp))
             Button(
-                onClick = {navController.popBackStack()},
+                onClick = { navController.popBackStack() },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -658,13 +680,14 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController){
                 )
             }
 
-    }}
+        }
+    }
 }
 
 
 // FIGUR 4
 @Composable
-fun CreateTextAnswerQuestionScreen(navController: NavController){
+fun CreateTextAnswerQuestionScreen(navController: NavController) {
     var questionText by remember { mutableStateOf("") }
     Box(
         modifier = Modifier
@@ -679,10 +702,12 @@ fun CreateTextAnswerQuestionScreen(navController: NavController){
                 )
             )
     )
-    LazyColumn(modifier = Modifier
-        .fillMaxSize(),
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        /*verticalArrangement = Arrangement.Center*/) {
+        /*verticalArrangement = Arrangement.Center*/
+    ) {
         item {
             Spacer(modifier = Modifier.size(27.dp))
             Text(
@@ -693,11 +718,11 @@ fun CreateTextAnswerQuestionScreen(navController: NavController){
             )
             Spacer(modifier = Modifier.size(55.dp))
 
-            TextFiledQuestionText(questionText) {questionText = it}
+            TextFiledQuestionText(questionText) { questionText = it }
             Spacer(modifier = Modifier.size(55.dp))
 
             Button(
-                onClick = {navController.navigate(Screen.EventScreenEmployee.route)},
+                onClick = { navController.navigate(Screen.QuestionPageScreen.route) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -713,7 +738,7 @@ fun CreateTextAnswerQuestionScreen(navController: NavController){
 
             Spacer(modifier = Modifier.size(55.dp))
             Button(
-                onClick = {navController.popBackStack()},
+                onClick = { navController.popBackStack() },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -727,11 +752,12 @@ fun CreateTextAnswerQuestionScreen(navController: NavController){
                 )
             }
 
-        }}
+        }
+    }
 }
 
 @Composable
-fun TextFiledQuestionText(questionText: String,textChange: (String) -> Unit){
+fun TextFiledQuestionText(questionText: String, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = questionText,
@@ -741,9 +767,10 @@ fun TextFiledQuestionText(questionText: String,textChange: (String) -> Unit){
                     text = "Question",
                     color = Color(0xFFB874A6)
                 )
-            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
 
 
             )
@@ -751,7 +778,7 @@ fun TextFiledQuestionText(questionText: String,textChange: (String) -> Unit){
 }
 
 @Composable
-fun TextFiledAnswerText( text: String, answerText: String,textChange: (String) -> Unit){
+fun TextFiledAnswerText(text: String, answerText: String, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = answerText,
@@ -761,15 +788,17 @@ fun TextFiledAnswerText( text: String, answerText: String,textChange: (String) -
                     text = text,
                     color = Color(0xFFB874A6)
                 )
-            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = {Text(text = "Type here...", color = Color(0xEFFF7067) )},
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
 
 
             )
 
     }
 }
+
 @Composable
 fun DropDownMenu(selectedQuestion: MutableState<String>) {
 
@@ -816,7 +845,8 @@ fun DropDownMenu(selectedQuestion: MutableState<String>) {
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier = Modifier
-                .width(with(LocalDensity.current) { textfieldSize.width.toDp() }) .background(Color(red = 44, green = 44, blue = 59))
+                .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
+                .background(Color(red = 44, green = 44, blue = 59))
         ) {
             suggestions.forEach { label ->
                 DropdownMenuItem(onClick = {
