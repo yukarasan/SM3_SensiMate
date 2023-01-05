@@ -95,6 +95,7 @@ object Database {
             eventReference.get().await().map {
                 val result = it.toObject(Event::class.java)
                 eventList.add(result)
+                it.id
             }
         } catch (e: FirebaseFirestoreException) {
             Log.d("error", "getListOfEvents: $e")
@@ -262,6 +263,13 @@ object Database {
     }//TODO: Hussein
 
     fun deleteProfile(context: Context) {
+
+
+        db.collection("users")
+            .document(
+                auth.currentUser?.email.toString()
+            ).delete()
+
         auth.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(
@@ -394,8 +402,8 @@ object Database {
         }
 
 
-        fun getSurveyAsList(surveyId: String) {
-            val questionsRef = db.collection("surveys").document(surveyId).collection("questions")
+        fun getSurveyAsList(eventId: String) {
+            val questionsRef = db.collection("events").document(eventId).collection("questions")
             questionsRef.get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
