@@ -17,6 +17,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
+import com.example.sensimate.data.SaveBoolToLocalStorage
+import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
@@ -53,12 +55,8 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 context
             )
         ) {
-            if (getBooleanFromLocalStorage(
-                    "isLoggedIn",
-                    context
-                )
-            ) {
-                if (getBooleanFromLocalStorage(
+            if (auth.currentUser != null) {
+                if (getBooleanFromLocalStorage( ///FIX DEN HER. TODO: Hussein
                         "isEmployee",
                         context
                     )
@@ -69,6 +67,11 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 }
 
             } else {
+                SaveBoolToLocalStorage(
+                    "isEmployee",
+                    false,
+                    context
+                )
                 Screen.Login
             }
 
@@ -81,8 +84,8 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
     NavHost(
         navController = navController,
-        startDestination = Screen.EventScreenEmployee.route
-    ) {      // Screen.CookieScreen.route
+        startDestination = screen.route
+    ) {
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)
