@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -52,26 +53,31 @@ fun Survey4(title: String, navController: NavController) {
             )
             .fillMaxSize()
     )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
-    ) {
-        OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
-        ProgressPreview()
-        Question(title)
-        SurveyTitle(title)
-        Information4(options = listOf("Tomato", "Watermelon", "Cherry", "Vanilla"))
+    LazyColumn(){
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
+            ) {
+                OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
+                ProgressPreview()
+                Question(title)
+                SurveyTitle(title)
+                Information4(options = listOf("Tomato", "Watermelon", "Cherry", "Vanilla"))
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 70.dp)
-        ) {
-            PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
-            NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 70.dp)
+                ) {
+                    PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
+                    NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
+                }
+            }
+
         }
     }
 }

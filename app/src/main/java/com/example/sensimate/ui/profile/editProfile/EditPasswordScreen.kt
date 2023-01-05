@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.model.manropeFamily
 
@@ -44,7 +45,10 @@ fun EditPasswordScreen(navController: NavController) {
             )
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            CheckBox(onClick = { navController.popBackStack() })
+            CheckBox(onClick = {
+                Database.updatePassword(currentPassword = "hej123", newPassword = password)
+                navController.popBackStack()
+            })
         }
         CustomPasswordField(
             text = password,
