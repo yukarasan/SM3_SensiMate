@@ -202,7 +202,7 @@ private fun EditButton(onClick: () -> Unit) {
         modifier = Modifier
             .height(40.dp)
             .width(120.dp)
-            .padding(20.dp)
+            .padding(end = 20.dp)
     ) {
         Text(
             text = "Edit",
