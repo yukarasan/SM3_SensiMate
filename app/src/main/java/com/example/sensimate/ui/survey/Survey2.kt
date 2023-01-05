@@ -26,7 +26,7 @@ import com.example.sensimate.ui.theme.*
 
 
 @Composable
-fun Survey2(navController: NavController) {
+fun Survey2(title: String, navController: NavController) {
     var selectedOption by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
@@ -47,7 +47,7 @@ fun Survey2(navController: NavController) {
         ProgressPreview()
         Question(title = "Question 2/4")
         SurveyTitle(title = "How likely would you buy Coca Cola?")
-        //Information2(title)
+        Information2(title)
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -213,7 +213,18 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
     }
 }
 
-
+@Composable
+private fun Option(title: String, modifier: Modifier = Modifier) {
+    Text(
+        text = title,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 18.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(top = 5.dp, start = 20.dp)
+    )
+}
 
 
 
@@ -293,18 +304,7 @@ fun Information2() {
 
  */
 
-@Composable
-private fun Option(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 5.dp, start = 20.dp)
-    )
-}
+
 
 /*
 @Composable
