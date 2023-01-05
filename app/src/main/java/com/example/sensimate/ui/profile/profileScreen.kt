@@ -101,7 +101,9 @@ fun ProfileScreen(navController: NavController) {
 
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 20.dp),
             contentPadding = PaddingValues(bottom = 80.dp, top = 20.dp)
         ) {
             item {
@@ -150,7 +152,7 @@ fun ProfileScreen(navController: NavController) {
             item { InfoAboutUser(desc = "Postal Code", info = postalCode.value.toString()) }
             item { InfoAboutUser(desc = "Gender", info = gender.value.toString()) }
 
-            item { DeleteUserProfileButton(navController = navController, showDialog = showDialog) }
+            item { DeleteUserProfileButton(showDialog = showDialog) }
         }
     }
 }
@@ -200,7 +202,7 @@ private fun EditButton(onClick: () -> Unit) {
         modifier = Modifier
             .height(40.dp)
             .width(120.dp)
-            .padding(end = 20.dp)
+            .padding(20.dp)
     ) {
         Text(
             text = "Edit",
@@ -302,9 +304,7 @@ private fun InfoAboutUser(desc: String, info: String) {
 }
 
 @Composable
-fun DeleteUserProfileButton(navController: NavController, showDialog: MutableState<Boolean>) {
-    val context = LocalContext.current
-
+fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
     Button(
         onClick = {
             showDialog.value = true
