@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.Event.extendedEvent
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -18,7 +19,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -26,16 +29,20 @@ import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ExtendedEvent(
     navController: NavController,
-    title: String,
-    time: String,
-    location: String,
-    allergens: String,
-    description: String,
-    surveyCode: String,
+    //title: String,
+    //time: String,
+    //location: String,
+    //allergens: String,
+    //description: String,
+    //surveyCode: String,
+    eventViewModel: EventViewModel = viewModel()
 ) {
+    val state = eventViewModel.uiState
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -77,8 +84,8 @@ fun ExtendedEvent(
                             ) {
                                 Row {
                                     Column {
-                                        Title(title = title)
-                                        Discription(discription = description)
+                                        Title(title = state.value.title)
+                                        Discription(discription = state.value.description)
                                     }
                                 }
                             }
@@ -105,12 +112,12 @@ fun ExtendedEvent(
                             }
                         }
                         Spacer(modifier = Modifier.size(15.dp))
-                        Allergens(title = "Allergens", allergen = allergens)
+                        Allergens(title = "Allergens", allergen = state.value.allergens)
                         Spacer(modifier = Modifier.size(15.dp))
                         Title(title = "Location")
                         Row() {
-                            Discription(discription = time)
-                            Address(address = location)
+                            Discription(discription = state.value.timeOfEvent)
+                            Address(address = state.value.adresss)
                         }
                     }
                 }

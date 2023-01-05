@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -29,11 +30,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
-import com.example.sensimate.data.Database
+import com.example.sensimate.data.*
 import com.example.sensimate.data.Database.UpdateEvent
-import com.example.sensimate.data.Event
-import com.example.sensimate.data.EventDataViewModel
-import com.example.sensimate.data.db
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
@@ -60,19 +59,20 @@ fun EditEventPreview() {
 }
 
  */
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun EditEvent(
     navController: NavController,
-    title: String,
-    time: String,
-    location: String,
-    allergens: String,
-    description: String,
-    surveyCode: String,
-    dataViewModel: EventDataViewModel = viewModel()
+    //title: String,
+    //time: String,
+    //location: String,
+    //allergens: String,
+    //description: String,
+    //surveyCode: String,
+    eventViewModel: EventViewModel = viewModel()
 ) {
-    val state = dataViewModel.state.value
-
+   val state = eventViewModel.uiState
+    
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -101,7 +101,8 @@ fun EditEvent(
                             .clickable(
                                 enabled = true,
                                 onClickLabel = "Clickable image",
-                                onClick = {
+                                onClick = {navController.navigate(Screen.EditPage.route)}),
+                                /*{
                                     navController.navigate(
                                         Screen.EditPage.passArguments(
                                             time = time,
@@ -113,7 +114,10 @@ fun EditEvent(
                                         )
                                     )
                                 }),
-                        id = R.drawable.yelloweditbutton
+                                
+                                 */
+                                
+                                id = R.drawable.yelloweditbutton
                     )
                 }
             }
@@ -138,17 +142,17 @@ fun EditEvent(
 
                                 Row {
                                     Column {
-                                        Title(title = title)
+                                        Title(title = state.value.title)
                                         Discription(
-                                            discription = description
+                                            discription = state.value.description
                                         )
                                     }
                                 }
                             }
                         }
                         Spacer(modifier = Modifier.size(10.dp))
-                        Allergens(title = allergens)
-                        Discription(discription = description)
+                        Allergens(title = state.value.allergens)
+                        Discription(discription = state.value.description)
                         Spacer(modifier = Modifier.size(20.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -157,10 +161,10 @@ fun EditEvent(
                             Column() {
                                 Title(title = "Location")
                             }
-                            Discription(discription = time)
+                            Discription(discription = state.value.timeOfEvent)
                         }
                         Spacer(modifier = Modifier.size(20.dp))
-                        Discription(discription = location)
+                        Discription(discription = state.value.location)
 
                     }
                 }
@@ -182,7 +186,7 @@ fun EditEvent(
                 }
                 Spacer(modifier = Modifier.size(20.dp))
                 Button(
-                    onClick = { Database.deleteEvent(title) },
+                    onClick = { Database.deleteEvent(state.value.title) },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                     modifier = Modifier.size(345.dp, 60.dp),
@@ -287,23 +291,26 @@ fun EditPagePreview() {
 @Composable
 fun EditPage(
     navController: NavController,
-    title: String,
-    time: String,
-    location: String,
-    allergens: String,
-    description: String,
-    surveyCode: String,
+    //title: String,
+    //time: String,
+    //location: String,
+    //allergens: String,
+    //description: String,
+    //surveyCode: String,
+    eventViewModel: EventViewModel = viewModel()
 
 ) {
-    var titleText by remember { mutableStateOf(title) }
-    var descriptionText by remember { mutableStateOf(description) }
-    var locationText by remember { mutableStateOf(location) }
-    var allergensText by remember { mutableStateOf(allergens) }
-    var surveyCodeText by remember { mutableStateOf(surveyCode) }
-    var timeText by remember { mutableStateOf(time) }
-    val myYear = remember { mutableStateOf("") }
-    val myMonth = remember { mutableStateOf("") }
-    val myDay = remember { mutableStateOf("") }
+    val state = eventViewModel.uiState
+
+    var titleText by remember { mutableStateOf(state.value.title) }
+    var descriptionText by remember { mutableStateOf(state.value.description) }
+    var locationText by remember { mutableStateOf(state.value.location) }
+    var allergensText by remember { mutableStateOf(state.value.allergens) }
+    var surveyCodeText by remember { mutableStateOf(state.value.surveyCode) }
+    var timeText by remember { mutableStateOf(state.value.timeOfEvent) }
+    val myYear = remember { mutableStateOf(state.value.year) }
+    val myMonth = remember { mutableStateOf(state.value.month) }
+    val myDay = remember { mutableStateOf(state.value.day) }
     val maxChar = 4
     var year: String
     var month: String
@@ -447,15 +454,25 @@ fun EditPage(
                                     "month" to month,
                                     "year" to year
                                 )
+                                db.collection("events").add(event)
 
-                                db.collection("events").document().set(event)
+                                val documentID = db.collection("event").document().id
+                                Log.d("DocumentrefB4 : ", documentID)
+                                UpdateEvent(event, documentID)
+                                Log.d("documentIDAfter : ", documentID)
+
+
+                                /*
+                                db.collection("events").add(event)
                                     .addOnSuccessListener { docRef ->
                                         run {
-                                            //UpdateEvent(event, docRef.id)
+                                            UpdateEvent(event, docRef.id)
                                             //checking for docref.
-                                            //Log.d("DocReference", docRef.id)
+                                            Log.d("DocReference", docRef.id)
                                         }
                                     }
+
+                                 */
                                 /*navController.navigate(Screen.QuestionPageScreen.route)*/
                             }
                         },

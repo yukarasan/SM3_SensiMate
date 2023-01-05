@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.home
 
+import android.annotation.SuppressLint
 import android.graphics.Color.WHITE
 import android.util.Log
 import androidx.compose.foundation.*
@@ -32,13 +33,13 @@ import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun EventScreen(
-    navController: NavController,
-    dataViewModel: EventDataViewModel = viewModel(),
+fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel = viewModel(), eventViewModel: EventViewModel = viewModel()
 ) {
-
     val state = dataViewModel.state.value
+    val state1 = eventViewModel.uiState
+
     var checked by remember { mutableStateOf(false) }
 
     Log.d("jdjd", "EventScreen: " + checked)
@@ -61,7 +62,7 @@ fun EventScreen(
                         modifier = Modifier
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                    ){
                         if (checked) {
                             Dialog(onDismissRequest = { /*TODO*/ }) {
                                 EventQuickEntry(navController = navController)
@@ -92,7 +93,20 @@ fun EventScreen(
                 }
 
                 state.events?.let {
-                    items(it.toList()) { event ->
+                    items(it.toList()) {  event ->
+                        state1.value.adresss = event.adresss
+                        state1.value.title = event.title
+                        state1.value.surveyCode = event.surveyCode
+                        state1.value.eventId = event.eventId
+                        state1.value.timeOfEvent = event.timeOfEvent
+                        state1.value.allergens = event.allergens
+                        state1.value.location = event.location
+                        state1.value.day = event.day
+                        state1.value.month = event.month
+                        state1.value.year = event.year
+                        state1.value.description = event.description
+
+
 
                         EventCard(
                             title = event.title,
@@ -100,15 +114,7 @@ fun EventScreen(
                             address = event.location,
                             onClick = {
                                 navController.navigate(
-                                    Screen.ExtendedEventScreen.passArguments(
-                                        time = event.timeOfEvent,
-                                        title = event.title,
-                                        description = event.description,
-                                        allergens = event.allergens,
-                                        location = event.location,
-                                        surveyCode = event.surveyCode,
-                                    )
-                                )
+                                    Screen.ExtendedEventScreen.route)
                             }
                         )
                     }

@@ -1,11 +1,11 @@
 package com.example.sensimate.ui.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -27,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.EventDataViewModel
+import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.ui.navigation.Screen
 
 
@@ -37,14 +38,18 @@ fun EventScreenEmployeePreview() {
 }
 
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun EventScreenEmployee(
     navController: NavController,
-    dataViewModel: EventDataViewModel = viewModel()
+    dataViewModel: EventDataViewModel = viewModel(),
+    eventViewModel: EventViewModel = viewModel()
 ) {
     val showDialog = remember {
         mutableStateOf(false)
     }
+
+    val state = eventViewModel.uiState
 
     Box(
         modifier = Modifier
@@ -67,7 +72,7 @@ fun EventScreenEmployee(
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 20.dp),
             ) {
-                val state = dataViewModel.state.value
+                //val state = dataViewModel.state.value
 
                 item {
                     Row(
@@ -85,35 +90,44 @@ fun EventScreenEmployee(
 
                 }
                 item { QuickEntry() }
+            }
+            EventCard(title = state.value.title,
+                timeOfEvent = state.value.timeOfEvent,
+                address = state.value.adresss,
+                onClick = { navController.navigate(Screen.EditEvent.route) })
 
-                state.events?.let {
-                    items(it.toList()) { event ->
+            /*
 
-                        EventCard(
-                            title = event.title,
-                            timeOfEvent = event.timeOfEvent,
-                            address = event.location,
-                            onClick = {
-                                navController.navigate(
-                                    Screen.EditEvent.passArguments(
-                                        time = event.timeOfEvent,
-                                        title = event.title,
-                                        description = event.description,
-                                        allergens = event.allergens,
-                                        location = event.location,
-                                        surveyCode = event.surveyCode,
+            state.events?.let {
+                items(it.toList()) { event ->
 
-                                    ),
-                                )
-                            }
-                        )
+                    EventCard(
+                        title = event.title,
+                        timeOfEvent = event.timeOfEvent,
+                        address = event.location,
+                        onClick = {
+                            navController.navigate(
+                                Screen.EditEvent.passArguments(
+                                    time = event.timeOfEvent,
+                                    title = event.title,
+                                    description = event.description,
+                                    allergens = event.allergens,
+                                    location = event.location,
+                                    surveyCode = event.surveyCode,
+
+                                ),
+                            )
+                        }
+                    ) {
                     }
                 }
             }
+
+             */
         }
     }
-
 }
+
 
 @Composable
 private fun AddEventImage(navController: NavController) {
