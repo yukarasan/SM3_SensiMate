@@ -69,6 +69,9 @@ fun EditEvent(
     allergens: String,
     description: String,
     surveyCode: String,
+    day : String,
+    //year: String,
+    //month: String,
     dataViewModel: EventDataViewModel = viewModel()
 ) {
     val state = dataViewModel.state.value
@@ -109,7 +112,10 @@ fun EditEvent(
                                             description = description,
                                             allergens = allergens,
                                             location = location,
-                                            surveyCode = surveyCode
+                                            surveyCode = surveyCode,
+                                            day = day
+                                            //year = year,
+                                            //month = month
                                         )
                                     )
                                 }),
@@ -292,7 +298,10 @@ fun EditPage(
     location: String,
     allergens: String,
     description: String,
-    surveyCode: String
+    surveyCode: String,
+    day : String,
+    //year : String,
+    //month : String
 ) {
     var titleText by remember { mutableStateOf(title) }
     var descriptionText by remember { mutableStateOf(description) }
@@ -447,12 +456,12 @@ fun EditPage(
                                     "year" to year
                                 )
 
-                                db.collection("events").add(event)
+                                db.collection("events").document().set(event)
                                     .addOnSuccessListener { docRef ->
                                         run {
-                                            UpdateEvent(event, docRef.id)
+                                            //UpdateEvent(event, docRef.id)
                                             //checking for docref.
-                                            Log.d("DocReference", docRef.id)
+                                            //Log.d("DocReference", docRef.id)
                                         }
                                     }
                                 /*navController.navigate(Screen.QuestionPageScreen.route)*/
@@ -644,7 +653,7 @@ fun TextFiledTimeText() {
 
 @Composable
 fun EditSurvey(navController: NavController) {
-    Survey4(navController)
+    Survey4(title = "", navController)
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
