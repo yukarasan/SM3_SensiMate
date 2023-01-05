@@ -12,10 +12,10 @@ class QuestionViewModel : ViewModel() {
 
     fun insertQuestions(
         questionsUiState: QuestionsUiState,
-
+        eventId: String
     ) {
         _uiState.value = QuestionsUiState(
-            //questions = Database.getSurveyAsList(), //FÅ DEN HER TIL AT TAGE LISTE AF QUESTIONS FRA DATABASE
+            questions = Database.getSurveyAsList(eventId = eventId), //FÅ DEN HER TIL AT TAGE LISTE AF QUESTIONS FRA DATABASE
         )
     }
 }

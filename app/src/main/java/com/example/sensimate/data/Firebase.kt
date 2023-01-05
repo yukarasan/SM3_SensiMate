@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.data.Database.fetchListOfEvents
+import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -363,10 +364,34 @@ object Database {
     } //TODO: Sabirin
 
 
+    fun getSurveyAsList(eventId: String): List<MyQuestion> {
+
+        val questions: MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList()
+        val questionsRef = db.collection("events").document(eventId).collection("questions")
+
+        questionsRef.get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    // document contains a question data
+
+                    val newQuestion = MyQuestion()
+
+                    newQuestion.mainQuestion = document.getString("mainQuestion").toString()
+                    newQuestion.oneChoice = document.getBoolean("oneChoice") == true
+
+                    questionsRef.document(document.id).collection("type")
+                        .get()
+                        .addOnSuccessListener { option ->
+                            newQuestion.options.add(option.toString())
+                        }
+                }
+            }
+        return questions
+    }
+
     fun getEmployeeProfiles() {} //TODO: Sabirin
 
     fun createEmployee() {} //TODO: Anshjyot
-
 
     suspend fun getSurveyQuestions(): List<SurveyQuestion> {
         val surveyQuestions = mutableListOf<SurveyQuestion>()
@@ -469,7 +494,6 @@ object Database {
  */
 
 
-
     data class Question(val main: String, val sub: List<String>, val type: String)
 
 
@@ -482,19 +506,6 @@ object Database {
             calendar.set(Calendar.MONTH, month)
             return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
 
-        }
-
-        fun getSurveyAsList(eventId: String) {
-            val questionsRef = db.collection("events").document(eventId).collection("questions")
-            questionsRef.get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        // document contains a question data
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    // handle failure
-                }
         }
 
     }

@@ -45,7 +45,6 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
     val questionViewModel = QuestionViewModel()
 
-
     val context = LocalContext.current
 
     val screen =
