@@ -71,7 +71,9 @@ fun EditEvent(
     //surveyCode: String,
     eventViewModel: EventViewModel = viewModel()
 ) {
-   val state = eventViewModel.uiState
+    val state = eventViewModel.uiState
+
+    val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
     
     Box(
         modifier = Modifier
@@ -142,17 +144,17 @@ fun EditEvent(
 
                                 Row {
                                     Column {
-                                        Title(title = state.value.title)
+                                        Title(title = chosenEvent.title)
                                         Discription(
-                                            discription = state.value.description
+                                            discription = chosenEvent.description
                                         )
                                     }
                                 }
                             }
                         }
                         Spacer(modifier = Modifier.size(10.dp))
-                        Allergens(title = state.value.allergens)
-                        Discription(discription = state.value.description)
+                        Allergens(title = chosenEvent.allergens)
+                        Discription(discription = chosenEvent.description)
                         Spacer(modifier = Modifier.size(20.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -161,10 +163,10 @@ fun EditEvent(
                             Column() {
                                 Title(title = "Location")
                             }
-                            Discription(discription = state.value.timeOfEvent)
+                            Discription(discription = chosenEvent.timeOfEvent)
                         }
                         Spacer(modifier = Modifier.size(20.dp))
-                        Discription(discription = state.value.location)
+                        Discription(discription = chosenEvent.location)
 
                     }
                 }
@@ -186,7 +188,7 @@ fun EditEvent(
                 }
                 Spacer(modifier = Modifier.size(20.dp))
                 Button(
-                    onClick = { Database.deleteEvent(state.value.title) },
+                    onClick = { Database.deleteEvent(chosenEvent.title) },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                     modifier = Modifier.size(345.dp, 60.dp),
@@ -288,6 +290,7 @@ fun EditPagePreview() {
  */
 
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun EditPage(
     navController: NavController,
@@ -302,15 +305,17 @@ fun EditPage(
 ) {
     val state = eventViewModel.uiState
 
-    var titleText by remember { mutableStateOf(state.value.title) }
-    var descriptionText by remember { mutableStateOf(state.value.description) }
-    var locationText by remember { mutableStateOf(state.value.location) }
-    var allergensText by remember { mutableStateOf(state.value.allergens) }
-    var surveyCodeText by remember { mutableStateOf(state.value.surveyCode) }
-    var timeText by remember { mutableStateOf(state.value.timeOfEvent) }
-    val myYear = remember { mutableStateOf(state.value.year) }
-    val myMonth = remember { mutableStateOf(state.value.month) }
-    val myDay = remember { mutableStateOf(state.value.day) }
+    val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
+
+    var titleText by remember { mutableStateOf(chosenEvent.title) }
+    var descriptionText by remember { mutableStateOf(chosenEvent.description) }
+    var locationText by remember { mutableStateOf(chosenEvent.location) }
+    var allergensText by remember { mutableStateOf(chosenEvent.allergens) }
+    var surveyCodeText by remember { mutableStateOf(chosenEvent.surveyCode) }
+    var timeText by remember { mutableStateOf(chosenEvent.timeOfEvent) }
+    val myYear = remember { mutableStateOf(chosenEvent.year) }
+    val myMonth = remember { mutableStateOf(chosenEvent.month) }
+    val myDay = remember { mutableStateOf(chosenEvent.day) }
     val maxChar = 4
     var year: String
     var month: String
@@ -511,6 +516,8 @@ fun EditPage(
         }
     }
 }
+
+
 
 
 @Composable

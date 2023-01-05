@@ -82,7 +82,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
     NavHost(
         navController = navController,
-        startDestination = Screen.EventScreenEmployee.route
+        startDestination = screen.route
     ) {      // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
@@ -103,7 +103,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         ///
 
         composable(route = Screen.EventScreen.route) {
-            EventScreen(navController = navController)
+            EventScreen(navController = navController, eventViewModel = eventViewModel)
         }
 
         composable(route = Screen.ExtendedEventScreen.route){
@@ -251,7 +251,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EditSurveyPage(navController = navController)
         }
         composable(route = Screen.EventScreenEmployee.route) {
-            EventScreenEmployee(navController = navController)
+            EventScreenEmployee(navController = navController, eventViewModel = eventViewModel)
         }
 
         // Profile navigation:

@@ -1,5 +1,7 @@
 package com.example.sensimate.data
 
+import androidx.compose.runtime.MutableState
+
 data class Event(
     var title: String = "",
     var description: String = "",
@@ -12,5 +14,9 @@ data class Event(
     var day: String = "",
     var month: String = "",
     var year: String = "",
+)
 
+data class EventUiState(
+    var events: MutableList<Event> = emptyList<Event>().toMutableList(),
+    var chosenSurveyId: String = ""
 )

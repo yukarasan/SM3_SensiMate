@@ -40,6 +40,9 @@ import com.example.sensimate.ui.theme.*
     navController: NavController,
     questionViewModel: QuestionViewModel
 ) {
+
+    val state = questionViewModel.uiState.value
+
     Box(
         modifier = Modifier
             .background(

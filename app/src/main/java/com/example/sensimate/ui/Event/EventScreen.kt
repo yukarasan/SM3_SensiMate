@@ -35,14 +35,16 @@ import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel = viewModel(), eventViewModel: EventViewModel = viewModel()
+fun EventScreen(
+    navController: NavController,
+    dataViewModel: EventDataViewModel = viewModel(),
+    eventViewModel: EventViewModel = viewModel()
 ) {
     val state = dataViewModel.state.value
-    val state1 = eventViewModel.uiState
+    val state1 = eventViewModel.uiState.collectAsState()
 
     var checked by remember { mutableStateOf(false) }
 
-    Log.d("jdjd", "EventScreen: " + checked)
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +64,7 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                         modifier = Modifier
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
-                    ){
+                    ) {
                         if (checked) {
                             Dialog(onDismissRequest = { /*TODO*/ }) {
                                 EventQuickEntry(navController = navController)
@@ -93,19 +95,9 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                 }
 
                 state.events?.let {
-                    items(it.toList()) {  event ->
-                        state1.value.adresss = event.adresss
-                        state1.value.title = event.title
-                        state1.value.surveyCode = event.surveyCode
-                        state1.value.eventId = event.eventId
-                        state1.value.timeOfEvent = event.timeOfEvent
-                        state1.value.allergens = event.allergens
-                        state1.value.location = event.location
-                        state1.value.day = event.day
-                        state1.value.month = event.month
-                        state1.value.year = event.year
-                        state1.value.description = event.description
+                    items(it.toList()) { event ->
 
+                        eventViewModel.insertEvent(event)
 
 
                         EventCard(
@@ -114,7 +106,9 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                             address = event.location,
                             onClick = {
                                 navController.navigate(
-                                    Screen.ExtendedEventScreen.route)
+                                    Screen.ExtendedEventScreen.route
+                                )
+                                eventViewModel.setChosenEventId(event.eventId)
                             }
                         )
                     }

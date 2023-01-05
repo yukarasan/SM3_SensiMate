@@ -42,6 +42,7 @@ fun ExtendedEvent(
     eventViewModel: EventViewModel = viewModel()
 ) {
     val state = eventViewModel.uiState
+    val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
 
     Box(
         modifier = Modifier
@@ -84,8 +85,8 @@ fun ExtendedEvent(
                             ) {
                                 Row {
                                     Column {
-                                        Title(title = state.value.title)
-                                        Discription(discription = state.value.description)
+                                        Title(title = chosenEvent.title)
+                                        Discription(discription = chosenEvent.description)
                                     }
                                 }
                             }
@@ -112,12 +113,12 @@ fun ExtendedEvent(
                             }
                         }
                         Spacer(modifier = Modifier.size(15.dp))
-                        Allergens(title = "Allergens", allergen = state.value.allergens)
+                        Allergens(title = "Allergens", allergen = chosenEvent.allergens)
                         Spacer(modifier = Modifier.size(15.dp))
                         Title(title = "Location")
                         Row() {
-                            Discription(discription = state.value.timeOfEvent)
-                            Address(address = state.value.adresss)
+                            Discription(discription = chosenEvent.timeOfEvent)
+                            Address(address = chosenEvent.adresss)
                         }
                     }
                 }
