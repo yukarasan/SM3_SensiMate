@@ -124,44 +124,6 @@ fun EditProfileScreen(navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun EditField(title: String, description: String, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 20.dp, bottom = 20.dp, start = 30.dp, end = 30.dp),
-        backgroundColor = Color.Transparent,
-        elevation = 0.dp,
-        onClick = onClick
-    ) {
-        Column() {
-            Text(
-                text = title,
-                fontSize = 22.sp,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.ExtraBold,
-                color = Color.White,
-                modifier = Modifier.padding(5.dp)
-            )
-            Text(
-                text = description,
-                fontSize = 18.sp,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.ExtraBold,
-                color = Color.White,
-                modifier = Modifier.padding(5.dp)
-            )
-            Divider(
-                color = Color.White,
-                thickness = 2.dp,
-                modifier = Modifier.padding(start = 5.dp)
-            )
-        }
-    }
-}
-
-
 @Composable
 private fun DoneButton(onClick: () -> Unit) {
     Button(
