@@ -324,7 +324,7 @@ object Database {
     }
 
     fun UpdateEvent(data: Map<String, String>, documentID: String) {
-        val docref = db.collection("TESTER").document(documentID)
+        val docref = db.collection("events").document(documentID)
         docref.update(data)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
