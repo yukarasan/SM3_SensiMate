@@ -538,27 +538,29 @@ fun QuestionPageScreen(navController: NavController){
             color = Color(0xFFB874A6),
             fontSize = 26.sp,
             modifier = Modifier
-                .padding(30.dp, 240.dp, 1.dp, 1.dp)
+                .padding(40.dp, 240.dp, 1.dp, 1.dp)
 
         )
         AddPhoto(
             modifier = Modifier
                 .padding(240.dp, 1.dp, 1.dp, 1.dp)
-                .size(20.dp)
+                .size(25.dp)
                 .clickable(enabled = true,
                     onClick = {
-                        if (selectedQuestion.value == "Multiple-Choice"){
-                            navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
-                        }
-                        else if(selectedQuestion.value == "Text Answer Question"){
-                            navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
-                        }
-                        else{
-                            Toast.makeText(
-                                context,
-                                "Please Choose a Question Type",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        when (selectedQuestion.value) {
+                            "Multiple-Choice Question" -> {
+                                navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
+                            }
+                            "Text Answer Question" -> {
+                                navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
+                            }
+                            else -> {
+                                Toast.makeText(
+                                    context,
+                                    "Please Choose a Question Type",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }),
             id = R.drawable.redaddplus
@@ -769,7 +771,7 @@ fun TextFiledAnswerText( text: String, answerText: String,textChange: (String) -
 fun DropDownMenu(selectedQuestion: MutableState<String>) {
 
     var expanded by remember { mutableStateOf(false) }
-    val suggestions = listOf("Multiple-Choice", "Text Answer Question")
+    val suggestions = listOf("Multiple-Choice Question", "Text Answer Question")
 
 
     var textfieldSize by remember { mutableStateOf(Size.Zero) }
@@ -784,12 +786,12 @@ fun DropDownMenu(selectedQuestion: MutableState<String>) {
             value = selectedQuestion.value,
             onValueChange = { selectedQuestion.value = it },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                disabledLabelColor = Color.White,
-                focusedBorderColor = Color.White,
+                textColor = Color(0xFFB874A6),
+                disabledLabelColor = Color(0xFFB874A6),
+                focusedBorderColor = Color(0xFFB874A6),
                 disabledPlaceholderColor = Color.White,
-                disabledTextColor = Color.White,
-                disabledBorderColor = Color.White
+                disabledTextColor = Color(0xEFFF7067),
+                disabledBorderColor = Color(0xFFB874A6)
             ),
             enabled = false,
             modifier = Modifier
@@ -803,7 +805,7 @@ fun DropDownMenu(selectedQuestion: MutableState<String>) {
             trailingIcon = {
                 Icon(
                     icon, "",
-                    Modifier.clickable { expanded = !expanded }, tint = Color.White
+                    Modifier.clickable { expanded = !expanded }, tint = Color(0xFFB874A6)
                 )
             }
         )
@@ -811,14 +813,14 @@ fun DropDownMenu(selectedQuestion: MutableState<String>) {
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier = Modifier
-                .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
+                .width(with(LocalDensity.current) { textfieldSize.width.toDp() }) .background(Color(red = 44, green = 44, blue = 59))
         ) {
             suggestions.forEach { label ->
                 DropdownMenuItem(onClick = {
                     selectedQuestion.value = label
                     expanded = false
                 }) {
-                    Text(text = label)
+                    Text(text = label, color = Color(0xFFB874A6))
                 }
             }
         }
