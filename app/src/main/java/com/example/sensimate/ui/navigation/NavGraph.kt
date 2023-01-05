@@ -327,10 +327,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
         }
         composable(route = Screen.Survey3.route) {
-            Survey3(navController = navController)
+            Survey3(navController = navController, title = "")
         }
         composable(route = Screen.Survey4.route) {
-            Survey4(navController = navController)
+            Survey4(navController = navController, title = "")
         }
     }
 }

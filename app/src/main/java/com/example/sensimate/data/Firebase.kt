@@ -9,31 +9,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FirebaseFirestoreException
 import android.widget.Toast
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 import com.example.sensimate.data.Database.fetchListOfEvents
-import com.example.sensimate.data.Database.fetchProfile
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.*
+
+
 
 
 @SuppressLint("StaticFieldLeak")
@@ -388,6 +376,84 @@ object Database {
                 Log.w(TAG, "Updated failed", exception)
             }
     }
+
+
+/*
+    fun getSurvey(): MutableList<SurveyQuestions> {
+        val db = Firebase.firestore
+        val surveyCollection = db.collection("events")
+        val surveyQuestions = mutableListOf<SurveyQuestions>()
+
+        surveyCollection.get().addOnSuccessListener { snapshot ->
+            for (document in snapshot) {
+                val main = document.getString("main") ?: ""
+                val sub = document.get("sub") as List<String>
+                val type = document.getString("type") ?: ""
+                val question = SurveyQuestions(main, sub, type)
+                surveyQuestions.add(question)
+            }
+        }.addOnFailureListener { exception ->
+            Log.w("SurveyScreen", "Error.", exception)
+        }
+
+        return surveyQuestions
+    }
+
+ */
+
+/*
+    fun getSurvey(eventId: String) {
+        val eventsRef = FirebaseFirestore.getInstance().collection("events").document(eventId)
+        val questionsRef = eventsRef.collection("questions")
+
+        questionsRef.get().addOnSuccessListener { snapshot ->
+            val questions = snapshot.documents.map { document ->
+                val main = document.getString("main")
+                val sub = document.get("sub") as List<String>
+                val type = document.getString("type")
+
+                if (type != null) {
+                    if (main != null) {
+                        Question(main, sub, type)
+                    }
+                }
+
+            }
+            // Now you have a list of `Question` objects that you can use to build your survey UI
+        }
+    }
+
+ */
+/*
+
+    fun getSurvey(eventId: String) {
+        val eventsRef = FirebaseFirestore.getInstance().collection("events").document(eventId)
+        val questionsRef = eventsRef.collection("questions")
+
+        questionsRef.get().addOnSuccessListener { snapshot ->
+            val questions = snapshot.documents.map { document ->
+                val main = document.getString("main")
+                val sub = document.get("sub") as List<String>
+                val type = document.getString("type")
+
+                if (type != null && main != null) {
+                    Question(main, sub, type)
+                }
+            }
+
+            // Now you have a list of `Question` objects that you can use to build your survey UI
+            // using Jetpack Compose
+            Survey(questions)
+        }
+    }
+
+ */
+
+
+
+    data class Question(val main: String, val sub: List<String>, val type: String)
+
+
 
 
     fun exportToExcel() {} //TODO: LATER

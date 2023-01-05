@@ -41,7 +41,7 @@ import com.example.sensimate.ui.theme.*
 
 
 @Composable
-fun Survey4(navController: NavController) {
+fun Survey4(title: String, navController: NavController) {
     Box(
         modifier = Modifier
             .background(
@@ -59,9 +59,9 @@ fun Survey4(navController: NavController) {
     ) {
         OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
         ProgressPreview()
-        Question(title = "Question 4/4")
-        SurveyTitle(title = "What other flavours of Coca Cola would you like?")
-        Information4()
+        Question(title)
+        SurveyTitle(title)
+        Information4(options = listOf("Tomato", "Watermelon", "Cherry", "Vanilla"))
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -75,6 +75,8 @@ fun Survey4(navController: NavController) {
         }
     }
 }
+
+
 
 
 @Composable
@@ -93,9 +95,8 @@ private fun ProgressPreview() {
 }
 
 
-
 @Composable
-fun Information4() {
+fun Information4(options: List<String>) {
     val checkedState = remember { mutableStateOf(false) }
 
     Card(
@@ -107,51 +108,19 @@ fun Information4() {
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
         Column {
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 0.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CheckBox()
-                InformationTomato(title = "Tomato")
-                Spacer(modifier = Modifier.width((120.dp)))
+            options.forEachIndexed { index, option ->
+                Row(
+                    modifier = Modifier
+                        .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CheckBox()
+                    Option(title = option)
+                    Spacer(modifier = Modifier.width((120.dp)))
+                }
             }
 
-
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CheckBox()
-                InformationWatermelon(title = "Watermelon")
-                Spacer(modifier = Modifier.width((120.dp)))
-
-            }
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CheckBox()
-                InformationCherry(title = "Cherry")
-                Spacer(modifier = Modifier.width((120.dp)))
-
-            }
-            Row(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CheckBox()
-                InformationVanilla(title = "Vanilla")
-                Spacer(modifier = Modifier.width((120.dp)))
-
-            }
             Row(
                 modifier = Modifier
                     .padding(start = 0.dp, top = 25.dp, bottom = 15.dp),
@@ -170,13 +139,12 @@ fun Information4() {
                             uncheckedColor = GreyColor,
                             checkmarkColor = lightpurple,
                             checkedColor = lightpurple,
-
                             disabledColor = darkbluegrey,
                             disabledIndeterminateColor = GreyColor,
                         )
                 )
-                InformationOther(title = "Other: _____")
-                Spacer(modifier = Modifier.width((120.dp)))
+                Option(title = "Other: ")
+                Spacer(modifier = Modifier.width((60.dp)))
                 var other by remember { mutableStateOf("") }
                 MyTextField(
                     text = other,
@@ -191,31 +159,16 @@ fun Information4() {
                     backgroundColor = GreyColor,
                     placeHolderColor = Color.White
                 )
-
-
-
             }
-
         }
     }
 }
 
 
-@Composable
-private fun InformationTomato(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
-    )
-}
+
 
 @Composable
-fun InformationWatermelon(title: String, modifier: Modifier = Modifier) {
+private fun Option(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         fontFamily = manropeFamily,
@@ -223,46 +176,7 @@ fun InformationWatermelon(title: String, modifier: Modifier = Modifier) {
         fontSize = 18.sp,
         color = Color.White,
         modifier = modifier
-            .padding(top = 5.dp, start = 20.dp)
-    )
-}
-
-@Composable
-private fun InformationCherry(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
-    )
-}
-
-@Composable
-private fun InformationVanilla(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
-    )
-}
-
-@Composable
-private fun InformationOther(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 18.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(top = 0.dp, start = 20.dp)
+            .padding(top = 0.dp, start = 20.dp, bottom = 5.dp)
     )
 }
 
@@ -290,32 +204,8 @@ fun CheckBox() {
                         disabledIndeterminateColor = GreyColor,
                     )
             )
-        }
+}
 
-
-
-/*
-
-@Composable
-fun InputField2(title: String, onValueChange: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(start = 0.dp, top = 25.dp)
-            .fillMaxWidth(),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(20.dp),
-        backgroundColor = GreyColor
-    ) {
-        Column() {
-            Row() {
-            }
-
-        }
-
-    }
-
-
-*/
 
 
 
