@@ -26,7 +26,7 @@ import com.example.sensimate.ui.theme.*
 
 
 @Composable
-fun Survey2(title: String, navController: NavController) {
+fun Survey2(navController: NavController) {
     var selectedOption by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
@@ -46,8 +46,8 @@ fun Survey2(title: String, navController: NavController) {
         OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
         ProgressPreview()
         Question(title = "Question 2/4")
-        SurveyTitle(title)
-        Information2(title)
+        SurveyTitle(title = "How likely would you buy Coca Cola?")
+        //Information2(title)
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
