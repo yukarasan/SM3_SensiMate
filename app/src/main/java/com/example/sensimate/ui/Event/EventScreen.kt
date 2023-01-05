@@ -103,9 +103,6 @@ fun EventScreen(navController: NavController, dataViewModel: EventDataViewModel 
                                         allergens = event.allergens,
                                         location = event.location,
                                         surveyCode = event.surveyCode,
-                                        day = event.day,
-                                        year = event.year,
-                                        month = event.month
                                     )
                                 )
                             }
