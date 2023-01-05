@@ -140,6 +140,7 @@ fun Information2() {
 
     // Define a list of options and their corresponding titles
     val options = listOf("Very Likely", "Likely", "Neutral", "Unlikely", "Very Unlikely")
+   // val options = remember { MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList() }
 
     Card(
         modifier = Modifier

@@ -401,108 +401,41 @@ object Database {
 
     fun createEmployee() {} //TODO: Anshjyot
 
-    suspend fun getSurveyQuestions(): List<SurveyQuestion> {
-        val surveyQuestions = mutableListOf<SurveyQuestion>()
-        val querySnapshot = db.collection("Survey").get().await()
-        for (document in querySnapshot.documents) {
-            val data = document.data
-            val question = data?.get("Questions") as List<String>
-            val answers = data["answers"] as List<Boolean>
-            val surveyQuestion = SurveyQuestion(question, answers)
-            surveyQuestions.add(surveyQuestion)
-        }
-        return surveyQuestions
-    }
 
-    data class SurveyQuestion(val text: List<String>, val answers: List<Boolean>)
-
-
-    suspend fun updateSurveyAnswers(questionId: String, answers: List<Boolean>) {
+    fun getSurveyWudia(eventId: String) {
         val db = FirebaseFirestore.getInstance()
-        val surveyRef = db.collection("Survey").document(questionId)
-        surveyRef.update("answers", answers)
-            .addOnSuccessListener {
-                Log.d(TAG, "Successfully updated!")
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Updated failed", exception)
-            }
-    }
+        val eventsRef = db.collection("events")
 
+        eventsRef.get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val eventId = document.id
+                    val eventRef = eventsRef.document(eventId)
+                    val questionsRef = eventRef.collection("questions")
+                    val questionRef = questionsRef.document("q1")
 
-/*
-    fun getSurvey(): MutableList<SurveyQuestions> {
-        val db = Firebase.firestore
-        val surveyCollection = db.collection("events")
-        val surveyQuestions = mutableListOf<SurveyQuestions>()
+                    questionRef.get()
+                        .addOnSuccessListener { result ->
+                            val mainQuestion = result.getString("mainQuestion")
+                            val oneChoice = result.getBoolean("oneChoice")
 
-        surveyCollection.get().addOnSuccessListener { snapshot ->
-            for (document in snapshot) {
-                val main = document.getString("main") ?: ""
-                val sub = document.get("sub") as List<String>
-                val type = document.getString("type") ?: ""
-                val question = SurveyQuestions(main, sub, type)
-                surveyQuestions.add(question)
-            }
-        }.addOnFailureListener { exception ->
-            Log.w("SurveyScreen", "Error.", exception)
-        }
+                            val optionsRef = questionRef.collection("options")
+                            val answerRef = optionsRef.document("answer")
 
-        return surveyQuestions
-    }
-
- */
-
-/*
-    fun getSurvey(eventId: String) {
-        val eventsRef = FirebaseFirestore.getInstance().collection("events").document(eventId)
-        val questionsRef = eventsRef.collection("questions")
-
-        questionsRef.get().addOnSuccessListener { snapshot ->
-            val questions = snapshot.documents.map { document ->
-                val main = document.getString("main")
-                val sub = document.get("sub") as List<String>
-                val type = document.getString("type")
-
-                if (type != null) {
-                    if (main != null) {
-                        Question(main, sub, type)
-                    }
-                }
-
-            }
-            // Now you have a list of `Question` objects that you can use to build your survey UI
-        }
-    }
-
- */
-/*
-
-    fun getSurvey(eventId: String) {
-        val eventsRef = FirebaseFirestore.getInstance().collection("events").document(eventId)
-        val questionsRef = eventsRef.collection("questions")
-
-        questionsRef.get().addOnSuccessListener { snapshot ->
-            val questions = snapshot.documents.map { document ->
-                val main = document.getString("main")
-                val sub = document.get("sub") as List<String>
-                val type = document.getString("type")
-
-                if (type != null && main != null) {
-                    Question(main, sub, type)
+                            answerRef.get()
+                                .addOnSuccessListener { result ->
+                                    val answer = result.getString("answer")
+                                   // val question = Question2(mainQuestion, oneChoice, answer)
+                                }
+                        }
                 }
             }
-
-            // Now you have a list of `Question` objects that you can use to build your survey UI
-            // using Jetpack Compose
-            Survey(questions)
-        }
     }
 
- */
+    data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
 
 
-    data class Question(val main: String, val sub: List<String>, val type: String)
+
 
 
     fun exportToExcel() {} //TODO: LATER
