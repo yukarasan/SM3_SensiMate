@@ -380,5 +380,20 @@ object Database {
             return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
 
         }
+
+
+        fun getSurveyAsList(surveyId: String) {
+            val questionsRef = db.collection("surveys").document(surveyId).collection("questions")
+            questionsRef.get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        // document contains a question data
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // handle failure
+                }
+        }
     }
+
 }
