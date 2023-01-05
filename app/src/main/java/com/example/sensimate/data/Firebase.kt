@@ -96,7 +96,7 @@ object Database {
         }
     } // TODO: Yusuf
 
-    fun updatePassword(currentPassword: String, newPassword: String) {
+    fun updatePassword(currentPassword: String, newPassword: String, context: Context) {
         val user = FirebaseAuth.getInstance().currentUser
         val credential = EmailAuthProvider
             .getCredential(auth.currentUser?.email.toString(), currentPassword)
@@ -106,12 +106,20 @@ object Database {
                 user.updatePassword(newPassword).addOnCompleteListener {
                     if (task.isSuccessful) {
                         Log.d(TAG, "Password updated")
+                        Toast.makeText(
+                            context, "Successfully updated your password",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         Log.d(TAG, "Error password not updated")
                     }
                 }
             } else {
                 Log.d(TAG, "Error auth failed")
+                Toast.makeText(
+                    context, "Failed. Input does not match current password",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     } // TODO: Yusuf

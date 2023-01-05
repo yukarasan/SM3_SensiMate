@@ -1,20 +1,21 @@
 package com.example.sensimate.ui.profile.editProfile
 
+import android.annotation.SuppressLint
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +33,10 @@ import com.example.sensimate.model.manropeFamily
 
 @Composable
 fun EditPasswordScreen(navController: NavController) {
-    var password by remember { mutableStateOf("") }
+    var currentPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+    var showEmptyFieldAlert by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -46,15 +50,50 @@ fun EditPasswordScreen(navController: NavController) {
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             CheckBox(onClick = {
-                Database.updatePassword(currentPassword = "hej123", newPassword = password)
-                navController.popBackStack()
+                if (currentPassword.isNotEmpty() && newPassword.isNotEmpty()) {
+                    Database.updatePassword(
+                        currentPassword = currentPassword,
+                        newPassword = newPassword,
+                        context = context
+                    )
+                    navController.popBackStack()
+                } else {
+                    // At least one of the text fields is empty
+                    showEmptyFieldAlert = true
+                }
             })
         }
+
+        if (showEmptyFieldAlert) {
+            AlertDialog(
+                onDismissRequest = { showEmptyFieldAlert = false },
+                text = {
+                    Text(
+                        "Please provide both your current and new password in " +
+                                "their respective fields."
+                    )
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        showEmptyFieldAlert = false
+                    }) {
+                        Text(text = "OK")
+                    }
+                }
+            )
+        }
+
         CustomPasswordField(
-            text = password,
-            description = "Password",
-            placeholder = "Enter your password here",
-            onValueChange = { password = it }
+            text = currentPassword,
+            description = "Current password",
+            placeholder = "Enter your current password here",
+            onValueChange = { currentPassword = it }
+        )
+        CustomPasswordField(
+            text = newPassword,
+            description = "New password",
+            placeholder = "Enter your new password here",
+            onValueChange = { newPassword = it }
         )
         Text(
             text = "To keep your account secure, you can change your password here. Make sure " +
@@ -66,9 +105,8 @@ fun EditPasswordScreen(navController: NavController) {
 }
 
 
-
-
 // TODO: Give the function to show and hide the password.
+@SuppressLint("UnrememberedMutableState")
 @Composable
 private fun CustomPasswordField(
     text: String,
@@ -83,6 +121,10 @@ private fun CustomPasswordField(
         backgroundColor = Color.Transparent,
         elevation = 0.dp
     ) {
+        var isPasswordVisible = remember {
+            mutableStateOf(false)
+        }
+
         Column() {
             Text(
                 modifier = Modifier
@@ -99,40 +141,83 @@ private fun CustomPasswordField(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                BasicTextField(
-                    value = text,
-                    onValueChange = onValueChange,
-                    textStyle = TextStyle(
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontFamily = manropeFamily,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Start
-                    ),
-                    decorationBox = { innerTextField ->
-                        Row() {
-                            if (text.isEmpty()) {
-                                Text(
-                                    text = placeholder,
-                                    color = Color.White,
-                                    fontSize = 14.sp,
-                                    fontFamily = manropeFamily,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Start
-                                )
+                if (!isPasswordVisible.value) {
+                    Log.d("Password is hidden", isPasswordVisible.toString())
+                    BasicTextField(
+                        value = text,
+                        onValueChange = onValueChange,
+                        textStyle = TextStyle(
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontFamily = manropeFamily,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Start
+                        ),
+                        decorationBox = { innerTextField ->
+                            Row() {
+                                if (text.isEmpty()) {
+                                    Text(
+                                        text = placeholder,
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                        fontFamily = manropeFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Start
+                                    )
+                                }
+                                innerTextField()
                             }
-                            innerTextField()
-                        }
-                    },
-                    cursorBrush = SolidColor(Color(154, 107, 254)),
-                    modifier = Modifier
-                        .padding(top = 10.dp, bottom = 2.dp),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    maxLines = 1,
-                    singleLine = true
-                )
-                IconButton(onClick = { /*TODO*/ }) {
+                        },
+                        cursorBrush = SolidColor(Color(154, 107, 254)),
+                        modifier = Modifier
+                            .padding(top = 10.dp, bottom = 2.dp),
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        maxLines = 1,
+                        singleLine = true
+                    )
+                } else {
+                    Log.d("Password is not hidden", isPasswordVisible.toString())
+                    BasicTextField(
+                        value = text,
+                        onValueChange = onValueChange,
+                        textStyle = TextStyle(
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontFamily = manropeFamily,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Start
+                        ),
+                        decorationBox = { innerTextField ->
+                            Row() {
+                                if (text.isEmpty()) {
+                                    Text(
+                                        text = placeholder,
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                        fontFamily = manropeFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Start
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        },
+                        cursorBrush = SolidColor(Color(154, 107, 254)),
+                        modifier = Modifier
+                            .padding(top = 10.dp, bottom = 2.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        maxLines = 1,
+                        singleLine = true
+                    )
+                }
+                IconButton(onClick = {
+                    if (isPasswordVisible.value == false) {
+                        isPasswordVisible.value = true
+                    } else if (isPasswordVisible.value == true) {
+                        isPasswordVisible.value = false
+                    }
+                }) {
                     Image(
                         painter = painterResource(id = R.drawable.eyeoff),
                         contentDescription = "",
