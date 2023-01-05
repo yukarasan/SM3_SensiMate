@@ -370,75 +370,15 @@ object Database {
     }
 
 
-
-/*
-    fun getSurvey() { //TODO: Anshjyot
-        val questions = mutableListOf<Question>()
-        val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("questions")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val questionSnapshots = snapshot.children
-                for (questionSnapshot in questionSnapshots) {
-                    val question = questionSnapshot.getValue(Question::class.java)
-                    if (question != null) {
-                        questions.add(question)
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("error", "getListOfQuestions: $error")
-            }
-        })
-    }
-
-    data class Question(val text: List<String>, val answers: List<Boolean>)
-
-
-
- */
-
-
-    /*
-    fun answerQuestion() {  //TODO: Anshjyot
-        val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("answers")
-        ref.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val answers = snapshot.children.mapNotNull { it.getValue(Answer::class.java) }
-                updateAnswers(answers)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("error", "getListOfAnswers: $error")
-            }
-        })
-    }
-
-    fun updateAnswers(answers: List<Answer>) {
-
-    }
-
-    data class Answer(val questionId: List<String>, val answer: List<Boolean>)
-
-
     fun exportToExcel() {} //TODO: LATER
 
-}
-
-object OurCalendar {
-    fun getMonthName(month: Int): String? {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, month)
-        return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
-     */
 
     object OurCalendar {
         fun getMonthName(month: Int): String? {
             val calendar = Calendar.getInstance()
             calendar.set(Calendar.MONTH, month)
             return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+
         }
     }
 }
