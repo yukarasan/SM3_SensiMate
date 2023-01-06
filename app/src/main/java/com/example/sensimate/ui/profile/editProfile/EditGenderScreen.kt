@@ -15,14 +15,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
-import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
-import com.example.sensimate.ui.navigation.Screen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -69,7 +66,7 @@ private suspend fun updateProfile(gender: String) {
         "gender" to gender,
     )
 
-    Database.updateProfile(fields)
+    Database.updateProfileFields(fields)
 }
 
 @Composable

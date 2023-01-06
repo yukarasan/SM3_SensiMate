@@ -11,15 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.sensimate.data.Database.updateProfile
+import com.example.sensimate.data.Database.updateProfileFields
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.sensimate.data.Database
-import com.example.sensimate.data.Profile
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
-import com.example.sensimate.ui.navigation.Screen
 
 @Composable
 fun EditAgeScreen(navController: NavController) {
@@ -73,5 +69,5 @@ private suspend fun updateProfile(
         "yearBorn" to yearBorn
     )
 
-    updateProfile(fields)
+    updateProfileFields(fields)
 }

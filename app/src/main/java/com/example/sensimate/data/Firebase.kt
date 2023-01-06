@@ -55,13 +55,6 @@ object Database {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         var profile: Profile?
 
-        /*
-        docRef.get()
-            .addOnSuccessListener { snapshot ->
-                profile = snapshot.toObject(Profile::class.java)
-            }
-         */
-
         withContext(Dispatchers.IO) {
             val snapshot = docRef.get().await()
             profile = snapshot.toObject(Profile::class.java)
@@ -88,12 +81,62 @@ object Database {
         return eventList
     } // TODO: Yusuf
 
-
-    suspend fun updateProfile(fields: Map<String, Any>) {
+    suspend fun updateProfileFields(fields: Map<String, Any>) {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         withContext(Dispatchers.IO) {
-            docRef.update(fields)
+            docRef.update(fields) // update
         }
+    } // TODO: Yusuf
+
+    fun updateEmail(currentPassword: String, newEmail: String, context: Context) {
+        val user = FirebaseAuth.getInstance().currentUser
+        val credential =
+            EmailAuthProvider.getCredential(auth.currentUser?.email.toString(), currentPassword)
+
+        user?.reauthenticate(credential)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                user.updateEmail(newEmail).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Email updated")
+                        Toast.makeText(
+                            context,
+                            "Successfully updated your email",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Log.d(TAG, "Error email not updated")
+                    }
+                }
+            } else {
+                Log.d(TAG, "Error auth failed")
+                Toast.makeText(
+                    context,
+                    "Failed. Input does match e-mail or password",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    } // TODO: Yusuf
+
+    fun deleteAndInsertEmailToFirestore(
+        postalCode: String,
+        yearBorn: String,
+        monthBorn: String,
+        dayBorn: String,
+        gender: String,
+    ) {
+        db.collection("users")
+            .document(
+                auth.currentUser?.email.toString()
+            ).delete()
+
+        setUpProfileInfo(
+            postalCode = postalCode,
+            yearBorn = yearBorn,
+            monthBorn = monthBorn,
+            dayBorn = dayBorn,
+            gender = gender
+        )
     } // TODO: Yusuf
 
     fun updatePassword(currentPassword: String, newPassword: String, context: Context) {
@@ -375,11 +418,13 @@ object Database {
     suspend fun getSurveyAsList(eventId: String): List<MyQuestion> { //TODO: Hussein
         val questions: MutableList<MyQuestion> = mutableListOf()
         val questionsRef = db.collection("events").document(eventId).collection("questions")
+
         questionsRef.get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     // document contains a question data
                     val newQuestion = MyQuestion()
+
                     newQuestion.mainQuestion = document.getString("mainQuestion").toString()
                     newQuestion.oneChoice = document.getBoolean("oneChoice") == true
 
@@ -402,7 +447,65 @@ object Database {
         return questions
     }
 
-    fun insertAnswer(){} //TODO: Ansh (& Hussein)?
+    suspend fun updateSurvey(eventId: String, survey: List<MyQuestion>) {
+        val questionsRef = db.collection("events").document(eventId).collection("questions")
+        for (question in survey) {
+            val docRef = questionsRef.document(question.mainQuestion)
+            docRef.update("oneChoice", question.oneChoice)
+                .addOnSuccessListener {
+                }
+                .addOnFailureListener {
+                }
+            docRef.collection("type").document("options")
+                .set(question.options.mapIndexed { index, i -> index.toString() to i }.toMap())
+                .addOnSuccessListener {
+                }
+                .addOnFailureListener {
+                }
+        }
+    }
+
+    /*
+
+    suspend fun updateAnswer(eventId: String, questionId: String, answerId: String, newAnswer: Any) {
+        val answerRef = db.collection("events").document(eventId).collection("questions")
+            .document(questionId).collection("answers").document(answerId)
+        answerRef.update("answer", newAnswer).await()
+    }
+
+     */
+
+    /*
+    suspend fun insertAnswer(eventId: String, questionId: String, answer: Any) {
+        val answerRef = db.collection("events").document(eventId).collection("questions")
+            .document(questionId).collection("answers").document()
+        answerRef.set(mapOf("answer" to answer)).await()
+    }
+
+     */
+
+    /*
+
+    fun updateSurvey(eventId: String, questionId: String, newQuestion: MyQuestion) {
+        val questionRef = db.collection("events").document(eventId)
+            .collection("questions").document(questionId)
+
+        questionRef.update("mainQuestion", newQuestion.mainQuestion)
+        questionRef.update("oneChoice", newQuestion.oneChoice)
+
+        questionRef.collection("type").get().addOnSuccessListener { options ->
+            for (option in options) {
+                questionRef.collection("type").document(option.id).delete()
+            }
+        }
+
+        for (option in newQuestion.options) {
+            questionRef.collection("type").add(option)
+        }
+    }
+
+     */
+
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
 
@@ -439,8 +542,10 @@ object Database {
             }
     }
 
-    fun exportToExcel() {} //TODO: LATER
 }
+
+fun exportToExcel() {} //TODO: LATER
+
 
 
 data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)

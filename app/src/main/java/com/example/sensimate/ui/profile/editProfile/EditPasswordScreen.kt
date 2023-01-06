@@ -104,8 +104,6 @@ fun EditPasswordScreen(navController: NavController) {
     }
 }
 
-
-// TODO: Give the function to show and hide the password.
 @SuppressLint("UnrememberedMutableState")
 @Composable
 private fun CustomPasswordField(
