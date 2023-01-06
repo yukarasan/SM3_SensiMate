@@ -39,15 +39,6 @@ import com.example.sensimate.ui.theme.DarkPurple
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
-    /*
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("") }
-    var postalCode by remember { mutableStateOf("") }
-     */
-
     Box(modifier = Modifier
         .fillMaxSize()
         .background(

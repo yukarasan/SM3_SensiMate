@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.profile
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -39,20 +40,29 @@ import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    navController: NavController,
+    profileViewModel: ProfileViewModel = viewModel()
+) {
     val scope = rememberCoroutineScope()
+    val profileState by profileViewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     val showDialog = remember {
         mutableStateOf(false)
     }
 
+    if (auth.currentUser != null) {
+        profileViewModel.fetchProfileData(context = context)
+    }
+
+    /*
     val yearBorn = remember { mutableStateOf("") }
     val age = remember { mutableStateOf("") }
     val dayBorn = remember { mutableStateOf("") }
     val monthBorn = remember { mutableStateOf("") }
     val postalCode = remember { mutableStateOf("") }
     val gender = remember { mutableStateOf("") }
-    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
 
@@ -80,6 +90,9 @@ fun ProfileScreen(navController: NavController) {
             gender.value = getStringFromLocalStorage("gender", context)
         }
     }
+    */
+
+
 
     Box(
         modifier = Modifier
@@ -95,7 +108,7 @@ fun ProfileScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            MyDialog(navController = navController, showDialog)
+            MyDialog(navController = navController, showDialog = showDialog, context = context)
         }
 
         LazyColumn(
@@ -121,7 +134,6 @@ fun ProfileScreen(navController: NavController) {
             item { ImageButton() }
             item { ProfileMail() }
             item {
-                val context = LocalContext.current
                 LogoutButton(onClick = {
                     Database.signOut(
                         context = context
@@ -143,31 +155,19 @@ fun ProfileScreen(navController: NavController) {
             val age = profile?.let { currentYear - it.yearBorn }
              */
 
-            item { InfoAboutUser(desc = "Age", info = age.value) }
-            item { InfoAboutUser(desc = "Year Born", info = yearBorn.value) }
-            item { InfoAboutUser(desc = "Day Born", info = dayBorn.value.toString()) }
-            item { InfoAboutUser(desc = "Month Born", info = monthBorn.value.toString()) }
-            item { InfoAboutUser(desc = "Postal Code", info = postalCode.value.toString()) }
-            item { InfoAboutUser(desc = "Gender", info = gender.value.toString()) }
+            item { InfoAboutUser(desc = "Age", info = profileState.age) }
+            item { InfoAboutUser(desc = "Year Born", info = profileState.yearBorn) }
+            item { InfoAboutUser(desc = "Day Born", info = profileState.dayBorn) }
+            item { InfoAboutUser(desc = "Month Born", info = profileState.monthBorn) }
+            item { InfoAboutUser(desc = "Postal Code", info = profileState.postalCode) }
+            item { InfoAboutUser(desc = "Gender", info = profileState.gender) }
 
             item { Spacer(modifier = Modifier.height(20.dp)) }
-            
+
             item { DeleteUserProfileButton(showDialog = showDialog) }
         }
     }
 }
-
-private suspend fun profile(): Profile {
-    val profile = Database.fetchProfile()
-    return Profile(
-        yearBorn = profile?.yearBorn.toString(),
-        dayBorn = profile?.dayBorn.toString(),
-        monthBorn = profile?.monthBorn.toString(),
-        gender = profile?.gender.toString(),
-        postalCode = profile?.postalCode.toString()
-    )
-}
-
 
 @Composable
 private fun LogoutButton(onClick: () -> Unit) {
@@ -327,10 +327,9 @@ fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
 @Composable
 private fun MyDialog(
     navController: NavController = rememberNavController(),
-    showDialog: MutableState<Boolean> = mutableStateOf(true)
+    showDialog: MutableState<Boolean> = mutableStateOf(true),
+    context: Context
 ) {
-    val context = LocalContext.current
-
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
