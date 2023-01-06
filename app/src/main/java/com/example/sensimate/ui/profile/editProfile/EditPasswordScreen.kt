@@ -25,17 +25,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.profile.ProfileViewModel
 
 @Composable
-fun EditPasswordScreen(navController: NavController) {
-    var currentPassword by remember { mutableStateOf("") }
-    var newPassword by remember { mutableStateOf("") }
+fun EditPasswordScreen(
+    navController: NavController,
+    profileViewModel: ProfileViewModel = viewModel()
+) {
+    val profileState by profileViewModel.uiState.collectAsState()
+    var showWrongLengthOfPassword by remember { mutableStateOf(false) }
     var showEmptyFieldAlert by remember { mutableStateOf(false) }
+    // var currentPassword by remember { mutableStateOf("") }
+    // var newPassword by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column(
@@ -50,13 +57,19 @@ fun EditPasswordScreen(navController: NavController) {
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             CheckBox(onClick = {
-                if (currentPassword.isNotEmpty() && newPassword.isNotEmpty()) {
-                    Database.updatePassword(
-                        currentPassword = currentPassword,
-                        newPassword = newPassword,
-                        context = context
-                    )
-                    navController.popBackStack()
+                if (profileState.currentPassword.isNotEmpty() && profileState.newPassword.isNotEmpty()) {
+
+                    if (profileState.newPassword.length < 8) {
+                        showWrongLengthOfPassword = true
+                    } else {
+                        Database.updatePassword(
+                            currentPassword = profileState.currentPassword,
+                            newPassword = profileState.newPassword,
+                            context = context
+                        )
+
+                        navController.popBackStack()
+                    }
                 } else {
                     // At least one of the text fields is empty
                     showEmptyFieldAlert = true
@@ -83,18 +96,38 @@ fun EditPasswordScreen(navController: NavController) {
             )
         }
 
+        if (showWrongLengthOfPassword) {
+            AlertDialog(
+                onDismissRequest = { showWrongLengthOfPassword = false },
+                text = {
+                    Text(
+                        "The new password is not long enough. Please make sure that it is at " +
+                                "least 8 characters long."
+                    )
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        showWrongLengthOfPassword = false
+                    }) {
+                        Text(text = "OK")
+                    }
+                }
+            )
+        }
+
         CustomPasswordField(
-            text = currentPassword,
+            text = profileState.currentPassword,
             description = "Current password",
             placeholder = "Enter your current password here",
-            onValueChange = { currentPassword = it }
+            onValueChange = { profileViewModel.updateCurrentPasswordString(input = it) }
         )
         CustomPasswordField(
-            text = newPassword,
+            text = profileState.newPassword,
             description = "New password",
             placeholder = "Enter your new password here",
-            onValueChange = { newPassword = it }
-        )
+            onValueChange = { profileViewModel.updateNewPasswordString(input = it) },
+
+            )
         Text(
             text = "To keep your account secure, you can change your password here. Make sure " +
                     " that your password is long enough",
@@ -184,7 +217,7 @@ private fun CustomPasswordField(
                             fontSize = 14.sp,
                             fontFamily = manropeFamily,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Start
+                            textAlign = TextAlign.Start,
                         ),
                         decorationBox = { innerTextField ->
                             Row() {
@@ -206,7 +239,7 @@ private fun CustomPasswordField(
                             .padding(top = 10.dp, bottom = 2.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         maxLines = 1,
-                        singleLine = true
+                        singleLine = true,
                     )
                 }
                 IconButton(onClick = {
@@ -231,3 +264,4 @@ private fun CustomPasswordField(
         }
     }
 }
+

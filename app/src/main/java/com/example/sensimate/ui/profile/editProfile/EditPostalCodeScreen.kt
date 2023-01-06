@@ -24,7 +24,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun EditPostalCodeScreen(
     navController: NavController,
-    profileViewModel: ProfileViewModel = viewModel() ) {
+    profileViewModel: ProfileViewModel = viewModel()
+) {
     val profileState by profileViewModel.uiState.collectAsState()
 
     Column(

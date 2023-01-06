@@ -17,13 +17,19 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
+import com.example.sensimate.ui.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditGenderScreen(navController: NavController) {
+fun EditGenderScreen(
+    navController: NavController,
+    profileViewModel: ProfileViewModel = viewModel()
+) {
+    val profileState by profileViewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
     val selectedGender = remember { mutableStateOf("") }
 
@@ -73,7 +79,7 @@ private suspend fun updateProfile(gender: String) {
 private fun DropDownMenu(selectedGender: MutableState<String>) {
     var expanded by remember { mutableStateOf(false) }
     val suggestions = listOf("Man", "Woman", "Other")
-    var textfieldSize by remember { mutableStateOf(Size.Zero) }
+    var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
     val icon = if (expanded)
         Icons.Filled.KeyboardArrowUp
@@ -97,7 +103,7 @@ private fun DropDownMenu(selectedGender: MutableState<String>) {
                 .width(150.dp)
                 .onGloballyPositioned { coordinates ->
                     //This value is used to assign to the DropDown the same width
-                    textfieldSize = coordinates.size.toSize()
+                    textFieldSize = coordinates.size.toSize()
                 },
             label = { Text("Gender") },
             trailingIcon = {
@@ -111,7 +117,7 @@ private fun DropDownMenu(selectedGender: MutableState<String>) {
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier = Modifier
-                .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
+                .width(with(LocalDensity.current) { textFieldSize.width.toDp() })
         ) {
             suggestions.forEach { label ->
                 DropdownMenuItem(onClick = {
