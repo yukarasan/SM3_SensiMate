@@ -1,10 +1,13 @@
 package com.example.sensimate.data.questionandsurvey
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sensimate.data.Database
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 class QuestionViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(QuestionsUiState())
@@ -17,8 +20,20 @@ class QuestionViewModel : ViewModel() {
         if (!uiState.value.questionsStarted) {
             _uiState.value = QuestionsUiState(
                 questions = Database.getSurveyAsList(eventId = eventId),
-                questionsStarted = true
             )
         }
+        _uiState.value.questionsStarted = true
     }
+}
+
+class DemoScreenViewModel : ViewModel() {
+    sealed class State {
+        object Loading: State()
+        data class Data(val data: String): State()
+    }
+
+    private var _state = MutableStateFlow<State>(State.Loading)
+    val state = _state.asStateFlow()
+
+
 }
