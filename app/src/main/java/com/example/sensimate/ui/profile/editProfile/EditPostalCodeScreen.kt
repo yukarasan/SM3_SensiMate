@@ -11,17 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
+import com.example.sensimate.ui.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditPostalCodeScreen(navController: NavController) {
-    var postalCode by remember { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
+fun EditPostalCodeScreen(
+    navController: NavController,
+    profileViewModel: ProfileViewModel = viewModel() ) {
+    val profileState by profileViewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -36,23 +40,17 @@ fun EditPostalCodeScreen(navController: NavController) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             CheckBox(onClick = {
                 navController.popBackStack()
-                scope.launch {
-                    if (postalCode == "") {
-                        // Dont do anything
-                    } else {
-                        updateProfile(postalCode = postalCode)
-                    }
-                }
+                profileViewModel.updatePostalCode(profileState.postalCode)
             })
         }
         CustomTextField(
-            text = postalCode,
+            text = profileState.postalCode,
             description = "Postal code",
             placeholder = "Enter your postal code here",
             onValueChange = {
                 val pattern = "^[0-9]*\$".toRegex()
                 if (it.length <= 4 && pattern.matches(it)) {
-                    postalCode = it
+                    profileViewModel.updatePostalString(input = it)
                 }
             }
         )
@@ -63,12 +61,4 @@ fun EditPostalCodeScreen(navController: NavController) {
             modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 30.dp)
         )
     }
-}
-
-private suspend fun updateProfile(postalCode: String) {
-    val fields = mapOf(
-        "postalCode" to postalCode,
-    )
-
-    Database.updateProfileFields(fields)
 }

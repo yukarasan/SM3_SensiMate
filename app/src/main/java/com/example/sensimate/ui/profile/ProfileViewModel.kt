@@ -17,8 +17,6 @@ class ProfileViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
-    private lateinit var calculatedAge: String
-
     init {
         initializeProfile()
     }
@@ -81,5 +79,22 @@ class ProfileViewModel : ViewModel() {
             gender = _uiState.value.gender,
             postalCode = _uiState.value.postalCode
         )
+    }
+
+    fun updatePostalCode(postalCode: String) {
+        if (_uiState.value.postalCode == "") {
+            // Don't do anything
+        } else {
+            val fields = mapOf(
+                "postalCode" to postalCode,
+            )
+            viewModelScope.launch {
+                Database.updateProfileFields(fields)
+            }
+        }
+    }
+
+    fun updatePostalString(input: String) {
+        _uiState.value = _uiState.value.copy(postalCode = input)
     }
 }
