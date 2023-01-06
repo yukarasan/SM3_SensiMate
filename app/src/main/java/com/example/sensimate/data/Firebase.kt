@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -380,7 +381,6 @@ object Database {
     fun createEvent() {} //TODO: Ahmad
     fun editEvent() {} //TODO: Ahmad
 
-
     fun deleteEvent(eventtitle: String) {
         //val docref = db.collection()
         db.collection("events").whereEqualTo("title", eventtitle)
@@ -402,15 +402,35 @@ object Database {
             }
     }
 
-    fun UpdateEvent(data: Map<String, String>, documentID: String) {
+
+    fun UpdateEvent(event: Event, documentID: String) {
+        val event1 = hashMapOf(
+            "title" to event.title,
+            "description" to event.description,
+            "allergens" to event.allergens,
+            "location" to event.location,
+            "surveyCode" to event.surveyCode,
+            "timeOfEvent" to event.timeOfEvent,
+            "day" to event.day,
+            "month" to event.month,
+            "year" to event.year,
+            "eventId" to event.eventId
+        )
+
+
         val docref = db.collection("events").document(documentID)
-        docref.update(data)
+
+        docref.update(event1 as Map<String, Any>)
+
+                /*
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error updating document", e)
             }
+
+                 */
 
     } //TODO: Sabirin
 
