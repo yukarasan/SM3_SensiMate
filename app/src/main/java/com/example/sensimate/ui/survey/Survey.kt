@@ -40,20 +40,6 @@ import com.example.sensimate.ui.theme.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-
-private suspend fun getSurvey(
-    questionViewModel: QuestionViewModel,
-    surveyId: String
-): List<MyQuestion> {
-
-    questionViewModel
-        .insertQuestions(
-            questionViewModel.uiState.value, surveyId
-        )
-
-    return questionViewModel.uiState.value.questions
-}
-
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
 fun Survey(
@@ -72,27 +58,23 @@ fun Survey(
         mutableStateOf(false)
     }
 
-    val questions = remember {
-        mutableStateOf(state.questions)
-    }
-
     LaunchedEffect(key1 = true) {
         if (!loaded.value) {
             loaded.value = true
-            coroutineScope.launch {
-                questions.value = getSurvey(questionViewModel, surveyId)
+
+            questionViewModel
+                .insertQuestions(
+                    questionViewModel.uiState.value, surveyId
+                )
+            Log.d("in scope", questionViewModel.uiState.value.questions.size.toString())
 
 
-                if (questions.value.size > 0) {
+            for (question in questionViewModel.uiState.value.questions) {
+                Log.d("title", question.mainQuestion)
+                Log.d("isOne", question.oneChoice.toString())
 
-                    for (question in questions.value) {
-                        Log.d("title", question.mainQuestion)
-                        Log.d("isOne", question.oneChoice.toString())
-
-                        for (option in question.options) {
-                            Log.d("option", option)
-                        }
-                    }
+                for (option in question.options) {
+                    Log.d("option", option)
                 }
             }
         }

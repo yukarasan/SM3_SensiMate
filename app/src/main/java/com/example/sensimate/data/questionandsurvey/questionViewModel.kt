@@ -1,5 +1,6 @@
 package com.example.sensimate.data.questionandsurvey
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.data.Database
@@ -21,6 +22,7 @@ class QuestionViewModel : ViewModel() {
             _uiState.value = QuestionsUiState(
                 questions = Database.getSurveyAsList(eventId = eventId),
             )
+            Log.d("indeni viewmodel", uiState.value.questions.size.toString())
         }
         _uiState.value.questionsStarted = true
     }

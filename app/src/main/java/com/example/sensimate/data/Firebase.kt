@@ -415,35 +415,31 @@ object Database {
     } //TODO: Sabirin
 
 
-    suspend fun getSurveyAsList(eventId: String): List<MyQuestion> { //TODO: Hussein
+    suspend fun getSurveyAsList(eventId: String): List<MyQuestion> {
         val questions: MutableList<MyQuestion> = mutableListOf()
         val questionsRef = db.collection("events").document(eventId).collection("questions")
 
-        questionsRef.get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    // document contains a question data
-                    val newQuestion = MyQuestion()
+        val result = questionsRef.get().await()
+        for (document in result) {
+            // document contains a question data
+            val newQuestion = MyQuestion()
 
-                    newQuestion.mainQuestion = document.getString("mainQuestion").toString()
-                    newQuestion.oneChoice = document.getBoolean("oneChoice") == true
+            newQuestion.mainQuestion = document.getString("mainQuestion").toString()
+            newQuestion.oneChoice = document.getBoolean("oneChoice") == true
 
-                    questionsRef.document(document.id)
-                        .collection("type")
-                        .document("options")
-                        .get().addOnSuccessListener { option ->
-                            val myOptions = option.data
-                            if (myOptions != null) {
-                                for (field in myOptions.keys) {
-                                    val value = myOptions[field]
-                                    newQuestion.options.add(value.toString())
-                                }
-                            }
-                        }
-                    questions.add(newQuestion)
+            val optionResult = questionsRef.document(document.id)
+                .collection("type")
+                .document("options")
+                .get().await()
+            val myOptions = optionResult.data
+            if (myOptions != null) {
+                for (field in myOptions.keys) {
+                    val value = myOptions[field]
+                    newQuestion.options.add(value.toString())
                 }
-            }.await()
-        Log.d("LENGTH", questions.size.toString())
+            }
+            questions.add(newQuestion)
+        }
         return questions
     }
 
@@ -545,7 +541,6 @@ object Database {
 }
 
 fun exportToExcel() {} //TODO: LATER
-
 
 
 data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
