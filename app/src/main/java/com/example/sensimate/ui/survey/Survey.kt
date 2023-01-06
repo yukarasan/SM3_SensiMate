@@ -29,7 +29,10 @@ import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Rotate
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.sensimate.data.Database
 import com.example.sensimate.data.EventViewModel
+import com.example.sensimate.data.Profile
+import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
@@ -37,6 +40,19 @@ import com.example.sensimate.ui.theme.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+
+private suspend fun getSurvey(
+    questionViewModel: QuestionViewModel,
+    surveyId: String
+): List<MyQuestion> {
+
+    questionViewModel
+        .insertQuestions(
+            questionViewModel.uiState.value, surveyId
+        )
+
+    return questionViewModel.uiState.value.questions
+}
 
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
@@ -52,17 +68,36 @@ fun Survey(
 
     // Returns a scope that's cancelled when F is removed from composition
     val coroutineScope = rememberCoroutineScope()
+    val loaded = remember {
+        mutableStateOf(false)
+    }
+
+    val questions = remember {
+        mutableStateOf(state.questions)
+    }
 
     LaunchedEffect(key1 = true) {
-        coroutineScope.launch {
-            questionViewModel
-                .insertQuestions(
-                    questionViewModel.uiState.value, surveyId
-                )
+        if (!loaded.value) {
+            loaded.value = true
+            coroutineScope.launch {
+                questions.value = getSurvey(questionViewModel, surveyId)
+
+
+                if (questions.value.size > 0) {
+
+                    for (question in questions.value) {
+                        Log.d("title", question.mainQuestion)
+                        Log.d("isOne", question.oneChoice.toString())
+
+                        for (option in question.options) {
+                            Log.d("option", option)
+                        }
+                    }
+                }
+            }
         }
     }
 
-    val questions = questionViewModel.uiState.value.questions
 
     Box(
         modifier = Modifier
