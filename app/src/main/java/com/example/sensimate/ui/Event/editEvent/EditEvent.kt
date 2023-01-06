@@ -472,7 +472,6 @@ fun EditPage(
 
                                 //val documentID = db.collection("event").document().id
 
-
                                 // Log.d("DocumentrefB4 : ", documentID)
 
                                 Log.d("docref : ", chosenEvent.eventId)
