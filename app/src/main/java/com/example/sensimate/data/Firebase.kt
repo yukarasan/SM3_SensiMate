@@ -375,11 +375,13 @@ object Database {
     suspend fun getSurveyAsList(eventId: String): List<MyQuestion> { //TODO: Hussein
         val questions: MutableList<MyQuestion> = mutableListOf()
         val questionsRef = db.collection("events").document(eventId).collection("questions")
+
         questionsRef.get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     // document contains a question data
                     val newQuestion = MyQuestion()
+
                     newQuestion.mainQuestion = document.getString("mainQuestion").toString()
                     newQuestion.oneChoice = document.getBoolean("oneChoice") == true
 
@@ -402,7 +404,41 @@ object Database {
         return questions
     }
 
-    fun insertAnswer(){} //TODO: Ansh (& Hussein)?
+
+    suspend fun updateAnswer(eventId: String, questionId: String, answerId: String, newAnswer: Any) {
+        val answerRef = db.collection("events").document(eventId).collection("questions")
+            .document(questionId).collection("answers").document(answerId)
+        answerRef.update("answer", newAnswer).await()
+    }
+
+    /*
+    suspend fun insertAnswer(eventId: String, questionId: String, answer: Any) {
+        val answerRef = db.collection("events").document(eventId).collection("questions")
+            .document(questionId).collection("answers").document()
+        answerRef.set(mapOf("answer" to answer)).await()
+    }
+
+     */
+
+
+    fun updateSurvey(eventId: String, questionId: String, newQuestion: MyQuestion) {
+        val questionRef = db.collection("events").document(eventId)
+            .collection("questions").document(questionId)
+
+        questionRef.update("mainQuestion", newQuestion.mainQuestion)
+        questionRef.update("oneChoice", newQuestion.oneChoice)
+
+        questionRef.collection("type").get().addOnSuccessListener { options ->
+            for (option in options) {
+                questionRef.collection("type").document(option.id).delete()
+            }
+        }
+
+        for (option in newQuestion.options) {
+            questionRef.collection("type").add(option)
+        }
+    }
+
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
 
@@ -439,8 +475,10 @@ object Database {
             }
     }
 
-    fun exportToExcel() {} //TODO: LATER
 }
+
+fun exportToExcel() {} //TODO: LATER
+
 
 
 data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
