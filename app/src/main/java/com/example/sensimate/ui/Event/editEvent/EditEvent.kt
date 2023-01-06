@@ -73,7 +73,7 @@ fun EditEvent(
     val state = eventViewModel.uiState
 
     val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
-    
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -102,23 +102,23 @@ fun EditEvent(
                             .clickable(
                                 enabled = true,
                                 onClickLabel = "Clickable image",
-                                onClick = {navController.navigate(Screen.EditPage.route)}),
-                                /*{
-                                    navController.navigate(
-                                        Screen.EditPage.passArguments(
-                                            time = time,
-                                            title = title,
-                                            description = description,
-                                            allergens = allergens,
-                                            location = location,
-                                            surveyCode = surveyCode,
-                                        )
-                                    )
-                                }),
-                                
-                                 */
-                                
-                                id = R.drawable.yelloweditbutton
+                                onClick = { navController.navigate(Screen.EditPage.route) }),
+                        /*{
+                            navController.navigate(
+                                Screen.EditPage.passArguments(
+                                    time = time,
+                                    title = title,
+                                    description = description,
+                                    allergens = allergens,
+                                    location = location,
+                                    surveyCode = surveyCode,
+                                )
+                            )
+                        }),
+
+                         */
+
+                        id = R.drawable.yelloweditbutton
                     )
                 }
             }
@@ -306,6 +306,8 @@ fun EditPage(
 
     val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
 
+    Log.d("huske", eventViewModel.uiState.value.chosenSurveyId)
+
     var titleText by remember { mutableStateOf(chosenEvent.title) }
     var descriptionText by remember { mutableStateOf(chosenEvent.description) }
     var locationText by remember { mutableStateOf(chosenEvent.location) }
@@ -315,6 +317,8 @@ fun EditPage(
     val myYear = remember { mutableStateOf(chosenEvent.year) }
     val myMonth = remember { mutableStateOf(chosenEvent.month) }
     val myDay = remember { mutableStateOf(chosenEvent.day) }
+    val eventId = remember { mutableStateOf(chosenEvent.eventId) }
+
     val maxChar = 4
     var year: String
     var month: String
@@ -344,7 +348,8 @@ fun EditPage(
                 .size(20.dp), id = R.drawable.ic_add_circle_outlined
         )
         TextToPhoto(
-            modifier = Modifier.padding(end = 10.dp))
+            modifier = Modifier.padding(end = 10.dp)
+        )
     }
     LazyColumn(
         modifier = Modifier
@@ -457,40 +462,22 @@ fun EditPage(
                                     "timeOfEvent" to timeText,
                                     "day" to day,
                                     "month" to month,
-                                    "year" to year
+                                    "year" to year,
+                                    "eventId" to eventId.value
                                 )
-                                db.collection("events").add(event)
+
+                                Log.d("documentref : ", chosenEvent.eventId)
+
+                                Database.UpdateEvent(event, chosenEvent.eventId)
 
                                 //val documentID = db.collection("event").document().id
 
-                                Log.d("documentref : ", chosenEvent.eventId)
-                                chosenEvent.eventId
+
+                                // Log.d("DocumentrefB4 : ", documentID)
+
+                                Log.d("docref : ", chosenEvent.eventId)
 
 
-                               // Log.d("DocumentrefB4 : ", documentID)
-
-                                var myEvent = Event(chosenEvent.title,
-                                    chosenEvent.description,
-                                    chosenEvent.surveyCode, chosenEvent.eventId,
-                                    chosenEvent.location, chosenEvent.year, chosenEvent.month,
-                                    chosenEvent.allergens, chosenEvent.day,
-                                    chosenEvent.timeOfEvent, chosenEvent.adresss)
-
-                                Database.UpdateEvent(myEvent, chosenEvent.eventId)
-                                //Log.d("documentIDAfter : ", documentID)
-
-
-                                /*
-                                db.collection("events").add(event)
-                                    .addOnSuccessListener { docRef ->
-                                        run {
-                                            UpdateEvent(event, docRef.id)
-                                            //checking for docref.
-                                            Log.d("DocReference", docRef.id)
-                                        }
-                                    }
-
-                                 */
                                 /*navController.navigate(Screen.QuestionPageScreen.route)*/
                             }
                         },
@@ -511,7 +498,13 @@ fun EditPage(
                     }
                     Spacer(modifier = Modifier.size(55.dp))
                     Button(
-                        onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                        onClick = {
+                            navController.popBackStack()
+                            navController.popBackStack()
+                            navController.popBackStack()
+                            navController.popBackStack()
+                            navController.navigate(Screen.EventScreenEmployee.route)
+                        },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
                         modifier = Modifier.size(240.dp, 50.dp)
@@ -529,8 +522,6 @@ fun EditPage(
         }
     }
 }
-
-
 
 
 @Composable
