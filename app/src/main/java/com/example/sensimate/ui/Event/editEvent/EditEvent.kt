@@ -314,12 +314,18 @@ fun EditPage(
     var allergensText by remember { mutableStateOf(chosenEvent.allergens) }
     var surveyCodeText by remember { mutableStateOf(chosenEvent.surveyCode) }
     var timeText by remember { mutableStateOf(chosenEvent.timeOfEvent) }
-    val myYear = remember { mutableStateOf(chosenEvent.year) }
-    val myMonth = remember { mutableStateOf(chosenEvent.month) }
-    val myDay = remember { mutableStateOf(chosenEvent.day) }
+    var myYear = remember { mutableStateOf(chosenEvent.year) }
+    var myMonth = remember { mutableStateOf(chosenEvent.month) }
+    var myDay = remember { mutableStateOf(chosenEvent.day) }
     val eventId = remember { mutableStateOf(chosenEvent.eventId) }
 
     val maxChar = 4
+
+
+    Log.d("day :", myDay.value)
+    Log.d("month : ", myMonth.value)
+    Log.d("year : ", myYear.value)
+
     var year: String
     var month: String
     var day: String
@@ -391,16 +397,17 @@ fun EditPage(
                 TextFiledSurveyCodeText(surveyCodeText) {
                     if (it.length <= maxChar) surveyCodeText = it
                 }
-
                 ChooseBirthDate(
                     LocalContext.current,
                     myYear = myYear,
                     myMonth = myMonth,
                     myDay = myDay
                 )
+
                 day = myDay.value
                 month = myMonth.value
                 year = myYear.value
+
 
                 TextFileTimeText(timeText) { timeText = it }
                 Column(
