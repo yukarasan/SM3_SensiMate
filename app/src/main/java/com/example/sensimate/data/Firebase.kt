@@ -415,37 +415,93 @@ object Database {
     } //TODO: Sabirin
 
 
-    suspend fun getSurveyAsList(eventId: String): List<MyQuestion> { //TODO: Hussein
+    suspend fun getSurveyAsList(eventId: String): List<MyQuestion> {
         val questions: MutableList<MyQuestion> = mutableListOf()
         val questionsRef = db.collection("events").document(eventId).collection("questions")
-        questionsRef.get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    // document contains a question data
-                    val newQuestion = MyQuestion()
-                    newQuestion.mainQuestion = document.getString("mainQuestion").toString()
-                    newQuestion.oneChoice = document.getBoolean("oneChoice") == true
 
-                    questionsRef.document(document.id)
-                        .collection("type")
-                        .document("options")
-                        .get().addOnSuccessListener { option ->
-                            val myOptions = option.data
-                            if (myOptions != null) {
-                                for (field in myOptions.keys) {
-                                    val value = myOptions[field]
-                                    newQuestion.options.add(value.toString())
-                                }
-                            }
-                        }
-                    questions.add(newQuestion)
+        val result = questionsRef.get().await()
+        for (document in result) {
+            // document contains a question data
+            val newQuestion = MyQuestion()
+
+            newQuestion.mainQuestion = document.getString("mainQuestion").toString()
+            newQuestion.oneChoice = document.getBoolean("oneChoice") == true
+
+            val optionResult = questionsRef.document(document.id)
+                .collection("type")
+                .document("options")
+                .get().await()
+            val myOptions = optionResult.data
+            if (myOptions != null) {
+                for (field in myOptions.keys) {
+                    val value = myOptions[field]
+                    newQuestion.options.add(value.toString())
                 }
-            }.await()
-        Log.d("LENGTH", questions.size.toString())
+            }
+            questions.add(newQuestion)
+        }
         return questions
     }
 
-    fun insertAnswer(){} //TODO: Ansh (& Hussein)?
+    suspend fun updateSurvey(eventId: String, survey: List<MyQuestion>) {
+        val questionsRef = db.collection("events").document(eventId).collection("questions")
+        for (question in survey) {
+            val docRef = questionsRef.document(question.mainQuestion)
+            docRef.update("oneChoice", question.oneChoice)
+                .addOnSuccessListener {
+                }
+                .addOnFailureListener {
+                }
+            docRef.collection("type").document("options")
+                .set(question.options.mapIndexed { index, i -> index.toString() to i }.toMap())
+                .addOnSuccessListener {
+                }
+                .addOnFailureListener {
+                }
+        }
+    }
+
+    /*
+
+    suspend fun updateAnswer(eventId: String, questionId: String, answerId: String, newAnswer: Any) {
+        val answerRef = db.collection("events").document(eventId).collection("questions")
+            .document(questionId).collection("answers").document(answerId)
+        answerRef.update("answer", newAnswer).await()
+    }
+
+     */
+
+    /*
+    suspend fun insertAnswer(eventId: String, questionId: String, answer: Any) {
+        val answerRef = db.collection("events").document(eventId).collection("questions")
+            .document(questionId).collection("answers").document()
+        answerRef.set(mapOf("answer" to answer)).await()
+    }
+
+     */
+
+    /*
+
+    fun updateSurvey(eventId: String, questionId: String, newQuestion: MyQuestion) {
+        val questionRef = db.collection("events").document(eventId)
+            .collection("questions").document(questionId)
+
+        questionRef.update("mainQuestion", newQuestion.mainQuestion)
+        questionRef.update("oneChoice", newQuestion.oneChoice)
+
+        questionRef.collection("type").get().addOnSuccessListener { options ->
+            for (option in options) {
+                questionRef.collection("type").document(option.id).delete()
+            }
+        }
+
+        for (option in newQuestion.options) {
+            questionRef.collection("type").add(option)
+        }
+    }
+
+     */
+
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
 
@@ -482,8 +538,9 @@ object Database {
             }
     }
 
-    fun exportToExcel() {} //TODO: LATER
 }
+
+fun exportToExcel() {} //TODO: LATER
 
 
 data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)

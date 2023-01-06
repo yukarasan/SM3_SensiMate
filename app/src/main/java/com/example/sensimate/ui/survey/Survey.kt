@@ -29,14 +29,16 @@ import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Rotate
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.sensimate.data.Database
 import com.example.sensimate.data.EventViewModel
+import com.example.sensimate.data.Profile
+import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
-
 
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
@@ -52,17 +54,32 @@ fun Survey(
 
     // Returns a scope that's cancelled when F is removed from composition
     val coroutineScope = rememberCoroutineScope()
+    val loaded = remember {
+        mutableStateOf(false)
+    }
 
     LaunchedEffect(key1 = true) {
-        coroutineScope.launch {
+        if (!loaded.value) {
+            loaded.value = true
+
             questionViewModel
                 .insertQuestions(
                     questionViewModel.uiState.value, surveyId
                 )
+            Log.d("in scope", questionViewModel.uiState.value.questions.size.toString())
+
+
+            for (question in questionViewModel.uiState.value.questions) {
+                Log.d("title", question.mainQuestion)
+                Log.d("isOne", question.oneChoice.toString())
+
+                for (option in question.options) {
+                    Log.d("option", option)
+                }
+            }
         }
     }
 
-    val questions = questionViewModel.uiState.value.questions
 
     Box(
         modifier = Modifier
