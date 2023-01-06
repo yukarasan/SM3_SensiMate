@@ -55,13 +55,6 @@ object Database {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         var profile: Profile?
 
-        /*
-        docRef.get()
-            .addOnSuccessListener { snapshot ->
-                profile = snapshot.toObject(Profile::class.java)
-            }
-         */
-
         withContext(Dispatchers.IO) {
             val snapshot = docRef.get().await()
             profile = snapshot.toObject(Profile::class.java)
@@ -88,12 +81,62 @@ object Database {
         return eventList
     } // TODO: Yusuf
 
-
-    suspend fun updateProfile(fields: Map<String, Any>) {
+    suspend fun updateProfileFields(fields: Map<String, Any>) {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         withContext(Dispatchers.IO) {
-            docRef.update(fields)
+            docRef.update(fields) // update
         }
+    } // TODO: Yusuf
+
+    fun updateEmail(currentPassword: String, newEmail: String, context: Context) {
+        val user = FirebaseAuth.getInstance().currentUser
+        val credential =
+            EmailAuthProvider.getCredential(auth.currentUser?.email.toString(), currentPassword)
+
+        user?.reauthenticate(credential)?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                user.updateEmail(newEmail).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Email updated")
+                        Toast.makeText(
+                            context,
+                            "Successfully updated your email",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Log.d(TAG, "Error email not updated")
+                    }
+                }
+            } else {
+                Log.d(TAG, "Error auth failed")
+                Toast.makeText(
+                    context,
+                    "Failed. Input does match e-mail or password",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    } // TODO: Yusuf
+
+    fun deleteAndInsertEmailToFirestore(
+        postalCode: String,
+        yearBorn: String,
+        monthBorn: String,
+        dayBorn: String,
+        gender: String,
+    ) {
+        db.collection("users")
+            .document(
+                auth.currentUser?.email.toString()
+            ).delete()
+
+        setUpProfileInfo(
+            postalCode = postalCode,
+            yearBorn = yearBorn,
+            monthBorn = monthBorn,
+            dayBorn = dayBorn,
+            gender = gender
+        )
     } // TODO: Yusuf
 
     fun updatePassword(currentPassword: String, newPassword: String, context: Context) {
