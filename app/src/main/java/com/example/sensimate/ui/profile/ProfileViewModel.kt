@@ -29,9 +29,9 @@ class ProfileViewModel : ViewModel() {
             dayBorn = _uiState.value.dayBorn,
             postalCode = _uiState.value.postalCode,
             gender = _uiState.value.gender,
+            currentPassword = _uiState.value.currentPassword,
+            newPassword = _uiState.value.newPassword,
             email = "",
-            currentPassword = "",
-            newPassword = ""
         )
     }
 
@@ -96,5 +96,31 @@ class ProfileViewModel : ViewModel() {
 
     fun updatePostalString(input: String) {
         _uiState.value = _uiState.value.copy(postalCode = input)
+    }
+
+    fun updateGender(gender: String) {
+        if (_uiState.value.gender == "") {
+            // Don't do anything
+        } else {
+            viewModelScope.launch {
+                val fields = mapOf(
+                    "gender" to gender,
+                )
+
+                Database.updateProfileFields(fields)
+            }
+        }
+    }
+
+    fun updateCurrentPasswordString(input: String) {
+        _uiState.value = _uiState.value.copy(currentPassword = input)
+    }
+
+    fun updateNewPasswordString(input: String) {
+        _uiState.value = _uiState.value.copy(newPassword = input)
+    }
+
+    fun updateSelectedGenderString(input: String) {
+        _uiState.value = _uiState.value.copy(gender = input)
     }
 }
