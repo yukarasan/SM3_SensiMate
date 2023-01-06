@@ -282,8 +282,6 @@ fun ChooseBirthDate(
         mutableStateOf(false)
     }
 
-
-
     Log.d("myyear.value", myYear.value)
     Log.d("mymonth.value", myMonth.value)
     Log.d("myday.value", myDay.value)
