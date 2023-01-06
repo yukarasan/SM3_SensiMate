@@ -31,7 +31,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
-import com.example.sensimate.data.Database.UpdateEvent
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
@@ -300,12 +299,12 @@ fun EditPage(
     //allergens: String,
     //description: String,
     //surveyCode: String,
-    eventViewModel: EventViewModel = viewModel()
+    eventViewModel: EventViewModel
 
 ) {
     val state = eventViewModel.uiState
 
-    val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
+    val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
 
     var titleText by remember { mutableStateOf(chosenEvent.title) }
     var descriptionText by remember { mutableStateOf(chosenEvent.description) }
@@ -321,6 +320,7 @@ fun EditPage(
     var month: String
     var day: String
 
+    Log.d("docrefagain :", chosenEvent.eventId)
 
     val context = LocalContext.current
     Box(
@@ -461,10 +461,23 @@ fun EditPage(
                                 )
                                 db.collection("events").add(event)
 
-                                val documentID = db.collection("event").document().id
-                                Log.d("DocumentrefB4 : ", documentID)
-                                UpdateEvent(event, documentID)
-                                Log.d("documentIDAfter : ", documentID)
+                                //val documentID = db.collection("event").document().id
+
+                                Log.d("documentref : ", chosenEvent.eventId)
+                                chosenEvent.eventId
+
+
+                               // Log.d("DocumentrefB4 : ", documentID)
+
+                                var myEvent = Event(chosenEvent.title,
+                                    chosenEvent.description,
+                                    chosenEvent.surveyCode, chosenEvent.eventId,
+                                    chosenEvent.location, chosenEvent.year, chosenEvent.month,
+                                    chosenEvent.allergens, chosenEvent.day,
+                                    chosenEvent.timeOfEvent, chosenEvent.adresss)
+
+                                Database.UpdateEvent(myEvent, chosenEvent.eventId)
+                                //Log.d("documentIDAfter : ", documentID)
 
 
                                 /*

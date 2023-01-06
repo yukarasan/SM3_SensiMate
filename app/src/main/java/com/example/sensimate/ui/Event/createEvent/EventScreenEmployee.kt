@@ -36,7 +36,7 @@ import com.example.sensimate.ui.navigation.Screen
 @Preview(showBackground = true)
 @Composable
 fun EventScreenEmployeePreview() {
-    EventScreenEmployee(rememberNavController())
+    //EventScreenEmployee(rememberNavController(), )
 }
 
 
@@ -45,12 +45,15 @@ fun EventScreenEmployeePreview() {
 fun EventScreenEmployee(
     navController: NavController,
     dataViewModel: EventDataViewModel = viewModel(),
-    eventViewModel: EventViewModel = viewModel()
+    eventViewModel: EventViewModel
 ) {
 
     val state = dataViewModel.state.value
 
-    val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
+    val state1 = eventViewModel.uiState
+    val chosenEvent = eventViewModel.getEventById(state1.value.chosenSurveyId)
+
+    Log.d("CHOSENNNNNN", chosenEvent.eventId)
 
     val showDialog = remember {
         mutableStateOf(false)
@@ -112,9 +115,10 @@ fun EventScreenEmployee(
                             address = event.location,
                             onClick = {
                                 navController.navigate(
-                                    Screen.ExtendedEventScreen.route
+                                    Screen.EditEvent.route
                                 )
                                 eventViewModel.setChosenEventId(event.eventId)
+                                Log.d("CLICKED",event.eventId )
                             }
                         )
                     }
