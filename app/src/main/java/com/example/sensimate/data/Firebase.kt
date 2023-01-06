@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.HashMap
 
 
 @SuppressLint("StaticFieldLeak")
@@ -403,34 +404,18 @@ object Database {
     }
 
 
-    fun UpdateEvent(event: Event, documentID: String) {
-        val event1 = hashMapOf(
-            "title" to event.title,
-            "description" to event.description,
-            "allergens" to event.allergens,
-            "location" to event.location,
-            "surveyCode" to event.surveyCode,
-            "timeOfEvent" to event.timeOfEvent,
-            "day" to event.day,
-            "month" to event.month,
-            "year" to event.year,
-            "eventId" to event.eventId
-        )
-
+    @SuppressLint("SuspiciousIndentation")
+    fun UpdateEvent(event : HashMap<String, String>, documentID: String) {
+        Log.d("eventId : ", documentID)
 
         val docref = db.collection("events").document(documentID)
-
-        docref.update(event1 as Map<String, Any>)
-
-                /*
+            docref.set(event)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
             }
             .addOnFailureListener { e ->
                 Log.w(TAG, "Error updating document", e)
             }
-
-                 */
 
     } //TODO: Sabirin
 

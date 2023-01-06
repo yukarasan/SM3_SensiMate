@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -30,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,7 +57,7 @@ fun CreateEventPreview() {
     //CreateTextAnswerQuestionScreen(rememberNavController())
 }
 
-
+var docId: String = ""
 @Composable
 fun CreateEventScreen(navController: NavController) {
     var titleText by remember { mutableStateOf("") }
@@ -217,10 +219,10 @@ fun CreateEventScreen(navController: NavController) {
                                     "month" to month,
                                     "year" to year,
                                 )
-                                db.collection("TESTER").add(event).addOnSuccessListener { docRef ->
+                                db.collection("events").add(event).addOnSuccessListener { docRef ->
                                     event.set("eventId", docRef.id)
-                                    db.collection("TESTER").document(docRef.id).set(event)
-
+                                    db.collection("events").document(docRef.id).set(event)
+                                    docId = docRef.id
                                 }
                                 navController.navigate(Screen.QuestionPageScreen.route)
                             }
@@ -269,7 +271,7 @@ fun ChooseBirthDate(
     myDay: MutableState<String>,
 ) {
     val calendar = Calendar.getInstance()
-    //calendar.add(Calendar.YEAR, -18)
+    calendar.add(Calendar.YEAR,0)
 
     // Create state variables to store the selected year, month, and day
     val selectedYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
@@ -308,14 +310,14 @@ fun ChooseBirthDate(
         myDay.value = selectedDay.value.toString()
     }
 
-    //datePickerLog.datePicker.maxDate = calendar.timeInMillis
+    datePickerLog.datePicker.minDate = calendar.timeInMillis
     TextField(
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color.Green,
             backgroundColor = Color.Transparent
         ),
         enabled = false,
-        value = text,
+        value = "${myDay.value}:${myMonth.value}:${myYear.value}",
         label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
         onValueChange = {},
         modifier = Modifier
@@ -444,7 +446,7 @@ fun TextFileTimeText(TimeText: String, textChange: (String) -> Unit) {
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 128.dp, 1.dp, 1.dp)
@@ -490,7 +492,7 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 254.dp, 1.dp, 1.dp)
@@ -501,7 +503,6 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
 
 
 // figur 2
-var questionnum: Int = 0
 @Composable
 fun QuestionPageScreen(navController: NavController) {
     val selectedQuestion = remember { mutableStateOf("") }
@@ -519,6 +520,7 @@ fun QuestionPageScreen(navController: NavController) {
                 )
             )
     )
+    /*
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
         AddPhoto(
             modifier = Modifier
@@ -527,12 +529,14 @@ fun QuestionPageScreen(navController: NavController) {
                 .clickable(
                     enabled = true,
                     onClickLabel = "Clickable image",
-                    onClick = { questionnum = 0
-                        navController.navigate(Screen.EventScreenEmployee.route) }),
+                    onClick = {
+                        navController.navigate(Screen.EventScreenEmployee.route)
+                    }),
             id = R.drawable.greenconfirmedbutton
         )
 
     }
+     */
 
 /* //TODO ved ikke om jeg skal bruge den
     Column(modifier = Modifier
@@ -565,6 +569,25 @@ fun QuestionPageScreen(navController: NavController) {
 
             )
         }
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Button(
+                onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(red = 44, green = 44, blue = 59)),
+                modifier = Modifier
+                    .padding(top = 420.dp)
+                    .size(240.dp, 50.dp)
+            ) {
+                Text(
+                    text = "Done",
+                    color = Color.Green,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = manropeFamily
+                )
+            }
+
+        }
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             AddPhoto(
                 modifier = Modifier
@@ -574,19 +597,6 @@ fun QuestionPageScreen(navController: NavController) {
                         onClick = {
                             when (selectedQuestion.value) {
                                 "Multiple-Choice Question" -> {
-                                    questionnum+=1
-                                    val questionNumText: String = "q$questionnum"
-                                    val questtest = hashMapOf(
-                                        "question" to questionNumText
-                                    )//e5JR5TtTdc0pK0xs3WSa
-                                    /*//TODO SKAL FÅ DET TIL AT VIRKE
-                                    db.collection("TESTER").document("jZzi1Tdi05MGk2qdDcC7").collection("surveyTest").add(questtest).addOnSuccessListener { docRef ->
-                                        questtest.set("eventId", docRef.id)
-                                        db.collection("TESTER").document(docRef.id).set(questtest)
-
-                                        db.collection("TESTER").document(docRef.id)
-                                            .update(docRef.id, questtest)
-                                    }*/
                                     navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
                                 }
                                 "Text Answer Question" -> {
@@ -620,6 +630,9 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
     var answerText3 by remember { mutableStateOf("") }
     var answerText4 by remember { mutableStateOf("") }
     var answerText5 by remember { mutableStateOf("") }
+    val checkedState = remember {
+        mutableStateOf(false)
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -667,9 +680,98 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                 TextFiledAnswerText("Answer 5", answerText5) { answerText5 = it }
             }
             Spacer(modifier = Modifier.size(55.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Checkbox(
+                    checked = checkedState.value,
+                    onCheckedChange = {
+                        checkedState.value = it
+                    },
+                    colors = CheckboxDefaults
+                        .colors(
+                            uncheckedColor = Color.Gray,
+                            checkmarkColor = Color.White,
+                            checkedColor = Purple500,
+
+                            disabledColor = Color.White,
+                            disabledIndeterminateColor = Color.White,
+                        )
+                )
+                Text(
+                    text = "One Answer Only",
+                    color = Color.White,
+                    fontWeight = FontWeight.Light,
+                    fontFamily = manropeFamily
+                )
+                Text(
+                    text = " *",
+                    color = Color.Red,
+                    fontWeight = FontWeight.Light,
+                    fontFamily = manropeFamily
+                )
+            }
 
             Button(
-                onClick = { navController.navigate(Screen.QuestionPageScreen.route) },
+                onClick = {
+                    val mainQuest = hashMapOf(
+                        "mainQuestion" to questionText,
+                        "oneChoice" to checkedState.value
+                    )
+                    if (answerText5 != ""){
+                        val questionAnswer = hashMapOf(
+                            "answer1" to answerText1,
+                            "answer2" to answerText2,
+                            "answer3" to answerText3,
+                            "answer4" to answerText4,
+                            "answer5" to answerText5
+                        )
+                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+                            mainQuest.set("questionId", docRef.id)
+                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+                        }
+                    }
+                    else if (answerText4 != ""){
+                        val questionAnswer = hashMapOf(
+                            "answer1" to answerText1,
+                            "answer2" to answerText2,
+                            "answer3" to answerText3,
+                            "answer4" to answerText4
+                        )
+                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+                            mainQuest.set("questionId", docRef.id)
+                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+                        }
+                    }
+                    else if (answerText3 != ""){
+                        val questionAnswer = hashMapOf(
+                            "answer1" to answerText1,
+                            "answer2" to answerText2,
+                            "answer3" to answerText3
+                        )
+                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+                            mainQuest.set("questionId", docRef.id)
+                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+                        }
+                    }
+                    else{
+                    val questionAnswer = hashMapOf(
+                        "answer1" to answerText1,
+                        "answer2" to answerText2
+                    )
+                    val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+                        mainQuest.set("questionId", docRef.id)
+                        subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+                    }
+
+                    }
+
+                    navController.navigate(Screen.QuestionPageScreen.route) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -741,7 +843,14 @@ fun CreateTextAnswerQuestionScreen(navController: NavController) {
             Spacer(modifier = Modifier.size(55.dp))
 
             Button(
-                onClick = { navController.navigate(Screen.QuestionPageScreen.route) },
+
+                onClick = {
+                    val mainQuest = hashMapOf(
+                        "mainQuestion" to questionText
+                    )
+                    val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                    subcollectionRef.add(mainQuest)
+                    navController.navigate(Screen.QuestionPageScreen.route) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
