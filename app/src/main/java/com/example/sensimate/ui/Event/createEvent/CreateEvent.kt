@@ -503,8 +503,6 @@ fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit
 
 
 // figur 2
-var questionnum: Int = 0
-val questionNumText: String = "surveyTest$questionnum"
 @Composable
 fun QuestionPageScreen(navController: NavController) {
     val selectedQuestion = remember { mutableStateOf("") }
@@ -522,6 +520,7 @@ fun QuestionPageScreen(navController: NavController) {
                 )
             )
     )
+    /*
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
         AddPhoto(
             modifier = Modifier
@@ -530,12 +529,14 @@ fun QuestionPageScreen(navController: NavController) {
                 .clickable(
                     enabled = true,
                     onClickLabel = "Clickable image",
-                    onClick = { questionnum = 0
-                        navController.navigate(Screen.EventScreenEmployee.route) }),
+                    onClick = {
+                        navController.navigate(Screen.EventScreenEmployee.route)
+                    }),
             id = R.drawable.greenconfirmedbutton
         )
 
     }
+     */
 
 /* //TODO ved ikke om jeg skal bruge den
     Column(modifier = Modifier
@@ -568,6 +569,25 @@ fun QuestionPageScreen(navController: NavController) {
 
             )
         }
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Button(
+                onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(red = 44, green = 44, blue = 59)),
+                modifier = Modifier
+                    .padding(top = 420.dp)
+                    .size(240.dp, 50.dp)
+            ) {
+                Text(
+                    text = "Done",
+                    color = Color.Green,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = manropeFamily
+                )
+            }
+
+        }
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             AddPhoto(
                 modifier = Modifier
@@ -577,18 +597,6 @@ fun QuestionPageScreen(navController: NavController) {
                         onClick = {
                             when (selectedQuestion.value) {
                                 "Multiple-Choice Question" -> {
-
-                                   questionnum+=1
-
-                                   /*
-                                    val questtest = hashMapOf(
-                                        "question" to questionNumText
-                                    )//e5JR5TtTdc0pK0xs3WSa
-
-                                    */
-
-                                    //TODO SKAL FÅ DET TIL AT VIRKE
-
                                     navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
                                 }
                                 "Text Answer Question" -> {
