@@ -44,7 +44,6 @@ fun ProfileScreen(
     navController: NavController,
     profileViewModel: ProfileViewModel = viewModel()
 ) {
-    val scope = rememberCoroutineScope()
     val profileState by profileViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
