@@ -447,12 +447,33 @@ object Database {
         return questions
     }
 
+    suspend fun updateSurvey(eventId: String, survey: List<MyQuestion>) {
+        val questionsRef = db.collection("events").document(eventId).collection("questions")
+        for (question in survey) {
+            val docRef = questionsRef.document(question.mainQuestion)
+            docRef.update("oneChoice", question.oneChoice)
+                .addOnSuccessListener {
+                }
+                .addOnFailureListener {
+                }
+            docRef.collection("type").document("options")
+                .set(question.options.mapIndexed { index, i -> index.toString() to i }.toMap())
+                .addOnSuccessListener {
+                }
+                .addOnFailureListener {
+                }
+        }
+    }
+
+    /*
 
     suspend fun updateAnswer(eventId: String, questionId: String, answerId: String, newAnswer: Any) {
         val answerRef = db.collection("events").document(eventId).collection("questions")
             .document(questionId).collection("answers").document(answerId)
         answerRef.update("answer", newAnswer).await()
     }
+
+     */
 
     /*
     suspend fun insertAnswer(eventId: String, questionId: String, answer: Any) {
@@ -463,6 +484,7 @@ object Database {
 
      */
 
+    /*
 
     fun updateSurvey(eventId: String, questionId: String, newQuestion: MyQuestion) {
         val questionRef = db.collection("events").document(eventId)
@@ -481,6 +503,8 @@ object Database {
             questionRef.collection("type").add(option)
         }
     }
+
+     */
 
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
