@@ -2,7 +2,6 @@ package com.example.sensimate.ui.profile.editProfile
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,16 +31,35 @@ import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.profile.ProfileViewModel
 
+
+/**
+ * The EditPasswordScreen function is used to allow a user to update their password.
+ * It has two input parameters: a navController and a profileViewModel.
+ * The navController is used to navigate between screens and the profileViewModel is used to update
+ * the user's password information.
+ * The function contains a number of variables that are used to show different alerts to the user,
+ * such as if the new password is not long enough or if a field is empty.
+ * @author Yusuf Kara
+ */
 @Composable
 fun EditPasswordScreen(
     navController: NavController,
     profileViewModel: ProfileViewModel = viewModel()
 ) {
     val profileState by profileViewModel.uiState.collectAsState()
+
+    /**
+     * It is not necessary to include "showWrongLengthOfPassword" and "showEmptyFieldAlert" in
+     * a viewModel, since they are only used within this composable.
+     * Defining them here, allows them to be easily modified within the composable, but they are
+     * not accessible from outside the composable.
+     * If "showWrongLengthOfPassword" and "showEmptyFieldAlert" are needed by other composables or
+     * parts of the app, it would be necessary to include them in a viewModel so that they can
+     * be observed and accessed from other locations.
+     * @author Yusuf Kara
+     */
     var showWrongLengthOfPassword by remember { mutableStateOf(false) }
     var showEmptyFieldAlert by remember { mutableStateOf(false) }
-    // var currentPassword by remember { mutableStateOf("") }
-    // var newPassword by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column(
@@ -58,7 +75,6 @@ fun EditPasswordScreen(
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             CheckBox(onClick = {
                 if (profileState.currentPassword.isNotEmpty() && profileState.newPassword.isNotEmpty()) {
-
                     if (profileState.newPassword.length < 8) {
                         showWrongLengthOfPassword = true
                     } else {
@@ -71,8 +87,8 @@ fun EditPasswordScreen(
                         navController.popBackStack()
                     }
                 } else {
-                    // At least one of the text fields is empty
-                    showEmptyFieldAlert = true
+                    showEmptyFieldAlert = true      // At least one of the text fields is empty
+
                 }
             })
         }
@@ -137,6 +153,11 @@ fun EditPasswordScreen(
     }
 }
 
+/**
+ * The CustomPasswordField function is used to create a password field with a custom design.
+ * It has five input parameters: text, description, placeholder, onValueChange, and modifier.
+ * @author Yusuf Kara
+ */
 @SuppressLint("UnrememberedMutableState")
 @Composable
 private fun CustomPasswordField(
@@ -152,11 +173,11 @@ private fun CustomPasswordField(
         backgroundColor = Color.Transparent,
         elevation = 0.dp
     ) {
-        var isPasswordVisible = remember {
+        val isPasswordVisible = remember {
             mutableStateOf(false)
         }
 
-        Column() {
+        Column {
             Text(
                 modifier = Modifier
                     .padding(top = 10.dp)
@@ -185,7 +206,7 @@ private fun CustomPasswordField(
                             textAlign = TextAlign.Start
                         ),
                         decorationBox = { innerTextField ->
-                            Row() {
+                            Row {
                                 if (text.isEmpty()) {
                                     Text(
                                         text = placeholder,
@@ -220,7 +241,7 @@ private fun CustomPasswordField(
                             textAlign = TextAlign.Start,
                         ),
                         decorationBox = { innerTextField ->
-                            Row() {
+                            Row {
                                 if (text.isEmpty()) {
                                     Text(
                                         text = placeholder,
@@ -243,9 +264,9 @@ private fun CustomPasswordField(
                     )
                 }
                 IconButton(onClick = {
-                    if (isPasswordVisible.value == false) {
+                    if (!isPasswordVisible.value) {
                         isPasswordVisible.value = true
-                    } else if (isPasswordVisible.value == true) {
+                    } else if (isPasswordVisible.value) {
                         isPasswordVisible.value = false
                     }
                 }) {
