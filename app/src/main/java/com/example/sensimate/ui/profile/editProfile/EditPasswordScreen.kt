@@ -74,7 +74,11 @@ fun EditPasswordScreen(
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             CheckBox(onClick = {
-                if (profileState.currentPassword.isNotEmpty() && profileState.newPassword.isNotEmpty()) {
+                if (
+                    profileState.currentPassword.isNotEmpty()
+                    &&
+                    profileState.newPassword.isNotEmpty()
+                ) {
                     if (profileState.newPassword.length < 8) {
                         showWrongLengthOfPassword = true
                     } else {
@@ -94,49 +98,39 @@ fun EditPasswordScreen(
         }
 
         if (showEmptyFieldAlert) {
-            AlertDialog(
-                onDismissRequest = { showEmptyFieldAlert = false },
-                text = {
-                    Text(
-                        "Please provide both your current and new password in " +
-                                "their respective fields."
-                    )
-                },
-                confirmButton = {
-                    Button(onClick = {
-                        showEmptyFieldAlert = false
-                    }) {
-                        Text(text = "OK")
-                    }
+            AlertDialog(onDismissRequest = { showEmptyFieldAlert = false }, text = {
+                Text(
+                    "Please provide both your current and new password in " +
+                            "their respective fields."
+                )
+            }, confirmButton = {
+                Button(onClick = {
+                    showEmptyFieldAlert = false
+                }) {
+                    Text(text = "OK")
                 }
-            )
+            })
         }
 
         if (showWrongLengthOfPassword) {
-            AlertDialog(
-                onDismissRequest = { showWrongLengthOfPassword = false },
-                text = {
-                    Text(
-                        "The new password is not long enough. Please make sure that it is at " +
-                                "least 8 characters long."
-                    )
-                },
-                confirmButton = {
-                    Button(onClick = {
-                        showWrongLengthOfPassword = false
-                    }) {
-                        Text(text = "OK")
-                    }
+            AlertDialog(onDismissRequest = { showWrongLengthOfPassword = false }, text = {
+                Text(
+                    "The new password is not long enough. Please make sure that it is at " +
+                            "least 8 characters long."
+                )
+            }, confirmButton = {
+                Button(onClick = {
+                    showWrongLengthOfPassword = false
+                }) {
+                    Text(text = "OK")
                 }
-            )
+            })
         }
 
-        CustomPasswordField(
-            text = profileState.currentPassword,
+        CustomPasswordField(text = profileState.currentPassword,
             description = "Current password",
             placeholder = "Enter your current password here",
-            onValueChange = { profileViewModel.updateCurrentPasswordString(input = it) }
-        )
+            onValueChange = { profileViewModel.updateCurrentPasswordString(input = it) })
         CustomPasswordField(
             text = profileState.newPassword,
             description = "New password",
@@ -161,10 +155,7 @@ fun EditPasswordScreen(
 @SuppressLint("UnrememberedMutableState")
 @Composable
 private fun CustomPasswordField(
-    text: String,
-    description: String,
-    placeholder: String,
-    onValueChange: (String) -> Unit
+    text: String, description: String, placeholder: String, onValueChange: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -221,8 +212,7 @@ private fun CustomPasswordField(
                             }
                         },
                         cursorBrush = SolidColor(Color(154, 107, 254)),
-                        modifier = Modifier
-                            .padding(top = 10.dp, bottom = 2.dp),
+                        modifier = Modifier.padding(top = 10.dp, bottom = 2.dp),
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         maxLines = 1,
@@ -256,8 +246,7 @@ private fun CustomPasswordField(
                             }
                         },
                         cursorBrush = SolidColor(Color(154, 107, 254)),
-                        modifier = Modifier
-                            .padding(top = 10.dp, bottom = 2.dp),
+                        modifier = Modifier.padding(top = 10.dp, bottom = 2.dp),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         maxLines = 1,
                         singleLine = true,
@@ -278,9 +267,7 @@ private fun CustomPasswordField(
                 }
             }
             Divider(
-                color = Color.White,
-                thickness = 2.dp,
-                modifier = Modifier.padding(bottom = 2.dp)
+                color = Color.White, thickness = 2.dp, modifier = Modifier.padding(bottom = 2.dp)
             )
         }
     }
