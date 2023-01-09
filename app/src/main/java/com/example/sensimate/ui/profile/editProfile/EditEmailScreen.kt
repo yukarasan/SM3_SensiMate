@@ -23,18 +23,25 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
 import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditEmailScreen(navController: NavController) {
-    var email by remember { mutableStateOf("") }
-    var currentPassword by remember { mutableStateOf("") }
+fun EditEmailScreen(
+    navController: NavController,
+    profileViewModel: ProfileViewModel = viewModel()
+) {
+    val profileState by profileViewModel.uiState.collectAsState()
+    // var email by remember { mutableStateOf("") }
+    // var currentPassword by remember { mutableStateOf("") }
+
     var showEmptyFieldAlert by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -59,19 +66,23 @@ fun EditEmailScreen(navController: NavController) {
                     })
                 }
                 CheckBox(onClick = {
-                    if (currentPassword.isNotEmpty() && email.isNotEmpty()) {
+                    if (
+                        profileState.currentPassword.isNotEmpty()
+                        &&
+                        profileState.email.isNotEmpty()
+                    ) {
                         Database.updateEmail(
-                            currentPassword = currentPassword,
-                            newEmail = email,
+                            currentPassword = profileState.currentPassword,
+                            newEmail = profileState.email,
                             context = context
                         )
 
                         Database.deleteAndInsertEmailToFirestore(
-                            postalCode = "",
-                            yearBorn = "",
-                            monthBorn = "",
-                            dayBorn = "",
-                            gender = ""
+                            postalCode = profileState.postalCode,
+                            yearBorn = profileState.yearBorn,
+                            monthBorn = profileState.monthBorn,
+                            dayBorn = profileState.dayBorn,
+                            gender = profileState.gender
                         )
 
                         navController.popBackStack()
@@ -83,16 +94,20 @@ fun EditEmailScreen(navController: NavController) {
             }
         }
         CustomPasswordField(
-            text = currentPassword,
+            text = profileState.currentPassword,
             description = "Current password",
             placeholder = "Enter your current password here",
-            onValueChange = { currentPassword = it }
+            onValueChange = {
+                profileViewModel.updateCurrentPasswordString(input = it)
+            }
         )
         CustomProfileTextField(
-            text = email,
+            text = profileState.email,
             description = "E-mail",
             placeholder = "Enter your new e-mail here",
-            onValueChange = { email = it }
+            onValueChange = {
+                profileViewModel.updateEmailString(input = it)
+            }
         )
         Text(
             text = "To give you the best experience, we recommend that your email is up to date. " +

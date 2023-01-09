@@ -31,8 +31,7 @@ fun EditGenderScreen(
     profileViewModel: ProfileViewModel = viewModel()
 ) {
     val profileState by profileViewModel.uiState.collectAsState()
-    val scope = rememberCoroutineScope()
-    val selectedGender = remember { mutableStateOf("") }
+    // val selectedGender = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -56,18 +55,16 @@ fun EditGenderScreen(
                 }
                 CheckBox(onClick = {
                     navController.popBackStack()
-                    scope.launch {
-                        if (selectedGender.value == "") {
-                            // Dont do anything
-                        } else {
-                            updateProfile(gender = selectedGender.value)
-                        }
+                    if (profileState.gender == "") {
+                        // Dont do anything
+                    } else {
+                        profileViewModel.updateGender(gender = profileState.gender)
                     }
                 })
             }
         }
 
-        DropDownMenu(selectedGender = selectedGender)
+        DropDownMenu(selectedGender = profileState.gender, profileViewModel = profileViewModel)
 
         Text(
             text = "To give more insightful information to the company, we would like to now about" +
@@ -78,16 +75,8 @@ fun EditGenderScreen(
     }
 }
 
-private suspend fun updateProfile(gender: String) {
-    val fields = mapOf(
-        "gender" to gender,
-    )
-
-    Database.updateProfileFields(fields)
-}
-
 @Composable
-private fun DropDownMenu(selectedGender: MutableState<String>) {
+private fun DropDownMenu(selectedGender: String, profileViewModel: ProfileViewModel) {
     var expanded by remember { mutableStateOf(false) }
     val suggestions = listOf("Man", "Woman", "Other")
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
@@ -99,8 +88,10 @@ private fun DropDownMenu(selectedGender: MutableState<String>) {
 
     Column(Modifier.padding(start = 40.dp, bottom = 20.dp, top = 20.dp, end = 20.dp)) {
         OutlinedTextField(
-            value = selectedGender.value,
-            onValueChange = { selectedGender.value = it },
+            value = selectedGender,
+            onValueChange = {
+                profileViewModel.updateSelectedGenderString(input = it)
+            },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 textColor = Color.Black,
                 disabledLabelColor = Color.White,
@@ -132,7 +123,7 @@ private fun DropDownMenu(selectedGender: MutableState<String>) {
         ) {
             suggestions.forEach { label ->
                 DropdownMenuItem(onClick = {
-                    selectedGender.value = label
+                    profileViewModel.updateSelectedGenderString(label)
                     expanded = false
                 }) {
                     Text(text = label)
