@@ -170,6 +170,7 @@ fun EditEvent(
                     }
                 }
                 Spacer(modifier = Modifier.size(25.dp))
+                /*
                 Button(
                     onClick = { navController.navigate(Screen.EditSurvey.route) },
                     shape = CircleShape,
@@ -185,6 +186,8 @@ fun EditEvent(
                         fontFamily = manropeFamily
                     )
                 }
+
+                 */
                 Spacer(modifier = Modifier.size(20.dp))
                 Button(
                     onClick = { Database.deleteEvent(chosenEvent.title) },
