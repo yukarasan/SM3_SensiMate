@@ -46,11 +46,17 @@ import androidx.compose.ui.unit.toSize
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.Purple200
 
 @Composable
-fun SignUpUsingMail(navController: NavController) {
+fun SignUpUsingMail(
+    navController: NavController,
+    startProfileViewModel: StartProfileViewModel
+) {
+
+    val state = startProfileViewModel._uiState.collectAsState()
 
     InitialStartBackground()
 
@@ -93,9 +99,9 @@ fun SignUpUsingMail(navController: NavController) {
             //email button
             var email by remember { mutableStateOf("") }
             MyTextField(
-                text = email,
+                text = state.value.mail.value,
                 textSize = 15,
-                onValueChange = { email = it },
+                onValueChange = { startProfileViewModel.changeMail(it) },
                 placeHolder = "Enter E-mail",
                 width = 300,
                 height = 51,
@@ -109,9 +115,9 @@ fun SignUpUsingMail(navController: NavController) {
             Spacer(modifier = Modifier.size(45.dp))
             var password by remember { mutableStateOf("") }
             MyTextField(
-                text = password,
+                text = state.value.password.value,
                 textSize = 15,
-                onValueChange = { password = it },
+                onValueChange = { startProfileViewModel.changePassword(it) },
                 placeHolder = "Enter password",
                 width = 300,
                 height = 51,
@@ -123,11 +129,11 @@ fun SignUpUsingMail(navController: NavController) {
             )
 
             Spacer(modifier = Modifier.size(20.dp))
-            var retyped by remember { mutableStateOf("") }
+
             MyTextField(
-                text = retyped,
+                text = state.value.confirmPassword.value,
                 textSize = 15,
-                onValueChange = { retyped = it },
+                onValueChange = { startProfileViewModel.changeConfirmPassword(it) },
                 placeHolder = "Confirm password",
                 width = 300,
                 height = 51,
@@ -138,9 +144,6 @@ fun SignUpUsingMail(navController: NavController) {
                 Color.Gray
             )
 
-            val selectedGender = remember { mutableStateOf("") }
-            var postalCode by remember { mutableStateOf("") }
-
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -148,27 +151,23 @@ fun SignUpUsingMail(navController: NavController) {
             ) {
                 textFieldWithImage(
                     painterResource(id = R.drawable.locationicon),
-                    text = postalCode,
+                    text = state.value.postalCode.value,
                     onValueChange = {
                         if (it.length <= 4) {
-                            postalCode = it
+                            startProfileViewModel.changePostalCode(it)
                         }
                     },
                     "Postal code"
                 )
                 Spacer(modifier = Modifier.size(20.dp))
-                DropDownMenu(selectedGender)
+                DropDownMenu(state.value.gender)
             }
 
-
-            val myYear = remember { mutableStateOf("") }
-            val myMonth = remember { mutableStateOf("") }
-            val myDay = remember { mutableStateOf("") }
             ChooseBirthDate(
                 LocalContext.current,
-                myYear = myYear,
-                myMonth = myMonth,
-                myDay = myDay
+                myYear = state.value.yearBorn,
+                myMonth = state.value.monthBorn,
+                myDay = state.value.dayBorn
             )
 
             val showMessage = mutableStateOf(false)
@@ -183,40 +182,12 @@ fun SignUpUsingMail(navController: NavController) {
                 title = "Sign up",
                 PurpleButtonColor,
                 onClick = {
-                    if (password != retyped) {
-                        showMessage.value = true
-                    } else {
-                        if (postalCode == "") {
-                            Toast.makeText(
-                                context,
-                                "Remember to write your postal code",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else if (selectedGender.value == "") {
-                            Toast.makeText(
-                                context, "Remember to choose your gender",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else if (myYear.value == "") {
-                            Toast.makeText(
-                                context, "Remember to choose your date of birth",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            Database.signUserUp(
-                                email = email,
-                                password = password,
-                                context = context,
-                                showLoading = showLoading,
-                                postalCode = postalCode,
-                                yearBorn = myYear.value,
-                                monthBorn = myMonth.value,
-                                dayBorn = myDay.value,
-                                gender = selectedGender.value,
-                                successLoggedIn = successLoggedIn
-                            )
-                        }
-                    }
+                    startProfileViewModel.signUp(
+                        context = context,
+                        showLoading = showLoading,
+                        successLoggedIn = successLoggedIn,
+                        showMessage = showMessage
+                    )
                 }
             )
             Spacer(modifier = Modifier.size(100.dp))
@@ -300,7 +271,8 @@ fun MyTextField(
 @Composable
 fun previewUsingMail() {
     SignUpUsingMail(
-        rememberNavController()
+        rememberNavController(),
+        StartProfileViewModel()
     )
 }
 

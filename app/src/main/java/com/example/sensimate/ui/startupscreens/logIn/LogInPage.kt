@@ -30,6 +30,7 @@ import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.db
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.buttonWithImage
 import com.example.sensimate.ui.startupscreens.signUp.myButton
@@ -40,7 +41,12 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
-fun LogInMail(navController: NavController) {
+fun LogInMail(
+    navController: NavController,
+    startProfileViewModel: StartProfileViewModel
+) {
+
+    val state = startProfileViewModel._uiState.collectAsState()
 
     InitialStartBackground()
 
@@ -83,9 +89,9 @@ fun LogInMail(navController: NavController) {
 
         //email button
         MyTextField(
-            text = email,
+            text = state.value.mail.value,
             textSize = 15,
-            onValueChange = { email = it },
+            onValueChange = { startProfileViewModel.changeMail(it) },
             placeHolder = "Enter E-mail",
             width = 300,
             height = 51,
@@ -99,9 +105,9 @@ fun LogInMail(navController: NavController) {
         Spacer(modifier = Modifier.size(20.dp))
 
         MyTextField(
-            text = password,
+            text = state.value.password.value,
             textSize = 15,
-            onValueChange = { password = it },
+            onValueChange = { startProfileViewModel.changePassword(it) },
             placeHolder = "Enter password",
             width = 300,
             height = 51,
@@ -143,20 +149,11 @@ fun LogInMail(navController: NavController) {
             PurpleButtonColor,
 
             onClick = {
-                if (email == "" || password == "") {
-                    Toast.makeText(
-                        context, "Remember to write in a password and email",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Database.logIn(
-                        email = email,
-                        password = password,
-                        showLoading,
-                        context,
-                        successLoggedIn
-                    )
-                }
+                startProfileViewModel.loginAsMail(
+                    context = context,
+                    showLoading,
+                    successLoggedIn
+                )
             }
         )
         Spacer(modifier = Modifier.size(28.dp))
@@ -245,7 +242,7 @@ fun checkIfUserIsEmployeeOrNot(email: String, navController: NavController, cont
 @Preview(showBackground = true)
 @Composable
 fun LogInMailPreview() {
-    LogInMail(rememberNavController())
+    LogInMail(rememberNavController(), StartProfileViewModel())
 }
 
 

@@ -1,9 +1,13 @@
 package com.example.sensimate.ui.startupscreens.ForgotPassword
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,16 +18,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.MySensimateLogo
 import com.example.sensimate.ui.InitialStartPage.MyTextField
-import com.example.sensimate.ui.InitialStartPage.SignMenus
-import com.example.sensimate.ui.InitialStartPage.showLoading
 import com.example.sensimate.ui.components.OrangeBackButton
-import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
@@ -31,13 +33,19 @@ import com.example.sensimate.ui.theme.PurpleButtonColor
 @Preview(showBackground = true)
 @Composable
 fun ForgotPasswordPreview() {
-    ForgotPassword(rememberNavController())
+    ForgotPassword(rememberNavController(), viewModel())
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun ForgotPassword(navController: NavController) {
+fun ForgotPassword(
+    navController: NavController,
+    startProfileViewModel: StartProfileViewModel
+) {
     InitialStartBackground()
-    var email by remember { mutableStateOf("") }
+
+    val state = startProfileViewModel._uiState.collectAsState()
+
     val showLoading = remember {
         mutableStateOf(false)
     }
@@ -78,9 +86,9 @@ fun ForgotPassword(navController: NavController) {
 
 
                 MyTextField(
-                    text = email,
+                    text = state.value.mail.value,
                     textSize = 15,
-                    onValueChange = { email = it },
+                    onValueChange = { startProfileViewModel.changeMail(it)},
                     placeHolder = "Enter E-mail",
                     width = 300,
                     height = 51,
@@ -97,10 +105,9 @@ fun ForgotPassword(navController: NavController) {
                 myButton(color = Color.White,
                     title = "Send recovery to mail",
                     PurpleButtonColor,
-                    onClick = {Database.forgotPassword(email = email, context, showLoading)}
+                    onClick = { Database.forgotPassword(email = state.value.mail.value, context, showLoading) }
                 )
             }
-
 
 
         }
@@ -111,6 +118,6 @@ fun ForgotPassword(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        showLoading(showLoading)
+        com.example.sensimate.ui.InitialStartPage.showLoading(showLoading)
     }
 }

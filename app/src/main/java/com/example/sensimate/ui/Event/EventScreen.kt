@@ -1,7 +1,12 @@
 package com.example.sensimate.ui.home
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Color.BLACK
 import android.graphics.Color.WHITE
+import android.media.Image
+import android.media.tv.TvContract.Programs.Genres.encode
+import android.net.Uri.encode
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -26,14 +31,32 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.ImageLoader
+import coil.ImageLoader.Companion.Builder
+import coil.request.GetRequest.Companion.Builder
+import coil.request.LoadRequest.Companion.Builder
+import com.android.volley.toolbox.ImageRequest
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.theme.BottomGradient
-import com.example.sensimate.ui.theme.DarkPurple
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.semantics.Role.Companion.Image
+/*import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.google.zxing.qrcode.encoder.QRCode
+import java.net.URLEncoder.encode
+
+ */
+import java.util.*
+
+
+
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -46,8 +69,6 @@ fun EventScreen(
     val state1 = eventViewModel.uiState.collectAsState()
 
     var checked by remember { mutableStateOf(false) }
-
-    Log.d("current email", auth.currentUser?.email.toString())
 
     Box(
         modifier = Modifier
@@ -191,6 +212,7 @@ private fun EventQuickEntry(navController: NavController) {
                 ) {
                     EventInputField({})
                 }
+
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Bottom,
@@ -214,11 +236,16 @@ private fun EventQuickEntry(navController: NavController) {
                         onClick = { navController.navigate(Screen.EventScreen.route) },
                         color = Color.Black, title = "Back", buttonColor = Color.White
                     )
+
+
                 }
             }
         }
     }
 }
+
+
+
 
 
 @Composable
@@ -361,3 +388,89 @@ fun myButton(
         )
     }
 }
+
+/*
+
+@Composable
+fun QrCode(data: String, size: Int) {
+    val hints = EnumMap<EncodeHintType, Any>(EncodeHintType::class.java)
+    hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.H
+    val bitMatrix = MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, size, size, hints)
+    val pixels = IntArray(size * size)
+    for (y in 0 until size) {
+        for (x in 0 until size) {
+            pixels[y * size + x] = if (bitMatrix[x, y]) BLACK else WHITE
+        }
+    }
+    val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888).apply { setPixels(pixels, 0, size, 0, 0, size, size) }
+    Image(bitmap = bitmap)
+}
+
+
+
+
+fun generateQRCode(content: String): Bitmap {
+    val hints = EnumMap<EncodeHintType, Any>(EncodeHintType::class.java)
+    hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.H
+    val bitMatrix = QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, 512, 512, hints)
+    val width = bitMatrix.width
+    val height = bitMatrix.height
+    val pixels = IntArray(width * height)
+    for (y in 0 until height) {
+        val offset = y * width
+        for (x in 0 until width) {
+            pixels[offset + x] = if (bitMatrix.get(x, y)) BLACK else WHITE
+        }
+    }
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
+    return bitmap
+
+
+}
+
+@Composable
+fun showQrCode(data: String) {
+    val hints = EnumMap<EncodeHintType, Any>(EncodeHintType::class.java)
+    hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.H
+    hints[EncodeHintType.MARGIN] = 2
+    val qrCodeWriter = QRCodeWriter()
+    val bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, 250, 250, hints)
+    val bitmap = Bitmap.createBitmap(250, 250, Bitmap.Config.RGB_565)
+    for (x in 0 until 250) {
+        for (y in 0 until 250) {
+            bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) BLACK else WHITE)
+        }
+    }
+    Image(asset = imageResource(id = R.drawable.qr_code_image), contentDescription = "QR code")
+}
+
+
+
+fun generateQRCode2(content: String): Bitmap {
+    val hints = HashMap<EncodeHintType, Any>()
+    hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.H
+    hints[EncodeHintType.CHARACTER_SET] = "UTF-8"
+    hints[EncodeHintType.MARGIN] = 1
+
+    val writer = QRCodeWriter()
+    val bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 256, 256, hints)
+    val width = bitMatrix.width
+    val height = bitMatrix.height
+    val pixels = IntArray(width * height)
+
+    for (y in 0 until height) {
+        val offset = y * width
+        for (x in 0 until width) {
+            pixels[offset + x] = if (bitMatrix.get(x, y)) BLACK else WHITE
+        }
+    }
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+    bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
+    return bitmap
+
+}
+
+ */
+
+

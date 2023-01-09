@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
@@ -26,6 +27,7 @@ import com.example.sensimate.ui.InitialStartPage.DropDownMenu
 import com.example.sensimate.ui.InitialStartPage.MySensimateLogo
 import com.example.sensimate.ui.InitialStartPage.SignMenus
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
@@ -34,11 +36,16 @@ import com.example.sensimate.ui.theme.PurpleButtonColor
 @Preview(showBackground = true)
 @Composable
 fun GuestScreenPrev() {
-    GuestScreen(navController = rememberNavController())
+    GuestScreen(navController = rememberNavController(), viewModel())
 }
 
 @Composable
-fun GuestScreen(navController: NavController) {
+fun GuestScreen(
+    navController: NavController,
+    startProfileViewModel: StartProfileViewModel
+) {
+
+    val state = startProfileViewModel._uiState.collectAsState()
 
     InitialStartBackground()
 
@@ -65,29 +72,23 @@ fun GuestScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.size(100.dp))
 
-            val selectedGender = remember { mutableStateOf("") }
-            var postalCode by remember { mutableStateOf("") }
-
             textFieldWithImage(
                 painterResource(id = R.drawable.locationicon),
-                text = postalCode,
+                text = state.value.postalCode.value,
                 onValueChange = {
                     if (it.length <= 4) {
-                        postalCode = it
+                        startProfileViewModel.changePostalCode(it)
                     }
                 },
                 "Postal code"
             )
-            DropDownMenu(selectedGender)
+            DropDownMenu(state.value.gender)
 
-            val myYear = remember { mutableStateOf("") }
-            val myMonth = remember { mutableStateOf("") }
-            val myDay = remember { mutableStateOf("") }
             ChooseBirthDate(
                 LocalContext.current,
-                myYear = myYear,
-                myMonth = myMonth,
-                myDay = myDay
+                myYear = state.value.yearBorn,
+                myMonth = state.value.monthBorn,
+                myDay = state.value.dayBorn
             )
 
             Spacer(modifier = Modifier.size(30.dp))
@@ -97,61 +98,7 @@ fun GuestScreen(navController: NavController) {
                 title = "Continue as guest",
                 PurpleButtonColor,
                 onClick = {
-                    if (selectedGender.value == "" || postalCode.length < 4 || myYear.value == "") {
-                        Toast.makeText(
-                            context,
-                            "Remember to fill out all info",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        navController.popBackStack()
-
-                        SaveBoolToLocalStorage(
-                            "isLoggedIn",
-                            true,
-                            context
-                        )
-
-                        SaveBoolToLocalStorage(
-                            "isGuest",
-                            true,
-                            context
-                        )
-
-                        SaveStringToLocalStorage(
-                            "postalCode",
-                            postalCode,
-                            context
-                        )
-
-                        SaveStringToLocalStorage(
-                            "gender",
-                            selectedGender.value,
-                            context
-                        )
-
-                        SaveStringToLocalStorage(
-                            "yearBorn",
-                            myYear.value,
-                            context
-                        )
-
-                        SaveStringToLocalStorage(
-                            "monthBorn",
-                            myMonth.value,
-                            context
-                        )
-
-                        SaveStringToLocalStorage(
-                            "dayBorn",
-                            myDay.value,
-                            context
-                        )
-
-                        Database.loginAnonymously(context)
-                        navController.navigate(Screen.EventScreen.route)
-                    }
-
+                    startProfileViewModel.loginAsGuest(navController = navController, context = context)
                 }
             )
             Spacer(modifier = Modifier.size(30.dp))

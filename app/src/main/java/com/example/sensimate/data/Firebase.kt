@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.example.sensimate.data.questionandsurvey.MyQuestion
+import com.example.sensimate.ui.Event.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -410,7 +411,34 @@ object Database {
                 }
      */
 
-    fun createEvent() {} //TODO: Ahmad
+    fun createEvent(title: String,
+                    description: String,
+                    allergens: String,
+                    location: String,
+                    surveyCode: String,
+                    time: String,
+                    day: String,
+                    month: String,
+                    year: String) {
+
+        val event = hashMapOf(
+            "title" to title,
+            "description" to description,
+            "allergens" to allergens,
+            "location" to location,
+            "surveyCode" to surveyCode,
+            "timeOfEvent" to time,
+            "day" to day,
+            "month" to month,
+            "year" to year,
+        )
+        db.collection("events").add(event).addOnSuccessListener { docRef ->
+            event.set("eventId", docRef.id)
+            db.collection("events").document(docRef.id).set(event)
+            docId = docRef.id
+        }
+    } //TODO: Ahmad
+
     fun editEvent() {} //TODO: Ahmad
 
     fun deleteEvent(eventtitle: String) {
@@ -479,7 +507,8 @@ object Database {
         return questions
     }
 
-    suspend fun updateSurvey(eventId: String, survey: List<MyQuestion>) {
+
+    fun updateSurvey(eventId: String, survey: List<MyQuestion>) { //TODO: Ansh og (Hussein?)
         val questionsRef = db.collection("events").document(eventId).collection("questions")
         for (question in survey) {
             val docRef = questionsRef.document(question.mainQuestion)
@@ -496,6 +525,7 @@ object Database {
                 }
         }
     }
+
 
     /*
 
