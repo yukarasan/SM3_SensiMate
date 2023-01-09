@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.Event.createEvent
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.util.Log
@@ -40,6 +41,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
 import com.example.sensimate.data.db
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -70,9 +72,6 @@ fun CreateEventScreen(navController: NavController) {
     val myMonth = remember { mutableStateOf("") }
     val myDay = remember { mutableStateOf("") }
     val maxChar = 4
-    var year: String
-    var month: String
-    var day: String
     val context = LocalContext.current
     Box(
         modifier = Modifier
@@ -147,11 +146,16 @@ fun CreateEventScreen(navController: NavController) {
                     myMonth = myMonth,
                     myDay = myDay
                 )
+                /*
                 day = myDay.value
                 month = myMonth.value
                 year = myYear.value
 
-                TextFileTimeText(timeText) { timeText = it }
+                 */
+
+                TextFileTimeText(timeText) {
+                    if (it.length <= maxChar) timeText = it
+                }
                 Column(
 
                     modifier = Modifier.fillMaxSize(),
@@ -207,23 +211,18 @@ fun CreateEventScreen(navController: NavController) {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-
-                                val event = hashMapOf(
-                                    "title" to titleText,
-                                    "description" to descriptionText,
-                                    "allergens" to allergensText,
-                                    "location" to locationText,
-                                    "surveyCode" to surveyCodeText,
-                                    "timeOfEvent" to timeText,
-                                    "day" to day,
-                                    "month" to month,
-                                    "year" to year,
+                                Database.createEvent(
+                                    title = titleText,
+                                    description = descriptionText,
+                                    allergens = allergensText,
+                                    location = locationText,
+                                    surveyCode = surveyCodeText,
+                                    time = timeText,
+                                    day = myDay.value,
+                                    month = myMonth.value,
+                                    year = myYear.value
                                 )
-                                db.collection("events").add(event).addOnSuccessListener { docRef ->
-                                    event.set("eventId", docRef.id)
-                                    db.collection("events").document(docRef.id).set(event)
-                                    docId = docRef.id
-                                }
+
                                 navController.navigate(Screen.QuestionPageScreen.route)
                             }
                         },
@@ -620,6 +619,7 @@ fun QuestionPageScreen(navController: NavController) {
 }
 
 // Figur 3
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
     var questionText by remember { mutableStateOf("") }
@@ -725,8 +725,8 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer4" to answerText4,
                             "answer5" to answerText5
                         )
-                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
-                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
                         }
@@ -738,8 +738,8 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer3" to answerText3,
                             "answer4" to answerText4
                         )
-                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
-                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
                         }
@@ -750,8 +750,8 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer2" to answerText2,
                             "answer3" to answerText3
                         )
-                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
-                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
                         }
@@ -761,7 +761,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                         "answer1" to answerText1,
                         "answer2" to answerText2
                     )
-                    val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                    val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
                         subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                         mainQuest.set("questionId", docRef.id)
                         subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
