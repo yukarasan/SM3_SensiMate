@@ -1,10 +1,7 @@
 package com.example.sensimate.ui.profile.editProfile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,7 +12,8 @@ import com.example.sensimate.data.Database.updateProfileFields
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
-import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
+import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
+import com.example.sensimate.ui.components.OrangeBackButton
 
 @Composable
 fun EditAgeScreen(navController: NavController) {
@@ -32,14 +30,22 @@ fun EditAgeScreen(navController: NavController) {
             )
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            CheckBox(onClick = {
-                navController.popBackStack()
-
-
-
-            })
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    OrangeBackButton(onClick = {
+                        navController.popBackStack()
+                    })
+                }
+                CheckBox(onClick = {
+                    navController.popBackStack()
+                    // TODO:
+                })
+            }
         }
-        CustomTextField(
+        CustomProfileTextField(
             text = age,
             description = "Age",
             placeholder = "Enter the year that you were born",
