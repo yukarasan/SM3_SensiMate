@@ -28,6 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
