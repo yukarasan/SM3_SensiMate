@@ -9,7 +9,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -22,22 +21,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
-import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
-import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
-import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
+import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun EditEmailScreen(navController: NavController) {
-    var email by remember { mutableStateOf("") }
-    var currentPassword by remember { mutableStateOf("") }
+fun EditEmailScreen(
+    navController: NavController,
+    profileViewModel: ProfileViewModel = viewModel()
+) {
+    val profileState by profileViewModel.uiState.collectAsState()
+    // var email by remember { mutableStateOf("") }
+    // var currentPassword by remember { mutableStateOf("") }
+
     var showEmptyFieldAlert by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -52,40 +56,58 @@ fun EditEmailScreen(navController: NavController) {
             )
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            CheckBox(onClick = {
-                if (currentPassword.isNotEmpty() && email.isNotEmpty()) {
-                    Database.updateEmail(
-                        currentPassword = currentPassword,
-                        newEmail = email,
-                        context = context
-                    )
-
-                    Database.deleteAndInsertEmailToFirestore(
-                        postalCode = "",
-                        yearBorn = "",
-                        monthBorn = "",
-                        dayBorn = "",
-                        gender = ""
-                    )
-
-                    navController.popBackStack()
-                } else {
-                    // At least one of the text fields is empty
-                    showEmptyFieldAlert = true
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    OrangeBackButton(onClick = {
+                        navController.popBackStack()
+                    })
                 }
-            })
+                CheckBox(onClick = {
+                    if (
+                        profileState.currentPassword.isNotEmpty()
+                        &&
+                        profileState.email.isNotEmpty()
+                    ) {
+                        Database.updateEmail(
+                            currentPassword = profileState.currentPassword,
+                            newEmail = profileState.email,
+                            context = context
+                        )
+
+                        Database.deleteAndInsertEmailToFirestore(
+                            postalCode = profileState.postalCode,
+                            yearBorn = profileState.yearBorn,
+                            monthBorn = profileState.monthBorn,
+                            dayBorn = profileState.dayBorn,
+                            gender = profileState.gender
+                        )
+
+                        navController.popBackStack()
+                    } else {
+                        // At least one of the text fields is empty
+                        showEmptyFieldAlert = true
+                    }
+                })
+            }
         }
         CustomPasswordField(
-            text = currentPassword,
+            text = profileState.currentPassword,
             description = "Current password",
             placeholder = "Enter your current password here",
-            onValueChange = { currentPassword = it }
+            onValueChange = {
+                profileViewModel.updateCurrentPasswordString(input = it)
+            }
         )
-        CustomTextField(
-            text = email,
+        CustomProfileTextField(
+            text = profileState.email,
             description = "E-mail",
             placeholder = "Enter your new e-mail here",
-            onValueChange = { email = it }
+            onValueChange = {
+                profileViewModel.updateEmailString(input = it)
+            }
         )
         Text(
             text = "To give you the best experience, we recommend that your email is up to date. " +
@@ -131,7 +153,7 @@ private fun CustomPasswordField(
         backgroundColor = Color.Transparent,
         elevation = 0.dp
     ) {
-        var isPasswordVisible = remember {
+        val isPasswordVisible = remember {
             mutableStateOf(false)
         }
 

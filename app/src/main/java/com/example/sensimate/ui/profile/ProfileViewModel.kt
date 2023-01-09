@@ -112,6 +112,10 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
+    fun updateSelectedGenderString(input: String) {
+        _uiState.value = _uiState.value.copy(gender = input)
+    }
+
     fun updateCurrentPasswordString(input: String) {
         _uiState.value = _uiState.value.copy(currentPassword = input)
     }
@@ -120,7 +124,7 @@ class ProfileViewModel : ViewModel() {
         _uiState.value = _uiState.value.copy(newPassword = input)
     }
 
-    fun updateSelectedGenderString(input: String) {
-        _uiState.value = _uiState.value.copy(gender = input)
+    fun updateEmailString(input: String) {
+        _uiState.value = _uiState.value.copy(email = input)
     }
 }
