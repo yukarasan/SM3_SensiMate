@@ -29,6 +29,7 @@ import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
 
 
@@ -73,28 +74,37 @@ fun EditPasswordScreen(
             )
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            CheckBox(onClick = {
-                if (
-                    profileState.currentPassword.isNotEmpty()
-                    &&
-                    profileState.newPassword.isNotEmpty()
-                ) {
-                    if (profileState.newPassword.length < 8) {
-                        showWrongLengthOfPassword = true
-                    } else {
-                        Database.updatePassword(
-                            currentPassword = profileState.currentPassword,
-                            newPassword = profileState.newPassword,
-                            context = context
-                        )
-
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    OrangeBackButton(onClick = {
                         navController.popBackStack()
-                    }
-                } else {
-                    showEmptyFieldAlert = true      // At least one of the text fields is empty
-
+                    })
                 }
-            })
+                CheckBox(onClick = {
+                    if (
+                        profileState.currentPassword.isNotEmpty()
+                        &&
+                        profileState.newPassword.isNotEmpty()
+                    ) {
+                        if (profileState.newPassword.length < 8) {
+                            showWrongLengthOfPassword = true
+                        } else {
+                            Database.updatePassword(
+                                currentPassword = profileState.currentPassword,
+                                newPassword = profileState.newPassword,
+                                context = context
+                            )
+
+                            navController.popBackStack()
+                        }
+                    } else {
+                        showEmptyFieldAlert = true      // At least one of the text fields is empty
+                    }
+                })
+            }
         }
 
         if (showEmptyFieldAlert) {
@@ -140,7 +150,8 @@ fun EditPasswordScreen(
             )
         Text(
             text = "To keep your account secure, you can change your password here. Make sure " +
-                    " that your password is long enough",
+                    "to provide your current password and make sure that your password is at " +
+                    "least 8 characters long",
             color = Color.White,
             modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 30.dp)
         )

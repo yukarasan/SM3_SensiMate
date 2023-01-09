@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
+import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -44,16 +45,26 @@ fun EditGenderScreen(
             )
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            CheckBox(onClick = {
-                navController.popBackStack()
-                scope.launch {
-                    if (selectedGender.value == "") {
-                        // Dont do anything
-                    } else {
-                        updateProfile(gender = selectedGender.value)
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    OrangeBackButton(onClick = {
+                        navController.popBackStack()
+                    })
                 }
-            })
+                CheckBox(onClick = {
+                    navController.popBackStack()
+                    scope.launch {
+                        if (selectedGender.value == "") {
+                            // Dont do anything
+                        } else {
+                            updateProfile(gender = selectedGender.value)
+                        }
+                    }
+                })
+            }
         }
 
         DropDownMenu(selectedGender = selectedGender)
