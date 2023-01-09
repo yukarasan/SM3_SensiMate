@@ -27,15 +27,3 @@ class QuestionViewModel : ViewModel() {
         _uiState.value.questionsStarted = true
     }
 }
-
-class DemoScreenViewModel : ViewModel() {
-    sealed class State {
-        object Loading: State()
-        data class Data(val data: String): State()
-    }
-
-    private var _state = MutableStateFlow<State>(State.Loading)
-    val state = _state.asStateFlow()
-
-
-}

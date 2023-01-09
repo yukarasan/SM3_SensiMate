@@ -98,7 +98,7 @@ fun ExtendedEvent(
                         ) {
                             InputField({})
                             Button(
-                                onClick = { navController.navigate(Screen.Survey.route) },
+                                onClick = { navController.navigate(Screen.SurveyCreator.route) },
                                 colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
                                 modifier = Modifier.size(50.dp, 50.dp),
 
@@ -110,6 +110,7 @@ fun ExtendedEvent(
                                     color = Color.White,
                                     fontFamily = manropeFamily
                                 )
+
                             }
                         }
                         Spacer(modifier = Modifier.size(15.dp))

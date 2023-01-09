@@ -448,7 +448,8 @@ object Database {
         return questions
     }
 
-    suspend fun updateSurvey(eventId: String, survey: List<MyQuestion>) {
+
+    fun updateSurvey(eventId: String, survey: List<MyQuestion>) { //TODO: Ansh og (Hussein?)
         val questionsRef = db.collection("events").document(eventId).collection("questions")
         for (question in survey) {
             val docRef = questionsRef.document(question.mainQuestion)
@@ -465,6 +466,7 @@ object Database {
                 }
         }
     }
+
 
     /*
 
