@@ -47,10 +47,6 @@ fun ProfileScreen(
     val profileState by profileViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
-    val showDialog = remember {
-        mutableStateOf(false)
-    }
-
     if (auth.currentUser != null) {
         profileViewModel.fetchProfileData(context = context)
     }
@@ -98,18 +94,13 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to Color(83, 58, 134, 255),
-                    0.7f to Color(22, 26, 30)
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            MyDialog(navController = navController, showDialog = showDialog, context = context)
-        }
-
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -160,10 +151,6 @@ fun ProfileScreen(
             item { InfoAboutUser(desc = "Month Born", info = profileState.monthBorn) }
             item { InfoAboutUser(desc = "Postal Code", info = profileState.postalCode) }
             item { InfoAboutUser(desc = "Gender", info = profileState.gender) }
-
-            item { Spacer(modifier = Modifier.height(20.dp)) }
-
-            item { DeleteUserProfileButton(showDialog = showDialog) }
         }
     }
 }
@@ -299,52 +286,5 @@ private fun InfoAboutUser(desc: String, info: String) {
                 modifier = Modifier.padding(end = 20.dp)
             )
         }
-    }
-}
-
-@Composable
-fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
-    Button(
-        onClick = {
-            showDialog.value = true
-        },
-        shape = RoundedCornerShape(100),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(255, 0, 0)),
-        modifier = Modifier
-            .height(40.dp)
-    ) {
-        Text(
-            text = "Delete profile",
-            fontFamily = manropeFamily,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 16.sp,
-            color = Color.White
-        )
-    }
-}
-
-@Composable
-private fun MyDialog(
-    navController: NavController = rememberNavController(),
-    showDialog: MutableState<Boolean> = mutableStateOf(true),
-    context: Context
-) {
-    if (showDialog.value) {
-        AlertDialog(
-            onDismissRequest = { showDialog.value = false },
-            title = { Text(text = "Are you sure you want to delete your profile?") },
-            confirmButton = {
-                TextButton(onClick = {
-                    showDialog.value = false
-                    navController.navigate(Screen.Login.route)
-                    Database.deleteProfile(context = context)
-                })
-                { Text(text = "Yes") }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDialog.value = false })
-                { Text(text = "No") }
-            },
-        )
     }
 }

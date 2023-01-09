@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.profile.editProfile
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,6 +24,8 @@ import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
+import com.example.sensimate.ui.theme.BottomGradient
+import com.example.sensimate.ui.theme.DarkPurple
 import kotlinx.coroutines.launch
 
 @Composable
@@ -31,15 +34,16 @@ fun EditGenderScreen(
     profileViewModel: ProfileViewModel = viewModel()
 ) {
     val profileState by profileViewModel.uiState.collectAsState()
-    // val selectedGender = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to Color(83, 58, 134, 255),
-                    0.7f to Color(22, 26, 30)
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
     ) {
