@@ -315,7 +315,7 @@ fun ChooseBirthDate(
             backgroundColor = Color.Transparent
         ),
         enabled = false,
-        value = "${myDay.value}:${myMonth.value}:${myYear.value}",
+        value = if(myDay.value.isNotEmpty()) "${myDay.value}/${myMonth.value}/${myYear.value}" else "",
         label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
         onValueChange = {},
         modifier = Modifier
