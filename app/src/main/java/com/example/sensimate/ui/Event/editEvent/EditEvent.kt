@@ -22,30 +22,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.components.OrangeBackButton
-import com.example.sensimate.ui.home.InputField
-import com.example.sensimate.ui.survey.Survey
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 import com.example.sensimate.ui.theme.RedColor
-import kotlin.math.log
 
 /*
 @Preview(showBackground = true)
@@ -400,7 +392,7 @@ fun EditPage(
                 TextFiledSurveyCodeText(surveyCodeText) {
                     if (it.length <= maxChar) surveyCodeText = it
                 }
-                ChooseBirthDate(
+                ChooseEventDate(
                     LocalContext.current,
                     myYear = myYear,
                     myMonth = myMonth,

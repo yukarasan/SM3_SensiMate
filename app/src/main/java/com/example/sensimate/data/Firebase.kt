@@ -385,10 +385,12 @@ object Database {
                     allergens: String,
                     location: String,
                     surveyCode: String,
-                    time: String,
+                    //time: String,
                     day: String,
                     month: String,
-                    year: String) {
+                    year: String,
+                    hour: String,
+                    minute: String) {
 
         val event = hashMapOf(
             "title" to title,
@@ -396,14 +398,16 @@ object Database {
             "allergens" to allergens,
             "location" to location,
             "surveyCode" to surveyCode,
-            "timeOfEvent" to time,
+            //"timeOfEvent" to time,
             "day" to day,
             "month" to month,
             "year" to year,
+            "hour" to hour,
+            "minute" to minute
         )
-        db.collection("events").add(event).addOnSuccessListener { docRef ->
+        db.collection("TESTER").add(event).addOnSuccessListener { docRef ->
             event.set("eventId", docRef.id)
-            db.collection("events").document(docRef.id).set(event)
+            db.collection("TESTER").document(docRef.id).set(event)
             docId = docRef.id
         }
     } //TODO: Ahmad

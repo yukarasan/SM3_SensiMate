@@ -14,6 +14,8 @@ data class Event(
     var day: String = "",
     var month: String = "",
     var year: String = "",
+   // var hour: String = "", //TODO  skal erstatte timeOfEvent
+   // var minute: String ="",//TODO  skal erstatte timeOfEvent
 )
 
 data class EventUiState(
