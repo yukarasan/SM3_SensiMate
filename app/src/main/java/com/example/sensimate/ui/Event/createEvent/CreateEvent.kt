@@ -725,7 +725,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer4" to answerText4,
                             "answer5" to answerText5
                         )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
                             subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
@@ -738,7 +738,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer3" to answerText3,
                             "answer4" to answerText4
                         )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
                             subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
@@ -750,7 +750,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer2" to answerText2,
                             "answer3" to answerText3
                         )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
                             subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
@@ -761,7 +761,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                         "answer1" to answerText1,
                         "answer2" to answerText2
                     )
-                    val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+                    val subcollectionRef = db.collection("events").document(docId).collection("questions")
                         subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                         mainQuest.set("questionId", docRef.id)
                         subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)

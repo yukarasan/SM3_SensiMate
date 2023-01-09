@@ -401,9 +401,9 @@ object Database {
             "month" to month,
             "year" to year,
         )
-        db.collection("TESTER").add(event).addOnSuccessListener { docRef ->
+        db.collection("events").add(event).addOnSuccessListener { docRef ->
             event.set("eventId", docRef.id)
-            db.collection("TESTER").document(docRef.id).set(event)
+            db.collection("events").document(docRef.id).set(event)
             docId = docRef.id
         }
     } //TODO: Ahmad
