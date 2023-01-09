@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -567,9 +568,10 @@ fun QuestionPageScreen(navController: NavController) {
             )
         }
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(
+            OutlinedButton(
                 onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
                 shape = CircleShape,
+                border = BorderStroke(1.dp,color = Color.Green),
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(red = 44, green = 44, blue = 59)),
                 modifier = Modifier
                     .padding(top = 420.dp)
