@@ -243,7 +243,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EditPage(navController = navController, eventViewModel = eventViewModel)
         }
         composable(route = Screen.EditSurvey.route) {
-            EditSurvey(navController = navController)
+            EditSurvey(navController = navController, questionViewModel)
         }
         composable(route = Screen.EditSurveyPage.route) {
             EditSurveyPage(navController = navController)
@@ -291,14 +291,14 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             )
         }
         composable(route = Screen.Survey2.route) {
-            Survey2(navController = navController, title = "")
+            Survey2(navController = navController, title = "", questionViewModel = questionViewModel)
 
         }
         composable(route = Screen.Survey3.route) {
-            Survey3(navController = navController, title = "")
+            Survey3(navController = navController, title = "", questionViewModel = questionViewModel)
         }
         composable(route = Screen.Survey4.route) {
-            Survey4(navController = navController, title = "")
+            Survey4(navController = navController, title = "", questionViewModel = questionViewModel)
         }
         /*composable(route = Screen) {
             SurveyCreator(navController = navController, questionViewModel = questionViewModel, eventViewModel = eventViewModel)
