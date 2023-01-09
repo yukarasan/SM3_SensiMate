@@ -31,32 +31,14 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.ImageLoader
-import coil.ImageLoader.Companion.Builder
-import coil.request.GetRequest.Companion.Builder
-import coil.request.LoadRequest.Companion.Builder
-import com.android.volley.toolbox.ImageRequest
 import com.example.sensimate.R
 import com.example.sensimate.data.*
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import androidx.compose.foundation.Image
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.semantics.Role.Companion.Image
-/*import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.qrcode.QRCodeWriter
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import com.google.zxing.qrcode.encoder.QRCode
-import java.net.URLEncoder.encode
-
- */
+import com.example.sensimate.ui.theme.BottomGradient
+import com.example.sensimate.ui.theme.DarkPurple
 import java.util.*
-
-
-
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
