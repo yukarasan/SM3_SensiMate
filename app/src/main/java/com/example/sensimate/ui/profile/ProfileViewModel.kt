@@ -31,7 +31,7 @@ class ProfileViewModel : ViewModel() {
             gender = _uiState.value.gender,
             currentPassword = _uiState.value.currentPassword,
             newPassword = _uiState.value.newPassword,
-            email = "",
+            email = _uiState.value.email,
         )
     }
 

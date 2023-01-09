@@ -31,6 +31,8 @@ import com.example.sensimate.data.*
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.theme.BottomGradient
+import com.example.sensimate.ui.theme.DarkPurple
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -45,13 +47,17 @@ fun EventScreen(
 
     var checked by remember { mutableStateOf(false) }
 
+    Log.d("current email", auth.currentUser?.email.toString())
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to Color(83, 58, 134, 255),
-                    0.7f to Color(22, 26, 30)
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
     ) {

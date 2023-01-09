@@ -31,6 +31,8 @@ import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
+import com.example.sensimate.ui.theme.BottomGradient
+import com.example.sensimate.ui.theme.DarkPurple
 
 
 /**
@@ -68,8 +70,10 @@ fun EditPasswordScreen(
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to Color(83, 58, 134, 255),
-                    0.7f to Color(22, 26, 30)
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
     ) {

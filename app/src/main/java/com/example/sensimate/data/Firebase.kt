@@ -126,18 +126,28 @@ object Database {
         monthBorn: String,
         dayBorn: String,
         gender: String,
+        newEmail: String
     ) {
+        Log.d("postal code", postalCode)
+        Log.d("year born", yearBorn)
+        Log.d("month born", monthBorn)
+        Log.d("day born", dayBorn)
+        Log.d("gender", gender)
+
+        Log.d("Document: ", auth.currentUser?.email.toString())
+
         db.collection("users")
             .document(
                 auth.currentUser?.email.toString()
             ).delete()
 
-        setUpProfileInfo(
+        setUpNewEmail(
             postalCode = postalCode,
             yearBorn = yearBorn,
             monthBorn = monthBorn,
             dayBorn = dayBorn,
-            gender = gender
+            gender = gender,
+            newEmail = newEmail
         )
     } // TODO: Yusuf
 
@@ -203,6 +213,27 @@ object Database {
                     ).show()
                 }
             }
+    }
+
+    fun setUpNewEmail(
+        postalCode: String,
+        yearBorn: String,
+        monthBorn: String,
+        dayBorn: String,
+        gender: String,
+        newEmail: String
+    ) {
+        val profile = hashMapOf(
+            "postalCode" to postalCode,
+            "yearBorn" to yearBorn,
+            "monthBorn" to monthBorn,
+            "dayBorn" to dayBorn,
+            "gender" to gender,
+            "isEmployee" to false
+        )
+
+        db.collection("users").document(newEmail)
+            .set(profile)
     }
 
     fun setUpProfileInfo(

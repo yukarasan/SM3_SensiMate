@@ -26,11 +26,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
+import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
+import com.example.sensimate.ui.theme.BottomGradient
+import com.example.sensimate.ui.theme.DarkPurple
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,19 +42,26 @@ fun EditEmailScreen(
     profileViewModel: ProfileViewModel = viewModel()
 ) {
     val profileState by profileViewModel.uiState.collectAsState()
-    // var email by remember { mutableStateOf("") }
-    // var currentPassword by remember { mutableStateOf("") }
 
     var showEmptyFieldAlert by remember { mutableStateOf(false) }
     val context = LocalContext.current
+
+    var codeExecuted by remember { mutableStateOf(false) }
+
+    if (auth.currentUser != null && !codeExecuted) {
+        profileViewModel.fetchProfileData(context = context)
+        codeExecuted = true
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to Color(83, 58, 134, 255),
-                    0.7f to Color(22, 26, 30)
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
     ) {
@@ -71,19 +81,22 @@ fun EditEmailScreen(
                         &&
                         profileState.email.isNotEmpty()
                     ) {
+                        Database.deleteAndInsertEmailToFirestore(
+                            postalCode = profileState.postalCode,
+                            yearBorn = profileState.yearBorn,
+                            monthBorn = profileState.monthBorn,
+                            dayBorn = profileState.dayBorn,
+                            gender = profileState.gender,
+                            newEmail = profileState.email
+                        )
+
                         Database.updateEmail(
                             currentPassword = profileState.currentPassword,
                             newEmail = profileState.email,
                             context = context
                         )
 
-                        Database.deleteAndInsertEmailToFirestore(
-                            postalCode = profileState.postalCode,
-                            yearBorn = profileState.yearBorn,
-                            monthBorn = profileState.monthBorn,
-                            dayBorn = profileState.dayBorn,
-                            gender = profileState.gender
-                        )
+                        // codeExecuted = false
 
                         navController.popBackStack()
                     } else {
