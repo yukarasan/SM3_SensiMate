@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.profile
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -32,33 +34,41 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
+import com.example.sensimate.data.Database
 import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 
 @Composable
 fun EditProfileScreen(navController: NavController) {
+    val showDialog = remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Dialog(navController = navController, showDialog = showDialog, context = context)
+    }
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(
             Brush.verticalGradient(
-                0.0f to Color(83, 58, 134, 255),
-                0.7f to Color(22, 26, 30)
+                colors = listOf(
+                    DarkPurple,
+                    BottomGradient
+                )
             )
         )
     ) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    Brush.verticalGradient(
-                        0.0f to Color(83, 58, 134, 255),
-                        0.7f to Color(22, 26, 30)
-                    )
-                ),
+                .fillMaxWidth(),
             contentPadding = PaddingValues(bottom = 80.dp, top = 20.dp)
         ) {
             item {
@@ -127,6 +137,10 @@ fun EditProfileScreen(navController: NavController) {
                     }
                 )
             }
+
+            item { Spacer(modifier = Modifier.height(20.dp)) }
+
+            item { DeleteUserProfileButton(showDialog = showDialog) }
         }
     }
 }
@@ -151,6 +165,53 @@ private fun DoneButton(onClick: () -> Unit) {
             fontWeight = FontWeight.ExtraBold,
             fontSize = 16.sp,
             color = Color.Black
+        )
+    }
+}
+
+@Composable
+private fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
+    Button(
+        onClick = {
+            showDialog.value = true
+        },
+        shape = RoundedCornerShape(100),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(255, 0, 0)),
+        modifier = Modifier
+            .height(40.dp)
+    ) {
+        Text(
+            text = "Delete profile",
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+private fun Dialog(
+    navController: NavController = rememberNavController(),
+    showDialog: MutableState<Boolean> = mutableStateOf(true),
+    context: Context
+) {
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            title = { Text(text = "Are you sure you want to delete your profile?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDialog.value = false
+                    navController.navigate(Screen.Login.route)
+                    Database.deleteProfile(context = context)
+                })
+                { Text(text = "Yes") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog.value = false })
+                { Text(text = "No") }
+            },
         )
     }
 }
@@ -183,71 +244,5 @@ private fun ImageButton() {
                 .size(100.dp)
                 .align(Alignment.Center)
         )
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun EmailInfoAboutUser(desc: String, info: String, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(start = 25.dp, end = 25.dp, top = 25.dp)
-            .fillMaxWidth()
-            .height(80.dp),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(10.dp),
-        backgroundColor = DarkPurple,
-        border = BorderStroke(2.dp, Color(154, 107, 254)),
-        onClick = onClick
-    ) {
-        Column() {
-            Text(
-                text = desc,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 20.sp,
-                color = Color.White,
-                modifier = Modifier.padding(start = 20.dp, bottom = 10.dp, top = 5.dp)
-            )
-            Text(
-                text = info,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 20.sp,
-                color = Color.White,
-                modifier = Modifier.padding(start = 20.dp)
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun InfoAboutUser(desc: String, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(start = 25.dp, end = 25.dp, top = 25.dp)
-            .fillMaxWidth()
-            .height(80.dp),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(10.dp),
-        backgroundColor = DarkPurple,
-        border = BorderStroke(2.dp, Color(154, 107, 254)),
-        onClick = onClick
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = desc,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 23.sp,
-                color = Color.White,
-                modifier = Modifier.padding(start = 20.dp)
-            )
-        }
     }
 }

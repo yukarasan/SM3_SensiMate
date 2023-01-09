@@ -2,6 +2,7 @@ package com.example.sensimate.ui.survey
 
 
 
+import android.annotation.SuppressLint
 import android.renderscript.ScriptGroup
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
@@ -36,6 +37,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
@@ -43,7 +45,7 @@ import com.example.sensimate.ui.theme.*
 
 
 @Composable
-fun Survey4(title: String, navController: NavController) {
+fun Survey4(title: String, navController: NavController,  questionViewModel: QuestionViewModel) {
     Box(
         modifier = Modifier
             .background(
@@ -65,7 +67,7 @@ fun Survey4(title: String, navController: NavController) {
                 ProgressPreview()
                 Question(title)
                 SurveyTitle(title)
-                Information4(options = listOf("Tomato", "Watermelon", "Cherry", "Vanilla"))
+                Information4(questionViewModel)
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -102,9 +104,12 @@ private fun ProgressPreview() {
 }
 
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun Information4(options: List<String>) {
+fun Information4(questionViewModel: QuestionViewModel) {
     val checkedState = remember { mutableStateOf(false) }
+
+    val options = questionViewModel.uiState.value.currentQuestion.options
 
     Card(
         modifier = Modifier

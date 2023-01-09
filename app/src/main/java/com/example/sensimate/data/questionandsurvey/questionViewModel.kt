@@ -26,4 +26,8 @@ class QuestionViewModel : ViewModel() {
         }
         _uiState.value.questionsStarted = true
     }
+
+    fun setCurrentQuestion(question: MyQuestion){
+        _uiState.value.currentQuestion = question
+    }
 }

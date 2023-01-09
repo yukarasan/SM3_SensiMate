@@ -34,6 +34,7 @@ import com.example.sensimate.ui.profile.EditProfileScreen
 import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.profile.editProfile.*
 import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
+import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.survey.*
 
@@ -43,6 +44,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
 
     val questionViewModel = QuestionViewModel()
     val eventViewModel = EventViewModel()
+    val startProfileViewModel = StartProfileViewModel()
 
     val context = LocalContext.current
 
@@ -85,16 +87,16 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             CookiesScreen(navController = navController)
         }
         composable(route = Screen.Login.route) {
-            LogInMail(navController = navController)
+            LogInMail(navController = navController, startProfileViewModel = startProfileViewModel)
         }
         composable(route = Screen.SignUpWithMail.route) {
-            SignUpUsingMail(navController = navController)
+            SignUpUsingMail(navController = navController, startProfileViewModel = startProfileViewModel)
         }
         composable(route = Screen.Guest.route) {
-            GuestScreen(navController = navController)
+            GuestScreen(navController = navController, startProfileViewModel = startProfileViewModel)
         }
         composable(route = Screen.ForgotPassword.route) {
-            ForgotPassword(navController = navController)
+            ForgotPassword(navController = navController, startProfileViewModel = startProfileViewModel)
         }
         ///
 
@@ -241,7 +243,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EditPage(navController = navController, eventViewModel = eventViewModel)
         }
         composable(route = Screen.EditSurvey.route) {
-            EditSurvey(navController = navController)
+            EditSurvey(navController = navController, questionViewModel)
         }
         composable(route = Screen.EditSurveyPage.route) {
             EditSurveyPage(navController = navController)
@@ -289,14 +291,14 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             )
         }
         composable(route = Screen.Survey2.route) {
-            Survey2(navController = navController, title = "")
+            Survey2(navController = navController, title = "", questionViewModel = questionViewModel)
 
         }
         composable(route = Screen.Survey3.route) {
-            Survey3(navController = navController, title = "")
+            Survey3(navController = navController, title = "", questionViewModel = questionViewModel)
         }
         composable(route = Screen.Survey4.route) {
-            Survey4(navController = navController, title = "")
+            Survey4(navController = navController, title = "", questionViewModel = questionViewModel)
         }
         /*composable(route = Screen) {
             SurveyCreator(navController = navController, questionViewModel = questionViewModel, eventViewModel = eventViewModel)

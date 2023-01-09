@@ -673,8 +673,8 @@ fun TextFiledTimeText() {
 }
 
 @Composable
-fun EditSurvey(navController: NavController) {
-    Survey4(title = "", navController)
+fun EditSurvey(navController: NavController, questionViewModel: QuestionViewModel) {
+    Survey4(title = "", navController,questionViewModel)
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)

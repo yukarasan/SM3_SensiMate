@@ -1,6 +1,8 @@
 package com.example.sensimate.ui.profile
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.data.Database
@@ -10,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.Year
 import java.util.*
 
 class ProfileViewModel : ViewModel() {
@@ -31,17 +34,43 @@ class ProfileViewModel : ViewModel() {
             gender = _uiState.value.gender,
             currentPassword = _uiState.value.currentPassword,
             newPassword = _uiState.value.newPassword,
-            email = "",
+            email = _uiState.value.email,
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun fetchProfileData(context: Context) {
         if (!getBooleanFromLocalStorage(key = "isGuest", context = context)) {
             viewModelScope.launch {
                 val profile = profile()
 
-                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-                _uiState.value.age = (currentYear - profile.yearBorn.toInt()).toString()
+                val currentCalendar = Calendar.getInstance()
+                val currentYear = currentCalendar.get(Calendar.YEAR)
+                val currentMonth = currentCalendar.get(Calendar.MONTH)
+                val currentDay = currentCalendar.get(Calendar.DAY_OF_MONTH)
+
+                val birthCalendar = Calendar.getInstance()
+                birthCalendar.set(Calendar.YEAR, profile.yearBorn.toInt())
+                birthCalendar.set(Calendar.MONTH, profile.monthBorn.toInt())
+                birthCalendar.set(Calendar.DAY_OF_MONTH, profile.dayBorn.toInt())
+
+                val birthYear = birthCalendar.get(Calendar.YEAR)
+                val birthMonth = birthCalendar.get(Calendar.MONTH)
+                val birthDay = birthCalendar.get(Calendar.DAY_OF_MONTH)
+
+                var age = currentYear - birthYear
+                if (currentMonth < birthMonth || (currentMonth == birthMonth && currentDay < birthDay)) {
+                    age--
+                }
+
+                if (Year.isLeap(currentYear.toLong()) && (birthMonth > 2 || (birthMonth == 2 && birthDay == 29))) {
+                    age++
+                }
+                if (Year.isLeap(birthYear.toLong()) && birthMonth < 2) {
+                    age--
+                }
+
+                _uiState.value.age = age.toString()
 
                 _uiState.value.dayBorn = profile.dayBorn
                 _uiState.value.yearBorn = profile.yearBorn
