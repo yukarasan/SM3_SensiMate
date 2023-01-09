@@ -1,25 +1,20 @@
 package com.example.sensimate.ui.profile.editProfile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
-import com.example.sensimate.ui.appcomponents.editProfile.CustomTextField
+import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
+import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun EditPostalCodeScreen(
@@ -39,12 +34,22 @@ fun EditPostalCodeScreen(
             )
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            CheckBox(onClick = {
-                navController.popBackStack()
-                profileViewModel.updatePostalCode(profileState.postalCode)
-            })
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    OrangeBackButton(onClick = {
+                        navController.popBackStack()
+                    })
+                }
+                CheckBox(onClick = {
+                    navController.popBackStack()
+                    profileViewModel.updatePostalCode(profileState.postalCode)
+                })
+            }
         }
-        CustomTextField(
+        CustomProfileTextField(
             text = profileState.postalCode,
             description = "Postal code",
             placeholder = "Enter your postal code here",

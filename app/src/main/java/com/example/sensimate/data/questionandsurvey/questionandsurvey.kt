@@ -8,5 +8,6 @@ data class QuestionsUiState(
 class MyQuestion(
     var mainQuestion: String = "",
     var options: MutableList<String> = emptyList<String>().toMutableList(),
-    var oneChoice: Boolean = false
+    var oneChoice: Boolean = false,
+    var oneChoice2: Boolean = false
 )

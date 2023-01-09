@@ -31,6 +31,7 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.VisualTransformation
@@ -74,7 +75,7 @@ fun Survey4(title: String, navController: NavController) {
                         .padding(top = 70.dp)
                 ) {
                     PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
-                    NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
+                    FinishButton(onClick = { navController.navigate(Screen.EventScreen.route) } )
                 }
             }
 
@@ -210,6 +211,46 @@ fun CheckBox() {
                         disabledIndeterminateColor = GreyColor,
                     )
             )
+}
+
+
+@Composable
+fun FinishButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(50),
+        colors = ButtonDefaults.buttonColors(PurpleButtonColor),
+        modifier = Modifier
+            .height(38.dp)
+            .width(130.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            Text(
+                "Finish Survey",
+                color = Color.White,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(start = 0.dp)
+            )
+
+
+
+            Image(
+                painter = painterResource(id = R.drawable.tick),
+                contentDescription = "Finish Survey",
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 10.dp)
+                    .rotate(180f)
+            )
+
+        }
+    }
+
 }
 
 

@@ -34,6 +34,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.DarkPurple
 
@@ -72,40 +73,55 @@ fun EditProfileScreen(navController: NavController) {
             }
             item { ImageButton() }
             item {
-                InfoAboutUser(
-                    desc = "Edit your age here",
+                CustomProfileTextField(
+                    text = "Age",
+                    description = "Edit your age here",
+                    placeholder = "age",
+                    onValueChange = { /* nothing for this instance. */  },
                     onClick = {
                         navController.navigate(Screen.EditAgeScreen.route)
                     }
                 )
             }
             item {
-                InfoAboutUser(
-                    desc = "Edit your e-mail here",
+                CustomProfileTextField(
+                    text = "E-mail",
+                    description = "Edit your e-mail here",
+                    placeholder = "e-mail",
+                    onValueChange = { /* nothing for this instance. */  },
                     onClick = {
                         navController.navigate(Screen.EditEmailScreen.route)
                     }
                 )
             }
             item {
-                InfoAboutUser(
-                    desc = "Edit password here",
+                CustomProfileTextField(
+                    text = "Password",
+                    description = "Edit your password here",
+                    placeholder = "password",
+                    onValueChange = { /* nothing for this instance. */  },
                     onClick = {
                         navController.navigate(Screen.EditPasswordScreen.route)
                     }
                 )
             }
             item {
-                InfoAboutUser(
-                    desc = "Edit your gender here",
+                CustomProfileTextField(
+                    text = "Gender",
+                    description = "Edit your gender here",
+                    placeholder = "gender",
+                    onValueChange = { /* nothing for this instance. */  },
                     onClick = {
                         navController.navigate(Screen.EditGenderScreen.route)
                     }
                 )
             }
             item {
-                InfoAboutUser(
-                    desc = "Edit your postal code here",
+                CustomProfileTextField(
+                    text = "Postal Code",
+                    description = "Edit your postal code here",
+                    placeholder = "gender",
+                    onValueChange = { /* nothing for this instance. */  },
                     onClick = {
                         navController.navigate(Screen.EditPostalScreen.route)
                     }
