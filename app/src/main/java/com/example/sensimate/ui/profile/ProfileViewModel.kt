@@ -35,6 +35,12 @@ class ProfileViewModel : ViewModel() {
         initializeProfile()
     }
 
+    /**
+     * A function that initializes the profile.
+     * This function sets the value of _uiState variable to a new instance of ProfileUiState
+     * class with values of the existing _uiState variable fields.
+     * @author Yusuf Kara
+     */
     private fun initializeProfile() {
         _uiState.value = ProfileUiState(
             age = _uiState.value.age,
@@ -49,6 +55,15 @@ class ProfileViewModel : ViewModel() {
         )
     }
 
+    /**
+     * A function that retrieves profile data.
+     * The function first checks whether the user is a guest or not by calling
+     * 'getBooleanFromLocalStorage' function with the key 'isGuest'. If the user is not a guest,
+     * the function uses coroutines to retrieve the profile data and calculates the age of the user.
+     * The data is then stored in the _uiState variable. If the user is a guest, the function uses
+     * coroutines to retrieve the data from local storage and store it in the _uiState variable.
+     * @author Yusuf Kara
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun fetchProfileData(context: Context) {
         if (!getBooleanFromLocalStorage(key = "isGuest", context = context)) {
@@ -103,6 +118,15 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
+    /**
+     * The profile() function is a private, suspended function used to retrieve the user's
+     * profile information from the database and update the ProfileUiState object with the
+     * retrieved information.
+     * It calls the Database.fetchProfile() function to get the user's profile information and
+     * updates the fields of the _uiState.value.
+     * @return ProfileUiState object with the current user's profile information
+     * @author Yusuf Kara
+     */
     private suspend fun profile(): ProfileUiState {
         val profile = Database.fetchProfile()
 
@@ -121,6 +145,16 @@ class ProfileViewModel : ViewModel() {
         )
     }
 
+    /**
+     * A function that updates the postal code of the user's profile.
+     * @param postalCode : The new postal code value.
+     * The function checks if the current postal code value is an empty string, If true it will
+     * not do anything.
+     * If the current postal code value is not an empty string, it creates a map of fields to update,
+     * the map that contains only one key-value: "postalCode" to the new postal code value.
+     * Then it uses coroutine to launch the updateProfileFields function in the Database class
+     * with the fields map as an argument.
+     */
     fun updatePostalCode(postalCode: String) {
         if (_uiState.value.postalCode == "") {
             // Don't do anything
@@ -134,10 +168,23 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the postal code stored in the UI state.
+     */
     fun updatePostalString(input: String) {
         _uiState.value = _uiState.value.copy(postalCode = input)
     }
 
+    /**
+     * * A function that updates the gender of the user's profile.
+     * @param gender : The new gender value.
+     * The function checks if the current gender value is an empty string, If true it will
+     * not do anything.
+     * If the current gender value is not an empty string, it creates a map of fields to update,
+     * the map that contains only one key-value: "gender" to the new gender value.
+     * Then it uses coroutine to launch the updateProfileFields function in the Database class
+     * with the fields map as an argument.
+     */
     fun updateGender(gender: String) {
         if (_uiState.value.gender == "") {
             // Don't do anything
@@ -152,18 +199,30 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Updates the gender stored in the UI state.
+     */
     fun updateSelectedGenderString(input: String) {
         _uiState.value = _uiState.value.copy(gender = input)
     }
 
+    /**
+     * Updates the password stored in the UI state.
+     */
     fun updateCurrentPasswordString(input: String) {
         _uiState.value = _uiState.value.copy(currentPassword = input)
     }
 
+    /**
+     * Updates the new password stored in the UI state.
+     */
     fun updateNewPasswordString(input: String) {
         _uiState.value = _uiState.value.copy(newPassword = input)
     }
 
+    /**
+     * Updates the e-mail stored in the UI state.
+     */
     fun updateEmailString(input: String) {
         _uiState.value = _uiState.value.copy(email = input)
     }
