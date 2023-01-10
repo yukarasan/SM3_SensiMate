@@ -2,12 +2,14 @@ package com.example.sensimate.ui.survey
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.Pager
@@ -16,6 +18,8 @@ import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.theme.BottonGradient
+import com.example.sensimate.ui.theme.DarkPurple
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -29,6 +33,16 @@ fun SurveyCreator(
     questionViewModel: QuestionViewModel,
     eventViewModel: EventViewModel
 ) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(
+            Brush.verticalGradient(
+                0.0f to DarkPurple,
+                0.5f to BottonGradient
+            )
+        )
+    )
+
     val surveyId = eventViewModel.uiState.value.chosenSurveyId
     val state = questionViewModel.uiState.value
     var hasOther: Boolean = false
