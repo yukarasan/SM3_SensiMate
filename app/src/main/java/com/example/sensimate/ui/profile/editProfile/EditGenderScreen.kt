@@ -82,7 +82,7 @@ fun EditGenderScreen(
 @Composable
 private fun DropDownMenu(selectedGender: String, profileViewModel: ProfileViewModel) {
     var expanded by remember { mutableStateOf(false) }
-    val suggestions = listOf("Man", "Woman", "Other")
+    val suggestions = listOf("Male", "Female", "Other")
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
     val icon = if (expanded)
