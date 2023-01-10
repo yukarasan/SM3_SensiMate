@@ -1,6 +1,10 @@
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import android.util.Log
-import android.widget.Toast
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,6 +45,7 @@ import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 import com.example.sensimate.ui.theme.RedColor
+import java.util.*
 
 /*
 @Preview(showBackground = true)
@@ -323,22 +328,11 @@ fun EditPage(
 
     Log.d("huske", eventViewModel.uiState.value.chosenSurveyId)
 
-    var titleText by remember { mutableStateOf(chosenEvent.title) }
-    var descriptionText by remember { mutableStateOf(chosenEvent.description) }
-    var locationText by remember { mutableStateOf(chosenEvent.location) }
-    var allergensText by remember { mutableStateOf(chosenEvent.allergens) }
-    var surveyCodeText by remember { mutableStateOf(chosenEvent.surveyCode) }
-    var myYear = remember { mutableStateOf(chosenEvent.year) }
-    var myMonth = remember { mutableStateOf(chosenEvent.month) }
-    var myDay = remember { mutableStateOf(chosenEvent.day) }
-    val eventId = remember { mutableStateOf(chosenEvent.eventId) }
+
 
     val maxChar = 4
 
 
-    Log.d("day :", myDay.value)
-    Log.d("month : ", myMonth.value)
-    Log.d("year : ", myYear.value)
 
     var year: String
     var month: String
@@ -381,9 +375,9 @@ fun EditPage(
 
         item {
             Spacer(modifier = Modifier.size(55.dp))
-            TitleText(titleText) { titleText = it }
+            TitleText(chosenEvent.title) { chosenEvent.title = it }
             Spacer(modifier = Modifier.size(27.dp))
-            DescriptionText(descriptionText) { descriptionText = it }
+            DescriptionText(chosenEvent.description) { chosenEvent.description = it }
             Spacer(modifier = Modifier.size(55.dp))
             Card(
                 modifier = Modifier
@@ -407,21 +401,20 @@ fun EditPage(
                     contentScale = ContentScale.Crop,
 
                     )
-                LocationText(locationText) { locationText = it }
-                AllergensText(allergensText) { allergensText = it }
-                SurveyCodeText(surveyCodeText) {
-                    if (it.length <= maxChar) surveyCodeText = it
+                LocationText(chosenEvent.location) { chosenEvent.location = it }
+                AllergensText(chosenEvent.allergens) { chosenEvent.allergens = it }
+                SurveyCodeText(chosenEvent.surveyCode) {
+                    if (it.length <= maxChar) chosenEvent.surveyCode = it
                 }
-                ChooseEventDate(
+                EventDateChosen(
                     LocalContext.current,
-                    myYear = myYear,
-                    myMonth = myMonth,
-                    myDay = myDay
+                    myYear = chosenEvent.year,
+                    myMonth = chosenEvent.month,
+                    myDay = chosenEvent.day
                 )
 
-                day = myDay.value
-                month = myMonth.value
-                year = myYear.value
+                Time(context = LocalContext.current,
+                    myHour = chosenEvent.hour, myMinute = chosenEvent.minute)
 
                 Column(
 
@@ -565,6 +558,113 @@ fun EditPage(
     }
 }
 
+
+@Composable
+fun Time(context: Context,
+               myHour: String,
+               myMinute: String){
+    // Declaring and initializing a calendar
+    val mCalendar = Calendar.getInstance()
+    val iHour = remember { mutableStateOf(mCalendar.get(Calendar.HOUR_OF_DAY)) }
+    val iMinute = remember { mutableStateOf(mCalendar.get(Calendar.MINUTE)) }
+
+
+
+    // Value for storing time as a string
+    var mTime by remember { mutableStateOf(("")) }
+    val hasChosen = remember {
+        mutableStateOf(false)
+    }
+    // Creating a TimePicker dialod
+    val mTimePickerDialog = TimePickerDialog(
+        context,
+        { _: TimePicker, mHour : Int, mMinute: Int ->
+            mTime = "$mHour:$mMinute"
+            iHour.value = mHour
+            iMinute.value = mMinute
+            hasChosen.value = true
+        }, iHour.value, iMinute.value, false
+    )
+
+    TextField(
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.Green,
+            backgroundColor = Color.Transparent
+        ),
+        enabled = false,
+        value = mTime,
+        label = {
+            Text(text = "Time Of The Event", color = Color(0xFFB874A6)) },
+        onValueChange = {},
+        modifier = Modifier
+            .padding(1.dp, 128.dp, 1.dp, 1.dp)
+            .clickable { mTimePickerDialog.show() },
+    )
+}
+
+
+@Composable
+fun EventDateChosen(
+    context: Context,
+    myYear: String,
+    myMonth: String,
+    myDay: String,
+) {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.YEAR,0)
+
+    // Create state variables to store the selected year, month, and day
+    val selectedYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
+    val selectedMonth = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
+    val selectedDay = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
+
+    val hasChosen = remember {
+        mutableStateOf(false)
+    }
+
+    Log.d("myyear.value", myYear)
+    Log.d("mymonth.value", myMonth)
+    Log.d("myday.value", myDay)
+
+
+    var text by remember { mutableStateOf(("")) }
+
+    val datePickerLog =
+        DatePickerDialog(
+            context,
+            { _: DatePicker, year: Int, month: Int, dayofMonth: Int ->
+                text = "$dayofMonth/${month + 1}/$year"
+                // Update the selected year, month, and day
+                selectedYear.value = year
+                selectedMonth.value = month
+                selectedDay.value = dayofMonth
+                hasChosen.value = true
+            }, selectedYear.value, selectedMonth.value, selectedDay.value
+        )
+    /*
+    if (hasChosen.value) {
+        myYear = selectedYear.value.toString()
+        myMonth.value = (selectedMonth.value + 1).toString()
+        myDay.value = selectedDay.value.toString()
+    }
+
+     */
+
+    datePickerLog.datePicker.minDate = calendar.timeInMillis
+    TextField(
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.Green,
+            backgroundColor = Color.Transparent
+        ),
+        enabled = false,
+        value = text /*if(myDay.value.isNotEmpty()) "${myDay.value}/${myMonth.value}/${myYear.value}" else ""*/,
+        label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
+        onValueChange = {},
+        modifier = Modifier
+            .padding(1.dp, 65.dp, 1.dp, 1.dp)
+            .clickable { datePickerLog.show() },
+    )
+}
 
 
 @Composable
