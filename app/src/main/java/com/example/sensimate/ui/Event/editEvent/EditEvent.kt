@@ -1,6 +1,10 @@
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import android.util.Log
-import android.widget.Toast
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,6 +38,7 @@ import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
+import com.example.sensimate.ui.Event.editEvent.EditEventViewmodel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.survey.Survey4
@@ -41,6 +46,7 @@ import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
 import com.example.sensimate.ui.theme.RedColor
+import java.util.*
 
 /*
 @Preview(showBackground = true)
@@ -57,15 +63,10 @@ fun EditEventPreview() {
 @Composable
 fun EditEvent(
     navController: NavController,
-    //title: String,
-    //time: String,
-    //location: String,
-    //allergens: String,
-    //description: String,
-    //surveyCode: String,
-    eventViewModel: EventViewModel = viewModel()
+    eventViewModel: EventViewModel = viewModel(),
 ) {
     val state = eventViewModel.uiState
+
 
     val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
 
@@ -315,30 +316,18 @@ fun EditPage(
     //description: String,
     //surveyCode: String,
     eventViewModel: EventViewModel,
-    //editEventViewmodel: EditEventViewmodel
+    editEventViewmodel: EditEventViewmodel = viewModel()
 ) {
-    val state = eventViewModel.uiState
+    //val state = eventViewModel.uiState
+
+    val state = editEventViewmodel.uiState.collectAsState()
 
     val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
 
     Log.d("huske", eventViewModel.uiState.value.chosenSurveyId)
 
-    var titleText by remember { mutableStateOf(chosenEvent.title) }
-    var descriptionText by remember { mutableStateOf(chosenEvent.description) }
-    var locationText by remember { mutableStateOf(chosenEvent.location) }
-    var allergensText by remember { mutableStateOf(chosenEvent.allergens) }
-    var surveyCodeText by remember { mutableStateOf(chosenEvent.surveyCode) }
-    var myYear = remember { mutableStateOf(chosenEvent.year) }
-    var myMonth = remember { mutableStateOf(chosenEvent.month) }
-    var myDay = remember { mutableStateOf(chosenEvent.day) }
-    val eventId = remember { mutableStateOf(chosenEvent.eventId) }
-
     val maxChar = 4
 
-
-    Log.d("day :", myDay.value)
-    Log.d("month : ", myMonth.value)
-    Log.d("year : ", myYear.value)
 
     var year: String
     var month: String
@@ -381,9 +370,10 @@ fun EditPage(
 
         item {
             Spacer(modifier = Modifier.size(55.dp))
-            TitleText(titleText) { titleText = it }
+            TitleText(titleText = chosenEvent.title, textChange = {chosenEvent.title = it})
+            //TitleText(chosenEvent.title) { chosenEvent.title = it }
             Spacer(modifier = Modifier.size(27.dp))
-            DescriptionText(descriptionText) { descriptionText = it }
+            DescriptionText(chosenEvent.description) { chosenEvent.description = it }
             Spacer(modifier = Modifier.size(55.dp))
             Card(
                 modifier = Modifier
@@ -407,24 +397,24 @@ fun EditPage(
                     contentScale = ContentScale.Crop,
 
                     )
-                LocationText(locationText) { locationText = it }
-                AllergensText(allergensText) { allergensText = it }
-                SurveyCodeText(surveyCodeText) {
-                    if (it.length <= maxChar) surveyCodeText = it
+                LocationText(chosenEvent.location) { chosenEvent.location = it }
+                AllergensText(chosenEvent.allergens) { chosenEvent.allergens = it }
+                SurveyCodeText(chosenEvent.surveyCode) {
+                    if (it.length <= maxChar) chosenEvent.surveyCode = it
                 }
-                ChooseEventDate(
+                EventDateChosen(
                     LocalContext.current,
-                    myYear = myYear,
-                    myMonth = myMonth,
-                    myDay = myDay
+                    myYear = chosenEvent.year,
+                    myMonth = chosenEvent.month,
+                    myDay = chosenEvent.day
                 )
 
-                day = myDay.value
-                month = myMonth.value
-                year = myYear.value
+                Time(
+                    context = LocalContext.current,
+                    myHour = chosenEvent.hour, myMinute = chosenEvent.minute
+                )
 
                 Column(
-
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -435,25 +425,31 @@ fun EditPage(
 
                     Button(
                         onClick = {
-                            /*editEventViewmodel.checkIfTextfieldIsEmpty(
+                            editEventViewmodel.checkIfTextfieldIsEmpty(
                                 context,
-                                titleText, descriptionText, locationText, myYear.value,
-                                myMonth.value, myDay.value, allergensText, surveyCodeText
+                                chosenEvent.title,
+                                chosenEvent.description,
+                                chosenEvent.location,
+                                chosenEvent.year,
+                                chosenEvent.month,
+                                chosenEvent.day,
+                                chosenEvent.allergens,
+                                chosenEvent.surveyCode
+                            )
 
-                             */
 
-                            /*val events = editEventViewmodel.createHashMapforEvent(
-                                titleText,
-                                descriptionText,
-                                allergensText, locationText, surveyCodeText, day, month, year, eventId.value
-                            ) //time
-
-                             */
+                            val events = editEventViewmodel.createHashMapforEvent(
+                                chosenEvent.title,
+                                chosenEvent.description,
+                                chosenEvent.location, chosenEvent.allergens,
+                                chosenEvent.surveyCode, chosenEvent.day, chosenEvent.year,
+                                chosenEvent.month, chosenEvent.eventId, chosenEvent.minute,
+                                chosenEvent.hour
+                            )
 
                             Log.d("documentref : ", chosenEvent.eventId)
 
-                            //Database.UpdateEvent(events, chosenEvent.eventId)
-
+                            Database.UpdateEvent(events, chosenEvent.eventId)
 
                             /*
                             if (titleText == "") {
@@ -566,10 +562,119 @@ fun EditPage(
 }
 
 
+@Composable
+fun Time(
+    context: Context,
+    myHour: String,
+    myMinute: String
+) {
+    // Declaring and initializing a calendar
+    val mCalendar = Calendar.getInstance()
+    val iHour = remember { mutableStateOf(mCalendar.get(Calendar.HOUR_OF_DAY)) }
+    val iMinute = remember { mutableStateOf(mCalendar.get(Calendar.MINUTE)) }
+
+
+    // Value for storing time as a string
+    var mTime by remember { mutableStateOf(("")) }
+    val hasChosen = remember {
+        mutableStateOf(false)
+    }
+    // Creating a TimePicker dialod
+    val mTimePickerDialog = TimePickerDialog(
+        context,
+        { _: TimePicker, mHour: Int, mMinute: Int ->
+            mTime = "$mHour:$mMinute"
+            iHour.value = mHour
+            iMinute.value = mMinute
+            hasChosen.value = true
+        }, iHour.value, iMinute.value, false
+    )
+
+    TextField(
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.Green,
+            backgroundColor = Color.Transparent
+        ),
+        enabled = false,
+        value = "$myHour : $myMinute",
+        label = {
+            Text(text = "Time Of The Event", color = Color(0xFFB874A6))
+        },
+        onValueChange = {},
+        modifier = Modifier
+            .padding(1.dp, 128.dp, 1.dp, 1.dp)
+            .clickable { mTimePickerDialog.show() },
+    )
+}
+
+
+@Composable
+fun EventDateChosen(
+    context: Context,
+    myYear: String,
+    myMonth: String,
+    myDay: String,
+) {
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.YEAR, 0)
+
+    // Create state variables to store the selected year, month, and day
+    val selectedYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
+    val selectedMonth = remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
+    val selectedDay = remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
+
+    val hasChosen = remember {
+        mutableStateOf(false)
+    }
+
+    Log.d("myyear.value", myYear)
+    Log.d("mymonth.value", myMonth)
+    Log.d("myday.value", myDay)
+
+
+    var text by remember { mutableStateOf(("")) }
+
+    val datePickerLog =
+        DatePickerDialog(
+            context,
+            { _: DatePicker, year: Int, month: Int, dayofMonth: Int ->
+                text = "$dayofMonth/${month + 1}/$year"
+                // Update the selected year, month, and day
+                selectedYear.value = year
+                selectedMonth.value = month
+                selectedDay.value = dayofMonth
+                hasChosen.value = true
+            }, selectedYear.value, selectedMonth.value, selectedDay.value
+        )
+    /*
+    if (hasChosen.value) {
+        myYear = selectedYear.value.toString()
+        myMonth.value = (selectedMonth.value + 1).toString()
+        myDay.value = selectedDay.value.toString()
+    }
+
+     */
+
+    datePickerLog.datePicker.minDate = calendar.timeInMillis
+    TextField(
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.Green,
+            backgroundColor = Color.Transparent
+        ),
+        enabled = false,
+        value = "$myDay/$myMonth/$myYear",
+        label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
+        onValueChange = {},
+        modifier = Modifier
+            .padding(1.dp, 65.dp, 1.dp, 1.dp)
+            .clickable { datePickerLog.show() },
+    )
+}
+
 
 @Composable
 fun DescriptionText(descriptionText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = descriptionText,
             onValueChange = textChange,
@@ -589,7 +694,7 @@ fun DescriptionText(descriptionText: String, textChange: (String) -> Unit) {
 
 @Composable
 fun TitleText(titleText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = titleText,
             onValueChange = textChange,
@@ -598,7 +703,8 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
                     text = "Title",
                     color = Color(0xFFB874A6)
                 )
-            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
         )
@@ -608,7 +714,7 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
 
 @Composable
 fun LocationText(locationText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = locationText,
             onValueChange = textChange,
@@ -642,7 +748,7 @@ fun LocationText(locationText: String, textChange: (String) -> Unit) {
 
 @Composable
 fun AllergensText(allergensText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = allergensText,
             onValueChange = textChange,
@@ -666,7 +772,7 @@ fun AllergensText(allergensText: String, textChange: (String) -> Unit) {
 
 @Composable
 fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = surveyCodeText,
             onValueChange = textChange,
@@ -688,11 +794,10 @@ fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
 }
 
 
-
 @Composable
 fun TextFiledTitleText() {
     var text by remember { mutableStateOf("Coca Cola") }
-    ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
@@ -716,7 +821,7 @@ fun TextFiledTitleText() {
 @Composable
 fun TextFiledDescriptionText() {
     var text by remember { mutableStateOf("Come and taste the freshing sensation of Coca Cola. Get a whole six pack for free.") }
-    ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
@@ -739,7 +844,7 @@ fun TextFiledDescriptionText() {
 
 
 @Composable
-fun ContentColorComponent(
+fun ContentColor1Component(
     contentColor: Color = LocalContentColor.current,
     content: @Composable () -> Unit
 ) {
