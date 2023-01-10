@@ -312,8 +312,8 @@ fun EditPage(
     //allergens: String,
     //description: String,
     //surveyCode: String,
-    eventViewModel: EventViewModel
-
+    eventViewModel: EventViewModel,
+    editEventViewmodel: EditEventViewmodel
 ) {
     val state = eventViewModel.uiState
 
@@ -345,6 +345,8 @@ fun EditPage(
     Log.d("docrefagain :", chosenEvent.eventId)
 
     val context = LocalContext.current
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -432,6 +434,26 @@ fun EditPage(
 
                     Button(
                         onClick = {
+                            editEventViewmodel.checkIfTextfieldIsEmpty(
+                                context,
+                                titleText, descriptionText, locationText, myYear.value,
+                                myMonth.value, myDay.value, allergensText, surveyCodeText
+                            )
+
+                            val events = editEventViewmodel.createHashMapforEvent(
+                                titleText,
+                                descriptionText,
+                                allergensText, locationText, surveyCodeText,
+                                timeText, day, month, year, eventId.value
+                            )
+
+
+                            Log.d("documentref : ", chosenEvent.eventId)
+
+                            Database.UpdateEvent(events, chosenEvent.eventId)
+
+
+                            /*
                             if (titleText == "") {
                                 Toast.makeText(
                                     context,
@@ -470,6 +492,9 @@ fun EditPage(
                                 ).show()
                             } else {
 
+                                /*
+
+                             */
                                 val event = hashMapOf(
                                     "title" to titleText,
                                     "description" to descriptionText,
@@ -484,19 +509,17 @@ fun EditPage(
                                     "eventId" to eventId.value
                                 )
 
-                                Log.d("documentref : ", chosenEvent.eventId)
+                                 */
+                            //val documentID = db.collection("event").document().id
 
-                                Database.UpdateEvent(event, chosenEvent.eventId)
+                            // Log.d("DocumentrefB4 : ", documentID)
 
-                                //val documentID = db.collection("event").document().id
-
-                                // Log.d("DocumentrefB4 : ", documentID)
-
-                                Log.d("docref : ", chosenEvent.eventId)
+                            Log.d("docref : ", chosenEvent.eventId)
 
 
-                                /*navController.navigate(Screen.QuestionPageScreen.route)*/
-                            }
+                            /*navController.navigate(Screen.QuestionPageScreen.route)*/
+
+
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
