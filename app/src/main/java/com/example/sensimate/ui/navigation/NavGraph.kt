@@ -20,10 +20,7 @@ import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.Event.EventUiState
-import com.example.sensimate.ui.Event.createEvent.CreateEventScreen
-import com.example.sensimate.ui.Event.createEvent.CreateMultpleChoiceQuestionScreen
-import com.example.sensimate.ui.Event.createEvent.CreateTextAnswerQuestionScreen
-import com.example.sensimate.ui.Event.createEvent.QuestionPageScreen
+import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail
@@ -45,6 +42,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
     val questionViewModel = QuestionViewModel()
     val eventViewModel = EventViewModel()
     val startProfileViewModel = StartProfileViewModel()
+    val createEventViewModel = CreateEventViewModel()
 
     val context = LocalContext.current
 
@@ -149,7 +147,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             ProfileScreen(navController = navController)
         }
         composable(route = Screen.CreateEventScreen.route) {
-            CreateEventScreen(navController = navController)
+            CreateEventScreen(navController = navController, createEventViewModel = createEventViewModel)
         }
         composable(route = Screen.QuestionPageScreen.route) {
             QuestionPageScreen(navController = navController)

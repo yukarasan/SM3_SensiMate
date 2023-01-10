@@ -70,8 +70,8 @@ fun Survey3(title: String, navController: NavController, questionViewModel: Ques
                     .fillMaxWidth()
                     .padding(top = 70.dp)
             ) {
-                PreviousButton(onClick = { navController.navigate(Screen.Survey2.route) } )
-                NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
+                //PreviousButton(onClick = { navController.navigate(Screen.Survey2.route) } )
+                //NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
             }
         }
     }
