@@ -1,5 +1,7 @@
 package com.example.sensimate
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -12,6 +14,7 @@ import com.example.sensimate.ui.navigation.SetupNavGraph
 import com.example.sensimate.ui.Event.EventViewModel
 import com.example.sensimate.ui.theme.SensimateTheme
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun App(
     appViewModel: AppViewModel = viewModel(),
@@ -28,6 +31,7 @@ fun App(
     SetupNavGraph(navController = navController, eventUIState = eventUiState)
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun AppPreview() {

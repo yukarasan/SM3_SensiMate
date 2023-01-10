@@ -19,7 +19,8 @@ import com.example.sensimate.ui.theme.DarkPurple
 @Composable
 fun EventCard(
     title: String,
-    timeOfEvent: String,
+    hour: String,
+    minute: String,
     address: String,
     onClick: () -> Unit,
     //function: () -> Unit
@@ -50,7 +51,7 @@ fun EventCard(
                     Row {
                         LocationIcon()
                         Column(modifier = Modifier.padding(start = 5.dp)) {
-                            TimeOfEvent(timeOfEvent)
+                            TimeOfEvent(hour = hour, minute = minute)
                             Address(address)
                         }
                     }
@@ -85,9 +86,9 @@ private fun LocationIcon() {
 }
 
 @Composable
-private fun TimeOfEvent(time: String, modifier: Modifier = Modifier) {
+private fun TimeOfEvent(minute: String, hour: String, modifier: Modifier = Modifier) {
     Text(
-        text = time,
+        text = "$hour:$minute",
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,

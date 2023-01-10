@@ -137,8 +137,8 @@ fun EditEvent(
                                 Row {
                                     Column {
                                         Title(title = chosenEvent.title)
-                                        Discription(
-                                            discription = chosenEvent.description
+                                        Description(
+                                            description = chosenEvent.description
                                         )
                                     }
                                 }
@@ -146,7 +146,7 @@ fun EditEvent(
                         }
                         Spacer(modifier = Modifier.size(10.dp))
                         Allergens(title = chosenEvent.allergens)
-                        Discription(discription = chosenEvent.description)
+                        Description(description = chosenEvent.description)
                         Spacer(modifier = Modifier.size(20.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -155,10 +155,13 @@ fun EditEvent(
                             Column() {
                                 Title(title = "Location")
                             }
-                            Discription(discription = chosenEvent.timeOfEvent)
+                            HourAndMinuteDescription(
+                                hour = chosenEvent.hour,
+                                minute = chosenEvent.minute
+                            )
                         }
                         Spacer(modifier = Modifier.size(20.dp))
-                        Discription(discription = chosenEvent.location)
+                        Description(description = chosenEvent.location)
 
                     }
                 }
@@ -218,9 +221,9 @@ private fun Title(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Discription(discription: String, modifier: Modifier = Modifier) {
+private fun HourAndMinuteDescription(hour: String, minute: String, modifier: Modifier = Modifier) {
     Text(
-        text = discription,
+        text = "$hour:$minute",
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 17.sp,
@@ -229,6 +232,20 @@ private fun Discription(discription: String, modifier: Modifier = Modifier) {
             .padding(start = 8.dp)
             .width(220.dp)
 
+    )
+}
+
+@Composable
+private fun Description(description: String, modifier: Modifier = Modifier) {
+    Text(
+        text = description,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 17.sp,
+        color = Color.White,
+        modifier = modifier
+            .padding(start = 8.dp)
+            .width(220.dp)
     )
 }
 
@@ -295,8 +312,8 @@ fun EditPage(
     //allergens: String,
     //description: String,
     //surveyCode: String,
-    eventViewModel: EventViewModel
-
+    eventViewModel: EventViewModel,
+    //editEventViewmodel: EditEventViewmodel
 ) {
     val state = eventViewModel.uiState
 
@@ -309,7 +326,6 @@ fun EditPage(
     var locationText by remember { mutableStateOf(chosenEvent.location) }
     var allergensText by remember { mutableStateOf(chosenEvent.allergens) }
     var surveyCodeText by remember { mutableStateOf(chosenEvent.surveyCode) }
-    var timeText by remember { mutableStateOf(chosenEvent.timeOfEvent) }
     var myYear = remember { mutableStateOf(chosenEvent.year) }
     var myMonth = remember { mutableStateOf(chosenEvent.month) }
     var myDay = remember { mutableStateOf(chosenEvent.day) }
@@ -329,6 +345,8 @@ fun EditPage(
     Log.d("docrefagain :", chosenEvent.eventId)
 
     val context = LocalContext.current
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -404,8 +422,6 @@ fun EditPage(
                 month = myMonth.value
                 year = myYear.value
 
-
-                TextFileTimeText(timeText) { timeText = it }
                 Column(
 
                     modifier = Modifier.fillMaxSize(),
@@ -418,6 +434,28 @@ fun EditPage(
 
                     Button(
                         onClick = {
+                            /*editEventViewmodel.checkIfTextfieldIsEmpty(
+                                context,
+                                titleText, descriptionText, locationText, myYear.value,
+                                myMonth.value, myDay.value, allergensText, surveyCodeText
+
+                             */
+
+                            /*val events = editEventViewmodel.createHashMapforEvent(
+                                titleText,
+                                descriptionText,
+                                allergensText, locationText, surveyCodeText, day, month, year, eventId.value
+                            ) //time
+
+                             */
+
+
+                            Log.d("documentref : ", chosenEvent.eventId)
+
+                            //Database.UpdateEvent(events, chosenEvent.eventId)
+
+
+                            /*
                             if (titleText == "") {
                                 Toast.makeText(
                                     context,
@@ -456,32 +494,34 @@ fun EditPage(
                                 ).show()
                             } else {
 
+                                /*
+
+                             */
                                 val event = hashMapOf(
                                     "title" to titleText,
                                     "description" to descriptionText,
                                     "allergens" to allergensText,
                                     "location" to locationText,
                                     "surveyCode" to surveyCodeText,
-                                    "timeOfEvent" to timeText,
                                     "day" to day,
                                     "month" to month,
                                     "year" to year,
+                                    // "hour" to hour,
+                                    // "minute" to minute,
                                     "eventId" to eventId.value
                                 )
 
-                                Log.d("documentref : ", chosenEvent.eventId)
+                                 */
+                            //val documentID = db.collection("event").document().id
 
-                                Database.UpdateEvent(event, chosenEvent.eventId)
+                            // Log.d("DocumentrefB4 : ", documentID)
 
-                                //val documentID = db.collection("event").document().id
-
-                                // Log.d("DocumentrefB4 : ", documentID)
-
-                                Log.d("docref : ", chosenEvent.eventId)
+                            Log.d("docref : ", chosenEvent.eventId)
 
 
-                                /*navController.navigate(Screen.QuestionPageScreen.route)*/
-                            }
+                            /*navController.navigate(Screen.QuestionPageScreen.route)*/
+
+
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -675,7 +715,7 @@ fun TextFiledTimeText() {
 
 @Composable
 fun EditSurvey(navController: NavController, questionViewModel: QuestionViewModel) {
-    Survey4(title = "", navController,questionViewModel)
+    Survey4(title = "", navController, questionViewModel)
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)

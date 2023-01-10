@@ -42,6 +42,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.toSize
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
@@ -83,7 +84,7 @@ fun SignUpUsingMail(
 
             MySensimateLogo()
             Text(
-                text = "SensiMate",
+                text = stringResource(id = R.string.myName),
                 color = Color.White,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold,
@@ -97,12 +98,11 @@ fun SignUpUsingMail(
         item {
 
             //email button
-            var email by remember { mutableStateOf("") }
             MyTextField(
                 text = state.value.mail.value,
                 textSize = 15,
                 onValueChange = { startProfileViewModel.changeMail(it) },
-                placeHolder = "Enter E-mail",
+                placeHolder = stringResource(id = R.string.enterMail),
                 width = 300,
                 height = 51,
                 KeyboardType.Email,
@@ -113,12 +113,11 @@ fun SignUpUsingMail(
             )
 
             Spacer(modifier = Modifier.size(45.dp))
-            var password by remember { mutableStateOf("") }
             MyTextField(
                 text = state.value.password.value,
                 textSize = 15,
                 onValueChange = { startProfileViewModel.changePassword(it) },
-                placeHolder = "Enter password",
+                placeHolder = stringResource(id = R.string.enterPassword),
                 width = 300,
                 height = 51,
                 KeyboardType.Password,
@@ -134,7 +133,7 @@ fun SignUpUsingMail(
                 text = state.value.confirmPassword.value,
                 textSize = 15,
                 onValueChange = { startProfileViewModel.changeConfirmPassword(it) },
-                placeHolder = "Confirm password",
+                placeHolder = stringResource(id = R.string.confirmPassword),
                 width = 300,
                 height = 51,
                 KeyboardType.Password,
@@ -157,7 +156,7 @@ fun SignUpUsingMail(
                             startProfileViewModel.changePostalCode(it)
                         }
                     },
-                    "Postal code"
+                    stringResource(id = R.string.postalcode)
                 )
                 Spacer(modifier = Modifier.size(20.dp))
                 DropDownMenu(state.value.gender)
@@ -172,14 +171,14 @@ fun SignUpUsingMail(
 
             val showMessage = mutableStateOf(false)
             showMessage(
-                message = "Passwords do not match",
+                message = stringResource(id = R.string.passworderror),
                 showMessage
             )
 
             val context = LocalContext.current
             Spacer(modifier = Modifier.size(30.dp))
             myButton(color = Color.White,
-                title = "Sign up",
+                title = stringResource(id = R.string.signUp),
                 PurpleButtonColor,
                 onClick = {
                     startProfileViewModel.signUp(
@@ -295,13 +294,6 @@ fun ChooseBirthDate(
         mutableStateOf(false)
     }
 
-
-
-    Log.d("myyear.value", myYear.value)
-    Log.d("mymonth.value", myMonth.value)
-    Log.d("myday.value", myDay.value)
-
-
     var text by remember { mutableStateOf(("")) }
 
     val datePickerLog =
@@ -344,8 +336,11 @@ fun ChooseBirthDate(
 fun DropDownMenu(selectedGender: MutableState<String>) {
 
     var expanded by remember { mutableStateOf(false) }
-    val suggestions = listOf("Man", "Woman", "Other")
-
+    val suggestions = listOf(
+        stringResource(id = R.string.male),
+        stringResource(id = R.string.female),
+        stringResource(id = R.string.other)
+    )
 
     var textfieldSize by remember { mutableStateOf(Size.Zero) }
 
@@ -373,7 +368,7 @@ fun DropDownMenu(selectedGender: MutableState<String>) {
                     //This value is used to assign to the DropDown the same width
                     textfieldSize = coordinates.size.toSize()
                 },
-            label = { Text("Gender") },
+            label = { Text(stringResource(id = R.string.gender)) },
             trailingIcon = {
                 Icon(
                     icon, "",
