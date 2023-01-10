@@ -2,11 +2,7 @@ package com.example.sensimate.data
 
 
 import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,13 +14,14 @@ class EditEventViewmodel : ViewModel() {
     val uiState: StateFlow<Event> = _uiState.asStateFlow()
 
 
+    /*
     fun createHashMapforEvent(
         titleText: String,
         descriptionText: String,
         allergensText: String,
         locationText: String,
         surveyCodeText: String,
-        timeText: String,
+        timeText: MutableState<String>,
         day: String,
         month: String,
         year: String,
@@ -55,6 +52,7 @@ class EditEventViewmodel : ViewModel() {
         )
         return event
     }
+     */
 
 
     fun checkIfTextfieldIsEmpty(

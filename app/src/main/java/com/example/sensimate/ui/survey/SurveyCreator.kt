@@ -2,20 +2,25 @@ package com.example.sensimate.ui.survey
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.Pager
 import com.example.sensimate.data.EventViewModel
+import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
+import kotlin.math.log
 
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
@@ -29,7 +34,7 @@ fun SurveyCreator(
     var hasOther: Boolean = false
 
     // Returns a scope that's cancelled when F is removed from composition
-    val coroutineScope = rememberCoroutineScope()
+
     val loaded = remember {
         mutableStateOf(false)
     }
@@ -39,7 +44,7 @@ fun SurveyCreator(
 
     if (loaded2.value) {
         Log.d("sjdj", "dk")
-        AllPages(navController,questionViewModel.uiState.value.questions, questionViewModel)
+        AllPages(navController, questionViewModel.uiState.value.questions, questionViewModel)
     }
 
     LaunchedEffect(key1 = true) {
@@ -63,57 +68,135 @@ fun SurveyCreator(
 }
 
 
-@SuppressLint("StateFlowValueCalledInComposition")
+@SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AllPages(
     navController: NavController,
     questions: List<MyQuestion>,
     questionViewModel: QuestionViewModel,
+    //surveyAnswer: List<MyAnswer>
     /*eventViewModel: EventViewModel*/
 ) {
     val answers = mutableListOf<String>() //i vm
 
+    val pagerState = rememberPagerState()
+    val scope = rememberCoroutineScope()
+
     HorizontalPager(
         count = questions.size,
-        modifier = Modifier
+        modifier = Modifier,
+        state = pagerState
     ) { questionIndex ->
+        // for (question in questions) {
+        //questions[questionIndex]
 
-           // for (question in questions) {
-                //questions[questionIndex]
+        for (option in questions[questionIndex].options) {
+            answers.add(option)
 
-                for (option in questions[questionIndex].options) {
-                    answers.add(option)
-
-                    questionViewModel.setCurrentQuestion(questions[questionIndex])
+            questionViewModel.setCurrentQuestion(questions[questionIndex])
 
 
-                    if (!questions[questionIndex].oneChoice) {
+            if (!questions[questionIndex].oneChoice) {
 
-                        Survey4(title = questions[questionIndex].mainQuestion, navController = navController, questionViewModel)
+                Survey4(
+                    title = questions[questionIndex].mainQuestion,
+                    navController = navController,
+                    questionViewModel
+                )
+
+            } else if (questions[questionIndex].oneChoice) {
+
+                Survey2(
+                    title = questions[questionIndex].mainQuestion,
+                    navController = navController,
+                    questionViewModel
+                )
+
+
+            } else if (questions[questionIndex].oneChoice2) {
+
+                Survey3(
+                    title = questions[questionIndex].mainQuestion,
+                    navController = navController,
+                    questionViewModel
+                )
+
+
+            } else {
+                Survey(
+                    title = questions[questionIndex].mainQuestion,
+                    navController = navController
+                )
+
+            }
+
+
+        }
+
+        Spacer(modifier = Modifier.size(600.dp))
+        Column(
+            verticalArrangement = Arrangement.Bottom, modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = 50.dp)
+        ) {
+
+            Row(
+                modifier = Modifier
+                    .padding(start = 15.dp, end = 15.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (pagerState.currentPage > 0) {
+                    PreviousButton(onClick = {
+                        if (pagerState.currentPage > 0) {
+
+                            scope.launch {
+                                //PreviousButton(onClick = {
+                                pagerState.currentPage
+                                pagerState.scrollToPage(pagerState.currentPage - 1)
+                            }
+                        }
+                    })
+                }
+
+                if (pagerState.currentPage == pagerState.pageCount - 1) {
+                    FinishButton() {
                     }
-
-                    else if (questions[questionIndex].oneChoice) {
-
-                        Survey2(title = questions[questionIndex].mainQuestion, navController = navController, questionViewModel)
-
-                    } else if (questions[questionIndex].oneChoice2) {
-
-                        Survey3(title = questions[questionIndex].mainQuestion, navController = navController, questionViewModel)
-
-                    } else {
-                        Survey(
-                            title = questions[questionIndex].mainQuestion,
-                            navController = navController
-                        )
-
-                    }
-
+                } else {
+                    NextButton(onClick = {
+                        if (pagerState.currentPage < pagerState.pageCount - 1) {
+                            scope.launch {
+                                //PreviousButton(onClick = {
+                                pagerState.currentPage
+                                pagerState.scrollToPage(pagerState.currentPage + 1)
+                            }
+                        }
+                    })
 
                 }
             }
-
         }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -81,8 +81,8 @@ fun Survey(
                         .padding(top = 150.dp)
                 ) {
                     //TODO: Remember to Implement Scaffold so the buttons does not move, but does not move
-                    PreviousButton(onClick = { navController.navigate(Screen.Survey.route) })
-                    NextButton(onClick = { navController.navigate(Screen.Survey2.route) })
+                   // PreviousButton(onClick = { navController.navigate(Screen.Survey.route) })
+                   //NextButton(onClick = { navController.navigate(Screen.Survey2.route) })
                 }
             }
         }

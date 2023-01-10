@@ -12,3 +12,8 @@ class MyQuestion(
     var oneChoice: Boolean = false,
     var oneChoice2: Boolean = false,
 )
+
+class MyAnswer(
+    var myAnswer: List<String>,
+    var mainQuestion: String = "",
+)
