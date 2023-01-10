@@ -37,6 +37,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
+//import com.example.sensimate.data.Database.updateSurvey
+import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
@@ -76,8 +78,8 @@ fun Survey4(title: String, navController: NavController,  questionViewModel: Que
                         .fillMaxWidth()
                         .padding(top = 70.dp)
                 ) {
-                    PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
-                    FinishButton(onClick = { navController.navigate(Screen.EventScreen.route) } )
+                    //PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
+                    //FinishButton(onClick = { navController.navigate(Screen.EventScreen.route) } )
                 }
             }
 
@@ -99,7 +101,6 @@ private fun ProgressPreview() {
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
         progress = 1f //TODO:  Needs state hoisting in future.
-
     )
 }
 
@@ -254,9 +255,13 @@ fun FinishButton(onClick: () -> Unit) {
             )
 
         }
+
     }
 
+    //updateSurvey(eventId = eventId, survey = MyQuestion)
 }
+
+
 
 
 

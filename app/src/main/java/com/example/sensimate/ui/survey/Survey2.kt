@@ -70,53 +70,12 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
                     .fillMaxWidth()
                     .padding(top = 70.dp)
             ) {
-                PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
-                NextButton(onClick = { navController.navigate(Screen.Survey3.route) } )
+                // PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
+                // NextButton(onClick = { navController.navigate(Screen.Survey3.route) } )
             }
         }
     }
 }
-
-/*
-@Composable
-fun Survey2(title: String, navController: NavController) {
-    var selectedOption by remember { mutableStateOf(0) }
-    Box(
-        modifier = Modifier
-            .background(
-                Brush.verticalGradient(
-                    0.0f to DarkPurple,
-                    0.5f to BottonGradient
-                )
-            )
-            .fillMaxSize()
-    )
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
-    ) {
-        OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
-        ProgressPreview()
-        Question(title)
-        SurveyTitle(title)
-        Information2()
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 70.dp)
-        ) {
-            PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
-            NextButton(onClick = { navController.navigate(Screen.Survey3.route) } )
-        }
-    }
-}
-
- */
-
 
 @Composable
 private fun ProgressPreview() {
