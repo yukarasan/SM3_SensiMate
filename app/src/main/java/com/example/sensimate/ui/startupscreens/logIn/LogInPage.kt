@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -92,7 +93,7 @@ fun LogInMail(
             text = state.value.mail.value,
             textSize = 15,
             onValueChange = { startProfileViewModel.changeMail(it) },
-            placeHolder = "Enter E-mail",
+            placeHolder = stringResource(id = R.string.enterMail),
             width = 300,
             height = 51,
             KeyboardType.Email,
@@ -108,7 +109,7 @@ fun LogInMail(
             text = state.value.password.value,
             textSize = 15,
             onValueChange = { startProfileViewModel.changePassword(it) },
-            placeHolder = "Enter password",
+            placeHolder = stringResource(id = R.string.enterPassword),
             width = 300,
             height = 51,
             KeyboardType.Password,
@@ -127,7 +128,7 @@ fun LogInMail(
                 .padding(end = 50.dp)
         ) {
             Text(
-                "Forgot password?",
+                stringResource(id = R.string.forgotPassword),
                 color = Color.White,
                 fontFamily = manropeFamily,
                 fontWeight = FontWeight.SemiBold,
@@ -145,7 +146,7 @@ fun LogInMail(
 
 
         myButton(color = Color.White,
-            title = "Sign in",
+            title = stringResource(id = R.string.signIn),
             PurpleButtonColor,
 
             onClick = {
@@ -263,14 +264,14 @@ fun SignMenus(
         if (screen == Screen.Login) {
             MyOptionChosen(
                 color = Color.White,
-                title = "Sign in",
+                title = stringResource(id = R.string.signIn),
                 buttonColor = PurpleButtonColor,
                 onClick = {}
             )
         } else {
             MyOtherOption(
                 color = Color.White,
-                title = "Sign in",
+                title = stringResource(id = R.string.signIn),
                 onClick = {
                     navController.popBackStack()
                     navController.navigate(Screen.Login.route)
@@ -281,14 +282,14 @@ fun SignMenus(
         if (screen == Screen.SignUpWithMail) {
             MyOptionChosen(
                 color = Color.White,
-                title = "Sign up",
+                title = stringResource(id = R.string.signUp),
                 buttonColor = PurpleButtonColor,
                 onClick = {}
             )
         } else {
             MyOtherOption(
                 color = Color.White,
-                title = "Sign up",
+                title = stringResource(id = R.string.signUp),
                 onClick = {
                     navController.popBackStack()
                     navController.navigate(Screen.SignUpWithMail.route)
@@ -299,14 +300,14 @@ fun SignMenus(
         if (screen == Screen.Guest) {
             MyOptionChosen(
                 color = Color.White,
-                title = "Guest",
+                title = stringResource(id = R.string.guest),
                 buttonColor = PurpleButtonColor,
                 onClick = {}
             )
         } else {
             MyOtherOption(
                 color = Color.White,
-                title = "Guest",
+                title = stringResource(id = R.string.guest),
                 onClick = {
                     navController.popBackStack()
                     navController.navigate(Screen.Guest.route)

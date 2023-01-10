@@ -22,7 +22,6 @@ class QuestionViewModel : ViewModel() {
             _uiState.value = QuestionsUiState(
                 questions = Database.getSurveyAsList(eventId = eventId),
             )
-            Log.d("indeni viewmodel", uiState.value.questions.size.toString())
         }
         _uiState.value.questionsStarted = true
     }

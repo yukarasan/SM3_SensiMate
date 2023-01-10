@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.MySensimateLogo
@@ -89,7 +91,7 @@ fun ForgotPassword(
                     text = state.value.mail.value,
                     textSize = 15,
                     onValueChange = { startProfileViewModel.changeMail(it)},
-                    placeHolder = "Enter E-mail",
+                    placeHolder = stringResource(id = R.string.enterMail),
                     width = 300,
                     height = 51,
                     KeyboardType.Email,
@@ -103,13 +105,11 @@ fun ForgotPassword(
 
                 val context = LocalContext.current
                 myButton(color = Color.White,
-                    title = "Send recovery to mail",
+                    title = stringResource(id = R.string.sendRecovery),
                     PurpleButtonColor,
                     onClick = { Database.forgotPassword(email = state.value.mail.value, context, showLoading) }
                 )
             }
-
-
         }
     }
 

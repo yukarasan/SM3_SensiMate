@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.Event.createEvent.docId
@@ -172,7 +173,6 @@ object Database {
 
                 user.updateEmail(newEmail).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Log.d(TAG, "Email updated")
                         Toast.makeText(
                             context,
                             "Successfully updated your email",
@@ -277,7 +277,8 @@ object Database {
                     showLoading.value = false
                     successLoggedIn.value = true
                     Toast.makeText(
-                        context, "Account successfully created",
+                        context,
+                        context.resources.getString(R.string.successAcount),
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -286,7 +287,8 @@ object Database {
                 } else {
                     showLoading.value = false
                     Toast.makeText(
-                        context, "Authentication failed.",
+                        context,
+                        context.resources.getString(R.string.authFailed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -350,14 +352,16 @@ object Database {
                     showLoading.value = false
                     successLoggedIn.value = true
                     Toast.makeText(
-                        context, "Account successfully logged in",
+                        context,
+                        context.resources.getString(R.string.successLogged),
                         Toast.LENGTH_SHORT
                     ).show()
 
                 } else {
                     showLoading.value = false
                     Toast.makeText(
-                        context, "Log in failed.",
+                        context,
+                        context.resources.getString(R.string.loginFail),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -369,12 +373,14 @@ object Database {
         auth.signInAnonymously().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(
-                    context, "Successfully logged in anonymously",
+                    context,
+                    context.resources.getString(R.string.guestSuccessful),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
-                    context, "Log in failed.",
+                    context,
+                    context.resources.getString(R.string.loginFail),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -415,12 +421,14 @@ object Database {
 
             if (task.isSuccessful) {
                 Toast.makeText(
-                    context, "Successully sent a recovery e-mail",
+                    context,
+                    context.resources.getString(R.string.recoveryMailSent),
                     Toast.LENGTH_LONG
                 ).show()
             } else {
                 Toast.makeText(
-                    context, "Failed to send e-mail. Is your e-mail correct?",
+                    context,
+                    context.resources.getString(R.string.recoveryMailFail),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -437,12 +445,14 @@ object Database {
         auth.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(
-                    context, "Account successfully deleted",
+                    context,
+                    context.resources.getString(R.string.deletedSuccess),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
-                    context, "Something went wrong",
+                    context,
+                    context.resources.getString(R.string.somethingWrong),
                     Toast.LENGTH_SHORT
                 ).show()
             }

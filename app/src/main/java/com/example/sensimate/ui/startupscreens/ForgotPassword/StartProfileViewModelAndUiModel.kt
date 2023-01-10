@@ -5,8 +5,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.SaveStringToLocalStorage
@@ -32,7 +34,6 @@ class StartProfileViewModel() : ViewModel() {
 
     fun changeMail(mail: String) {
         _uiState.value.mail.value = mail
-        Log.d("new mail", _uiState.value.mail.value)
     }
 
     fun changePassword(password: String) {
@@ -67,7 +68,7 @@ class StartProfileViewModel() : ViewModel() {
         if (uiState.value.gender.value == "" || uiState.value.postalCode.value.length < 4 || uiState.value.yearBorn.value == "") {
             Toast.makeText(
                 context,
-                "Remember to fill out all info",
+                context.resources.getString(R.string.rememberInfoError),
                 Toast.LENGTH_SHORT
             ).show()
         } else {
@@ -127,7 +128,8 @@ class StartProfileViewModel() : ViewModel() {
     ) {
         if (uiState.value.mail.value == "" || uiState.value.password.value == "") {
             Toast.makeText(
-                context, "Remember to write in a password and email",
+                context, 
+                context.resources.getString(R.string.passwordMailError),
                 Toast.LENGTH_SHORT
             ).show()
         } else {
@@ -153,17 +155,19 @@ class StartProfileViewModel() : ViewModel() {
             if (uiState.value.postalCode.value == "") {
                 Toast.makeText(
                     context,
-                    "Remember to write your postal code",
+                    context.resources.getString(R.string.rememberPostal),
                     Toast.LENGTH_SHORT
                 ).show()
             } else if (uiState.value.gender.value == "") {
                 Toast.makeText(
-                    context, "Remember to choose your gender",
+                    context,
+                    context.resources.getString(R.string.rememberGender),
                     Toast.LENGTH_SHORT
                 ).show()
             } else if (uiState.value.yearBorn.value == "") {
                 Toast.makeText(
-                    context, "Remember to choose your date of birth",
+                    context,
+                    context.resources.getString(R.string.rememberBirth),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
@@ -182,6 +186,4 @@ class StartProfileViewModel() : ViewModel() {
             }
         }
     }
-
-
 }
