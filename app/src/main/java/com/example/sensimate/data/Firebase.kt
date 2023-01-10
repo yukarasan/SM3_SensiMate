@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchListOfEvents
-import com.example.sensimate.data.questionandsurvey.MyAnswer
+//import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.Event.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider

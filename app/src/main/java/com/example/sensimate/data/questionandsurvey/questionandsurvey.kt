@@ -13,7 +13,3 @@ class MyQuestion(
     var oneChoice2: Boolean = false,
 )
 
-class MyAnswer(
-    var myAnswer: List<String>,
-    var mainQuestion: String = "",
-)

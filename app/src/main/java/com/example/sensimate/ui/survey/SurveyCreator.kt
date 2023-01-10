@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.Pager
 import com.example.sensimate.data.EventViewModel
-import com.example.sensimate.data.questionandsurvey.MyAnswer
+//import com.example.sensimate.data.questionandsurvey.MyAnswer
+//import com.example.sensimate.data.questionandsurvey.MyAnswer2
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
@@ -89,13 +90,22 @@ fun AllPages(
     navController: NavController,
     questions: List<MyQuestion>,
     questionViewModel: QuestionViewModel,
-    //surveyAnswer: List<MyAnswer>
+    //surveyAnswer: MutableList<MyAnswer>
     /*eventViewModel: EventViewModel*/
 ) {
     val answers = mutableListOf<String>() //i vm
 
+
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
+
+    //val myanswers = mutableListOf<MyAnswer>()
+
+    val onSurveyComplete = { selectedAnswers: List<String> ->
+        // Create a new MyAnswer object and add to the list
+        //myanswers.add(MyAnswer(selectedAnswers, questions[pagerState.currentPage].mainQuestion))
+    }
+
 
     HorizontalPager(
         count = questions.size,
@@ -104,6 +114,7 @@ fun AllPages(
     ) { questionIndex ->
         // for (question in questions) {
         //questions[questionIndex]
+
 
         for (option in questions[questionIndex].options) {
             answers.add(option)
@@ -118,6 +129,7 @@ fun AllPages(
                     navController = navController,
                     questionViewModel
                 )
+
 
             } else if (questions[questionIndex].oneChoice) {
 
@@ -185,6 +197,7 @@ fun AllPages(
                                 //PreviousButton(onClick = {
                                 pagerState.currentPage
                                 pagerState.scrollToPage(pagerState.currentPage + 1)
+                                //onSurveyComplete(questionViewModel.getAnswer().myanswer.value.selectedOptions)
                             }
                         }
                     })

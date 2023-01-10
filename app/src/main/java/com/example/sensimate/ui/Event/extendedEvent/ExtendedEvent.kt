@@ -25,6 +25,7 @@ import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
 
@@ -50,7 +51,8 @@ fun ExtendedEvent(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        DarkPurple, BottonGradient
+                        DarkPurple,
+                        BottomGradient
                     )
                 )
             )

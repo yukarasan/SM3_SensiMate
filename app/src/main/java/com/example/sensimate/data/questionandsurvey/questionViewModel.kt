@@ -26,7 +26,33 @@ class QuestionViewModel : ViewModel() {
         _uiState.value.questionsStarted = true
     }
 
-    fun setCurrentQuestion(question: MyQuestion){
+    fun setCurrentQuestion(question: MyQuestion) {
         _uiState.value.currentQuestion = question
     }
+
+    /*
+    fun getAnswer(question: MyQuestion) {
+        val _myanswer= MutableStateFlow(MyAnswer())
+        val myanswer: StateFlow<MyAnswer> = _myanswer.asStateFlow()
+
+
+    }
+
+     */
+
+
+    /*
+    class MyAnswer(
+        var myAnswer: List<String>,
+        var mainQuestion: String = "",
+    )
+
+
+    fun getAnswer(question: MyQuestion): StateFlow<MyAnswer> {
+        val _myanswer = MutableStateFlow(MyAnswer())
+        return _myanswer.asStateFlow()
+    }
+
+     */
+
 }

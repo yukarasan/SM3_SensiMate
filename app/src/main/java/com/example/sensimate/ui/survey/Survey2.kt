@@ -23,24 +23,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.navigation.NavController
+//import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+//import com.example.sensimate.data.questionandsurvey.getAnswer
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.*
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun Survey2(title: String, navController: NavController, questionViewModel: QuestionViewModel) {
+fun Survey2(title: String, navController: NavController, questionViewModel: QuestionViewModel, /*onSurveyComplete: (List<String>) -> Unit */) {
     var selectedOption by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to DarkPurple,
-                    0.5f to BottonGradient
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
-            .fillMaxSize()
     )
     LazyColumn(
         modifier = Modifier
@@ -97,9 +102,22 @@ private fun ProgressPreview() {
 fun Information2(questionViewModel: QuestionViewModel) {
     // Add a state variable to track the selected option
     var selectedOption by remember { mutableStateOf(0) }
+    //val myanswer = getAnswer(questionViewModel.uiState.value.currentQuestion).myanswer
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
+       /* if (b) {
+            // add the selected option to the list
+            myanswer.value.selectedOptions.add(i)
+        } else {
+            // remove the option from the list if it is unselected
+            myanswer.value.selectedOptions.remove(i)
+        }
+
+        */
         selectedOption = i
     }
+
+
+
 
     // Define a list of options and their corresponding titles
     val options = questionViewModel.uiState.value.currentQuestion.options
