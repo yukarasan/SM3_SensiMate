@@ -1,7 +1,9 @@
 package com.example.sensimate.ui.profile.editProfile
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -36,6 +38,7 @@ import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EditEmailScreen(
     navController: NavController,
@@ -46,11 +49,11 @@ fun EditEmailScreen(
     var showEmptyFieldAlert by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    var codeExecuted by remember { mutableStateOf(false) }
+    // var codeExecuted by remember { mutableStateOf(false) }
 
-    if (auth.currentUser != null && !codeExecuted) {
+    if (auth.currentUser != null /* && !codeExecuted */) {
         profileViewModel.fetchProfileData(context = context)
-        codeExecuted = true
+        // codeExecuted = true
     }
 
     Column(
@@ -81,16 +84,12 @@ fun EditEmailScreen(
                         &&
                         profileState.email.isNotEmpty()
                     ) {
-                        Database.deleteAndInsertEmailToFirestore(
+                        Database.updateEmail(
                             postalCode = profileState.postalCode,
                             yearBorn = profileState.yearBorn,
                             monthBorn = profileState.monthBorn,
                             dayBorn = profileState.dayBorn,
                             gender = profileState.gender,
-                            newEmail = profileState.email
-                        )
-
-                        Database.updateEmail(
                             currentPassword = profileState.currentPassword,
                             newEmail = profileState.email,
                             context = context

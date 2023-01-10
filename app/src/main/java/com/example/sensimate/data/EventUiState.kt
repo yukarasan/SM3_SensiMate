@@ -1,7 +1,5 @@
 package com.example.sensimate.data
 
-import androidx.compose.runtime.MutableState
-
 data class Event(
     var title: String = "",
     var description: String = "",

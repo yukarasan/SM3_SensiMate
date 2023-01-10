@@ -15,6 +15,17 @@ import kotlinx.coroutines.launch
 import java.time.Year
 import java.util.*
 
+/**
+ * This class represents the view model for a profile screen.
+ * The class uses the MutableStateFlow and StateFlow classes to maintain the state of the user
+ * interface.
+ * The class also uses the Coroutines and the viewModelScope to fetch and update the profile
+ * data from the database.
+ * The class contains two function
+ * @function initializeProfile() initialize the profile state.
+ * @function fetchProfileData(context: Context) fetch the profile data, whether it's a guest or not.
+ * @author Yusuf Kara
+ */
 class ProfileViewModel : ViewModel() {
     // UI state
     private val _uiState = MutableStateFlow(ProfileUiState())
