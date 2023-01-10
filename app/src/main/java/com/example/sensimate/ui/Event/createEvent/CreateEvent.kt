@@ -2,9 +2,11 @@ package com.example.sensimate.ui.Event.createEvent
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.util.Log
 import android.widget.DatePicker
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -45,9 +47,7 @@ import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.db
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.*
-import com.google.firebase.firestore.DocumentReference
 import java.util.*
 
 
@@ -72,6 +72,8 @@ fun CreateEventScreen(navController: NavController) {
     val myYear = remember { mutableStateOf("") }
     val myMonth = remember { mutableStateOf("") }
     val myDay = remember { mutableStateOf("") }
+    val myHour = remember { mutableStateOf("") }
+    val myMinute = remember { mutableStateOf("") }
     val maxChar = 4
     val context = LocalContext.current
     Box(
@@ -141,22 +143,20 @@ fun CreateEventScreen(navController: NavController) {
                     if (it.length <= maxChar) surveyCodeText = it
                 }
 
-                ChooseBirthDate(
+                ChooseEventDate(
                     LocalContext.current,
                     myYear = myYear,
                     myMonth = myMonth,
                     myDay = myDay
                 )
-                /*
-                day = myDay.value
-                month = myMonth.value
-                year = myYear.value
 
-                 */
-
+                ChooseTime(context = LocalContext.current, myHour = myHour, myMinute = myMinute)
+/*
                 TextFileTimeText(timeText) {
                     if (it.length <= maxChar) timeText = it
                 }
+
+ */
                 Column(
 
                     modifier = Modifier.fillMaxSize(),
@@ -193,7 +193,7 @@ fun CreateEventScreen(navController: NavController) {
                                     "Date was not entered",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            } else if (timeText == "") {
+                            } else if (myHour.value == "") {
                                 Toast.makeText(
                                     context,
                                     "Time was not entered",
@@ -218,10 +218,12 @@ fun CreateEventScreen(navController: NavController) {
                                     allergens = allergensText,
                                     location = locationText,
                                     surveyCode = surveyCodeText,
-                                    time = timeText,
+                                    //time = timeText,
                                     day = myDay.value,
                                     month = myMonth.value,
-                                    year = myYear.value
+                                    year = myYear.value,
+                                    hour = myHour.value,
+                                    minute = myMinute.value
                                 )
 
                                 navController.navigate(Screen.QuestionPageScreen.route)
@@ -264,7 +266,7 @@ fun CreateEventScreen(navController: NavController) {
 }
 
 @Composable
-fun ChooseBirthDate(
+fun ChooseEventDate(
     context: Context,
     myYear: MutableState<String>,
     myMonth: MutableState<String>,
@@ -321,6 +323,54 @@ fun ChooseBirthDate(
         modifier = Modifier
             .padding(1.dp, 65.dp, 1.dp, 1.dp)
             .clickable { datePickerLog.show() },
+    )
+}
+
+@Composable
+fun ChooseTime(context: Context,
+               myHour: MutableState<String>,
+               myMinute: MutableState<String>){
+    // Declaring and initializing a calendar
+    val mCalendar = Calendar.getInstance()
+    val iHour = remember { mutableStateOf(mCalendar.get(Calendar.HOUR_OF_DAY)) }
+    val iMinute = remember { mutableStateOf(mCalendar.get(Calendar.MINUTE)) }
+
+
+
+    // Value for storing time as a string
+    var mTime by remember { mutableStateOf(("")) }
+    val hasChosen = remember {
+        mutableStateOf(false)
+    }
+    // Creating a TimePicker dialod
+    val mTimePickerDialog = TimePickerDialog(
+        context,
+        {_: TimePicker, mHour : Int, mMinute: Int ->
+            mTime = "$mHour:$mMinute"
+        iHour.value = mHour
+        iMinute.value = mMinute
+        hasChosen.value = true
+        }, iHour.value, iMinute.value, false
+    )
+
+    if (hasChosen.value) {
+        myHour.value = iHour.value.toString()
+        myMinute.value = iMinute.value.toString()
+    }
+
+    TextField(
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.Green,
+            backgroundColor = Color.Transparent
+        ),
+        enabled = false,
+        value = mTime,
+        label = {
+            Text(text = "Time Of The Event", color = Color(0xFFB874A6)) },
+        onValueChange = {},
+        modifier = Modifier
+            .padding(1.dp, 128.dp, 1.dp, 1.dp)
+            .clickable { mTimePickerDialog.show() },
     )
 }
 
@@ -452,6 +502,8 @@ fun TextFileTimeText(TimeText: String, textChange: (String) -> Unit) {
         )
     }
 }
+
+
 
 @Composable
 fun TextFiledAllergensText(allergensText: String, textChange: (String) -> Unit) {

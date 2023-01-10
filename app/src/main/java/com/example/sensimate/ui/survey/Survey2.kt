@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.survey
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.layout.*
@@ -22,12 +23,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.navigation.NavController
+import com.example.sensimate.data.questionandsurvey.MyQuestion
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.*
 
 
 @Composable
-fun Survey2(title: String, navController: NavController) {
+fun Survey2(title: String, navController: NavController, questionViewModel: QuestionViewModel) {
     var selectedOption by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
@@ -57,7 +60,7 @@ fun Survey2(title: String, navController: NavController) {
             SurveyTitle(title)
         }
         items(1) {
-            Information2()
+            Information2(questionViewModel)
         }
         items(1) {
             Row(
@@ -130,8 +133,9 @@ private fun ProgressPreview() {
     )
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun Information2() {
+fun Information2(questionViewModel: QuestionViewModel) {
     // Add a state variable to track the selected option
     var selectedOption by remember { mutableStateOf(0) }
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
@@ -139,7 +143,9 @@ fun Information2() {
     }
 
     // Define a list of options and their corresponding titles
-    val options = listOf("Very Likely", "Likely", "Neutral", "Unlikely", "Very Unlikely")
+    val options = questionViewModel.uiState.value.currentQuestion.options
+
+
    // val options = remember { MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList() }
 
     Card(

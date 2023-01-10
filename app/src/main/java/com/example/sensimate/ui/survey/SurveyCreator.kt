@@ -39,7 +39,7 @@ fun SurveyCreator(
 
     if (loaded2.value) {
         Log.d("sjdj", "dk")
-        AllPages(navController,questionViewModel.uiState.value.questions)
+        AllPages(navController,questionViewModel.uiState.value.questions, questionViewModel)
     }
 
     LaunchedEffect(key1 = true) {
@@ -58,19 +58,18 @@ fun SurveyCreator(
 
 
             Log.d("in scope", questionViewModel.uiState.value.questions.size.toString())
-
         }
     }
-
-
 }
+
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AllPages(
     navController: NavController,
-    questions: List<MyQuestion>
+    questions: List<MyQuestion>,
+    questionViewModel: QuestionViewModel,
     /*eventViewModel: EventViewModel*/
 ) {
     val answers = mutableListOf<String>() //i vm
@@ -82,29 +81,25 @@ fun AllPages(
 
            // for (question in questions) {
                 //questions[questionIndex]
-                Log.d("KKKKK", "KKKKKK")
+
                 for (option in questions[questionIndex].options) {
-                    Log.d("option", option)
                     answers.add(option)
 
+                    questionViewModel.setCurrentQuestion(questions[questionIndex])
+
+
                     if (!questions[questionIndex].oneChoice) {
-                        Log.d(
-                            "forloop","survey4"
-                        )
-                        Survey4(title = questions[questionIndex].mainQuestion, navController = navController)
+
+                        Survey4(title = questions[questionIndex].mainQuestion, navController = navController, questionViewModel)
                     }
 
                     else if (questions[questionIndex].oneChoice) {
-                        Log.d(
-                            "forloop","survey2"
-                        )
-                        Survey2(title = questions[questionIndex].mainQuestion, navController = navController)
+
+                        Survey2(title = questions[questionIndex].mainQuestion, navController = navController, questionViewModel)
+
                     } else if (questions[questionIndex].oneChoice2) {
 
-                        Log.d(
-                            "forloop","survey3"
-                        )
-                        Survey3(title = questions[questionIndex].mainQuestion, navController = navController)
+                        Survey3(title = questions[questionIndex].mainQuestion, navController = navController, questionViewModel)
 
                     } else {
                         Survey(

@@ -1,6 +1,7 @@
 package com.example.sensimate.ui.survey
 
 
+import android.annotation.SuppressLint
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,13 +23,12 @@ import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
-import com.example.sensimate.ui.InitialStartPage.MyTextField
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
 //@Preview(showBackground = true)
 @Composable
-fun Survey3(title: String, navController: NavController) {
+fun Survey3(title: String, navController: NavController, questionViewModel: QuestionViewModel) {
     Box(
         modifier = Modifier
             .background(
@@ -60,7 +60,7 @@ fun Survey3(title: String, navController: NavController) {
             SurveyImage()
         }
         items(1) {
-            Information3(options = listOf("1", "2", "3", "4", "5"))
+            Information3(questionViewModel)
         }
         items(1) {
             Row(
@@ -93,13 +93,17 @@ private fun ProgressPreview() {
     )
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun Information3(options: List<String>) {
+fun Information3(questionViewModel: QuestionViewModel) {
     val checkedState = remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(0) }
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
         selectedOption = i
     }
+
+    val options = questionViewModel.uiState.value.currentQuestion.options
+
     Card(
         modifier = Modifier
             .padding(start = 0.dp, top = 0.dp)
