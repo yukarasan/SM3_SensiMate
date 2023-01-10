@@ -38,6 +38,7 @@ import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
+import com.example.sensimate.ui.Event.editEvent.EditEventViewmodel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.survey.Survey4
@@ -369,7 +370,8 @@ fun EditPage(
 
         item {
             Spacer(modifier = Modifier.size(55.dp))
-            TitleText(chosenEvent.title) { chosenEvent.title = it }
+            TitleText(titleText = chosenEvent.title, textChange = {chosenEvent.title = it})
+            //TitleText(chosenEvent.title) { chosenEvent.title = it }
             Spacer(modifier = Modifier.size(27.dp))
             DescriptionText(chosenEvent.description) { chosenEvent.description = it }
             Spacer(modifier = Modifier.size(55.dp))
@@ -407,11 +409,12 @@ fun EditPage(
                     myDay = chosenEvent.day
                 )
 
-                Time(context = LocalContext.current,
-                    myHour = chosenEvent.hour, myMinute = chosenEvent.minute)
+                Time(
+                    context = LocalContext.current,
+                    myHour = chosenEvent.hour, myMinute = chosenEvent.minute
+                )
 
                 Column(
-
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
@@ -424,8 +427,15 @@ fun EditPage(
                         onClick = {
                             editEventViewmodel.checkIfTextfieldIsEmpty(
                                 context,
-                                chosenEvent.title, chosenEvent.description, chosenEvent.location, chosenEvent.year,
-                                chosenEvent.month, chosenEvent.day, chosenEvent.allergens, chosenEvent.surveyCode)
+                                chosenEvent.title,
+                                chosenEvent.description,
+                                chosenEvent.location,
+                                chosenEvent.year,
+                                chosenEvent.month,
+                                chosenEvent.day,
+                                chosenEvent.allergens,
+                                chosenEvent.surveyCode
+                            )
 
 
                             val events = editEventViewmodel.createHashMapforEvent(
@@ -434,13 +444,12 @@ fun EditPage(
                                 chosenEvent.location, chosenEvent.allergens,
                                 chosenEvent.surveyCode, chosenEvent.day, chosenEvent.year,
                                 chosenEvent.month, chosenEvent.eventId, chosenEvent.minute,
-                                chosenEvent.hour) //time
-
+                                chosenEvent.hour
+                            )
 
                             Log.d("documentref : ", chosenEvent.eventId)
 
                             Database.UpdateEvent(events, chosenEvent.eventId)
-
 
                             /*
                             if (titleText == "") {
@@ -554,14 +563,15 @@ fun EditPage(
 
 
 @Composable
-fun Time(context: Context,
-               myHour: String,
-               myMinute: String){
+fun Time(
+    context: Context,
+    myHour: String,
+    myMinute: String
+) {
     // Declaring and initializing a calendar
     val mCalendar = Calendar.getInstance()
     val iHour = remember { mutableStateOf(mCalendar.get(Calendar.HOUR_OF_DAY)) }
     val iMinute = remember { mutableStateOf(mCalendar.get(Calendar.MINUTE)) }
-
 
 
     // Value for storing time as a string
@@ -572,7 +582,7 @@ fun Time(context: Context,
     // Creating a TimePicker dialod
     val mTimePickerDialog = TimePickerDialog(
         context,
-        { _: TimePicker, mHour : Int, mMinute: Int ->
+        { _: TimePicker, mHour: Int, mMinute: Int ->
             mTime = "$mHour:$mMinute"
             iHour.value = mHour
             iMinute.value = mMinute
@@ -588,7 +598,8 @@ fun Time(context: Context,
         enabled = false,
         value = "$myHour : $myMinute",
         label = {
-            Text(text = "Time Of The Event", color = Color(0xFFB874A6)) },
+            Text(text = "Time Of The Event", color = Color(0xFFB874A6))
+        },
         onValueChange = {},
         modifier = Modifier
             .padding(1.dp, 128.dp, 1.dp, 1.dp)
@@ -605,7 +616,7 @@ fun EventDateChosen(
     myDay: String,
 ) {
     val calendar = Calendar.getInstance()
-    calendar.add(Calendar.YEAR,0)
+    calendar.add(Calendar.YEAR, 0)
 
     // Create state variables to store the selected year, month, and day
     val selectedYear = remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
@@ -692,7 +703,8 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
                     text = "Title",
                     color = Color(0xFFB874A6)
                 )
-            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
         )
@@ -780,7 +792,6 @@ fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
         )
     }
 }
-
 
 
 @Composable

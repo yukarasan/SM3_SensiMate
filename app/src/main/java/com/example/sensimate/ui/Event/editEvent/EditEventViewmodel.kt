@@ -1,8 +1,9 @@
-package com.example.sensimate.data
+package com.example.sensimate.ui.Event.editEvent
 
 
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.example.sensimate.data.Event
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
