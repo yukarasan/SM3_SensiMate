@@ -62,18 +62,9 @@ fun CreateEventPreview() {
 
 var docId: String = ""
 @Composable
-fun CreateEventScreen(navController: NavController) {
-    var titleText by remember { mutableStateOf("") }
-    var descriptionText by remember { mutableStateOf("") }
-    var locationText by remember { mutableStateOf("") }
-    var allergensText by remember { mutableStateOf("") }
-    var surveyCodeText by remember { mutableStateOf("") }
-    var timeText by remember { mutableStateOf("") }
-    val myYear = remember { mutableStateOf("") }
-    val myMonth = remember { mutableStateOf("") }
-    val myDay = remember { mutableStateOf("") }
-    val myHour = remember { mutableStateOf("") }
-    val myMinute = remember { mutableStateOf("") }
+fun CreateEventScreen(navController: NavController, createEventViewModel: CreateEventViewModel) {
+
+    val state = createEventViewModel._uistate.collectAsState()
     val maxChar = 4
     val context = LocalContext.current
     Box(
@@ -111,9 +102,9 @@ fun CreateEventScreen(navController: NavController) {
 
         item {
             Spacer(modifier = Modifier.size(55.dp))
-            TextFiledTitleText(titleText) { titleText = it }
+            TextFiledTitleText(state.value.titleText) { state.value.titleText.value = it }
             Spacer(modifier = Modifier.size(27.dp))
-            TextFiledDescriptionText(descriptionText) { descriptionText = it }
+            TextFiledDescriptionText(state.value.descriptionText) { state.value.descriptionText.value = it }
             Spacer(modifier = Modifier.size(55.dp))
             Card(
                 modifier = Modifier
@@ -137,26 +128,21 @@ fun CreateEventScreen(navController: NavController) {
                     contentScale = ContentScale.Crop,
 
                     )
-                TextFiledLocationText(locationText) { locationText = it }
-                TextFiledAllergensText(allergensText) { allergensText = it }
-                TextFiledSurveyCodeText(surveyCodeText) {
-                    if (it.length <= maxChar) surveyCodeText = it
+                TextFiledLocationText(state.value.locationText) { state.value.locationText.value = it }
+                TextFiledAllergensText(state.value.allergensText) { state.value.allergensText.value = it }
+                TextFiledSurveyCodeText(state.value.surveyCodeText) {
+                    if (it.length <= maxChar) state.value.surveyCodeText.value = it
                 }
 
                 ChooseEventDate(
                     LocalContext.current,
-                    myYear = myYear,
-                    myMonth = myMonth,
-                    myDay = myDay
+                    myYear = state.value.myYear,
+                    myMonth = state.value.myMonth,
+                    myDay = state.value.myDay
                 )
 
-                ChooseTime(context = LocalContext.current, myHour = myHour, myMinute = myMinute)
-/*
-                TextFileTimeText(timeText) {
-                    if (it.length <= maxChar) timeText = it
-                }
+                ChooseTime(context = LocalContext.current, myHour = state.value.myHour, myMinute = state.value.myMinute)
 
- */
                 Column(
 
                     modifier = Modifier.fillMaxSize(),
@@ -169,65 +155,7 @@ fun CreateEventScreen(navController: NavController) {
 
                     Button(
                         onClick = {
-                            if (titleText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Title was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (descriptionText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Description was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (locationText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Location was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (myYear.value == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Date was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (myHour.value == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Time was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (allergensText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Allergens was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (surveyCodeText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "SurveyCode was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                Database.createEvent(
-                                    title = titleText,
-                                    description = descriptionText,
-                                    allergens = allergensText,
-                                    location = locationText,
-                                    surveyCode = surveyCodeText,
-                                    //time = timeText,
-                                    day = myDay.value,
-                                    month = myMonth.value,
-                                    year = myYear.value,
-                                    hour = myHour.value,
-                                    minute = myMinute.value
-                                )
-
-                                navController.navigate(Screen.QuestionPageScreen.route)
-                            }
+                            createEventViewModel.Check(context,navController)
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -317,7 +245,7 @@ fun ChooseEventDate(
             backgroundColor = Color.Transparent
         ),
         enabled = false,
-        value = if(myDay.value.isNotEmpty()) "${myDay.value}/${myMonth.value}/${myYear.value}" else "",
+        value = text /*if(myDay.value.isNotEmpty()) "${myDay.value}/${myMonth.value}/${myYear.value}" else ""*/,
         label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
         onValueChange = {},
         modifier = Modifier
@@ -376,10 +304,10 @@ fun ChooseTime(context: Context,
 
 
 @Composable
-fun TextFiledTitleText(titleText: String, textChange: (String) -> Unit) {
+fun TextFiledTitleText(titleText: MutableState<String>, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = titleText,
+            value = titleText.value,
             onValueChange = textChange,
             label = {
                 Text(
@@ -394,10 +322,10 @@ fun TextFiledTitleText(titleText: String, textChange: (String) -> Unit) {
 }
 
 @Composable
-fun TextFiledDescriptionText(descriptionText: String, textChange: (String) -> Unit) {
+fun TextFiledDescriptionText(descriptionText: MutableState<String>, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = descriptionText,
+            value = descriptionText.value,
             onValueChange = textChange,
             label = {
                 Text(
@@ -447,10 +375,10 @@ fun TextToPhoto(modifier: Modifier) {
 
 
 @Composable
-fun TextFiledLocationText(locationText: String, textChange: (String) -> Unit) {
+fun TextFiledLocationText(locationText: MutableState<String>, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = locationText,
+            value = locationText.value,
             onValueChange = textChange,
             label = {
                 Text(
@@ -506,10 +434,10 @@ fun TextFileTimeText(TimeText: String, textChange: (String) -> Unit) {
 
 
 @Composable
-fun TextFiledAllergensText(allergensText: String, textChange: (String) -> Unit) {
+fun TextFiledAllergensText(allergensText: MutableState<String>, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = allergensText,
+            value = allergensText.value,
             onValueChange = textChange,
             label = {
                 Text(
@@ -529,10 +457,10 @@ fun TextFiledAllergensText(allergensText: String, textChange: (String) -> Unit) 
 }
 
 @Composable
-fun TextFiledSurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
+fun TextFiledSurveyCodeText(surveyCodeText: MutableState<String>, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = surveyCodeText,
+            value = surveyCodeText.value,
             onValueChange = textChange,
             label = {
                 Text(
@@ -779,7 +707,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer4" to answerText4,
                             "answer5" to answerText5
                         )
-                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
                             subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
@@ -792,7 +720,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer3" to answerText3,
                             "answer4" to answerText4
                         )
-                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
                             subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
@@ -804,7 +732,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                             "answer2" to answerText2,
                             "answer3" to answerText3
                         )
-                        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
                             subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                             mainQuest.set("questionId", docRef.id)
                             subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
@@ -815,7 +743,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                         "answer1" to answerText1,
                         "answer2" to answerText2
                     )
-                    val subcollectionRef = db.collection("events").document(docId).collection("questions")
+                    val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
                         subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
                         mainQuest.set("questionId", docRef.id)
                         subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)

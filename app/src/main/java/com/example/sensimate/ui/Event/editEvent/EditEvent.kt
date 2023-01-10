@@ -378,9 +378,9 @@ fun EditPage(
 
         item {
             Spacer(modifier = Modifier.size(55.dp))
-            TextFiledTitleText(titleText) { titleText = it }
+            //TextFiledTitleText(titleText) { titleText = it }
             Spacer(modifier = Modifier.size(27.dp))
-            TextFiledDescriptionText(descriptionText) { descriptionText = it }
+            //TextFiledDescriptionText(descriptionText) { descriptionText = it }
             Spacer(modifier = Modifier.size(55.dp))
             Card(
                 modifier = Modifier
@@ -404,11 +404,13 @@ fun EditPage(
                     contentScale = ContentScale.Crop,
 
                     )
-                TextFiledLocationText(locationText) { locationText = it }
-                TextFiledAllergensText(allergensText) { allergensText = it }
-                TextFiledSurveyCodeText(surveyCodeText) {
+                //TextFiledLocationText(locationText) { locationText = it }
+                //TextFiledAllergensText(allergensText) { allergensText = it }
+               /* TextFiledSurveyCodeText(surveyCodeText) {
                     if (it.length <= maxChar) surveyCodeText = it
                 }
+
+                */
                 ChooseEventDate(
                     LocalContext.current,
                     myYear = myYear,
