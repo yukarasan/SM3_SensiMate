@@ -663,7 +663,7 @@ fun EventDateChosen(
 
 @Composable
 fun DescriptionText(descriptionText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = descriptionText,
             onValueChange = textChange,
@@ -683,7 +683,7 @@ fun DescriptionText(descriptionText: String, textChange: (String) -> Unit) {
 
 @Composable
 fun TitleText(titleText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = titleText,
             onValueChange = textChange,
@@ -702,7 +702,7 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
 
 @Composable
 fun LocationText(locationText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = locationText,
             onValueChange = textChange,
@@ -736,7 +736,7 @@ fun LocationText(locationText: String, textChange: (String) -> Unit) {
 
 @Composable
 fun AllergensText(allergensText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = allergensText,
             onValueChange = textChange,
@@ -760,7 +760,7 @@ fun AllergensText(allergensText: String, textChange: (String) -> Unit) {
 
 @Composable
 fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = surveyCodeText,
             onValueChange = textChange,
@@ -786,7 +786,7 @@ fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
 @Composable
 fun TextFiledTitleText() {
     var text by remember { mutableStateOf("Coca Cola") }
-    ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
@@ -810,7 +810,7 @@ fun TextFiledTitleText() {
 @Composable
 fun TextFiledDescriptionText() {
     var text by remember { mutableStateOf("Come and taste the freshing sensation of Coca Cola. Get a whole six pack for free.") }
-    ContentColorComponent(contentColor = Color.White) {
+    ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
@@ -833,7 +833,7 @@ fun TextFiledDescriptionText() {
 
 
 @Composable
-fun ContentColorComponent(
+fun ContentColor1Component(
     contentColor: Color = LocalContentColor.current,
     content: @Composable () -> Unit
 ) {
