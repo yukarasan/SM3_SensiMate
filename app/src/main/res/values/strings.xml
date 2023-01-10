@@ -34,7 +34,7 @@
 
     <string name="passwordMailError">Remember to write in a password and email</string>
 
-    <string name="rememberPostal">Remember to write your postal code</string>
+    <string name="rememberPostal">Please choose a valid postal code</string>
 
     <string name="rememberGender">Remember to choose your gender</string>
 

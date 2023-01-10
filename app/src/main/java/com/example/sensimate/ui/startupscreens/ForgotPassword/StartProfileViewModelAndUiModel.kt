@@ -7,7 +7,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
+import androidx.navigation.AnimBuilder
 import androidx.navigation.NavController
+import androidx.navigation.NavOptionsBuilder
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.SaveBoolToLocalStorage
@@ -16,6 +18,8 @@ import com.example.sensimate.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.io.File
+import java.io.FileReader
 
 data class StartProfileUiState(
     var mail: MutableState<String> = mutableStateOf(""),
@@ -65,6 +69,12 @@ class StartProfileViewModel() : ViewModel() {
     }
 
     fun loginAsGuest(navController: NavController, context: Context) {
+
+        val assetManager = context.assets
+        val inputStream = assetManager.open("postalcodes.txt")
+
+        val inputString = inputStream.bufferedReader().use { it.readText() }
+
         if (uiState.value.gender.value == "" || uiState.value.postalCode.value.length < 4 || uiState.value.yearBorn.value == "") {
             Toast.makeText(
                 context,
@@ -73,51 +83,60 @@ class StartProfileViewModel() : ViewModel() {
             ).show()
         } else {
 
-            SaveBoolToLocalStorage(
-                "isLoggedIn",
-                true,
-                context
-            )
+            if (!inputString.contains(uiState.value.postalCode.value)) {
+                Toast.makeText(
+                    context,
+                    context.resources.getString(R.string.rememberPostal),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
 
-            SaveBoolToLocalStorage(
-                "isGuest",
-                true,
-                context
-            )
+                SaveBoolToLocalStorage(
+                    "isLoggedIn",
+                    true,
+                    context
+                )
 
-            SaveStringToLocalStorage(
-                "postalCode",
-                uiState.value.postalCode.value,
-                context
-            )
+                SaveBoolToLocalStorage(
+                    "isGuest",
+                    true,
+                    context
+                )
 
-            SaveStringToLocalStorage(
-                "gender",
-                uiState.value.gender.value,
-                context
-            )
+                SaveStringToLocalStorage(
+                    "postalCode",
+                    uiState.value.postalCode.value,
+                    context
+                )
 
-            SaveStringToLocalStorage(
-                "yearBorn",
-                uiState.value.yearBorn.value,
-                context
-            )
+                SaveStringToLocalStorage(
+                    "gender",
+                    uiState.value.gender.value,
+                    context
+                )
 
-            SaveStringToLocalStorage(
-                "monthBorn",
-                uiState.value.monthBorn.value,
-                context
-            )
+                SaveStringToLocalStorage(
+                    "yearBorn",
+                    uiState.value.yearBorn.value,
+                    context
+                )
 
-            SaveStringToLocalStorage(
-                "dayBorn",
-                uiState.value.dayBorn.value,
-                context
-            )
+                SaveStringToLocalStorage(
+                    "monthBorn",
+                    uiState.value.monthBorn.value,
+                    context
+                )
 
-            Database.loginAnonymously(context)
-            navController.popBackStack()
-            navController.navigate(Screen.EventScreen.route)
+                SaveStringToLocalStorage(
+                    "dayBorn",
+                    uiState.value.dayBorn.value,
+                    context
+                )
+
+                Database.loginAnonymously(context)
+                navController.popBackStack()
+                navController.navigate(Screen.EventScreen.route)
+            }
         }
     }
 
@@ -128,7 +147,7 @@ class StartProfileViewModel() : ViewModel() {
     ) {
         if (uiState.value.mail.value == "" || uiState.value.password.value == "") {
             Toast.makeText(
-                context, 
+                context,
                 context.resources.getString(R.string.passwordMailError),
                 Toast.LENGTH_SHORT
             ).show()
@@ -149,10 +168,22 @@ class StartProfileViewModel() : ViewModel() {
         successLoggedIn: MutableState<Boolean>,
         showMessage: MutableState<Boolean>
     ) {
+
+        val assetManager = context.assets
+        val inputStream = assetManager.open("postalcodes.txt")
+
+        val inputString = inputStream.bufferedReader().use { it.readText() }
+
         if (uiState.value.password.value != uiState.value.confirmPassword.value) {
             showMessage.value = true
         } else {
-            if (uiState.value.postalCode.value == "") {
+            if (uiState.value.postalCode.value.length < 4) {
+                Toast.makeText(
+                    context,
+                    context.resources.getString(R.string.rememberPostal),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (!inputString.contains(uiState.value.postalCode.value)) {
                 Toast.makeText(
                     context,
                     context.resources.getString(R.string.rememberPostal),
