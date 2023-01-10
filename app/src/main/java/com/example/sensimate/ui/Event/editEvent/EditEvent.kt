@@ -313,7 +313,7 @@ fun EditPage(
     //description: String,
     //surveyCode: String,
     eventViewModel: EventViewModel,
-    editEventViewmodel: EditEventViewmodel
+    //editEventViewmodel: EditEventViewmodel
 ) {
     val state = eventViewModel.uiState
 
@@ -434,23 +434,25 @@ fun EditPage(
 
                     Button(
                         onClick = {
-                            editEventViewmodel.checkIfTextfieldIsEmpty(
+                            /*editEventViewmodel.checkIfTextfieldIsEmpty(
                                 context,
                                 titleText, descriptionText, locationText, myYear.value,
                                 myMonth.value, myDay.value, allergensText, surveyCodeText
-                            )
 
-                            val events = editEventViewmodel.createHashMapforEvent(
+                             */
+
+                            /*val events = editEventViewmodel.createHashMapforEvent(
                                 titleText,
                                 descriptionText,
-                                allergensText, locationText, surveyCodeText,
-                                timeText, day, month, year, eventId.value
-                            )
+                                allergensText, locationText, surveyCodeText, day, month, year, eventId.value
+                            ) //time
+
+                             */
 
 
                             Log.d("documentref : ", chosenEvent.eventId)
 
-                            Database.UpdateEvent(events, chosenEvent.eventId)
+                            //Database.UpdateEvent(events, chosenEvent.eventId)
 
 
                             /*
