@@ -6,14 +6,13 @@ data class Event(
     var surveyCode: String = "",
     var eventId: String = "",
     var location: String = "",
-    var timeOfEvent: String = "",
     var adresss: String = "",
     var allergens: String = "",
     var day: String = "",
     var month: String = "",
     var year: String = "",
-   // var hour: String = "", //TODO  skal erstatte timeOfEvent
-   // var minute: String ="",//TODO  skal erstatte timeOfEvent
+    var hour: String = "",
+    var minute: String = "",
 )
 
 data class EventUiState(

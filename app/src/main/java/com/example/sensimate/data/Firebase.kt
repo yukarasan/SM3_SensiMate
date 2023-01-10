@@ -488,18 +488,19 @@ object Database {
                 }
      */
 
-    fun createEvent(title: String,
-                    description: String,
-                    allergens: String,
-                    location: String,
-                    surveyCode: String,
-                    //time: String,
-                    day: String,
-                    month: String,
-                    year: String,
-                    hour: String,
-                    minute: String) {
-
+    fun createEvent(
+        title: String,
+        description: String,
+        allergens: String,
+        location: String,
+        surveyCode: String,
+        //time: String,
+        day: String,
+        month: String,
+        year: String,
+        hour: String,
+        minute: String
+    ) {
         val event = hashMapOf(
             "title" to title,
             "description" to description,
@@ -513,9 +514,9 @@ object Database {
             "hour" to hour,
             "minute" to minute
         )
-        db.collection("TESTER").add(event).addOnSuccessListener { docRef ->
+        db.collection("events").add(event).addOnSuccessListener { docRef ->
             event.set("eventId", docRef.id)
-            db.collection("TESTER").document(docRef.id).set(event)
+            db.collection("events").document(docRef.id).set(event)
             docId = docRef.id
         }
     } //TODO: Ahmad
@@ -545,11 +546,11 @@ object Database {
 
 
     @SuppressLint("SuspiciousIndentation")
-    fun UpdateEvent(event : HashMap<String, String>, documentID: String) {
+    fun UpdateEvent(event: HashMap<String, String>, documentID: String) {
         Log.d("eventId : ", documentID)
 
         val docref = db.collection("events").document(documentID)
-            docref.set(event)
+        docref.set(event)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
             }
