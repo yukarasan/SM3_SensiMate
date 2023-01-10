@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -63,7 +64,7 @@ fun GuestScreen(
 
             MySensimateLogo()
             Text(
-                text = "SensiMate",
+                text = stringResource(id = R.string.myName),
                 color = Color.White,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Bold,
@@ -80,7 +81,7 @@ fun GuestScreen(
                         startProfileViewModel.changePostalCode(it)
                     }
                 },
-                "Postal code"
+                stringResource(id = R.string.postalcode)
             )
             DropDownMenu(state.value.gender)
 
@@ -95,10 +96,13 @@ fun GuestScreen(
             val context = LocalContext.current
 
             myButton(color = Color.White,
-                title = "Continue as guest",
+                title = stringResource(id = R.string.continueGuest),
                 PurpleButtonColor,
                 onClick = {
-                    startProfileViewModel.loginAsGuest(navController = navController, context = context)
+                    startProfileViewModel.loginAsGuest(
+                        navController = navController,
+                        context = context
+                    )
                 }
             )
             Spacer(modifier = Modifier.size(30.dp))

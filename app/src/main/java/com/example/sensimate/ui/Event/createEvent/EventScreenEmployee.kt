@@ -111,7 +111,8 @@ fun EventScreenEmployee(
 
                         EventCard(
                             title = event.title,
-                            timeOfEvent = event.timeOfEvent,
+                            hour = event.hour,
+                            minute = event.minute,
                             address = event.location,
                             onClick = {
                                 navController.navigate(

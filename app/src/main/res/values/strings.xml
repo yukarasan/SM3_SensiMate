@@ -1,3 +1,81 @@
 <resources>
     <string name="app_name">Sensimate</string>
+
+
+
+    //HUSSEIN USAGE
+    <string name="myName">SensiMate</string>
+    <string name="enterMail">Enter E-mail</string>
+
+    <string name="enterPassword">Enter password</string>
+    <string name="confirmPassword">Confirm password</string>
+    <string name="forgotPassword">Forgot password?</string>
+
+
+    <string name="postalcode">Postal code</string>
+
+
+    <string name="passworderror">Passwords do not match</string>
+
+    <string name="signUp">Sign up</string>
+    <string name="signIn">Sign in</string>
+
+    <string name="guest">Guest</string>
+
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+
+    <string name="gender">Gender</string>
+
+    <string name="continueGuest">Continue as guest</string>
+
+    <string name="rememberInfoError">Remember to fill out all info</string>
+
+    <string name="passwordMailError">Remember to write in a password and email</string>
+
+    <string name="rememberPostal">Remember to write your postal code</string>
+
+    <string name="rememberGender">Remember to choose your gender</string>
+
+
+    <string name="rememberBirth">Remember to choose your date of birth</string>
+
+    <string name="successAcount">Account successfully created</string>
+
+    <string name="authFailed">Authentication failed.</string>
+
+    <string name="successLogged">Account successfully logged in</string>
+
+
+    <string name="loginFail">Log in failed.</string>
+
+
+    <string name="guestSuccessful">Successfully logged in as guest</string>
+
+    <string name="recoveryMailSent">Successfully sent a recovery e-mail</string>
+
+    <string name="recoveryMailFail">Failed to send e-mail. Is your e-mail correct?</string>
+
+    <string name="deletedSuccess">Account successfully deleted</string>
+
+    <string name="somethingWrong">Something went wrong</string>
+
+    <string name="sendRecovery">Send recovery to mail</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </resources>

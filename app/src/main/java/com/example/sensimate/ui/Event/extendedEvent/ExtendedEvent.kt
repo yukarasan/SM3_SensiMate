@@ -86,7 +86,7 @@ fun ExtendedEvent(
                                 Row {
                                     Column {
                                         Title(title = chosenEvent.title)
-                                        Discription(discription = chosenEvent.description)
+                                        Discription(hour = chosenEvent.hour, chosenEvent.minute)
                                     }
                                 }
                             }
@@ -118,7 +118,7 @@ fun ExtendedEvent(
                         Spacer(modifier = Modifier.size(15.dp))
                         Title(title = "Location")
                         Row() {
-                            Discription(discription = chosenEvent.timeOfEvent)
+                            Discription(hour = chosenEvent.hour, chosenEvent.minute)
                             Address(address = chosenEvent.adresss)
                         }
                     }
@@ -144,9 +144,9 @@ private fun Title(title: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Discription(discription: String, modifier: Modifier = Modifier) {
+private fun Discription(hour: String, minute: String, modifier: Modifier = Modifier) {
     Text(
-        text = discription,
+        text = "$hour:$minute",
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,

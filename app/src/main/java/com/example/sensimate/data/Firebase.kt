@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.Event.createEvent.docId
@@ -30,10 +31,24 @@ import kotlin.collections.HashMap
 @SuppressLint("StaticFieldLeak")
 val db = Firebase.firestore
 
+/**
+ * The EventScreenState data class represents the state of the event screen in the application.
+ * It contains a MutableList of Event objects representing the events to be displayed on the screen.
+ * @param events MutableList of Event objects that needs to be displayed on the screen.
+ * @author Yusuf Kara
+ */
 data class EventScreenState(
     val events: MutableList<Event>? = null
 )
 
+/**
+ * The EventDataViewModel is a view model class used to store and manage the data for the event
+ * screen in the application.
+ * It uses the fetchListOfEvents() function to populate the events list and updates the state
+ * of the events.
+ * It uses the mutableStateOf() function to keep the track of the latest state of the events.
+ * It has a getListOfEvents() function that is responsible for populating the state.
+ */
 class EventDataViewModel : ViewModel() {
     val state = mutableStateOf(EventScreenState())
 
@@ -47,13 +62,21 @@ class EventDataViewModel : ViewModel() {
             state.value = state.value.copy(events = eventList)
         }
     }
-} // TODO: Yusuf
+}
 
 // Initialize Firebase Auth
 val auth = Firebase.auth
 
 object Database {
 
+    /**
+     * This function is used to fetch the user's profile information from the Firebase
+     * FireStore database.
+     * It retrieves the document of the current user from the "users" collection and converts
+     * it to a Profile object.
+     * @return The Profile object of the current user or null if no such document exists.
+     * @author Yusuf Kara
+     */
     suspend fun fetchProfile(): Profile? {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         var profile: Profile?
@@ -64,9 +87,16 @@ object Database {
         }
 
         return profile
-    } // TODO: Yusuf
+    }
 
-
+    /**
+     * This function is used to fetch a list of events from the Firebase Firestore database.
+     * It retrieves all documents from the "events" collection and converts them to a list of
+     * Event objects.
+     * That way the events can be represented in a lazyColumn in the Event screens.
+     * @return A MutableList of Event objects representing the events in the database.
+     * @author Yusuf Kara
+     */
     suspend fun fetchListOfEvents(): MutableList<Event> {
         val eventReference = db.collection("events")
         val eventList: MutableList<Event> = mutableListOf()
@@ -82,25 +112,67 @@ object Database {
         }
 
         return eventList
-    } // TODO: Yusuf
+    }
 
+    /**
+     * This function is used to update fields in the user's profile document in the Firebase
+     * Firestore database.
+     * It retrieves the document of the current user from the "users" collection and updates
+     * the provided fields.
+     * @param fields A map of field names and their corresponding values to update in the document.
+     * @author Yusuf Kara
+     */
     suspend fun updateProfileFields(fields: Map<String, Any>) {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         withContext(Dispatchers.IO) {
             docRef.update(fields) // update
         }
-    } // TODO: Yusuf
+    }
 
-    fun updateEmail(currentPassword: String, newEmail: String, context: Context) {
+    /**
+     * This function updates the email of the authenticated user.
+     * It first re-authenticates the user using the provided current password and their
+     * current email.
+     * It then updates the email in Firebase's Authentication service and in the Firestore database
+     * itself.
+     * @param postalCode The postal code of the user
+     * @param yearBorn the year of birth of the user
+     * @param monthBorn the month of birth of the user
+     * @param dayBorn the day of birth of the user
+     * @param gender the gender of the user
+     * @param currentPassword the current password of the user
+     * @param newEmail the new email for the user
+     * @param context the context of the application
+     * @author Yusuf Kara
+     */
+    fun updateEmail(
+        postalCode: String,
+        yearBorn: String,
+        monthBorn: String,
+        dayBorn: String,
+        gender: String,
+        currentPassword: String,
+        newEmail: String,
+        context: Context
+    ) {
         val user = FirebaseAuth.getInstance().currentUser
         val credential =
             EmailAuthProvider.getCredential(auth.currentUser?.email.toString(), currentPassword)
 
         user?.reauthenticate(credential)?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
+
+                deleteAndInsertEmailToFireStore(
+                    postalCode = postalCode,
+                    yearBorn = yearBorn,
+                    monthBorn = monthBorn,
+                    dayBorn = dayBorn,
+                    gender = gender,
+                    newEmail = newEmail
+                )
+
                 user.updateEmail(newEmail).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Log.d(TAG, "Email updated")
                         Toast.makeText(
                             context,
                             "Successfully updated your email",
@@ -119,9 +191,20 @@ object Database {
                 ).show()
             }
         }
-    } // TODO: Yusuf
+    }
 
-    fun deleteAndInsertEmailToFirestore(
+    /**
+     * This function deletes the current user's profile from FireStore's users collection
+     * and reinserts it with the new email.
+     * @param postalCode The postal code of the user
+     * @param yearBorn the year of birth of the user
+     * @param monthBorn the month of birth of the user
+     * @param dayBorn the day of birth of the user
+     * @param gender the gender of the user
+     * @param newEmail the new email for the user
+     * @author Yusuf Kara
+     */
+    fun deleteAndInsertEmailToFireStore(
         postalCode: String,
         yearBorn: String,
         monthBorn: String,
@@ -129,13 +212,7 @@ object Database {
         gender: String,
         newEmail: String
     ) {
-        Log.d("postal code", postalCode)
-        Log.d("year born", yearBorn)
-        Log.d("month born", monthBorn)
-        Log.d("day born", dayBorn)
-        Log.d("gender", gender)
-
-        Log.d("Document: ", auth.currentUser?.email.toString())
+        // Log.d("Document: ", auth.currentUser?.email.toString())
 
         db.collection("users")
             .document(
@@ -150,7 +227,7 @@ object Database {
             gender = gender,
             newEmail = newEmail
         )
-    } // TODO: Yusuf
+    }
 
     fun updatePassword(currentPassword: String, newPassword: String, context: Context) {
         val user = FirebaseAuth.getInstance().currentUser
@@ -200,7 +277,8 @@ object Database {
                     showLoading.value = false
                     successLoggedIn.value = true
                     Toast.makeText(
-                        context, "Account successfully created",
+                        context,
+                        context.resources.getString(R.string.successAcount),
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -209,7 +287,8 @@ object Database {
                 } else {
                     showLoading.value = false
                     Toast.makeText(
-                        context, "Authentication failed.",
+                        context,
+                        context.resources.getString(R.string.authFailed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -273,14 +352,16 @@ object Database {
                     showLoading.value = false
                     successLoggedIn.value = true
                     Toast.makeText(
-                        context, "Account successfully logged in",
+                        context,
+                        context.resources.getString(R.string.successLogged),
                         Toast.LENGTH_SHORT
                     ).show()
 
                 } else {
                     showLoading.value = false
                     Toast.makeText(
-                        context, "Log in failed.",
+                        context,
+                        context.resources.getString(R.string.loginFail),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -292,12 +373,14 @@ object Database {
         auth.signInAnonymously().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(
-                    context, "Successfully logged in anonymously",
+                    context,
+                    context.resources.getString(R.string.guestSuccessful),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
-                    context, "Log in failed.",
+                    context,
+                    context.resources.getString(R.string.loginFail),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -338,12 +421,14 @@ object Database {
 
             if (task.isSuccessful) {
                 Toast.makeText(
-                    context, "Successully sent a recovery e-mail",
+                    context,
+                    context.resources.getString(R.string.recoveryMailSent),
                     Toast.LENGTH_LONG
                 ).show()
             } else {
                 Toast.makeText(
-                    context, "Failed to send e-mail. Is your e-mail correct?",
+                    context,
+                    context.resources.getString(R.string.recoveryMailFail),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -360,12 +445,14 @@ object Database {
         auth.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(
-                    context, "Account successfully deleted",
+                    context,
+                    context.resources.getString(R.string.deletedSuccess),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
-                    context, "Something went wrong",
+                    context,
+                    context.resources.getString(R.string.somethingWrong),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -411,18 +498,19 @@ object Database {
                 }
      */
 
-    fun createEvent(title: String,
-                    description: String,
-                    allergens: String,
-                    location: String,
-                    surveyCode: String,
-                    //time: String,
-                    day: String,
-                    month: String,
-                    year: String,
-                    hour: String,
-                    minute: String) {
-
+    fun createEvent(
+        title: String,
+        description: String,
+        allergens: String,
+        location: String,
+        surveyCode: String,
+        //time: String,
+        day: String,
+        month: String,
+        year: String,
+        hour: String,
+        minute: String
+    ) {
         val event = hashMapOf(
             "title" to title,
             "description" to description,
@@ -436,9 +524,9 @@ object Database {
             "hour" to hour,
             "minute" to minute
         )
-        db.collection("TESTER").add(event).addOnSuccessListener { docRef ->
+        db.collection("events").add(event).addOnSuccessListener { docRef ->
             event.set("eventId", docRef.id)
-            db.collection("TESTER").document(docRef.id).set(event)
+            db.collection("events").document(docRef.id).set(event)
             docId = docRef.id
         }
     } //TODO: Ahmad
@@ -468,11 +556,11 @@ object Database {
 
 
     @SuppressLint("SuspiciousIndentation")
-    fun UpdateEvent(event : HashMap<String, String>, documentID: String) {
+    fun UpdateEvent(event: HashMap<String, String>, documentID: String) {
         Log.d("eventId : ", documentID)
 
         val docref = db.collection("events").document(documentID)
-            docref.set(event)
+        docref.set(event)
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot successfully updated!")
             }
