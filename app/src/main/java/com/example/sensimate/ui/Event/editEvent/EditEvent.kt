@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -346,7 +348,6 @@ fun EditPage(
 
     val context = LocalContext.current
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -380,9 +381,9 @@ fun EditPage(
 
         item {
             Spacer(modifier = Modifier.size(55.dp))
-            TextFiledTitleText(titleText) { titleText = it }
+            TitleText(titleText) { titleText = it }
             Spacer(modifier = Modifier.size(27.dp))
-            TextFiledDescriptionText(descriptionText) { descriptionText = it }
+            DescriptionText(descriptionText) { descriptionText = it }
             Spacer(modifier = Modifier.size(55.dp))
             Card(
                 modifier = Modifier
@@ -406,9 +407,9 @@ fun EditPage(
                     contentScale = ContentScale.Crop,
 
                     )
-                TextFiledLocationText(locationText) { locationText = it }
-                TextFiledAllergensText(allergensText) { allergensText = it }
-                TextFiledSurveyCodeText(surveyCodeText) {
+                LocationText(locationText) { locationText = it }
+                AllergensText(allergensText) { allergensText = it }
+                SurveyCodeText(surveyCodeText) {
                     if (it.length <= maxChar) surveyCodeText = it
                 }
                 ChooseEventDate(
@@ -448,7 +449,6 @@ fun EditPage(
                             ) //time
 
                              */
-
 
                             Log.d("documentref : ", chosenEvent.eventId)
 
@@ -564,6 +564,129 @@ fun EditPage(
         }
     }
 }
+
+
+
+@Composable
+fun DescriptionText(descriptionText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = descriptionText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Description",
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+        )
+
+    }
+}
+
+
+@Composable
+fun TitleText(titleText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = titleText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Title",
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+        )
+    }
+}
+
+
+@Composable
+fun LocationText(locationText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = locationText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Location",
+                    color = Color(0xFFB874A6)
+                )
+            }, trailingIcon = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.redlocationicon),
+                        modifier = Modifier
+                            .size(20.dp),
+                        contentDescription = ""
+                    )
+
+                }
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = Modifier
+                .padding(1.dp, 2.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+
+@Composable
+fun AllergensText(allergensText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = allergensText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Allergens",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = Modifier
+                .padding(1.dp, 191.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+
+@Composable
+fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = surveyCodeText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Survey Code (4 Digit Code)",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = Modifier
+                .padding(1.dp, 254.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
 
 
 @Composable
