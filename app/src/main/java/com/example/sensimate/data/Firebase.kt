@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchListOfEvents
+import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.Event.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider
@@ -597,8 +598,8 @@ object Database {
         return questions
     }
 
-
-    fun updateSurvey(eventId: String, survey: List<MyQuestion>) { //TODO: Ansh og (Hussein?)
+/*
+    fun updateSurvey(eventId: String, survey: List<MyAnswer>) { //TODO: Ansh og (Hussein?)
         val questionsRef = db.collection("events").document(eventId).collection("questions")
         for (question in survey) {
             val docRef = questionsRef.document(question.mainQuestion)
@@ -615,6 +616,10 @@ object Database {
                 }
         }
     }
+
+ */
+
+
 
 
     /*

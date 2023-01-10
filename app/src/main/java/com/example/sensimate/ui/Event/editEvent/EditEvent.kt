@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -312,8 +314,8 @@ fun EditPage(
     //allergens: String,
     //description: String,
     //surveyCode: String,
-    eventViewModel: EventViewModel
-
+    eventViewModel: EventViewModel,
+    //editEventViewmodel: EditEventViewmodel
 ) {
     val state = eventViewModel.uiState
 
@@ -345,6 +347,7 @@ fun EditPage(
     Log.d("docrefagain :", chosenEvent.eventId)
 
     val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -378,9 +381,9 @@ fun EditPage(
 
         item {
             Spacer(modifier = Modifier.size(55.dp))
-            //TextFiledTitleText(titleText) { titleText = it }
+            TitleText(titleText) { titleText = it }
             Spacer(modifier = Modifier.size(27.dp))
-            //TextFiledDescriptionText(descriptionText) { descriptionText = it }
+            DescriptionText(descriptionText) { descriptionText = it }
             Spacer(modifier = Modifier.size(55.dp))
             Card(
                 modifier = Modifier
@@ -404,13 +407,11 @@ fun EditPage(
                     contentScale = ContentScale.Crop,
 
                     )
-                //TextFiledLocationText(locationText) { locationText = it }
-                //TextFiledAllergensText(allergensText) { allergensText = it }
-               /* TextFiledSurveyCodeText(surveyCodeText) {
+                LocationText(locationText) { locationText = it }
+                AllergensText(allergensText) { allergensText = it }
+                SurveyCodeText(surveyCodeText) {
                     if (it.length <= maxChar) surveyCodeText = it
                 }
-
-                */
                 ChooseEventDate(
                     LocalContext.current,
                     myYear = myYear,
@@ -434,6 +435,27 @@ fun EditPage(
 
                     Button(
                         onClick = {
+                            /*editEventViewmodel.checkIfTextfieldIsEmpty(
+                                context,
+                                titleText, descriptionText, locationText, myYear.value,
+                                myMonth.value, myDay.value, allergensText, surveyCodeText
+
+                             */
+
+                            /*val events = editEventViewmodel.createHashMapforEvent(
+                                titleText,
+                                descriptionText,
+                                allergensText, locationText, surveyCodeText, day, month, year, eventId.value
+                            ) //time
+
+                             */
+
+                            Log.d("documentref : ", chosenEvent.eventId)
+
+                            //Database.UpdateEvent(events, chosenEvent.eventId)
+
+
+                            /*
                             if (titleText == "") {
                                 Toast.makeText(
                                     context,
@@ -472,6 +494,9 @@ fun EditPage(
                                 ).show()
                             } else {
 
+                                /*
+
+                             */
                                 val event = hashMapOf(
                                     "title" to titleText,
                                     "description" to descriptionText,
@@ -486,19 +511,17 @@ fun EditPage(
                                     "eventId" to eventId.value
                                 )
 
-                                Log.d("documentref : ", chosenEvent.eventId)
+                                 */
+                            //val documentID = db.collection("event").document().id
 
-                                Database.UpdateEvent(event, chosenEvent.eventId)
+                            // Log.d("DocumentrefB4 : ", documentID)
 
-                                //val documentID = db.collection("event").document().id
-
-                                // Log.d("DocumentrefB4 : ", documentID)
-
-                                Log.d("docref : ", chosenEvent.eventId)
+                            Log.d("docref : ", chosenEvent.eventId)
 
 
-                                /*navController.navigate(Screen.QuestionPageScreen.route)*/
-                            }
+                            /*navController.navigate(Screen.QuestionPageScreen.route)*/
+
+
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -541,6 +564,129 @@ fun EditPage(
         }
     }
 }
+
+
+
+@Composable
+fun DescriptionText(descriptionText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = descriptionText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Description",
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+        )
+
+    }
+}
+
+
+@Composable
+fun TitleText(titleText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = titleText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Title",
+                    color = Color(0xFFB874A6)
+                )
+            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+        )
+    }
+}
+
+
+@Composable
+fun LocationText(locationText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = locationText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Location",
+                    color = Color(0xFFB874A6)
+                )
+            }, trailingIcon = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.redlocationicon),
+                        modifier = Modifier
+                            .size(20.dp),
+                        contentDescription = ""
+                    )
+
+                }
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = Modifier
+                .padding(1.dp, 2.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+
+@Composable
+fun AllergensText(allergensText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = allergensText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Allergens",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = Modifier
+                .padding(1.dp, 191.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+
+@Composable
+fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
+    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = surveyCodeText,
+            onValueChange = textChange,
+            label = {
+                Text(
+                    text = "Survey Code (4 Digit Code)",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            modifier = Modifier
+                .padding(1.dp, 254.dp, 1.dp, 1.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
 
 
 @Composable
