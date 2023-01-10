@@ -62,15 +62,10 @@ fun EditEventPreview() {
 @Composable
 fun EditEvent(
     navController: NavController,
-    //title: String,
-    //time: String,
-    //location: String,
-    //allergens: String,
-    //description: String,
-    //surveyCode: String,
-    eventViewModel: EventViewModel = viewModel()
+    eventViewModel: EventViewModel = viewModel(),
 ) {
     val state = eventViewModel.uiState
+
 
     val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
 
@@ -320,18 +315,17 @@ fun EditPage(
     //description: String,
     //surveyCode: String,
     eventViewModel: EventViewModel,
-    //editEventViewmodel: EditEventViewmodel
+    editEventViewmodel: EditEventViewmodel = viewModel()
 ) {
-    val state = eventViewModel.uiState
+    //val state = eventViewModel.uiState
+
+    val state = editEventViewmodel.uiState.collectAsState()
 
     val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
 
     Log.d("huske", eventViewModel.uiState.value.chosenSurveyId)
 
-
-
     val maxChar = 4
-
 
 
     var year: String
@@ -428,24 +422,24 @@ fun EditPage(
 
                     Button(
                         onClick = {
-                            /*editEventViewmodel.checkIfTextfieldIsEmpty(
+                            editEventViewmodel.checkIfTextfieldIsEmpty(
                                 context,
-                                titleText, descriptionText, locationText, myYear.value,
-                                myMonth.value, myDay.value, allergensText, surveyCodeText
+                                chosenEvent.title, chosenEvent.description, chosenEvent.location, chosenEvent.year,
+                                chosenEvent.month, chosenEvent.day, chosenEvent.allergens, chosenEvent.surveyCode)
 
-                             */
 
-                            /*val events = editEventViewmodel.createHashMapforEvent(
-                                titleText,
-                                descriptionText,
-                                allergensText, locationText, surveyCodeText, day, month, year, eventId.value
-                            ) //time
+                            val events = editEventViewmodel.createHashMapforEvent(
+                                chosenEvent.title,
+                                chosenEvent.description,
+                                chosenEvent.location, chosenEvent.allergens,
+                                chosenEvent.surveyCode, chosenEvent.day, chosenEvent.year,
+                                chosenEvent.month, chosenEvent.eventId, chosenEvent.minute,
+                                chosenEvent.hour) //time
 
-                             */
 
                             Log.d("documentref : ", chosenEvent.eventId)
 
-                            //Database.UpdateEvent(events, chosenEvent.eventId)
+                            Database.UpdateEvent(events, chosenEvent.eventId)
 
 
                             /*
@@ -592,7 +586,7 @@ fun Time(context: Context,
             backgroundColor = Color.Transparent
         ),
         enabled = false,
-        value = mTime,
+        value = "$myHour : $myMinute",
         label = {
             Text(text = "Time Of The Event", color = Color(0xFFB874A6)) },
         onValueChange = {},
@@ -657,7 +651,7 @@ fun EventDateChosen(
             backgroundColor = Color.Transparent
         ),
         enabled = false,
-        value = text /*if(myDay.value.isNotEmpty()) "${myDay.value}/${myMonth.value}/${myYear.value}" else ""*/,
+        value = "$myDay/$myMonth/$myYear",
         label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
         onValueChange = {},
         modifier = Modifier

@@ -2,7 +2,6 @@ package com.example.sensimate.data
 
 
 import android.widget.Toast
-import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,18 +12,17 @@ class EditEventViewmodel : ViewModel() {
     private val _uiState = MutableStateFlow(Event())
     val uiState: StateFlow<Event> = _uiState.asStateFlow()
 
-
-    /*
     fun createHashMapforEvent(
         titleText: String,
         descriptionText: String,
         allergensText: String,
         locationText: String,
         surveyCodeText: String,
-        timeText: MutableState<String>,
         day: String,
         month: String,
         year: String,
+        min : String,
+        hour : String,
         eventId: String,
     ): HashMap<String, String> {
 
@@ -37,6 +35,8 @@ class EditEventViewmodel : ViewModel() {
         uiState.value.year = year
         uiState.value.day = day
         uiState.value.eventId = eventId
+        uiState.value.minute = min
+        uiState.value.hour = hour
 
         val event = hashMapOf(
             "title" to titleText,
@@ -44,16 +44,15 @@ class EditEventViewmodel : ViewModel() {
             "allergens" to allergensText,
             "location" to locationText,
             "surveyCode" to surveyCodeText,
-            "timeOfEvent" to timeText,
             "day" to day,
             "month" to month,
             "year" to year,
+            "minute" to min,
+            "hour" to hour,
             "eventId" to eventId
         )
         return event
     }
-     */
-
 
     fun checkIfTextfieldIsEmpty(
         context : android.content.Context,
