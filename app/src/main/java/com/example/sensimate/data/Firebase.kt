@@ -31,10 +31,24 @@ import kotlin.collections.HashMap
 @SuppressLint("StaticFieldLeak")
 val db = Firebase.firestore
 
+/**
+ * The EventScreenState data class represents the state of the event screen in the application.
+ * It contains a MutableList of Event objects representing the events to be displayed on the screen.
+ * @param events MutableList of Event objects that needs to be displayed on the screen.
+ * @author Yusuf Kara
+ */
 data class EventScreenState(
     val events: MutableList<Event>? = null
 )
 
+/**
+ * The EventDataViewModel is a view model class used to store and manage the data for the event
+ * screen in the application.
+ * It uses the fetchListOfEvents() function to populate the events list and updates the state
+ * of the events.
+ * It uses the mutableStateOf() function to keep the track of the latest state of the events.
+ * It has a getListOfEvents() function that is responsible for populating the state.
+ */
 class EventDataViewModel : ViewModel() {
     val state = mutableStateOf(EventScreenState())
 
@@ -48,13 +62,21 @@ class EventDataViewModel : ViewModel() {
             state.value = state.value.copy(events = eventList)
         }
     }
-} // TODO: Yusuf
+}
 
 // Initialize Firebase Auth
 val auth = Firebase.auth
 
 object Database {
 
+    /**
+     * This function is used to fetch the user's profile information from the Firebase
+     * FireStore database.
+     * It retrieves the document of the current user from the "users" collection and converts
+     * it to a Profile object.
+     * @return The Profile object of the current user or null if no such document exists.
+     * @author Yusuf Kara
+     */
     suspend fun fetchProfile(): Profile? {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         var profile: Profile?
@@ -65,9 +87,16 @@ object Database {
         }
 
         return profile
-    } // TODO: Yusuf
+    }
 
-
+    /**
+     * This function is used to fetch a list of events from the Firebase Firestore database.
+     * It retrieves all documents from the "events" collection and converts them to a list of
+     * Event objects.
+     * That way the events can be represented in a lazyColumn in the Event screens.
+     * @return A MutableList of Event objects representing the events in the database.
+     * @author Yusuf Kara
+     */
     suspend fun fetchListOfEvents(): MutableList<Event> {
         val eventReference = db.collection("events")
         val eventList: MutableList<Event> = mutableListOf()
@@ -83,22 +112,65 @@ object Database {
         }
 
         return eventList
-    } // TODO: Yusuf
+    }
 
+    /**
+     * This function is used to update fields in the user's profile document in the Firebase
+     * Firestore database.
+     * It retrieves the document of the current user from the "users" collection and updates
+     * the provided fields.
+     * @param fields A map of field names and their corresponding values to update in the document.
+     * @author Yusuf Kara
+     */
     suspend fun updateProfileFields(fields: Map<String, Any>) {
         val docRef = db.collection("users").document(auth.currentUser?.email.toString())
         withContext(Dispatchers.IO) {
             docRef.update(fields) // update
         }
-    } // TODO: Yusuf
+    }
 
-    fun updateEmail(currentPassword: String, newEmail: String, context: Context) {
+    /**
+     * This function updates the email of the authenticated user.
+     * It first re-authenticates the user using the provided current password and their
+     * current email.
+     * It then updates the email in Firebase's Authentication service and in the Firestore database
+     * itself.
+     * @param postalCode The postal code of the user
+     * @param yearBorn the year of birth of the user
+     * @param monthBorn the month of birth of the user
+     * @param dayBorn the day of birth of the user
+     * @param gender the gender of the user
+     * @param currentPassword the current password of the user
+     * @param newEmail the new email for the user
+     * @param context the context of the application
+     * @author Yusuf Kara
+     */
+    fun updateEmail(
+        postalCode: String,
+        yearBorn: String,
+        monthBorn: String,
+        dayBorn: String,
+        gender: String,
+        currentPassword: String,
+        newEmail: String,
+        context: Context
+    ) {
         val user = FirebaseAuth.getInstance().currentUser
         val credential =
             EmailAuthProvider.getCredential(auth.currentUser?.email.toString(), currentPassword)
 
         user?.reauthenticate(credential)?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
+
+                deleteAndInsertEmailToFireStore(
+                    postalCode = postalCode,
+                    yearBorn = yearBorn,
+                    monthBorn = monthBorn,
+                    dayBorn = dayBorn,
+                    gender = gender,
+                    newEmail = newEmail
+                )
+
                 user.updateEmail(newEmail).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(
@@ -119,9 +191,20 @@ object Database {
                 ).show()
             }
         }
-    } // TODO: Yusuf
+    }
 
-    fun deleteAndInsertEmailToFirestore(
+    /**
+     * This function deletes the current user's profile from FireStore's users collection
+     * and reinserts it with the new email.
+     * @param postalCode The postal code of the user
+     * @param yearBorn the year of birth of the user
+     * @param monthBorn the month of birth of the user
+     * @param dayBorn the day of birth of the user
+     * @param gender the gender of the user
+     * @param newEmail the new email for the user
+     * @author Yusuf Kara
+     */
+    fun deleteAndInsertEmailToFireStore(
         postalCode: String,
         yearBorn: String,
         monthBorn: String,
@@ -129,13 +212,7 @@ object Database {
         gender: String,
         newEmail: String
     ) {
-        Log.d("postal code", postalCode)
-        Log.d("year born", yearBorn)
-        Log.d("month born", monthBorn)
-        Log.d("day born", dayBorn)
-        Log.d("gender", gender)
-
-        Log.d("Document: ", auth.currentUser?.email.toString())
+        // Log.d("Document: ", auth.currentUser?.email.toString())
 
         db.collection("users")
             .document(
@@ -150,7 +227,7 @@ object Database {
             gender = gender,
             newEmail = newEmail
         )
-    } // TODO: Yusuf
+    }
 
     fun updatePassword(currentPassword: String, newPassword: String, context: Context) {
         val user = FirebaseAuth.getInstance().currentUser
