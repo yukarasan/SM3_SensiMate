@@ -5,11 +5,13 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.paging.Pager
@@ -18,9 +20,12 @@ import com.example.sensimate.data.EventViewModel
 //import com.example.sensimate.data.questionandsurvey.MyAnswer2
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.ui.InitialStartPage.showLoading
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
+import com.example.sensimate.ui.theme.Purple200
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -33,20 +38,31 @@ fun SurveyCreator(
     navController: NavController,
     questionViewModel: QuestionViewModel,
     eventViewModel: EventViewModel
+
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(
-            Brush.verticalGradient(
-                0.0f to DarkPurple,
-                0.5f to BottonGradient
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
+                )
             )
-        )
     )
+    {
+        val showLoading = remember {
+            mutableStateOf(false)
+        }
+        showLoadingSurvey(showLoading)
+    }
 
     val surveyId = eventViewModel.uiState.value.chosenSurveyId
     val state = questionViewModel.uiState.value
     var hasOther: Boolean = false
+
 
     // Returns a scope that's cancelled when F is removed from composition
 
@@ -79,6 +95,13 @@ fun SurveyCreator(
 
             Log.d("in scope", questionViewModel.uiState.value.questions.size.toString())
         }
+    }
+}
+
+@Composable
+fun showLoadingSurvey(showloading: MutableState<Boolean>) {
+    if (showloading.value) {
+        CircularProgressIndicator(color = Color.White, modifier = Modifier.size(50.dp))
     }
 }
 
@@ -191,16 +214,21 @@ fun AllPages(
                     FinishButton() {
                     }
                 } else {
-                    NextButton(onClick = {
-                        if (pagerState.currentPage < pagerState.pageCount - 1) {
-                            scope.launch {
-                                //PreviousButton(onClick = {
-                                pagerState.currentPage
-                                pagerState.scrollToPage(pagerState.currentPage + 1)
-                                //onSurveyComplete(questionViewModel.getAnswer().myanswer.value.selectedOptions)
+                    Row(  modifier = Modifier
+                        .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End) {
+                        NextButton(onClick = {
+                            if (pagerState.currentPage < pagerState.pageCount - 1) {
+                                scope.launch {
+                                    //PreviousButton(onClick = {
+                                    pagerState.currentPage
+                                    pagerState.scrollToPage(pagerState.currentPage + 1)
+                                    //onSurveyComplete(questionViewModel.getAnswer().myanswer.value.selectedOptions)
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
+
 
                 }
             }
