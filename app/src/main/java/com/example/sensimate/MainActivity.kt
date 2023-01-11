@@ -2,6 +2,7 @@ package com.example.sensimate
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
 
 import androidx.activity.ComponentActivity
@@ -9,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 
 import androidx.compose.material.Scaffold
@@ -22,46 +24,11 @@ import com.example.sensimate.ui.theme.darkbluegrey
 
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.apply {
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            statusBarColor = DarkPurple.toArgb()
-        }
-
-        // WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            ChangeSystemBarColor()
-            App()
-
-            var activity = LocalContext.current as Activity
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
-        }
-    }
-
-    @Composable
-    private fun ChangeSystemBarColor() {
-        MaterialTheme {
-            Surface(color = DarkPurple) {
-                Column {
-                    Text(text = "Sensimate")
-                }
-            }
+            App(context = LocalContext.current)
         }
     }
 }
-
-
-
-
-
-/*
-        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-        if (windowInsetsController != null) {
-            windowInsetsController.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-        windowInsetsController?.Colorhide(WindowInsetsCompat.Type.systemBars())
-    }
-
- */

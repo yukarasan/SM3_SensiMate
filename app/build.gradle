@@ -70,7 +70,8 @@ dependencies {
     //implementation('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
     //implementation 'com.google.zxing:core:3.4.0'
 
-
+    // System UI
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
 
     // Firebase:
     implementation platform('com.google.firebase:firebase-bom:31.0.3')

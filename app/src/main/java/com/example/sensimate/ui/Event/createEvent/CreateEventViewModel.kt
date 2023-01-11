@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
@@ -32,7 +31,7 @@ class CreateEventViewModel: ViewModel(){
 
 
 
-    fun Check(context: Context, navController: NavController) {
+    fun check(context: Context, navController: NavController) {
         if (uistate.value.titleText.value == "") {
             Toast.makeText(
                 context,
@@ -82,7 +81,6 @@ class CreateEventViewModel: ViewModel(){
                 allergens = uistate.value.allergensText.value,
                 location = uistate.value.locationText.value,
                 surveyCode = uistate.value.surveyCodeText.value,
-                //time = com.example.sensimate.ui.Event.createEvent.getTimeText,
                 day = uistate.value.myDay.value,
                 month = uistate.value.myMonth.value,
                 year = uistate.value.myYear.value,

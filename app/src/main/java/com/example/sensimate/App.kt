@@ -1,22 +1,30 @@
 package com.example.sensimate
 
+import android.app.Activity
+import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.ui.navigation.SetupNavGraph
 import com.example.sensimate.ui.Event.EventViewModel
+import com.example.sensimate.ui.theme.BottomGradient
+import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.SensimateTheme
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun App(
+    context: Context,
     appViewModel: AppViewModel = viewModel(),
     eventViewModel: EventViewModel = EventViewModel(),
     modifier: Modifier = Modifier
@@ -29,13 +37,24 @@ fun App(
     // Navigation
     val navController: NavHostController = rememberNavController()
     SetupNavGraph(navController = navController, eventUIState = eventUiState)
-}
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun AppPreview() {
-    SensimateTheme {
-        App()
+    // Locking the screen rotation
+    val activity = context as Activity
+    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+
+    val systemUiController = rememberSystemUiController()
+
+    /*
+     * Setting the color of the status bar and navigation bar
+     */
+    SideEffect {
+        systemUiController.setStatusBarColor(
+            color = DarkPurple,
+            darkIcons = false
+        )
+        systemUiController.setNavigationBarColor(
+            color = BottomGradient,
+            darkIcons = false
+        )
     }
 }

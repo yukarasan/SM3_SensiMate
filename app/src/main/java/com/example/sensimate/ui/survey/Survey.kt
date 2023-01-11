@@ -49,13 +49,15 @@ fun Survey(
 ) {
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to DarkPurple,
-                    0.5f to BottonGradient
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
-            .fillMaxSize()
     )
     LazyColumn() {
         item {

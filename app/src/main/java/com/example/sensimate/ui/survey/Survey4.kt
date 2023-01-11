@@ -50,13 +50,15 @@ import com.example.sensimate.ui.theme.*
 fun Survey4(title: String, navController: NavController,  questionViewModel: QuestionViewModel) {
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to DarkPurple,
-                    0.5f to BottonGradient
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
-            .fillMaxSize()
     )
     LazyColumn(){
         item {

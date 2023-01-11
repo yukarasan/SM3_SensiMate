@@ -1,9 +1,11 @@
 package com.example.sensimate.ui.navigation
 
+import AnswerViewModel
 import EditEvent
 import EditPage
 import EditSurvey
 import EditSurveyPage
+import TextAnswerViewModel
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -45,6 +47,8 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
     val eventViewModel = EventViewModel()
     val startProfileViewModel = StartProfileViewModel()
     val createEventViewModel = CreateEventViewModel()
+    val answerViewModel = AnswerViewModel()
+    val textAnswerViewModel = TextAnswerViewModel()
 
     val context = LocalContext.current
 
@@ -179,10 +183,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             QuestionPageScreen(navController = navController)
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
-            CreateMultpleChoiceQuestionScreen(navController = navController)
+            CreateMultpleChoiceQuestionScreen(navController = navController, answerViewModel = answerViewModel)
         }
         composable(route = Screen.CreateTextAnswerQuestionScreen.route) {
-            CreateTextAnswerQuestionScreen(navController = navController)
+            CreateTextAnswerQuestionScreen(navController = navController, textAnswerViewModel = textAnswerViewModel)
         }
         /*
         composable(
