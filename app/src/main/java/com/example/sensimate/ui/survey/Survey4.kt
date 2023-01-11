@@ -97,12 +97,14 @@ private fun ProgressPreview() {
 }
 
 
-@SuppressLint("StateFlowValueCalledInComposition")
+@SuppressLint("StateFlowValueCalledInComposition", "MutableCollectionMutableState")
 @Composable
 fun Information4(questionViewModel: QuestionViewModel) {
     val checkedState = remember { mutableStateOf(false) }
 
     val options = questionViewModel.uiState.value.currentQuestion.options
+
+    val answer = remember { mutableListOf<String>() }
 
 
 /*
@@ -129,7 +131,7 @@ fun Information4(questionViewModel: QuestionViewModel) {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CheckBox(questionViewModel, option = options, option)
+                    CheckBox(questionViewModel, option = answer, option)
                     Option(title = option)
                     Spacer(modifier = Modifier.width((120.dp)))
                    // questionViewModel.setAnswer(answers = options)
