@@ -57,25 +57,15 @@ class EventViewModel : ViewModel() {
 
     }
 
-    fun updateDayString(day: String) {
-        updateUiState(event = _uiState.value.event.copy(day = day))
+    fun updateDateString(day: String, month: String, year: String){
+        updateUiState(event = _uiState.value.event.copy(day = day, month = month, year = year))
+
     }
 
-    fun updateMonthString(month: String) {
-        updateUiState(event = _uiState.value.event.copy(month = month))
+    fun updateTime(minute : String, hour : String){
+        updateUiState(event = _uiState.value.event.copy(minute = minute, hour = hour))
     }
 
-    fun updateYearString(year: String) {
-        updateUiState(event = _uiState.value.event.copy(year = year))
-    }
-
-    fun updateMinString(minute: String) {
-        updateUiState(event = _uiState.value.event.copy(minute = minute))
-    }
-
-    fun updateHourString(hour: String) {
-        updateUiState(event = _uiState.value.event.copy(hour = hour))
-    }
 
 
     fun createHashMapforEvent(
