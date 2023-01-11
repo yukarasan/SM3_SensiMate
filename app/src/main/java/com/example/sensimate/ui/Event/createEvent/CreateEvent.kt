@@ -502,76 +502,86 @@ fun QuestionPageScreen(navController: NavController) {
                 )
             )
     )
-    Card(
-        modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 150.dp, bottom = 150.dp)
-            .fillMaxWidth()
-            .fillMaxSize(),
+    Column() {
+        Card(
+            modifier = Modifier
+                .padding(top = 150.dp, bottom = 150.dp)
+                .padding(15.dp)
+                .fillMaxSize(),
+            shape = RoundedCornerShape(14.dp),
+            backgroundColor = Color(red = 44, green = 44, blue = 59)
 
-        shape = RoundedCornerShape(14.dp),
-        backgroundColor = Color(red = 44, green = 44, blue = 59)
-
-    ) {  //TODO
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
-            Text(
-                text = "Create a Question",
-                color = Color(0xFFB874A6),
-                fontSize = 26.sp,
-                modifier = Modifier
-                    .padding(start = 35.dp, top = 255.dp)
-
-            )
-        }
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            OutlinedButton(
-                onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
-                shape = CircleShape,
-                border = BorderStroke(1.dp,color = Color.Green),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color(red = 44, green = 44, blue = 59)),
-                modifier = Modifier
-                    .padding(top = 420.dp)
-                    .size(240.dp, 50.dp)
-            ) {
+        ) {  //TODO
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = "Done",
-                    color = Color.Green,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = manropeFamily
+                    text = "Create a Question",
+                    color = Color(0xFFB874A6),
+                    fontSize = 26.sp,
+                    modifier = Modifier
+                        .padding(start = 35.dp, top = 220.dp)
+
+                )
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedButton(
+                    onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                    shape = CircleShape,
+                    border = BorderStroke(1.dp, color = Color.Green),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(
+                            red = 44,
+                            green = 44,
+                            blue = 59
+                        )
+                    ),
+                    modifier = Modifier
+                        .padding(top = 430.dp)
+                        .size(240.dp, 50.dp)
+                ) {
+                    Text(
+                        text = "Done",
+                        color = Color.Green,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = manropeFamily
+                    )
+                }
+
+            }
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+                AddPhoto(
+                    modifier = Modifier
+                        .padding(end = 55.dp, top = 225.dp)
+                        .size(25.dp)
+                        .clickable(enabled = true,
+                            onClick = {
+                                when (selectedQuestion.value) {
+                                    "Multiple-Choice Question" -> {
+                                        navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
+                                    }
+                                    "Text Answer Question" -> {
+                                        navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
+                                    }
+                                    else -> {
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "Please Choose a Question Type",
+                                                Toast.LENGTH_SHORT
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }),
+                    id = R.drawable.redaddplus
                 )
             }
 
+            DropDownMenu(selectedQuestion = selectedQuestion)
         }
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            AddPhoto(
-                modifier = Modifier
-                    .padding(end = 55.dp, top = 260.dp)
-                    .size(25.dp)
-                    .clickable(enabled = true,
-                        onClick = {
-                            when (selectedQuestion.value) {
-                                "Multiple-Choice Question" -> {
-                                    navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
-                                }
-                                "Text Answer Question" -> {
-                                    navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
-                                }
-                                else -> {
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            "Please Choose a Question Type",
-                                            Toast.LENGTH_SHORT
-                                        )
-                                        .show()
-                                }
-                            }
-                        }),
-                id = R.drawable.redaddplus
-            )
-        }
-
-        DropDownMenu(selectedQuestion = selectedQuestion)
     }
 }
 
