@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,23 +12,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.paging.Pager
 import com.example.sensimate.data.EventViewModel
+//import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.questionandsurvey.MyAnswer2
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
-import com.example.sensimate.ui.InitialStartPage.showLoading
-import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
-import com.example.sensimate.ui.theme.BottonGradient
 import com.example.sensimate.ui.theme.DarkPurple
-import com.example.sensimate.ui.theme.Purple200
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
@@ -62,6 +55,7 @@ fun SurveyCreator(
     val surveyId = eventViewModel.uiState.value.chosenSurveyId
     val state = questionViewModel.uiState.value
     var hasOther: Boolean = false
+
 
 
     // Returns a scope that's cancelled when F is removed from composition
@@ -97,6 +91,24 @@ fun SurveyCreator(
         }
     }
 }
+/*
+private fun nextQuestion(questionViewModel: QuestionViewModel) {
+    questionViewModel.setAnswer(MyAnswer(myAnswer = selectedAnswers, mainQuestion = questionViewModel.uiState.value.currentQuestion.mainQuestion))
+    pager.nextPage()
+}
+
+ */
+
+val selectedAnswers = mutableStateOf<List<String>>(emptyList())
+
+/*
+private fun nextQuestion(questionViewModel: QuestionViewModel) {
+    questionViewModel.setCurrentQuestion(questionViewModel.uiState.value.currentQuestion, selectedAnswers)
+    pager.nextPage()
+}
+
+ */
+
 
 @Composable
 fun showLoadingSurvey(showloading: MutableState<Boolean>) {
@@ -105,29 +117,21 @@ fun showLoadingSurvey(showloading: MutableState<Boolean>) {
     }
 }
 
-
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AllPages(
     navController: NavController,
     questions: List<MyQuestion>,
-    questionViewModel: QuestionViewModel,
-    //surveyAnswer: MutableList<MyAnswer>
-    /*eventViewModel: EventViewModel*/
+    questionViewModel: QuestionViewModel
 ) {
     val answers = mutableListOf<String>() //i vm
 
+    //val selectedAnswers = remember { mutableStateOf(listOf<MyAnswer>()) }
 
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
-    //val myanswers = mutableListOf<MyAnswer>()
-
-    val onSurveyComplete = { selectedAnswers: List<String> ->
-        // Create a new MyAnswer object and add to the list
-        //myanswers.add(MyAnswer(selectedAnswers, questions[pagerState.currentPage].mainQuestion))
-    }
 
 
     HorizontalPager(
@@ -151,7 +155,9 @@ fun AllPages(
                     title = questions[questionIndex].mainQuestion,
                     navController = navController,
                     questionViewModel
+
                 )
+
 
 
             } else if (questions[questionIndex].oneChoice) {
@@ -217,16 +223,22 @@ fun AllPages(
                     Row(  modifier = Modifier
                         .fillMaxWidth(),
                         horizontalArrangement = Arrangement.End) {
+                        val myOption = questionViewModel.uiState.value.currentQuestion.options[questionIndex]
                         NextButton(onClick = {
                             if (pagerState.currentPage < pagerState.pageCount - 1) {
                                 scope.launch {
+                                    //questionViewModel.setAnswer(selectedAnswers.value)
+                                    //questionViewModel.setAnswer()
                                     //PreviousButton(onClick = {
                                     pagerState.currentPage
                                     pagerState.scrollToPage(pagerState.currentPage + 1)
-                                    //onSurveyComplete(questionViewModel.getAnswer().myanswer.value.selectedOptions)
+
                                 }
                             }
-                        })
+                        }
+
+                        )
+
                     }
 
 

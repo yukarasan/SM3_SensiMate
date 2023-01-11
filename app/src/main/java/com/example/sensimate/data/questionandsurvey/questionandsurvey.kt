@@ -3,8 +3,16 @@ package com.example.sensimate.data.questionandsurvey
 data class QuestionsUiState(
     var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList(),
     var questionsStarted: Boolean = false,
-    var currentQuestion: MyQuestion = MyQuestion()
+    var currentQuestion: MyQuestion = MyQuestion(),
+    var currentAnswers: List<String> = emptyList()
 )
+/*
+class MyAnswer(
+    var myAnswer: String,
+    var mainQuestion: String = "",
+)
+
+ */
 
 class MyQuestion(
     var mainQuestion: String = "",

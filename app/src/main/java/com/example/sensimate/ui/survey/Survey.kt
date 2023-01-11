@@ -137,6 +137,7 @@ fun SurveyTitle(title: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun Information(titles: List<String>, placeholders: List<String>) {
+
     Card(
         modifier = Modifier
             .padding(start = 0.dp, top = 25.dp)
