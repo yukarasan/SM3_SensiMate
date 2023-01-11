@@ -580,6 +580,7 @@ fun QuestionPageScreen(navController: NavController) {
 @Composable
 fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewModel: AnswerViewModel) {
     val state = answerViewModel._uistate.collectAsState()
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -661,7 +662,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewMo
             }
 
             Button(
-                onClick = {answerViewModel.multipleAnswer(navController)},
+                onClick = {answerViewModel.multipleAnswer(navController,context)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -699,8 +700,8 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewMo
 // TODO FIGUR 4
 @Composable
 fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewModel: TextAnswerViewModel) {
-    //var questionText by remember { mutableStateOf("") }
     val state = textAnswerViewModel._uistate.collectAsState()
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -735,7 +736,7 @@ fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewM
 
             Button(
 
-                onClick = { textAnswerViewModel.textAnswer(navController)},
+                onClick = { textAnswerViewModel.textAnswer(navController,context)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
