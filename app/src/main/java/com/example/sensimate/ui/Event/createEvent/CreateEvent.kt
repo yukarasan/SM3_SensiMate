@@ -1,5 +1,7 @@
 package com.example.sensimate.ui.Event.createEvent
 
+import AnswerViewModel
+import TextAnswerViewModel
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -155,7 +157,7 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
 
                     Button(
                         onClick = {
-                            createEventViewModel.Check(context,navController)
+                            createEventViewModel.check(context,navController)
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -603,16 +605,18 @@ fun QuestionPageScreen(navController: NavController) {
 // Figur 3
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
+fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewModel: AnswerViewModel) {
+    /*
     var questionText by remember { mutableStateOf("") }
     var answerText1 by remember { mutableStateOf("") }
     var answerText2 by remember { mutableStateOf("") }
     var answerText3 by remember { mutableStateOf("") }
     var answerText4 by remember { mutableStateOf("") }
     var answerText5 by remember { mutableStateOf("") }
-    val checkedState = remember {
-        mutableStateOf(false)
-    }
+    val checkedState = remember { mutableStateOf(false)}
+
+     */
+    val state = answerViewModel._uistate.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -642,22 +646,22 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.size(55.dp))
 
-            TextFiledQuestionText(questionText) { questionText = it }
+            TextFiledQuestionText(state.value.questionText) { state.value.questionText.value = it }
             Spacer(modifier = Modifier.size(27.dp))
-            TextFiledAnswerText("Answer 1", answerText1) { answerText1 = it }
+            TextFiledAnswerText("Answer 1", state.value.answerText1) { state.value.answerText1.value = it }
             Spacer(modifier = Modifier.size(27.dp))
-            TextFiledAnswerText("Answer 2", answerText2) { answerText2 = it }
-            if (answerText2 != "") {
+            TextFiledAnswerText("Answer 2", state.value.answerText2) { state.value.answerText2.value = it }
+            if (state.value.answerText2.value != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 3", answerText3) { answerText3 = it }
+                TextFiledAnswerText("Answer 3", state.value.answerText3) { state.value.answerText3.value = it }
             }
-            if (answerText3 != "") {
+            if (state.value.answerText3.value != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 4", answerText4) { answerText4 = it }
+                TextFiledAnswerText("Answer 4", state.value.answerText4) { state.value.answerText4.value = it }
             }
-            if (answerText4 != "") {
+            if (state.value.answerText4.value != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 5", answerText5) { answerText5 = it }
+                TextFiledAnswerText("Answer 5", state.value.answerText5) { state.value.answerText5.value = it }
             }
             Spacer(modifier = Modifier.size(55.dp))
             Row(
@@ -665,9 +669,9 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Checkbox(
-                    checked = checkedState.value,
+                    checked = state.value.checkedState.value,
                     onCheckedChange = {
-                        checkedState.value = it
+                        state.value.checkedState.value = it
                     },
                     colors = CheckboxDefaults
                         .colors(
@@ -694,64 +698,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
             }
 
             Button(
-                onClick = {
-                    val mainQuest = hashMapOf(
-                        "mainQuestion" to questionText,
-                        "oneChoice" to checkedState.value
-                    )
-                    if (answerText5 != ""){
-                        val questionAnswer = hashMapOf(
-                            "answer1" to answerText1,
-                            "answer2" to answerText2,
-                            "answer3" to answerText3,
-                            "answer4" to answerText4,
-                            "answer5" to answerText5
-                        )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
-                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
-                            mainQuest.set("questionId", docRef.id)
-                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
-                        }
-                    }
-                    else if (answerText4 != ""){
-                        val questionAnswer = hashMapOf(
-                            "answer1" to answerText1,
-                            "answer2" to answerText2,
-                            "answer3" to answerText3,
-                            "answer4" to answerText4
-                        )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
-                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
-                            mainQuest.set("questionId", docRef.id)
-                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
-                        }
-                    }
-                    else if (answerText3 != ""){
-                        val questionAnswer = hashMapOf(
-                            "answer1" to answerText1,
-                            "answer2" to answerText2,
-                            "answer3" to answerText3
-                        )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
-                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
-                            mainQuest.set("questionId", docRef.id)
-                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
-                        }
-                    }
-                    else{
-                    val questionAnswer = hashMapOf(
-                        "answer1" to answerText1,
-                        "answer2" to answerText2
-                    )
-                    val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
-                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
-                        mainQuest.set("questionId", docRef.id)
-                        subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
-                    }
-
-                    }
-
-                    navController.navigate(Screen.QuestionPageScreen.route) },
+                onClick = {answerViewModel.multipleAnswer(navController)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -788,8 +735,9 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
 
 // FIGUR 4
 @Composable
-fun CreateTextAnswerQuestionScreen(navController: NavController) {
-    var questionText by remember { mutableStateOf("") }
+fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewModel: TextAnswerViewModel) {
+    //var questionText by remember { mutableStateOf("") }
+    val state = textAnswerViewModel._uistate.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -819,18 +767,12 @@ fun CreateTextAnswerQuestionScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.size(55.dp))
 
-            TextFiledQuestionText(questionText) { questionText = it }
+            TextFiledQuestionText(state.value.questionText) { state.value.questionText.value = it }
             Spacer(modifier = Modifier.size(55.dp))
 
             Button(
 
-                onClick = {
-                    val mainQuest = hashMapOf(
-                        "mainQuestion" to questionText
-                    )
-                    val subcollectionRef = db.collection("events").document(docId).collection("questions")
-                    subcollectionRef.add(mainQuest)
-                    navController.navigate(Screen.QuestionPageScreen.route) },
+                onClick = { textAnswerViewModel.textAnswer(navController)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -865,10 +807,10 @@ fun CreateTextAnswerQuestionScreen(navController: NavController) {
 }
 
 @Composable
-fun TextFiledQuestionText(questionText: String, textChange: (String) -> Unit) {
+fun TextFiledQuestionText(questionText: MutableState<String>, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = questionText,
+            value = questionText.value,
             onValueChange = textChange,
             label = {
                 Text(
@@ -886,10 +828,10 @@ fun TextFiledQuestionText(questionText: String, textChange: (String) -> Unit) {
 }
 
 @Composable
-fun TextFiledAnswerText(text: String, answerText: String, textChange: (String) -> Unit) {
+fun TextFiledAnswerText(text: String, answerText: MutableState<String>, textChange: (String) -> Unit) {
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = answerText,
+            value = answerText.value,
             onValueChange = textChange,
             label = {
                 Text(

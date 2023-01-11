@@ -530,6 +530,86 @@ object Database {
         }
     } //TODO: Ahmad
 
+    fun question5(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String,answer4: String,answer5: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question,
+            "oneChoice" to boolean
+        )
+        val questionAnswer = hashMapOf(
+            "answer1" to answer1,
+            "answer2" to answer2,
+            "answer3" to answer3,
+            "answer4" to answer4,
+            "answer5" to answer5
+        )
+        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+            mainQuest.set("questionId", docRef.id)
+            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+        }
+    }
+
+    fun question4(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String,answer4: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question,
+            "oneChoice" to boolean
+        )
+        val questionAnswer = hashMapOf(
+            "answer1" to answer1,
+            "answer2" to answer2,
+            "answer3" to answer3,
+            "answer4" to answer4,
+        )
+        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+            mainQuest.set("questionId", docRef.id)
+            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+        }
+    }
+
+    fun question3(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question,
+            "oneChoice" to boolean
+        )
+        val questionAnswer = hashMapOf(
+            "answer1" to answer1,
+            "answer2" to answer2,
+            "answer3" to answer3,
+
+        )
+        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+            mainQuest.set("questionId", docRef.id)
+            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+        }
+    }
+
+    fun question(question: String, boolean: Boolean,answer1: String,answer2: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question,
+            "oneChoice" to boolean
+        )
+        val questionAnswer = hashMapOf(
+            "answer1" to answer1,
+            "answer2" to answer2,
+
+        )
+        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+            mainQuest.set("questionId", docRef.id)
+            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+        }
+    }
+
+    fun textAnswer(question: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question
+        )
+        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest)
+    }
+
     fun editEvent() {} //TODO: Ahmad
 
     fun deleteEvent(eventtitle: String) {
