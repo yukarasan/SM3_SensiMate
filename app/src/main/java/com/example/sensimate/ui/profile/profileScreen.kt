@@ -189,6 +189,7 @@ private fun EditButton(onClick: () -> Unit) {
             .height(40.dp)
             .width(120.dp)
             .padding(end = 20.dp)
+
     ) {
         Text(
             text = "Edit",
@@ -198,6 +199,7 @@ private fun EditButton(onClick: () -> Unit) {
             color = Color.White
         )
     }
+
 }
 
 @Composable

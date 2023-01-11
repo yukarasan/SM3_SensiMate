@@ -10,7 +10,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -19,7 +18,6 @@ import com.example.sensimate.ui.navigation.SetupNavGraph
 import com.example.sensimate.ui.Event.EventViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
-import com.example.sensimate.ui.theme.SensimateTheme
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
