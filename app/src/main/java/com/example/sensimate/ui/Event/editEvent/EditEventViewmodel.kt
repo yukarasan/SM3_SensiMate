@@ -2,6 +2,7 @@ package com.example.sensimate.ui.Event.editEvent
 
 
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.example.sensimate.data.Event
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +14,48 @@ class EditEventViewmodel : ViewModel() {
     private val _uiState = MutableStateFlow(Event())
     val uiState: StateFlow<Event> = _uiState.asStateFlow()
 
+
+    fun updateTitleString(title : String){
+        _uiState.value = _uiState.value.copy(title = title)
+    }
+
+    fun updateDescriptionString(description: String){
+        _uiState.value = _uiState.value.copy(description = description)
+    }
+
+    fun updateAllergensString(allergens: String){
+        _uiState.value = _uiState.value.copy(allergens = allergens)
+    }
+
+    fun updateLocationString(location: String){
+        _uiState.value = _uiState.value.copy(location = location)
+    }
+
+    fun updateSurveyCodeString(SurveyCode : String){
+        _uiState.value = _uiState.value.copy(surveyCode = SurveyCode)
+
+    }
+
+    fun updateDayString(day : String){
+        _uiState.value = _uiState.value.copy(day = day)
+    }
+
+    fun updateMonthString(month: String){
+        _uiState.value = _uiState.value.copy(month = month)
+    }
+
+    fun updateYearString(year: String){
+        _uiState.value = _uiState.value.copy(year = year)
+    }
+
+    fun updateMinString(minute : String){
+        _uiState.value = _uiState.value.copy(minute = minute)
+    }
+
+    fun updateHourString(hour: String){
+        _uiState.value = _uiState.value.copy(hour = hour)
+    }
+
     fun createHashMapforEvent(
         titleText: String,
         descriptionText: String,
@@ -22,8 +65,8 @@ class EditEventViewmodel : ViewModel() {
         day: String,
         month: String,
         year: String,
-        min : String,
-        hour : String,
+        min: String,
+        hour: String,
         eventId: String,
     ): HashMap<String, String> {
 
