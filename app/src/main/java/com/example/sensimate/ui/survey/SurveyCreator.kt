@@ -46,11 +46,16 @@ fun SurveyCreator(
             )
     )
     {
+    }
+
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         val showLoading = remember {
-            mutableStateOf(false)
+            mutableStateOf(true)
         }
         showLoadingSurvey(showLoading)
     }
+
+
 
     val surveyId = eventViewModel.uiState.value.chosenSurveyId
     val state = questionViewModel.uiState.value
@@ -223,7 +228,6 @@ fun AllPages(
                     Row(  modifier = Modifier
                         .fillMaxWidth(),
                         horizontalArrangement = Arrangement.End) {
-                        val myOption = questionViewModel.uiState.value.currentQuestion.options[questionIndex]
                         NextButton(onClick = {
                             if (pagerState.currentPage < pagerState.pageCount - 1) {
                                 scope.launch {

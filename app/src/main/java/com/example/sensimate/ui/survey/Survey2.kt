@@ -53,7 +53,7 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
         items(1) {
-            OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
+            OrangeBackButton({navController.popBackStack()})
         }
         items(1) {
             ProgressPreview()
