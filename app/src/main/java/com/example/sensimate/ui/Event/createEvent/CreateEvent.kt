@@ -492,7 +492,7 @@ fun QuestionPageScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .size(size = 300.dp)
+            //.size(size = 300.dp)
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
@@ -502,16 +502,21 @@ fun QuestionPageScreen(navController: NavController) {
                 )
             )
     )
-    Column() {
+    Column(Modifier
+        .padding(top = 150.dp)
+        .fillMaxSize()) {
         Card(
             modifier = Modifier
                 //.padding(top = 150.dp, bottom = 150.dp)
                 .padding(15.dp)
-                .fillMaxSize(),
-            shape = RoundedCornerShape(14.dp),
+                //.fillMaxSize(),
+            ,shape = RoundedCornerShape(14.dp),
             backgroundColor = Color(red = 44, green = 44, blue = 59)
 
         ) {  //TODO
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                DropDownMenu(selectedQuestion = selectedQuestion)
+            }
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
                 Text(
                     text = "Create a Question",
@@ -521,35 +526,6 @@ fun QuestionPageScreen(navController: NavController) {
                         .padding(start = 35.dp, top = 220.dp)
 
                 )
-            }
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                OutlinedButton(
-                    onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
-                    shape = CircleShape,
-                    border = BorderStroke(1.dp, color = Color.Green),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(
-                            red = 44,
-                            green = 44,
-                            blue = 59
-                        )
-                    ),
-                    modifier = Modifier
-                        .padding(top = 430.dp)
-                        .size(240.dp, 50.dp)
-                ) {
-                    Text(
-                        text = "Done",
-                        color = Color.Green,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium,
-                        fontFamily = manropeFamily
-                    )
-                }
-
             }
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
                 AddPhoto(
@@ -579,8 +555,35 @@ fun QuestionPageScreen(navController: NavController) {
                     id = R.drawable.redaddplus
                 )
             }
-
-            DropDownMenu(selectedQuestion = selectedQuestion)
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedButton(
+                    onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                    shape = CircleShape,
+                    border = BorderStroke(1.dp, color = Color.Green),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(
+                            red = 44,
+                            green = 44,
+                            blue = 59
+                        )
+                    ),
+                    modifier = Modifier
+                        .padding(top = 430.dp)
+                        .size(240.dp, 50.dp)
+                ) {
+                    Text(
+                        text = "Done",
+                        color = Color.Green,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        fontFamily = manropeFamily
+                    )
+                }
+                Spacer(modifier = Modifier.size(60.dp))
+            }
         }
     }
 }
@@ -847,7 +850,9 @@ fun DropDownMenu(selectedQuestion: MutableState<String>) {
     else
         Icons.Filled.KeyboardArrowDown
 
-    Column(Modifier.padding(20.dp)) {
+    Column(Modifier
+        .fillMaxWidth()
+        .padding(20.dp)) {
         OutlinedTextField(
             value = selectedQuestion.value,
             onValueChange = { selectedQuestion.value = it },
