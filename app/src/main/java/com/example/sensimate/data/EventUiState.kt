@@ -1,5 +1,8 @@
 package com.example.sensimate.data
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+
 data class Event(
     var title: String = "",
     var description: String = "",
@@ -12,6 +15,7 @@ data class Event(
     var year: String = "",
     var hour: String = "",
     var minute: String = "",
+    var chosenSurveyCode: MutableState<String> = mutableStateOf("")
 )
 
 data class EventUiState(

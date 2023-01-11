@@ -141,10 +141,12 @@ fun EditPasswordScreen(
             })
         }
 
-        CustomPasswordField(text = profileState.currentPassword,
+        CustomPasswordField(
+            text = profileState.currentPassword,
             description = "Current password",
             placeholder = "Enter your current password here",
-            onValueChange = { profileViewModel.updateCurrentPasswordString(input = it) })
+            onValueChange = { profileViewModel.updateCurrentPasswordString(input = it) }
+        )
         CustomPasswordField(
             text = profileState.newPassword,
             description = "New password",

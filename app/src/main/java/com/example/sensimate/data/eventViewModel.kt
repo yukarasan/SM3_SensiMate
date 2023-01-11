@@ -52,9 +52,9 @@ class EventViewModel : ViewModel() {
         updateUiState(event = _uiState.value.event.copy(location = location))
     }
 
-    fun updateSurveyCodeString(SurveyCode: String) {
-        updateUiState(event = _uiState.value.event.copy(surveyCode = SurveyCode))
-
+    fun updateSurveyCodeString(surveyCode: String) {
+        // updateUiState(event = _uiState.value.event.copy(surveyCode = SurveyCode))
+        _uiState.value.event.chosenSurveyCode.value = surveyCode
     }
 
     fun updateDayString(day: String) {
@@ -76,7 +76,6 @@ class EventViewModel : ViewModel() {
     fun updateHourString(hour: String) {
         updateUiState(event = _uiState.value.event.copy(hour = hour))
     }
-
 
     fun createHashMapforEvent(
         titleText: String,

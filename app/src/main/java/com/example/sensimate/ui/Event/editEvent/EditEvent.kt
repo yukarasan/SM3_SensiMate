@@ -413,7 +413,7 @@ fun EditPage(
 
 
                 SurveyCodeText(state.value.event.surveyCode) {
-                    if (it.length <= maxChar) {eventViewModel.updateSurveyCodeString(SurveyCode = it) }
+                    if (it.length <= maxChar) {eventViewModel.updateSurveyCodeString(surveyCode = it) }
                 }
                 EventDateChosen(
                     LocalContext.current,
