@@ -254,7 +254,7 @@ fun FinishButton(onClick: () -> Unit) {
 
             Image(
                 painter = painterResource(id = R.drawable.tick),
-                contentDescription = "Finish Survey",
+                contentDescription = "Finish",
                 colorFilter = ColorFilter.tint(Color.White),
                 modifier = Modifier
                     .size(40.dp)
