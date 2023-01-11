@@ -45,7 +45,7 @@ import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
-import com.example.sensimate.ui.Event.editEvent.EditEventViewmodel
+//import com.example.sensimate.ui.Event.editEvent.EditEventViewmodel
 
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -112,8 +112,8 @@ fun EditEvent(navController: NavController,
                             Column(
                                 modifier = Modifier.padding(10.dp)
                             ) {
-                                Title(title = chosenEvent.title)
-                                Description(description = chosenEvent.description)
+                                Title(title = chosenEvent.title.value)
+                                Description(description = chosenEvent.description.value)
                             }
 
                             Spacer(modifier = Modifier.height(10.dp))
@@ -146,7 +146,7 @@ fun EditEvent(navController: NavController,
                                             if (state.value.event.chosenSurveyCode.value.length < 4) {
                                                 showFieldAlert = true
                                             } else if (state.value.event.chosenSurveyCode.value ==
-                                                state.value.event.surveyCode
+                                                state.value.event.surveyCode.value
                                             ) {
                                                 navController.popBackStack()
                                                 navController.navigate(Screen.SurveyCreator.route)
@@ -176,7 +176,7 @@ fun EditEvent(navController: NavController,
                             ) {
                                 Allergens(
                                     title = "Allergens",
-                                    allergen = chosenEvent.allergens
+                                    allergen = chosenEvent.allergens.value
                                 )
                             }
 
@@ -192,10 +192,10 @@ fun EditEvent(navController: NavController,
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Time(
-                                        hour = chosenEvent.hour,
-                                        minute = chosenEvent.minute
+                                        hour = chosenEvent.hour.value,
+                                        minute = chosenEvent.minute.value
                                     )
-                                    Address(address = chosenEvent.location)
+                                    Address(address = chosenEvent.location.value)
                                 }
                             }
                         }
@@ -409,7 +409,7 @@ fun EditPage(
     var month: String
     var day: String
 
-    Log.d("docrefagain :", chosenEvent.eventId)
+    //Log.d("docrefagain :", chosenEvent.eventId)
 
     val context = LocalContext.current
 
@@ -447,12 +447,12 @@ fun EditPage(
         item {
             Spacer(modifier = Modifier.size(55.dp))
 
-            TitleText(titleText = state.value.event.title,
+            TitleText(titleText = state.value.event.title.value,
                 textChange = { eventViewModel.updateTitleString(title = it) })
 
             Spacer(modifier = Modifier.size(27.dp))
             DescriptionText(
-                descriptionText = state.value.event.description,
+                descriptionText = state.value.event.description.value,
                 onValueChange = { eventViewModel.updateDescriptionString(description = it) })
 
             Spacer(modifier = Modifier.size(55.dp))
@@ -480,24 +480,24 @@ fun EditPage(
                     )
 
                 LocationText(
-                    locationText = state.value.event.location,
+                    locationText = state.value.event.location.value,
                     onValueChange = { eventViewModel.updateLocationString(location = it) })
 
                 AllergensText(
-                    allergensText = state.value.event.allergens,
+                    allergensText = state.value.event.allergens.value,
                     onValueChange = { eventViewModel.updateAllergensString(allergens = it) })
 
 
-                SurveyCodeText(state.value.event.surveyCode) {
+                SurveyCodeText(state.value.event.surveyCode.value) {
                     if (it.length <= maxChar) {
                         eventViewModel.updateSurveyCodeString(surveyCode = it)
                     }
                 }
                 EventDateChosen(
                     LocalContext.current,
-                    myYear = state.value.event.year,
-                    myMonth = state.value.event.month,
-                    myDay = state.value.event.day,
+                    myYear = state.value.event.year.value,
+                    myMonth = state.value.event.month.value,
+                    myDay = state.value.event.day.value,
                     onDateChange = { day, month, year ->
                         eventViewModel.updateDateString(day = day, month = month, year = year)
                     }
@@ -505,7 +505,7 @@ fun EditPage(
 
                 Time(
                     context = LocalContext.current,
-                    myHour = state.value.event.hour, myMinute = state.value.event.minute,
+                    myHour = state.value.event.hour.value, myMinute = state.value.event.minute.value,
 
                     onValueChangeTime = { hour, minute ->
                         eventViewModel.updateTime(
@@ -529,14 +529,14 @@ fun EditPage(
                         onClick = {
                             eventViewModel.checkIfTextfieldIsEmpty(
                                 context,
-                                state.value.event.title,
-                                state.value.event.description,
-                                state.value.event.location,
-                                state.value.event.year,
-                                state.value.event.month,
-                                state.value.event.day,
-                                state.value.event.allergens,
-                                state.value.event.surveyCode
+                                state.value.event.title.value,
+                                state.value.event.description.value,
+                                state.value.event.location.value,
+                                state.value.event.year.value,
+                                state.value.event.month.value,
+                                state.value.event.day.value,
+                                state.value.event.allergens.value,
+                                state.value.event.surveyCode.value
                             )
                             eventViewModel.updateEvent()
 
@@ -601,8 +601,8 @@ fun EditPage(
 
                             // Log.d("DocumentrefB4 : ", documentID)
 
-                            Log.d("docref : ", chosenEvent.eventId)
-                            Log.d("docref2 : ", state.value.event.eventId)
+                            Log.d("docref : ", chosenEvent.eventId.value)
+                            Log.d("docref2 : ", state.value.event.eventId.value)
 
 
                             /*navController.navigate(Screen.QuestionPageScreen.route)*/
