@@ -74,7 +74,13 @@ class CreateEventViewModel: ViewModel(){
                 "SurveyCode was not entered",
                 Toast.LENGTH_SHORT
             ).show()
-        } else {
+        } else if (uistate.value.surveyCodeText.value.length < 4) {
+            Toast.makeText(
+                context,
+                "Please enter a 4 digit SurveyCode",
+                Toast.LENGTH_SHORT
+            ).show()
+        }else {
             Database.createEvent(
                 title = uistate.value.titleText.value,
                 description = uistate.value.descriptionText.value,

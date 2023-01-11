@@ -6,16 +6,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,6 +41,10 @@ fun ExtendedEvent(
 ) {
     val eventState = eventViewModel.uiState
     val chosenEvent = eventViewModel.getEventById(eventState.value.chosenSurveyId)
+    val state = eventViewModel.uiState.collectAsState()
+
+    var showFieldAlert by remember { mutableStateOf(false) }
+    var showSecondFieldAlert by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -89,14 +96,33 @@ fun ExtendedEvent(
                                     modifier = Modifier
                                         .padding(start = 10.dp)
                                 ) {
-                                    InputField() { }
+                                    InputField(
+                                        onValueChange = {
+                                            if (it.length <= 4) {
+                                                eventViewModel.updateSurveyCodeString(
+                                                    surveyCode = it
+                                                )
+                                            }
+                                        },
+                                        text = state.value.event.chosenSurveyCode.value
+                                    )
                                 }
                                 Column(
                                     modifier = Modifier
                                         .padding(end = 10.dp)
                                 ) {
                                     Button(
-                                        onClick = { navController.navigate(Screen.SurveyCreator.route) },
+                                        onClick = {
+                                            if (state.value.event.chosenSurveyCode.value.length < 4) {
+                                                showFieldAlert = true
+                                            } else if (state.value.event.chosenSurveyCode.value ==
+                                                state.value.event.surveyCode) {
+                                                navController.popBackStack()
+                                                navController.navigate(Screen.SurveyCreator.route)
+                                            } else {
+                                                showSecondFieldAlert = true
+                                            }
+                                        },
                                         colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
                                         modifier = Modifier
                                             .size(width = 50.dp, height = 60.dp)
@@ -138,6 +164,35 @@ fun ExtendedEvent(
                         }
                     }
                 }
+            }
+
+            if (showFieldAlert) {
+                AlertDialog(onDismissRequest = { showFieldAlert = false }, text = {
+                    Text(
+                        "The provided survey code must be exactly 4 characters long. Please " +
+                                "try again"
+                    )
+                }, confirmButton = {
+                    Button(onClick = {
+                        showFieldAlert = false
+                    }) {
+                        Text(text = "OK")
+                    }
+                })
+            }
+
+            if (showSecondFieldAlert) {
+                AlertDialog(onDismissRequest = { showSecondFieldAlert = false }, text = {
+                    Text(
+                        "The survey code that you provided is not correct. Please try again."
+                    )
+                }, confirmButton = {
+                    Button(onClick = {
+                        showSecondFieldAlert = false
+                    }) {
+                        Text(text = "OK")
+                    }
+                })
             }
         }
     }
@@ -221,19 +276,17 @@ private fun Allergens(title: String, allergen: String, modifier: Modifier = Modi
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun InputField(onClick: () -> Unit) {
+private fun InputField(onValueChange: (String) -> Unit, text: String) {
     Column(
         modifier = Modifier
             .padding(bottom = 10.dp)
     ) {
-        // ---------------------------------------------------------------------------
-        //TODO: Needs state hoisting
-        var text by remember { mutableStateOf(TextFieldValue("")) }
-        // ---------------------------------------------------------------------------
+        val keyboardController = LocalSoftwareKeyboardController.current
         TextField(
             value = text,
-            onValueChange = { it -> text = it },
+            onValueChange = onValueChange,
             label = { Label() },
             placeholder = { Placeholder() },
             textStyle = TextStyle(
@@ -255,7 +308,13 @@ private fun InputField(onClick: () -> Unit) {
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { keyboardController?.hide() }
+            ),
             singleLine = true,
             maxLines = 1 //TODO: maxLines not working. Fix this.
         )
