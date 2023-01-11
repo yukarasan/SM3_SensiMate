@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,10 +14,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
@@ -25,8 +28,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
@@ -40,13 +46,11 @@ import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.Event.createEvent.AddPhoto
 import com.example.sensimate.ui.Event.editEvent.EditEventViewmodel
+
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.survey.Survey4
-import com.example.sensimate.ui.theme.BottonGradient
-import com.example.sensimate.ui.theme.DarkPurple
-import com.example.sensimate.ui.theme.LightColor
-import com.example.sensimate.ui.theme.RedColor
+import com.example.sensimate.ui.theme.*
 import java.util.*
 
 /*
@@ -62,152 +66,174 @@ fun EditEventPreview() {
  */
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun EditEvent(
-    navController: NavController,
-    eventViewModel: EventViewModel = viewModel(),
-) {
-    val state = eventViewModel.uiState
+fun EditEvent(navController: NavController,
+    eventViewModel: EventViewModel = viewModel()) {
 
-    val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
+    val eventState = eventViewModel.uiState
+    val chosenEvent = eventViewModel.getEventById(eventState.value.chosenSurveyId)
+    val state = eventViewModel.uiState.collectAsState()
+
+    var showFieldAlert by remember { mutableStateOf(false) }
+    var showSecondFieldAlert by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .size(size = 300.dp)
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        DarkPurple, BottonGradient
+                        DarkPurple,
+                        BottomGradient
                     )
                 )
             )
-    )
-    LazyColumn(Modifier.fillMaxWidth()) {
-        item {
-            LazyRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                item {
-                    Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-                        OrangeBackButton(onClick = { navController.navigate(Screen.EventScreenEmployee.route) }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
-                    }
-                }
-                item {
-                    AddPhoto(
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .size(50.dp)
-                            .clickable(
-                                enabled = true,
-                                onClickLabel = "Clickable image",
-                                onClick = { navController.navigate(Screen.EditPage.route) }),
-                        /*{
-                            navController.navigate(
-                                Screen.EditPage.passArguments(
-                                    time = time,
-                                    title = title,
-                                    description = description,
-                                    allergens = allergens,
-                                    location = location,
-                                    surveyCode = surveyCode,
-                                )
-                            )
-                        }),
-
-                         */
-
-                        id = R.drawable.yelloweditbutton
-                    )
-                }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        ) {
+            Column(modifier = Modifier.padding(10.dp)) {
+                OrangeBackButton(onClick = { navController.popBackStack() })
             }
-        }
-        item {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Card(
-                    modifier = Modifier
-                        .padding(start = 15.dp, end = 15.dp)
-                        .fillMaxWidth(),
-                    elevation = 5.dp,
-                    shape = RoundedCornerShape(20.dp),
-                    backgroundColor = Color(red = 44, green = 44, blue = 59)
-                ) {
-                    Column {
-                        Row {
-                            Column(
-                                modifier = Modifier.padding(
-                                    top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp
-                                )
-                            ) {
 
-                                Row {
-                                    Column {
-                                        Title(title = chosenEvent.title)
-                                        Description(
-                                            description = chosenEvent.description
+            LazyColumn() {
+                item {
+                    Card(
+                        modifier = Modifier
+                            .padding(15.dp)
+                            .fillMaxSize(),
+                        elevation = 5.dp,
+                        shape = RoundedCornerShape(20.dp),
+                        border = BorderStroke(2.dp, Color(154, 107, 254)),
+                        backgroundColor = DarkPurple
+                    ) {
+                        Column {
+                            Column(
+                                modifier = Modifier.padding(10.dp)
+                            ) {
+                                Title(title = chosenEvent.title)
+                                Description(description = chosenEvent.description)
+                            }
+
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .padding(start = 10.dp)
+                                ) {
+                                    InputField(
+                                        onValueChange = {
+                                            if (it.length <= 4) {
+                                                eventViewModel.updateSurveyCodeString(
+                                                    surveyCode = it
+                                                )
+                                            }
+                                        },
+                                        text = state.value.event.chosenSurveyCode.value
+                                    )
+                                }
+                                Column(
+                                    modifier = Modifier
+                                        .padding(end = 10.dp)
+                                ) {
+                                    Button(
+                                        onClick = {
+                                            if (state.value.event.chosenSurveyCode.value.length < 4) {
+                                                showFieldAlert = true
+                                            } else if (state.value.event.chosenSurveyCode.value ==
+                                                state.value.event.surveyCode
+                                            ) {
+                                                navController.popBackStack()
+                                                navController.navigate(Screen.SurveyCreator.route)
+                                            } else {
+                                                showSecondFieldAlert = true
+                                            }
+                                        },
+                                        colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
+                                        modifier = Modifier
+                                            .size(width = 50.dp, height = 60.dp)
+                                            .padding(bottom = 10.dp)
+                                    ) {
+                                        Text(
+                                            text = "Go",
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 10.sp,
+                                            color = Color.White,
+                                            fontFamily = manropeFamily
                                         )
                                     }
                                 }
                             }
-                        }
-                        Spacer(modifier = Modifier.size(10.dp))
-                        Allergens(title = chosenEvent.allergens)
-                        Description(description = chosenEvent.description)
-                        Spacer(modifier = Modifier.size(20.dp))
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Column() {
-                                Title(title = "Location")
-                            }
-                            HourAndMinuteDescription(
-                                hour = chosenEvent.hour,
-                                minute = chosenEvent.minute
-                            )
-                        }
-                        Spacer(modifier = Modifier.size(20.dp))
-                        Description(description = chosenEvent.location)
+                            Spacer(modifier = Modifier.size(15.dp))
 
+                            Column(
+                                modifier = Modifier.padding(10.dp)
+                            ) {
+                                Allergens(
+                                    title = "Allergens",
+                                    allergen = chosenEvent.allergens
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.size(15.dp))
+
+                            Column(
+                                modifier = Modifier.padding(10.dp)
+                            ) {
+                                Title(title = "Location")
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Time(
+                                        hour = chosenEvent.hour,
+                                        minute = chosenEvent.minute
+                                    )
+                                    Address(address = chosenEvent.location)
+                                }
+                            }
+                        }
                     }
                 }
-                Spacer(modifier = Modifier.size(25.dp))
-                /*
-                Button(
-                    onClick = { navController.navigate(Screen.EditSurvey.route) },
-                    shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
-                    modifier = Modifier.size(345.dp, 60.dp),
+            }
 
-                    ) {
+            if (showFieldAlert) {
+                AlertDialog(onDismissRequest = { showFieldAlert = false }, text = {
                     Text(
-                        text = "Edit Survey",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 25.sp,
-                        color = Color.White,
-                        fontFamily = manropeFamily
+                        "The provided survey code must be exactly 4 characters long. Please " +
+                                "try again"
                     )
-                }
+                }, confirmButton = {
+                    Button(onClick = {
+                        showFieldAlert = false
+                    }) {
+                        Text(text = "OK")
+                    }
+                })
+            }
 
-                 */
-                Spacer(modifier = Modifier.size(20.dp))
-                Button(
-                    onClick = { Database.deleteEvent(chosenEvent.title) },
-                    shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
-                    modifier = Modifier.size(345.dp, 60.dp),
-
-                    ) {
+            if (showSecondFieldAlert) {
+                AlertDialog(onDismissRequest = { showSecondFieldAlert = false }, text = {
                     Text(
-                        text = "Delete Event",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 25.sp,
-                        color = Color.White,
-                        fontFamily = manropeFamily
+                        "The survey code that you provided is not correct. Please try again."
                     )
-                }
+                }, confirmButton = {
+                    Button(onClick = {
+                        showSecondFieldAlert = false
+                    }) {
+                        Text(text = "OK")
+                    }
+                })
             }
         }
     }
 }
-
 
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier) {
@@ -215,26 +241,11 @@ private fun Title(title: String, modifier: Modifier = Modifier) {
         text = title,
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 25.sp,
+        fontSize = 26.sp,
         color = Color.White,
         modifier = modifier
-            .padding(start = 8.dp)
+            .padding(start = 8.dp, bottom = 8.dp)
             .width(220.dp)
-    )
-}
-
-@Composable
-private fun HourAndMinuteDescription(hour: String, minute: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "$hour:$minute",
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 17.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(start = 8.dp)
-            .width(220.dp)
-
     )
 }
 
@@ -243,66 +254,131 @@ private fun Description(description: String, modifier: Modifier = Modifier) {
     Text(
         text = description,
         fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 17.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
         color = Color.White,
         modifier = modifier
-            .padding(start = 8.dp)
-            .width(220.dp)
-    )
-}
-
-@Composable
-private fun Allergens(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 20.sp,
-        color = Color.White,
-        modifier = modifier
-            .padding(start = 8.dp)
-            .width(220.dp)
-    )
-}
-
-@Composable
-private fun Bar(progress: Float) {
-    Column(
-        modifier = Modifier
+            .padding(start = 8.dp, end = 8.dp)
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
-    ) {
-        LinearProgressIndicator(
-            modifier = Modifier
+    )
+}
+
+@Composable
+private fun Time(hour: String, minute: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "$hour:$minute",
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        color = Color.White,
+        modifier = modifier.padding(start = 8.dp, end = 16.dp)
+    )
+}
+
+@Composable
+private fun Address(address: String, modifier: Modifier = Modifier) {
+    Text(
+        text = address,
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        color = Color.White,
+        modifier = modifier.padding(end = 8.dp)
+    )
+}
+
+@Composable
+private fun Allergens(title: String, allergen: String, modifier: Modifier = Modifier) {
+    Column() {
+        Text(
+            text = title,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp,
+            color = Color.White,
+            modifier = modifier
+                .padding(start = 8.dp, end = 8.dp)
                 .fillMaxWidth()
-                .height(20.dp)
-                .clip(RoundedCornerShape(30.dp)),
-            backgroundColor = Color(red = 63, green = 69, blue = 81),
-            color = Color(red = 199, green = 242, blue = 219), //progress color
-            progress = progress //TODO:  Needs state hoisting in future.
+        )
+        Text(
+            text = allergen,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = Color.White,
+            modifier = modifier
+                .padding(start = 8.dp, end = 8.dp)
+                .fillMaxWidth()
         )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun InputField(onValueChange: (String) -> Unit, text: String) {
+    Column(
+        modifier = Modifier
+            .padding(bottom = 10.dp)
+    ) {
+        val keyboardController = LocalSoftwareKeyboardController.current
+        TextField(
+            value = text,
+            onValueChange = onValueChange,
+            label = { Label() },
+            placeholder = { Placeholder() },
+            textStyle = TextStyle(
+                color = Color.White,
+                fontSize = 12.sp,
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier
+                .width(240.dp)
+                .height(50.dp)
+                .padding(end = 10.dp)
+                .background(
+                    Color(74, 75, 90),
+                    shape = RoundedCornerShape(35.dp)
+                ),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { keyboardController?.hide() }
+            ),
+            singleLine = true,
+            maxLines = 1 //TODO: maxLines not working. Fix this.
+        )
+    }
+}
 
 @Composable
-fun AddPhoto(modifier: Modifier = Modifier, id: Int) {
-    Image(
-        painter = painterResource(id = id),
-        contentDescription = "HEJ MED DIG ",
-        modifier = modifier
+private fun Label() {
+    Text(
+        text = "Enter event code", //TODO: Make text as recourse
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
+        color = Color.White
     )
 }
 
-/*
-@Preview
 @Composable
-fun EditPagePreview() {
-    EditPage(navController = rememberNavController())
+private fun Placeholder() {
+    Text(
+        text = "Enter event code here to open the survey", //TODO: Make text as recourse
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
+        color = Color.White
+    )
 }
-
- */
 
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -316,7 +392,7 @@ fun EditPage(
     //description: String,
     //surveyCode: String,
     eventViewModel: EventViewModel,
-    editEventViewmodel: EditEventViewmodel = viewModel()
+    //editEventViewmodel: EditEventViewmodel = viewModel()
 ) {
     val state1 = eventViewModel.uiState
 
@@ -413,23 +489,30 @@ fun EditPage(
 
 
                 SurveyCodeText(state.value.event.surveyCode) {
-                    if (it.length <= maxChar) {eventViewModel.updateSurveyCodeString(surveyCode = it) }
+                    if (it.length <= maxChar) {
+                        eventViewModel.updateSurveyCodeString(surveyCode = it)
+                    }
                 }
                 EventDateChosen(
                     LocalContext.current,
                     myYear = state.value.event.year,
                     myMonth = state.value.event.month,
                     myDay = state.value.event.day,
-                    onDateChange = {day, month, year ->
-                        eventViewModel.updateDateString(day = day, month = month, year = year)}
+                    onDateChange = { day, month, year ->
+                        eventViewModel.updateDateString(day = day, month = month, year = year)
+                    }
                 )
 
                 Time(
                     context = LocalContext.current,
                     myHour = state.value.event.hour, myMinute = state.value.event.minute,
 
-                    onValueChangeTime = {hour, minute -> eventViewModel.updateTime(hour = hour,
-                        minute = minute)}
+                    onValueChangeTime = { hour, minute ->
+                        eventViewModel.updateTime(
+                            hour = hour,
+                            minute = minute
+                        )
+                    }
 
                 )
 
@@ -455,24 +538,7 @@ fun EditPage(
                                 state.value.event.allergens,
                                 state.value.event.surveyCode
                             )
-
-                            val events = eventViewModel.createHashMapforEvent(
-                                state.value.event.title,
-                                state.value.event.description,
-                                state.value.event.location,
-                                state.value.event.year,
-                                state.value.event.month,
-                                state.value.event.day,
-                                state.value.event.allergens,
-                                state.value.event.surveyCode,
-                                state.value.event.minute,
-                                state.value.event.hour,
-                                state.value.event.eventId
-                            )
-
-                            Log.d("documentref : ", chosenEvent.eventId)
-
-                            Database.UpdateEvent(events, state.value.event.eventId)
+                            eventViewModel.updateEvent()
 
                             /*
                             if (titleText == "") {
@@ -536,6 +602,7 @@ fun EditPage(
                             // Log.d("DocumentrefB4 : ", documentID)
 
                             Log.d("docref : ", chosenEvent.eventId)
+                            Log.d("docref2 : ", state.value.event.eventId)
 
 
                             /*navController.navigate(Screen.QuestionPageScreen.route)*/
@@ -590,7 +657,7 @@ fun Time(
     context: Context,
     myHour: String,
     myMinute: String,
-    onValueChangeTime: (hour : String, minute : String) -> Unit
+    onValueChangeTime: (hour: String, minute: String) -> Unit
 ) {
     // Declaring and initializing a calendar
     val mCalendar = Calendar.getInstance()
@@ -640,7 +707,7 @@ fun EventDateChosen(
     myYear: String,
     myMonth: String,
     myDay: String,
-    onDateChange: (day : String, month : String, year : String) -> Unit
+    onDateChange: (day: String, month: String, year: String) -> Unit
 ) {
     val calendar = Calendar.getInstance()
     calendar.add(Calendar.YEAR, 0)
@@ -671,8 +738,10 @@ fun EventDateChosen(
                 selectedMonth.value = month
                 selectedDay.value = dayofMonth
                 hasChosen.value = true
-                onDateChange(selectedYear.value.toString(),
-                    selectedMonth.value.plus(1).toString(), selectedDay.value.toString())
+                onDateChange(
+                    selectedYear.value.toString(),
+                    selectedMonth.value.plus(1).toString(), selectedDay.value.toString()
+                )
 
             }, selectedYear.value, selectedMonth.value, selectedDay.value
         )
