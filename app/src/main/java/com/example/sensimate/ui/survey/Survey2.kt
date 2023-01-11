@@ -108,7 +108,9 @@ fun Information2(questionViewModel: QuestionViewModel) {
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
 
 
+
         selectedOption = i
+
 
         questionViewModel.setAnswer(listOf(options[i]))
 
