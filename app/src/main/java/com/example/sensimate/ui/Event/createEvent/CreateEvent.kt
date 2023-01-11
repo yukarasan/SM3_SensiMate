@@ -81,7 +81,7 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
                 Brush.verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
@@ -497,7 +497,7 @@ fun QuestionPageScreen(navController: NavController) {
                 Brush.verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
@@ -514,7 +514,7 @@ fun QuestionPageScreen(navController: NavController) {
     ) {  //TODO
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
             Text(
-                text = "Create an Question",
+                text = "Create a Question",
                 color = Color(0xFFB874A6),
                 fontSize = 26.sp,
                 modifier = Modifier
@@ -589,7 +589,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewMo
                 Brush.verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
@@ -710,7 +710,7 @@ fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewM
                 Brush.verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
