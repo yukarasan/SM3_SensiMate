@@ -3,7 +3,6 @@ package com.example.sensimate.ui.Event.extendedEvent
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -68,7 +67,7 @@ fun ExtendedEvent(
                             .padding(15.dp)
                             .fillMaxSize(),
                         elevation = 5.dp,
-                        shape = RoundedCornerShape(35.dp),
+                        shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(2.dp, Color(154, 107, 254)),
                         backgroundColor = DarkPurple
                     ) {
@@ -100,7 +99,7 @@ fun ExtendedEvent(
                                         onClick = { navController.navigate(Screen.SurveyCreator.route) },
                                         colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
                                         modifier = Modifier
-                                            .size(width = 50.dp, height = 50.dp)
+                                            .size(width = 50.dp, height = 60.dp)
                                             .padding(bottom = 10.dp)
                                     ) {
                                         Text(
@@ -245,7 +244,7 @@ private fun InputField(onClick: () -> Unit) {
             ),
             modifier = Modifier
                 .width(240.dp)
-                .height(40.dp)
+                .height(50.dp)
                 .padding(end = 10.dp)
                 .background(
                     Color(74, 75, 90),
