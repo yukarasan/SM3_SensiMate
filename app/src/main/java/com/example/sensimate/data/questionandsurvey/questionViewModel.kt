@@ -1,17 +1,14 @@
 package com.example.sensimate.data.questionandsurvey
 
-import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.sensimate.data.Database
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 
 class QuestionViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(QuestionsUiState())
+    val _uiState = MutableStateFlow(QuestionsUiState())
     val uiState: StateFlow<QuestionsUiState> = _uiState.asStateFlow()
 
     suspend fun insertQuestions(
@@ -26,33 +23,29 @@ class QuestionViewModel : ViewModel() {
         _uiState.value.questionsStarted = true
     }
 
+
     fun setCurrentQuestion(question: MyQuestion) {
         _uiState.value.currentQuestion = question
     }
-
-    /*
-    fun getAnswer(question: MyQuestion) {
-        val _myanswer= MutableStateFlow(MyAnswer())
-        val myanswer: StateFlow<MyAnswer> = _myanswer.asStateFlow()
-
-
+    fun setAnswer(answers: List<String>) {
+        //_uiState.value.currentAnswers = listOf(answer)
+        _uiState.value.currentAnswers = answers
     }
 
-     */
+
+}
 
 
-    /*
-    class MyAnswer(
-        var myAnswer: List<String>,
-        var mainQuestion: String = "",
-    )
 
 
+/*
     fun getAnswer(question: MyQuestion): StateFlow<MyAnswer> {
         val _myanswer = MutableStateFlow(MyAnswer())
         return _myanswer.asStateFlow()
     }
 
-     */
+ */
 
-}
+
+
+

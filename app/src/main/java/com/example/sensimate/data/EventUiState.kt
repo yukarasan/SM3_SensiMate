@@ -6,7 +6,6 @@ data class Event(
     var surveyCode: String = "",
     var eventId: String = "",
     var location: String = "",
-    var adresss: String = "",
     var allergens: String = "",
     var day: String = "",
     var month: String = "",

@@ -14,13 +14,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import com.example.sensimate.data.*
+import com.example.sensimate.data.EventViewModel
+import com.example.sensimate.data.SaveBoolToLocalStorage
+import com.example.sensimate.data.auth
+import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.Event.createEvent.*

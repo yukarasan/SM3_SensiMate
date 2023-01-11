@@ -2,6 +2,7 @@ package com.example.sensimate.ui.survey
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -100,11 +101,25 @@ private fun ProgressPreview() {
 fun Information3(questionViewModel: QuestionViewModel) {
     val checkedState = remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(0) }
-    var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
-        selectedOption = i
-    }
 
     val options = questionViewModel.uiState.value.currentQuestion.options
+    var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
+        selectedOption = i
+
+        questionViewModel.setAnswer(options)
+
+        Log.d("Test2", options.toString())
+    }
+
+
+
+/*
+    val myAnswers = selectedAnswers.value.map {
+        MyAnswer(it)
+    }
+    questionViewModel.setAnswer(myAnswers)
+
+ */
 
     Card(
         modifier = Modifier
@@ -145,6 +160,9 @@ fun Information3(questionViewModel: QuestionViewModel) {
             ) {
                 options.forEachIndexed { index, _ ->
                     RoundedCheckView(listener, selectedOption, option = index)
+
+
+                    //Log.d("Test2", options.toString())
                 }
             }
         }
