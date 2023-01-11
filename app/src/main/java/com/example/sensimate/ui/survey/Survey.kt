@@ -25,6 +25,7 @@ import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Rotate
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -66,7 +67,7 @@ fun Survey(
                     .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
             ) {
-                OrangeBackButton({ navController.navigate(Screen.EventScreen.route) })
+                OrangeBackButton({navController.popBackStack()})
                 ProgressPreview()
                 Question(title)
                 SurveyTitle(title)
@@ -199,6 +200,15 @@ private fun Option(title: String, modifier: Modifier = Modifier) {
     )
 }
 
+@Preview
+@Composable
+fun PreviewPreviousButton() {
+    NextButton {
+
+    }
+}
+
+
 @Composable
 fun PreviousButton(onClick: () -> Unit) {
     Button(
@@ -212,23 +222,24 @@ fun PreviousButton(onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
 
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
+                painter = painterResource(id = R.drawable.arrow),
                 contentDescription = "Previous",
-                modifier = Modifier
-                    .size(40.dp)
-                    .padding(start = 0.dp)
+                colorFilter = ColorFilter.tint(Color.White),
+
 
             )
             Text(
                 "Previous",
                 color = Color.White,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(start = 0.dp)
-            )
+                fontSize = 14.sp,
+                modifier =
+                    Modifier.padding(start = 2.dp)
+                )
         }
 
     }
@@ -248,25 +259,25 @@ fun NextButton(onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
 
         ) {
             Text(
                 "Next",
                 color = Color.White,
-                fontSize = 12.sp,
-                modifier = Modifier.padding(start = 0.dp)
+                fontSize = 19.sp,
+               modifier =
+                Modifier.padding(start = 2.dp)
             )
 
 
 
             Image(
-                painter = painterResource(id = R.drawable.ic_baseline_arrow_front2_24),
+                painter = painterResource(id = R.drawable.arrowreverse),
+                colorFilter = ColorFilter.tint(Color.White),
                 contentDescription = "Next",
-                modifier = Modifier
-                    .size(40.dp)
-                    .padding(start = 10.dp)
-                    .rotate(180f)
+
             )
 
         }

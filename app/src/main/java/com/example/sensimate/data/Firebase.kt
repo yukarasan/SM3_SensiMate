@@ -738,7 +738,7 @@ object Database {
 
      */
 
-    /*
+
 
     fun updateSurvey(eventId: String, questionId: String, newQuestion: MyQuestion) {
         val questionRef = db.collection("events").document(eventId)
@@ -758,7 +758,7 @@ object Database {
         }
     }
 
-     */
+
 
 
     fun getEmployeeProfiles() {} //TODO: Sabirin

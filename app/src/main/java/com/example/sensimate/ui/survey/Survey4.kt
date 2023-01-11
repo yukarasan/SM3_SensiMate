@@ -26,6 +26,7 @@ import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
@@ -57,7 +58,7 @@ fun Survey4(title: String, navController: NavController, questionViewModel: Ques
                     .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
             ) {
-                OrangeBackButton({navController.navigate(Screen.EventScreen.route)})
+                OrangeBackButton({navController.popBackStack()})
                 ProgressPreview()
                 Question(title)
                 SurveyTitle(title)
@@ -246,19 +247,19 @@ fun FinishButton(onClick: () -> Unit) {
             Text(
                 "Finish Survey",
                 color = Color.White,
-                fontSize = 12.sp,
+                fontSize = 10.sp,
                 modifier = Modifier.padding(start = 0.dp)
             )
-
 
 
             Image(
                 painter = painterResource(id = R.drawable.tick),
                 contentDescription = "Finish Survey",
+                colorFilter = ColorFilter.tint(Color.White),
                 modifier = Modifier
                     .size(40.dp)
                     .padding(start = 10.dp)
-                    .rotate(180f)
+
             )
 
         }

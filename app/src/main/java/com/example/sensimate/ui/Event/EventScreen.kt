@@ -42,6 +42,7 @@ import java.util.*
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
+
 fun EventScreen(
     navController: NavController,
     dataViewModel: EventDataViewModel = viewModel(),
