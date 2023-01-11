@@ -1,9 +1,11 @@
 package com.example.sensimate.ui.InitialStartPage
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -25,10 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
-import com.example.sensimate.data.Database
-import com.example.sensimate.data.Profile
-import com.example.sensimate.data.SaveBoolToLocalStorage
-import com.example.sensimate.data.db
+import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
@@ -46,12 +45,12 @@ fun LogInMail(
     navController: NavController,
     startProfileViewModel: StartProfileViewModel
 ) {
+    val context = LocalContext.current
 
     val state = startProfileViewModel._uiState.collectAsState()
 
     InitialStartBackground()
 
-    val context = LocalContext.current
     val showLoading = remember {
         mutableStateOf(false)
     }
@@ -59,105 +58,105 @@ fun LogInMail(
         mutableStateOf(false)
     }
 
-    var email by remember { mutableStateOf("zz@zz.zz") }
-    var password by remember { mutableStateOf("12345678") }
-
-
-    Column(
+    LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
 
-        Spacer(modifier = Modifier.size(50.dp))
-        SignMenus(
-            navController = navController,
-            Screen.Login
-        )
+        item {
 
-        Spacer(modifier = Modifier.size(50.dp))
-        MySensimateLogo()
 
-        Text(
-            text = "SensiMate",
-            color = Color.White,
-            fontSize = 40.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = manropeFamily
-        )
+            Spacer(modifier = Modifier.size(50.dp))
+            SignMenus(
+                navController = navController,
+                Screen.Login
+            )
 
-        Spacer(modifier = Modifier.size(100.dp))
+            Spacer(modifier = Modifier.size(50.dp))
+            MySensimateLogo()
 
-        //email button
-        MyTextField(
-            text = state.value.mail.value,
-            textSize = 15,
-            onValueChange = { startProfileViewModel.changeMail(it) },
-            placeHolder = stringResource(id = R.string.enterMail),
-            width = 300,
-            height = 51,
-            KeyboardType.Email,
-            visualTransformation = VisualTransformation.None,
-            Color.DarkGray,
-            Color.White,
-            Color.Gray
-        )
-
-        Spacer(modifier = Modifier.size(20.dp))
-
-        MyTextField(
-            text = state.value.password.value,
-            textSize = 15,
-            onValueChange = { startProfileViewModel.changePassword(it) },
-            placeHolder = stringResource(id = R.string.enterPassword),
-            width = 300,
-            height = 51,
-            KeyboardType.Password,
-            visualTransformation = PasswordVisualTransformation(),
-            Color.DarkGray,
-            Color.White,
-            Color.Gray
-        )
-
-        Spacer(modifier = Modifier.size(5.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 50.dp)
-        ) {
             Text(
-                stringResource(id = R.string.forgotPassword),
+                text = "SensiMate",
                 color = Color.White,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 13.sp,
-                modifier = Modifier.clickable {
-                    navController.navigate(
-                        Screen.ForgotPassword.route
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = manropeFamily
+            )
+
+            Spacer(modifier = Modifier.size(100.dp))
+
+            //email button
+            MyTextField(
+                text = state.value.mail.value,
+                textSize = 15,
+                onValueChange = { startProfileViewModel.changeMail(it) },
+                placeHolder = stringResource(id = R.string.enterMail),
+                width = 300,
+                height = 51,
+                KeyboardType.Email,
+                visualTransformation = VisualTransformation.None,
+                Color.DarkGray,
+                Color.White,
+                Color.Gray
+            )
+
+            Spacer(modifier = Modifier.size(20.dp))
+
+            MyTextField(
+                text = state.value.password.value,
+                textSize = 15,
+                onValueChange = { startProfileViewModel.changePassword(it) },
+                placeHolder = stringResource(id = R.string.enterPassword),
+                width = 300,
+                height = 51,
+                KeyboardType.Password,
+                visualTransformation = PasswordVisualTransformation(),
+                Color.DarkGray,
+                Color.White,
+                Color.Gray
+            )
+
+            Spacer(modifier = Modifier.size(5.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 50.dp)
+            ) {
+                Text(
+                    stringResource(id = R.string.forgotPassword),
+                    color = Color.White,
+                    fontFamily = manropeFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 13.sp,
+                    modifier = Modifier.clickable {
+                        navController.navigate(
+                            Screen.ForgotPassword.route
+                        )
+                    }
+                )
+            }
+
+
+            Spacer(modifier = Modifier.size(28.dp))
+
+
+            myButton(color = Color.White,
+                title = stringResource(id = R.string.signIn),
+                PurpleButtonColor,
+
+                onClick = {
+                    startProfileViewModel.loginAsMail(
+                        context = context,
+                        showLoading,
+                        successLoggedIn
                     )
                 }
             )
+            Spacer(modifier = Modifier.size(200.dp))
         }
-
-
-        Spacer(modifier = Modifier.size(28.dp))
-
-
-        myButton(color = Color.White,
-            title = stringResource(id = R.string.signIn),
-            PurpleButtonColor,
-
-            onClick = {
-                startProfileViewModel.loginAsMail(
-                    context = context,
-                    showLoading,
-                    successLoggedIn
-                )
-            }
-        )
-        Spacer(modifier = Modifier.size(28.dp))
     }
 
     Column(
@@ -170,11 +169,9 @@ fun LogInMail(
 
     if (successLoggedIn.value) {
         successLoggedIn.value = false
-        checkIfUserIsEmployeeOrNot(
-            email = email,
-            navController,
-            context
-        )
+
+        startProfileViewModel.goToCorrectScreen(navController, context)
+
     }
 
     /*

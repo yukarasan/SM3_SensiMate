@@ -8,9 +8,10 @@ import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchListOfEvents
-import com.example.sensimate.data.questionandsurvey.MyAnswer
+//import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.Event.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider
@@ -343,7 +344,7 @@ object Database {
         password: String,
         showLoading: MutableState<Boolean>,
         context: Context,
-        successLoggedIn: MutableState<Boolean>
+        successLoggedIn: MutableState<Boolean>,
     ) {
         showLoading.value = true
 
@@ -357,7 +358,6 @@ object Database {
                         context.resources.getString(R.string.successLogged),
                         Toast.LENGTH_SHORT
                     ).show()
-
                 } else {
                     showLoading.value = false
                     Toast.makeText(
@@ -369,6 +369,25 @@ object Database {
             }
 
     } //TODO: Hussein
+
+    suspend fun getIsEmployee(context: Context): Boolean {
+
+        val isEmp = mutableStateOf(false)
+
+        val myDb = db.collection("users").document(auth.currentUser?.email.toString())
+
+        myDb.get().addOnSuccessListener { documentSnapshot ->
+            val myField = documentSnapshot.getBoolean("isEmployee") == true
+
+            if (myField == true) {
+                SaveBoolToLocalStorage("isEmployee", true, context)
+                isEmp.value = true
+            }
+        }.await()
+
+        return isEmp.value
+
+    }//TODO: Hussein
 
     fun loginAnonymously(context: Context) {
         auth.signInAnonymously().addOnCompleteListener { task ->
@@ -523,14 +542,94 @@ object Database {
             "hour" to hour,
             "minute" to minute
         )
-        db.collection("TESTER").add(event).addOnSuccessListener { docRef ->
+        db.collection("events").add(event).addOnSuccessListener { docRef ->
             event.set("eventId", docRef.id)
-            db.collection("TESTER").document(docRef.id).set(event)
+            db.collection("events").document(docRef.id).set(event)
             docId = docRef.id
         }
     } //TODO: Ahmad
 
-    fun editEvent() {} //TODO: Ahmad
+    fun question5(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String,answer4: String,answer5: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question,
+            "oneChoice" to boolean
+        )
+        val questionAnswer = hashMapOf(
+            "answer1" to answer1,
+            "answer2" to answer2,
+            "answer3" to answer3,
+            "answer4" to answer4,
+            "answer5" to answer5
+        )
+        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+            mainQuest.set("questionId", docRef.id)
+            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+        }
+    }//TODO: Ahmad
+
+    fun question4(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String,answer4: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question,
+            "oneChoice" to boolean
+        )
+        val questionAnswer = hashMapOf(
+            "answer1" to answer1,
+            "answer2" to answer2,
+            "answer3" to answer3,
+            "answer4" to answer4,
+        )
+        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+            mainQuest.set("questionId", docRef.id)
+            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+        }
+    }//TODO: Ahmad
+
+    fun question3(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question,
+            "oneChoice" to boolean
+        )
+        val questionAnswer = hashMapOf(
+            "answer1" to answer1,
+            "answer2" to answer2,
+            "answer3" to answer3,
+
+        )
+        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+            mainQuest.set("questionId", docRef.id)
+            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+        }
+    }//TODO: Ahmad
+
+    fun question(question: String, boolean: Boolean,answer1: String,answer2: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question,
+            "oneChoice" to boolean
+        )
+        val questionAnswer = hashMapOf(
+            "answer1" to answer1,
+            "answer2" to answer2,
+
+        )
+        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
+            mainQuest.set("questionId", docRef.id)
+            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+        }
+    }//TODO: Ahmad
+
+    fun textAnswer(question: String){
+        val mainQuest = hashMapOf(
+            "mainQuestion" to question
+        )
+        val subcollectionRef = db.collection("events").document(docId).collection("questions")
+        subcollectionRef.add(mainQuest)
+    }//TODO: Ahmad
+
+    fun editEvent() {} //TODO: Sabirin
 
     fun deleteEvent(eventtitle: String) {
         //val docref = db.collection()
@@ -618,8 +717,6 @@ object Database {
     }
 
  */
-
-
 
 
     /*

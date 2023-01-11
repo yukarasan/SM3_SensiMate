@@ -16,5 +16,6 @@ data class Event(
 
 data class EventUiState(
     var events: MutableList<Event> = emptyList<Event>().toMutableList(),
-    var chosenSurveyId: String = ""
+    var chosenSurveyId: String = "",
+    var event : Event = Event()
 )

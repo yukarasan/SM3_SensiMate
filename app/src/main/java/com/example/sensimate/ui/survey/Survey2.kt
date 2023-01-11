@@ -1,6 +1,7 @@
 package com.example.sensimate.ui.survey
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.*
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.layout.*
@@ -23,8 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.navigation.NavController
-import com.example.sensimate.data.questionandsurvey.MyQuestion
+
+//import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+//import com.example.sensimate.data.questionandsurvey.getAnswer
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.*
 
@@ -34,13 +37,15 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
     var selectedOption by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to DarkPurple,
-                    0.5f to BottonGradient
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
-            .fillMaxSize()
     )
     LazyColumn(
         modifier = Modifier
@@ -97,12 +102,24 @@ private fun ProgressPreview() {
 fun Information2(questionViewModel: QuestionViewModel) {
     // Add a state variable to track the selected option
     var selectedOption by remember { mutableStateOf(0) }
+    val options = questionViewModel.uiState.value.currentQuestion.options
+
+    //val myanswer = getAnswer(questionViewModel.uiState.value.currentQuestion).myanswer
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
+
+
         selectedOption = i
+
+        questionViewModel.setAnswer(listOf(options[i]))
+
+        Log.d("Test3", listOf(options[i]).toString())
     }
 
+
+
     // Define a list of options and their corresponding titles
-    val options = questionViewModel.uiState.value.currentQuestion.options
+
+
 
 
    // val options = remember { MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList() }
@@ -127,6 +144,7 @@ fun Information2(questionViewModel: QuestionViewModel) {
                     // Pass the selectedOption state variable as a parameter to RoundedCheckView
                     RoundedCheckView(listener, selectedOption, option = i)
                     Option(options[i])
+
                     Spacer(modifier = Modifier.width((120.dp)))
                 }
             }
@@ -158,11 +176,12 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             // Add a clickable modifier to the Row element
-            .clickable(onClick = {
+            .clickable(onClick =  {
                 // Update the isChecked state variable
               //  isChecked.value = !isChecked.value
 
                 listener?.invoke(option, isChecked)
+
             })
     ) {
         Box(

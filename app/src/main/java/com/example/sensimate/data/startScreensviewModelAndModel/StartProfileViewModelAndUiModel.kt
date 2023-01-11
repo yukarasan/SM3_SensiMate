@@ -7,6 +7,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.AnimBuilder
 import androidx.navigation.NavController
 import androidx.navigation.NavOptionsBuilder
@@ -14,10 +15,12 @@ import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.SaveStringToLocalStorage
+import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileReader
 
@@ -216,5 +219,21 @@ class StartProfileViewModel() : ViewModel() {
                 )
             }
         }
+    }
+
+    fun goToCorrectScreen(navController: NavController, context: Context) {
+        viewModelScope.launch {
+
+            Database.getIsEmployee(context)
+
+            if (getBooleanFromLocalStorage("isEmployee", context)) {
+                Log.d("er EMPLOYEE", "")
+                navController.navigate(Screen.EventScreenEmployee.route)
+            } else {
+                Log.d("ikke EMPLOYEE", "")
+                navController.navigate(Screen.EventScreen.route)
+            }
+        }
+
     }
 }

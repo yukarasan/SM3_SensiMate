@@ -1,19 +1,24 @@
 package com.example.sensimate.ui.navigation
 
+import AnswerViewModel
 import EditEvent
 import EditPage
 import EditSurvey
 import EditSurveyPage
+import TextAnswerViewModel
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
+import com.example.sensimate.data.*
 import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.auth
@@ -34,6 +39,7 @@ import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.survey.*
+import com.google.firebase.ktx.Firebase
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -43,21 +49,32 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
     val eventViewModel = EventViewModel()
     val startProfileViewModel = StartProfileViewModel()
     val createEventViewModel = CreateEventViewModel()
+    val answerViewModel = AnswerViewModel()
+    val textAnswerViewModel = TextAnswerViewModel()
 
     val context = LocalContext.current
 
-    val screen =
+    LaunchedEffect(key1 = true) {
+        Database.getIsEmployee(context)
+    }
+
+    val loadedOnOpen = remember {
+        mutableStateOf(false)
+    }
+
+    val screen = if (!loadedOnOpen.value) {
+        loadedOnOpen.value = true
+
+        Log.d("LOADER IGEN", "LOADER IGEN")
+
         if (getBooleanFromLocalStorage(
                 "acceptedCookie",
                 context
             )
         ) {
             if (auth.currentUser != null) {
-                if (getBooleanFromLocalStorage( ///FIX DEN HER. TODO: Hussein
-                        "isEmployee",
-                        context
-                    )
-                ) {
+
+                if (getBooleanFromLocalStorage("isEmployee", context)) {
                     Screen.EventScreenEmployee
                 } else {
                     Screen.EventScreen
@@ -75,6 +92,9 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         } else {
             Screen.CookieScreen
         }
+    } else {
+        Screen.CookieScreen
+    }
 
     NavHost(
         navController = navController,
@@ -88,13 +108,22 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             LogInMail(navController = navController, startProfileViewModel = startProfileViewModel)
         }
         composable(route = Screen.SignUpWithMail.route) {
-            SignUpUsingMail(navController = navController, startProfileViewModel = startProfileViewModel)
+            SignUpUsingMail(
+                navController = navController,
+                startProfileViewModel = startProfileViewModel
+            )
         }
         composable(route = Screen.Guest.route) {
-            GuestScreen(navController = navController, startProfileViewModel = startProfileViewModel)
+            GuestScreen(
+                navController = navController,
+                startProfileViewModel = startProfileViewModel
+            )
         }
         composable(route = Screen.ForgotPassword.route) {
-            ForgotPassword(navController = navController, startProfileViewModel = startProfileViewModel)
+            ForgotPassword(
+                navController = navController,
+                startProfileViewModel = startProfileViewModel
+            )
         }
         ///
 
@@ -102,7 +131,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EventScreen(navController = navController, eventViewModel = eventViewModel)
         }
 
-        composable(route = Screen.ExtendedEventScreen.route){
+        composable(route = Screen.ExtendedEventScreen.route) {
             ExtendedEvent(
                 navController = navController, eventViewModel = eventViewModel
             )
@@ -147,16 +176,19 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             ProfileScreen(navController = navController)
         }
         composable(route = Screen.CreateEventScreen.route) {
-            CreateEventScreen(navController = navController, createEventViewModel = createEventViewModel)
+            CreateEventScreen(
+                navController = navController,
+                createEventViewModel = createEventViewModel
+            )
         }
         composable(route = Screen.QuestionPageScreen.route) {
             QuestionPageScreen(navController = navController)
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
-            CreateMultpleChoiceQuestionScreen(navController = navController)
+            CreateMultpleChoiceQuestionScreen(navController = navController, answerViewModel = answerViewModel)
         }
         composable(route = Screen.CreateTextAnswerQuestionScreen.route) {
-            CreateTextAnswerQuestionScreen(navController = navController)
+            CreateTextAnswerQuestionScreen(navController = navController, textAnswerViewModel = textAnswerViewModel)
         }
         /*
         composable(
@@ -192,10 +224,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString(),
             )
         }
-        
+
          */
-        
-        composable(Screen.EditEvent.route){
+
+        composable(Screen.EditEvent.route) {
             EditEvent(navController = navController, eventViewModel = eventViewModel)
         }
 
@@ -234,10 +266,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
                 surveyCode = backStackEntry.arguments?.getString(SURVEYCODE).toString(),
             )
         }
-        
+
          */
-        
-        composable(route = Screen.EditPage.route){
+
+        composable(route = Screen.EditPage.route) {
             EditPage(navController = navController, eventViewModel = eventViewModel)
         }
         composable(route = Screen.EditSurvey.route) {
@@ -273,7 +305,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             EditGenderScreen(navController = navController)
         }
 
-        composable(route =Screen.SurveyCreator.route) {
+        composable(route = Screen.SurveyCreator.route) {
             SurveyCreator(
                 navController = navController,
                 questionViewModel = questionViewModel,
@@ -289,14 +321,26 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             )
         }
         composable(route = Screen.Survey2.route) {
-            Survey2(navController = navController, title = "", questionViewModel = questionViewModel)
+            Survey2(
+                navController = navController,
+                title = "",
+                questionViewModel = questionViewModel
+            )
 
         }
         composable(route = Screen.Survey3.route) {
-            Survey3(navController = navController, title = "", questionViewModel = questionViewModel)
+            Survey3(
+                navController = navController,
+                title = "",
+                questionViewModel = questionViewModel
+            )
         }
         composable(route = Screen.Survey4.route) {
-            Survey4(navController = navController, title = "", questionViewModel = questionViewModel)
+            Survey4(
+                navController = navController,
+                title = "",
+                questionViewModel = questionViewModel
+            )
         }
         /*composable(route = Screen) {
             SurveyCreator(navController = navController, questionViewModel = questionViewModel, eventViewModel = eventViewModel)

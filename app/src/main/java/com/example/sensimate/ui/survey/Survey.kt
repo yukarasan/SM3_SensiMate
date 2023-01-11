@@ -49,13 +49,15 @@ fun Survey(
 ) {
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to DarkPurple,
-                    0.5f to BottonGradient
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
-            .fillMaxSize()
     )
     LazyColumn() {
         item {
@@ -135,6 +137,7 @@ fun SurveyTitle(title: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun Information(titles: List<String>, placeholders: List<String>) {
+
     Card(
         modifier = Modifier
             .padding(start = 0.dp, top = 25.dp)

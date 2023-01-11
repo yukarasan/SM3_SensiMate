@@ -3,29 +3,22 @@ package com.example.sensimate.ui.survey
 
 
 import android.annotation.SuppressLint
-import android.renderscript.ScriptGroup
+import android.util.Log
 import com.example.sensimate.ui.components.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.R
@@ -33,30 +26,29 @@ import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
+//import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.Database.updateSurvey
-import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
-import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
 import com.example.sensimate.ui.theme.*
 
 
 @Composable
-fun Survey4(title: String, navController: NavController,  questionViewModel: QuestionViewModel) {
+fun Survey4(title: String, navController: NavController, questionViewModel: QuestionViewModel) {
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to DarkPurple,
-                    0.5f to BottonGradient
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
-            .fillMaxSize()
     )
     LazyColumn(){
         item {
@@ -112,6 +104,15 @@ fun Information4(questionViewModel: QuestionViewModel) {
 
     val options = questionViewModel.uiState.value.currentQuestion.options
 
+
+/*
+    val myAnswers = selectedAnswers.value.map {
+        MyAnswer(it)
+    }
+    questionViewModel.setAnswer(myAnswers)
+
+ */
+
     Card(
         modifier = Modifier
             .padding(start = 0.dp, top = 25.dp)
@@ -128,9 +129,10 @@ fun Information4(questionViewModel: QuestionViewModel) {
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    CheckBox()
+                    CheckBox(questionViewModel, option = options, option)
                     Option(title = option)
                     Spacer(modifier = Modifier.width((120.dp)))
+                   // questionViewModel.setAnswer(answers = options)
                 }
             }
 
@@ -195,7 +197,7 @@ private fun Option(title: String, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun CheckBox() {
+fun CheckBox(questionViewModel: QuestionViewModel, option: MutableList<String>,options: String) {
     //val isChecked = remember { mutableStateOf(false) }
     val checkedState = remember { mutableStateOf(false) }
 
@@ -206,6 +208,9 @@ fun CheckBox() {
                 checked = checkedState.value,
                 onCheckedChange = {
                     checkedState.value = it
+                    option.add(options)
+                    questionViewModel.setAnswer(option)
+                    Log.d("Test1", options)
                 },
                 colors = CheckboxDefaults
                     .colors(
