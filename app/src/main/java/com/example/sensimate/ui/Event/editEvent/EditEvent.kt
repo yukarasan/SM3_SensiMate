@@ -446,29 +446,33 @@ fun EditPage(
                         onClick = {
                             eventViewModel.checkIfTextfieldIsEmpty(
                                 context,
-                                chosenEvent.title,
-                                chosenEvent.description,
-                                chosenEvent.location,
-                                chosenEvent.year,
-                                chosenEvent.month,
-                                chosenEvent.day,
-                                chosenEvent.allergens,
-                                chosenEvent.surveyCode
+                                state.value.event.title,
+                                state.value.event.description,
+                                state.value.event.location,
+                                state.value.event.year,
+                                state.value.event.month,
+                                state.value.event.day,
+                                state.value.event.allergens,
+                                state.value.event.surveyCode
                             )
 
-
                             val events = eventViewModel.createHashMapforEvent(
-                                chosenEvent.title,
-                                chosenEvent.description,
-                                chosenEvent.location, chosenEvent.allergens,
-                                chosenEvent.surveyCode, chosenEvent.day, chosenEvent.year,
-                                chosenEvent.month, chosenEvent.eventId, chosenEvent.minute,
-                                chosenEvent.hour
+                                state.value.event.title,
+                                state.value.event.description,
+                                state.value.event.location,
+                                state.value.event.year,
+                                state.value.event.month,
+                                state.value.event.day,
+                                state.value.event.allergens,
+                                state.value.event.surveyCode,
+                                state.value.event.minute,
+                                state.value.event.hour,
+                                state.value.event.eventId
                             )
 
                             Log.d("documentref : ", chosenEvent.eventId)
 
-                            Database.UpdateEvent(events, chosenEvent.eventId)
+                            Database.UpdateEvent(events, state.value.event.eventId)
 
                             /*
                             if (titleText == "") {
