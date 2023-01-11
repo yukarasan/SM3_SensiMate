@@ -1,6 +1,7 @@
 package com.example.sensimate.ui.InitialStartPage
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,10 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
-import com.example.sensimate.data.Database
-import com.example.sensimate.data.Profile
-import com.example.sensimate.data.SaveBoolToLocalStorage
-import com.example.sensimate.data.db
+import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
@@ -46,22 +44,18 @@ fun LogInMail(
     navController: NavController,
     startProfileViewModel: StartProfileViewModel
 ) {
+    val context = LocalContext.current
 
     val state = startProfileViewModel._uiState.collectAsState()
 
     InitialStartBackground()
 
-    val context = LocalContext.current
     val showLoading = remember {
         mutableStateOf(false)
     }
     val successLoggedIn = remember {
         mutableStateOf(false)
     }
-
-    var email by remember { mutableStateOf("zz@zz.zz") }
-    var password by remember { mutableStateOf("12345678") }
-
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -157,7 +151,7 @@ fun LogInMail(
                 )
             }
         )
-        Spacer(modifier = Modifier.size(28.dp))
+        Spacer(modifier = Modifier.size(50.dp))
     }
 
     Column(
@@ -170,11 +164,9 @@ fun LogInMail(
 
     if (successLoggedIn.value) {
         successLoggedIn.value = false
-        checkIfUserIsEmployeeOrNot(
-            email = email,
-            navController,
-            context
-        )
+
+        startProfileViewModel.goToCorrectScreen(navController, context)
+
     }
 
     /*

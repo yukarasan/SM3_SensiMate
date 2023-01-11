@@ -36,6 +36,8 @@ import com.example.sensimate.ui.theme.PurpleButtonColor
 
 @Composable
 fun InitialStartBackground() {
+
+    Screen.EventScreen
     Box(
         modifier = Modifier
             .fillMaxSize()

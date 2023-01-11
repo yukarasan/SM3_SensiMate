@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.example.sensimate.data.questionandsurvey.MyAnswer
@@ -343,7 +344,7 @@ object Database {
         password: String,
         showLoading: MutableState<Boolean>,
         context: Context,
-        successLoggedIn: MutableState<Boolean>
+        successLoggedIn: MutableState<Boolean>,
     ) {
         showLoading.value = true
 
@@ -357,7 +358,6 @@ object Database {
                         context.resources.getString(R.string.successLogged),
                         Toast.LENGTH_SHORT
                     ).show()
-
                 } else {
                     showLoading.value = false
                     Toast.makeText(
@@ -369,6 +369,25 @@ object Database {
             }
 
     } //TODO: Hussein
+
+    suspend fun getIsEmployee(context: Context): Boolean {
+
+        val isEmp = mutableStateOf(false)
+
+        val myDb = db.collection("users").document(auth.currentUser?.email.toString())
+
+        myDb.get().addOnSuccessListener { documentSnapshot ->
+            val myField = documentSnapshot.getBoolean("isEmployee") == true
+
+            if (myField == true) {
+                SaveBoolToLocalStorage("isEmployee", true, context)
+                isEmp.value = true
+            }
+        }.await()
+
+        return isEmp.value
+
+    }//TODO: Hussein
 
     fun loginAnonymously(context: Context) {
         auth.signInAnonymously().addOnCompleteListener { task ->
@@ -618,8 +637,6 @@ object Database {
     }
 
  */
-
-
 
 
     /*
