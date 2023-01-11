@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
@@ -35,8 +37,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -305,8 +309,10 @@ fun ChooseTime(context: Context,
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledTitleText(titleText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = titleText.value,
@@ -318,13 +324,18 @@ fun TextFiledTitleText(titleText: MutableState<String>, textChange: (String) -> 
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
         )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledDescriptionText(descriptionText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = descriptionText.value,
@@ -336,8 +347,11 @@ fun TextFiledDescriptionText(descriptionText: MutableState<String>, textChange: 
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
-        )
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
+            )
 
     }
 }
@@ -375,9 +389,10 @@ fun TextToPhoto(modifier: Modifier) {
     )
 }
 
-
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledLocationText(locationText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = locationText.value,
@@ -402,6 +417,9 @@ fun TextFiledLocationText(locationText: MutableState<String>, textChange: (Strin
             singleLine = true,
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()}),
             modifier = Modifier
                 .padding(1.dp, 2.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -409,34 +427,10 @@ fun TextFiledLocationText(locationText: MutableState<String>, textChange: (Strin
     }
 }
 
-
-@Composable
-fun TextFileTimeText(TimeText: String, textChange: (String) -> Unit) {
-    ContentColorComponent(contentColor = Color.White) {
-        TextField(
-            value = TimeText,
-            onValueChange = textChange,
-            label = {
-                Text(
-                    text = "Time Of The Event",
-                    color = Color(0xFFB874A6)
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
-            modifier = Modifier
-                .padding(1.dp, 128.dp, 1.dp, 1.dp)
-                .fillMaxWidth()
-        )
-    }
-}
-
-
-
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledAllergensText(allergensText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = allergensText.value,
@@ -451,6 +445,9 @@ fun TextFiledAllergensText(allergensText: MutableState<String>, textChange: (Str
             singleLine = true,
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()}),
             modifier = Modifier
                 .padding(1.dp, 191.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -458,8 +455,10 @@ fun TextFiledAllergensText(allergensText: MutableState<String>, textChange: (Str
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledSurveyCodeText(surveyCodeText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = surveyCodeText.value,
@@ -472,8 +471,11 @@ fun TextFiledSurveyCodeText(surveyCodeText: MutableState<String>, textChange: (S
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number,imeAction = ImeAction.Done),
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()}),
+
             modifier = Modifier
                 .padding(1.dp, 254.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -500,35 +502,6 @@ fun QuestionPageScreen(navController: NavController) {
                 )
             )
     )
-    /*
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-        AddPhoto(
-            modifier = Modifier
-                .padding(end = 25.dp, top = 55.dp)
-                .size(50.dp)
-                .clickable(
-                    enabled = true,
-                    onClickLabel = "Clickable image",
-                    onClick = {
-                        navController.navigate(Screen.EventScreenEmployee.route)
-                    }),
-            id = R.drawable.greenconfirmedbutton
-        )
-
-    }
-     */
-
-/* //TODO ved ikke om jeg skal bruge den
-    Column(modifier = Modifier
-        .padding(start = 25.dp, top = 55.dp)
-        .fillMaxWidth(), horizontalAlignment = Alignment.Start) {
-        OrangeBackButton(onClick = { navController.popBackStack() })
-    }
-
- */
-
-
-
     Card(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 150.dp, bottom = 150.dp)
@@ -602,20 +575,10 @@ fun QuestionPageScreen(navController: NavController) {
     }
 }
 
-// Figur 3
+//TODO Figur 3
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewModel: AnswerViewModel) {
-    /*
-    var questionText by remember { mutableStateOf("") }
-    var answerText1 by remember { mutableStateOf("") }
-    var answerText2 by remember { mutableStateOf("") }
-    var answerText3 by remember { mutableStateOf("") }
-    var answerText4 by remember { mutableStateOf("") }
-    var answerText5 by remember { mutableStateOf("") }
-    val checkedState = remember { mutableStateOf(false)}
-
-     */
     val state = answerViewModel._uistate.collectAsState()
     Box(
         modifier = Modifier
@@ -733,7 +696,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewMo
 }
 
 
-// FIGUR 4
+// TODO FIGUR 4
 @Composable
 fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewModel: TextAnswerViewModel) {
     //var questionText by remember { mutableStateOf("") }
@@ -806,8 +769,10 @@ fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewM
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledQuestionText(questionText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = questionText.value,
@@ -821,14 +786,19 @@ fun TextFiledQuestionText(questionText: MutableState<String>, textChange: (Strin
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
 
 
             )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledAnswerText(text: String, answerText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = answerText.value,
@@ -842,6 +812,9 @@ fun TextFiledAnswerText(text: String, answerText: MutableState<String>, textChan
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
 
 
             )
