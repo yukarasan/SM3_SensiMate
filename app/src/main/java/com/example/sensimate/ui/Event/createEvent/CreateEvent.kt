@@ -1,5 +1,7 @@
 package com.example.sensimate.ui.Event.createEvent
 
+import AnswerViewModel
+import TextAnswerViewModel
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -23,6 +26,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
@@ -33,8 +37,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,7 +81,7 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
                 Brush.verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
@@ -155,7 +161,7 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
 
                     Button(
                         onClick = {
-                            createEventViewModel.Check(context,navController)
+                            createEventViewModel.check(context,navController)
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -303,8 +309,10 @@ fun ChooseTime(context: Context,
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledTitleText(titleText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = titleText.value,
@@ -316,13 +324,18 @@ fun TextFiledTitleText(titleText: MutableState<String>, textChange: (String) -> 
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
         )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledDescriptionText(descriptionText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = descriptionText.value,
@@ -334,8 +347,11 @@ fun TextFiledDescriptionText(descriptionText: MutableState<String>, textChange: 
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
-        )
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
+            )
 
     }
 }
@@ -373,9 +389,10 @@ fun TextToPhoto(modifier: Modifier) {
     )
 }
 
-
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledLocationText(locationText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = locationText.value,
@@ -400,6 +417,9 @@ fun TextFiledLocationText(locationText: MutableState<String>, textChange: (Strin
             singleLine = true,
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()}),
             modifier = Modifier
                 .padding(1.dp, 2.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -407,34 +427,10 @@ fun TextFiledLocationText(locationText: MutableState<String>, textChange: (Strin
     }
 }
 
-
-@Composable
-fun TextFileTimeText(TimeText: String, textChange: (String) -> Unit) {
-    ContentColorComponent(contentColor = Color.White) {
-        TextField(
-            value = TimeText,
-            onValueChange = textChange,
-            label = {
-                Text(
-                    text = "Time Of The Event",
-                    color = Color(0xFFB874A6)
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
-            modifier = Modifier
-                .padding(1.dp, 128.dp, 1.dp, 1.dp)
-                .fillMaxWidth()
-        )
-    }
-}
-
-
-
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledAllergensText(allergensText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = allergensText.value,
@@ -449,6 +445,9 @@ fun TextFiledAllergensText(allergensText: MutableState<String>, textChange: (Str
             singleLine = true,
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()}),
             modifier = Modifier
                 .padding(1.dp, 191.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -456,8 +455,10 @@ fun TextFiledAllergensText(allergensText: MutableState<String>, textChange: (Str
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TextFiledSurveyCodeText(surveyCodeText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = surveyCodeText.value,
@@ -470,8 +471,11 @@ fun TextFiledSurveyCodeText(surveyCodeText: MutableState<String>, textChange: (S
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number,imeAction = ImeAction.Done),
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()}),
+
             modifier = Modifier
                 .padding(1.dp, 254.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -493,40 +497,11 @@ fun QuestionPageScreen(navController: NavController) {
                 Brush.verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
     )
-    /*
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-        AddPhoto(
-            modifier = Modifier
-                .padding(end = 25.dp, top = 55.dp)
-                .size(50.dp)
-                .clickable(
-                    enabled = true,
-                    onClickLabel = "Clickable image",
-                    onClick = {
-                        navController.navigate(Screen.EventScreenEmployee.route)
-                    }),
-            id = R.drawable.greenconfirmedbutton
-        )
-
-    }
-     */
-
-/* //TODO ved ikke om jeg skal bruge den
-    Column(modifier = Modifier
-        .padding(start = 25.dp, top = 55.dp)
-        .fillMaxWidth(), horizontalAlignment = Alignment.Start) {
-        OrangeBackButton(onClick = { navController.popBackStack() })
-    }
-
- */
-
-
-
     Card(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 150.dp, bottom = 150.dp)
@@ -539,7 +514,7 @@ fun QuestionPageScreen(navController: NavController) {
     ) {  //TODO
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
             Text(
-                text = "Create an Question",
+                text = "Create a Question",
                 color = Color(0xFFB874A6),
                 fontSize = 26.sp,
                 modifier = Modifier
@@ -600,19 +575,12 @@ fun QuestionPageScreen(navController: NavController) {
     }
 }
 
-// Figur 3
+//TODO Figur 3
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
-    var questionText by remember { mutableStateOf("") }
-    var answerText1 by remember { mutableStateOf("") }
-    var answerText2 by remember { mutableStateOf("") }
-    var answerText3 by remember { mutableStateOf("") }
-    var answerText4 by remember { mutableStateOf("") }
-    var answerText5 by remember { mutableStateOf("") }
-    val checkedState = remember {
-        mutableStateOf(false)
-    }
+fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewModel: AnswerViewModel) {
+    val state = answerViewModel._uistate.collectAsState()
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -621,7 +589,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                 Brush.verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
@@ -642,22 +610,22 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.size(55.dp))
 
-            TextFiledQuestionText(questionText) { questionText = it }
+            TextFiledQuestionText(state.value.questionText) { state.value.questionText.value = it }
             Spacer(modifier = Modifier.size(27.dp))
-            TextFiledAnswerText("Answer 1", answerText1) { answerText1 = it }
+            TextFiledAnswerText("Answer 1", state.value.answerText1) { state.value.answerText1.value = it }
             Spacer(modifier = Modifier.size(27.dp))
-            TextFiledAnswerText("Answer 2", answerText2) { answerText2 = it }
-            if (answerText2 != "") {
+            TextFiledAnswerText("Answer 2", state.value.answerText2) { state.value.answerText2.value = it }
+            if (state.value.answerText2.value != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 3", answerText3) { answerText3 = it }
+                TextFiledAnswerText("Answer 3", state.value.answerText3) { state.value.answerText3.value = it }
             }
-            if (answerText3 != "") {
+            if (state.value.answerText3.value != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 4", answerText4) { answerText4 = it }
+                TextFiledAnswerText("Answer 4", state.value.answerText4) { state.value.answerText4.value = it }
             }
-            if (answerText4 != "") {
+            if (state.value.answerText4.value != "") {
                 Spacer(modifier = Modifier.size(27.dp))
-                TextFiledAnswerText("Answer 5", answerText5) { answerText5 = it }
+                TextFiledAnswerText("Answer 5", state.value.answerText5) { state.value.answerText5.value = it }
             }
             Spacer(modifier = Modifier.size(55.dp))
             Row(
@@ -665,9 +633,9 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Checkbox(
-                    checked = checkedState.value,
+                    checked = state.value.checkedState.value,
                     onCheckedChange = {
-                        checkedState.value = it
+                        state.value.checkedState.value = it
                     },
                     colors = CheckboxDefaults
                         .colors(
@@ -694,64 +662,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
             }
 
             Button(
-                onClick = {
-                    val mainQuest = hashMapOf(
-                        "mainQuestion" to questionText,
-                        "oneChoice" to checkedState.value
-                    )
-                    if (answerText5 != ""){
-                        val questionAnswer = hashMapOf(
-                            "answer1" to answerText1,
-                            "answer2" to answerText2,
-                            "answer3" to answerText3,
-                            "answer4" to answerText4,
-                            "answer5" to answerText5
-                        )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
-                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
-                            mainQuest.set("questionId", docRef.id)
-                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
-                        }
-                    }
-                    else if (answerText4 != ""){
-                        val questionAnswer = hashMapOf(
-                            "answer1" to answerText1,
-                            "answer2" to answerText2,
-                            "answer3" to answerText3,
-                            "answer4" to answerText4
-                        )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
-                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
-                            mainQuest.set("questionId", docRef.id)
-                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
-                        }
-                    }
-                    else if (answerText3 != ""){
-                        val questionAnswer = hashMapOf(
-                            "answer1" to answerText1,
-                            "answer2" to answerText2,
-                            "answer3" to answerText3
-                        )
-                        val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
-                            subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
-                            mainQuest.set("questionId", docRef.id)
-                            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
-                        }
-                    }
-                    else{
-                    val questionAnswer = hashMapOf(
-                        "answer1" to answerText1,
-                        "answer2" to answerText2
-                    )
-                    val subcollectionRef = db.collection("TESTER").document(docId).collection("questions")
-                        subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
-                        mainQuest.set("questionId", docRef.id)
-                        subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
-                    }
-
-                    }
-
-                    navController.navigate(Screen.QuestionPageScreen.route) },
+                onClick = {answerViewModel.multipleAnswer(navController,context)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -786,10 +697,11 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController) {
 }
 
 
-// FIGUR 4
+// TODO FIGUR 4
 @Composable
-fun CreateTextAnswerQuestionScreen(navController: NavController) {
-    var questionText by remember { mutableStateOf("") }
+fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewModel: TextAnswerViewModel) {
+    val state = textAnswerViewModel._uistate.collectAsState()
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -798,7 +710,7 @@ fun CreateTextAnswerQuestionScreen(navController: NavController) {
                 Brush.verticalGradient(
                     colors = listOf(
                         DarkPurple,
-                        BottonGradient
+                        BottomGradient
                     )
                 )
             )
@@ -819,18 +731,12 @@ fun CreateTextAnswerQuestionScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.size(55.dp))
 
-            TextFiledQuestionText(questionText) { questionText = it }
+            TextFiledQuestionText(state.value.questionText) { state.value.questionText.value = it }
             Spacer(modifier = Modifier.size(55.dp))
 
             Button(
 
-                onClick = {
-                    val mainQuest = hashMapOf(
-                        "mainQuestion" to questionText
-                    )
-                    val subcollectionRef = db.collection("events").document(docId).collection("questions")
-                    subcollectionRef.add(mainQuest)
-                    navController.navigate(Screen.QuestionPageScreen.route) },
+                onClick = { textAnswerViewModel.textAnswer(navController,context)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -864,11 +770,13 @@ fun CreateTextAnswerQuestionScreen(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TextFiledQuestionText(questionText: String, textChange: (String) -> Unit) {
+fun TextFiledQuestionText(questionText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = questionText,
+            value = questionText.value,
             onValueChange = textChange,
             label = {
                 Text(
@@ -879,17 +787,22 @@ fun TextFiledQuestionText(questionText: String, textChange: (String) -> Unit) {
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
 
 
             )
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun TextFiledAnswerText(text: String, answerText: String, textChange: (String) -> Unit) {
+fun TextFiledAnswerText(text: String, answerText: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColorComponent(contentColor = Color.White) {
         TextField(
-            value = answerText,
+            value = answerText.value,
             onValueChange = textChange,
             label = {
                 Text(
@@ -900,6 +813,9 @@ fun TextFiledAnswerText(text: String, answerText: String, textChange: (String) -
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
 
 
             )

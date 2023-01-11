@@ -31,6 +31,8 @@ import com.example.sensimate.data.Database
 import com.example.sensimate.data.EventDataViewModel
 import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.ui.navigation.Screen
+import com.example.sensimate.ui.theme.BottomGradient
+import com.example.sensimate.ui.theme.DarkPurple
 
 
 @Preview(showBackground = true)
@@ -65,8 +67,10 @@ fun EventScreenEmployee(
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    0.0f to Color(83, 58, 134, 255),
-                    0.7f to Color(22, 26, 30)
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
     ) {

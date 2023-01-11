@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -37,12 +38,15 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.toSize
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
@@ -207,6 +211,7 @@ fun SignUpUsingMail(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MyTextField(
     text: String,
@@ -231,6 +236,8 @@ fun MyTextField(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
+
+            val keyboardController = LocalSoftwareKeyboardController.current
             TextField(
                 value = text,
                 onValueChange = onValueChange,
@@ -250,9 +257,11 @@ fun MyTextField(
                     )
                 },
                 visualTransformation = visualTransformation,
+
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = keyboardType
+                    keyboardType = keyboardType, imeAction = ImeAction.Done
                 ),
+
                 modifier = Modifier.fillMaxSize(),
                 colors = TextFieldDefaults.textFieldColors(
                     disabledTextColor = Color.Transparent,
@@ -261,6 +270,8 @@ fun MyTextField(
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
                 ),
+                keyboardActions = KeyboardActions(
+                    onDone = { keyboardController?.hide() })
             )
         }
     }

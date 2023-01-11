@@ -318,9 +318,9 @@ fun EditPage(
     eventViewModel: EventViewModel,
     editEventViewmodel: EditEventViewmodel = viewModel()
 ) {
-    //val state = eventViewModel.uiState
+    val state1 = eventViewModel.uiState
 
-    val state = editEventViewmodel.uiState.collectAsState()
+    val state = eventViewModel.uiState.collectAsState()
 
     val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
 
@@ -370,10 +370,15 @@ fun EditPage(
 
         item {
             Spacer(modifier = Modifier.size(55.dp))
-            TitleText(titleText = chosenEvent.title, textChange = {chosenEvent.title = it})
-            //TitleText(chosenEvent.title) { chosenEvent.title = it }
+
+            TitleText(titleText = state.value.event.title,
+                textChange = { eventViewModel.updateTitleString(title = it) })
+
             Spacer(modifier = Modifier.size(27.dp))
-            DescriptionText(chosenEvent.description) { chosenEvent.description = it }
+            DescriptionText(
+                descriptionText = state.value.event.description,
+                onValueChange = { eventViewModel.updateDescriptionString(description = it) })
+
             Spacer(modifier = Modifier.size(55.dp))
             Card(
                 modifier = Modifier
@@ -397,21 +402,30 @@ fun EditPage(
                     contentScale = ContentScale.Crop,
 
                     )
-                LocationText(chosenEvent.location) { chosenEvent.location = it }
-                AllergensText(chosenEvent.allergens) { chosenEvent.allergens = it }
-                SurveyCodeText(chosenEvent.surveyCode) {
-                    if (it.length <= maxChar) chosenEvent.surveyCode = it
+
+                LocationText(
+                    locationText = state.value.event.location,
+                    onValueChange = { eventViewModel.updateLocationString(location = it) })
+
+                AllergensText(
+                    allergensText = state.value.event.allergens,
+                    onValueChange = { eventViewModel.updateAllergensString(allergens = it) })
+
+
+                SurveyCodeText(state.value.event.surveyCode) {
+                    if (it.length <= maxChar) {eventViewModel.updateSurveyCodeString(SurveyCode = it) }
                 }
                 EventDateChosen(
                     LocalContext.current,
                     myYear = chosenEvent.year,
                     myMonth = chosenEvent.month,
-                    myDay = chosenEvent.day
+                    myDay = chosenEvent.day,
+                    onValueChange = {eventViewModel.updateYearString(it)}
                 )
 
                 Time(
                     context = LocalContext.current,
-                    myHour = chosenEvent.hour, myMinute = chosenEvent.minute
+                    myHour = state.value.event.hour, myMinute = state.value.event.minute
                 )
 
                 Column(
@@ -425,7 +439,7 @@ fun EditPage(
 
                     Button(
                         onClick = {
-                            editEventViewmodel.checkIfTextfieldIsEmpty(
+                            eventViewModel.checkIfTextfieldIsEmpty(
                                 context,
                                 chosenEvent.title,
                                 chosenEvent.description,
@@ -438,7 +452,7 @@ fun EditPage(
                             )
 
 
-                            val events = editEventViewmodel.createHashMapforEvent(
+                            val events = eventViewModel.createHashMapforEvent(
                                 chosenEvent.title,
                                 chosenEvent.description,
                                 chosenEvent.location, chosenEvent.allergens,
@@ -614,6 +628,7 @@ fun EventDateChosen(
     myYear: String,
     myMonth: String,
     myDay: String,
+    onValueChange: (String) -> Unit
 ) {
     val calendar = Calendar.getInstance()
     calendar.add(Calendar.YEAR, 0)
@@ -664,7 +679,7 @@ fun EventDateChosen(
         enabled = false,
         value = "$myDay/$myMonth/$myYear",
         label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
-        onValueChange = {},
+        onValueChange = {onValueChange(it)},
         modifier = Modifier
             .padding(1.dp, 65.dp, 1.dp, 1.dp)
             .clickable { datePickerLog.show() },
@@ -673,11 +688,11 @@ fun EventDateChosen(
 
 
 @Composable
-fun DescriptionText(descriptionText: String, textChange: (String) -> Unit) {
+fun DescriptionText(descriptionText: String, onValueChange: (String) -> Unit) {
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = descriptionText,
-            onValueChange = textChange,
+            onValueChange = { onValueChange(it) },
             label = {
                 Text(
                     text = "Description",
@@ -697,7 +712,7 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = titleText,
-            onValueChange = textChange,
+            onValueChange = { textChange(it) },
             label = {
                 Text(
                     text = "Title",
@@ -713,11 +728,11 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
 
 
 @Composable
-fun LocationText(locationText: String, textChange: (String) -> Unit) {
+fun LocationText(locationText: String, onValueChange: (String) -> Unit) {
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = locationText,
-            onValueChange = textChange,
+            onValueChange = { onValueChange(it) },
             label = {
                 Text(
                     text = "Location",
@@ -747,11 +762,11 @@ fun LocationText(locationText: String, textChange: (String) -> Unit) {
 
 
 @Composable
-fun AllergensText(allergensText: String, textChange: (String) -> Unit) {
+fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = allergensText,
-            onValueChange = textChange,
+            onValueChange = { onValueChange(it) },
             label = {
                 Text(
                     text = "Allergens",
