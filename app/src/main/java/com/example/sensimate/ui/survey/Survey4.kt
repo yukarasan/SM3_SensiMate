@@ -241,24 +241,25 @@ fun FinishButton(onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
 
         ) {
             Text(
-                "Finish Survey",
+                "Finish",
                 color = Color.White,
-                fontSize = 10.sp,
-                modifier = Modifier.padding(start = 0.dp)
+                fontSize = 15.sp,
+               // modifier = Modifier.padding(start = 0.dp)
             )
 
 
             Image(
                 painter = painterResource(id = R.drawable.tick),
                 contentDescription = "Finish",
-                colorFilter = ColorFilter.tint(Color.White),
-                modifier = Modifier
-                    .size(40.dp)
-                    .padding(start = 10.dp)
+                colorFilter = ColorFilter.tint(Color.White)
+                /*modifier = Modifier
+                    .size(30.dp)
+                    .padding(start = 10.dp) */
 
             )
 
