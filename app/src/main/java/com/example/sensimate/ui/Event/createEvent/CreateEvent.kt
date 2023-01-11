@@ -505,7 +505,7 @@ fun QuestionPageScreen(navController: NavController) {
     Column() {
         Card(
             modifier = Modifier
-                .padding(top = 150.dp, bottom = 150.dp)
+                //.padding(top = 150.dp, bottom = 150.dp)
                 .padding(15.dp)
                 .fillMaxSize(),
             shape = RoundedCornerShape(14.dp),
