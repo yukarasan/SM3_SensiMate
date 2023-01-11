@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -66,7 +67,6 @@ fun EditEvent(
     eventViewModel: EventViewModel = viewModel(),
 ) {
     val state = eventViewModel.uiState
-
 
     val chosenEvent = eventViewModel.getEventById(state.value.chosenSurveyId)
 
@@ -417,15 +417,20 @@ fun EditPage(
                 }
                 EventDateChosen(
                     LocalContext.current,
-                    myYear = chosenEvent.year,
-                    myMonth = chosenEvent.month,
-                    myDay = chosenEvent.day,
-                    onValueChange = {eventViewModel.updateYearString(it)}
+                    myYear = state.value.event.year,
+                    myMonth = state.value.event.month,
+                    myDay = state.value.event.day,
+                    onDateChange = {day, month, year ->
+                        eventViewModel.updateDateString(day = day, month = month, year = year)}
                 )
 
                 Time(
                     context = LocalContext.current,
-                    myHour = state.value.event.hour, myMinute = state.value.event.minute
+                    myHour = state.value.event.hour, myMinute = state.value.event.minute,
+
+                    onValueChangeTime = {hour, minute -> eventViewModel.updateTime(hour = hour,
+                        minute = minute)}
+
                 )
 
                 Column(
@@ -580,7 +585,8 @@ fun EditPage(
 fun Time(
     context: Context,
     myHour: String,
-    myMinute: String
+    myMinute: String,
+    onValueChangeTime: (hour : String, minute : String) -> Unit
 ) {
     // Declaring and initializing a calendar
     val mCalendar = Calendar.getInstance()
@@ -601,7 +607,9 @@ fun Time(
             iHour.value = mHour
             iMinute.value = mMinute
             hasChosen.value = true
+            onValueChangeTime(iHour.value.toString(), iMinute.value.toString())
         }, iHour.value, iMinute.value, false
+
     )
 
     TextField(
@@ -628,7 +636,7 @@ fun EventDateChosen(
     myYear: String,
     myMonth: String,
     myDay: String,
-    onValueChange: (String) -> Unit
+    onDateChange: (day : String, month : String, year : String) -> Unit
 ) {
     val calendar = Calendar.getInstance()
     calendar.add(Calendar.YEAR, 0)
@@ -659,6 +667,9 @@ fun EventDateChosen(
                 selectedMonth.value = month
                 selectedDay.value = dayofMonth
                 hasChosen.value = true
+                onDateChange(selectedYear.value.toString(),
+                    selectedMonth.value.plus(1).toString(), selectedDay.value.toString())
+
             }, selectedYear.value, selectedMonth.value, selectedDay.value
         )
     /*
@@ -679,7 +690,7 @@ fun EventDateChosen(
         enabled = false,
         value = "$myDay/$myMonth/$myYear",
         label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
-        onValueChange = {onValueChange(it)},
+        onValueChange = {},
         modifier = Modifier
             .padding(1.dp, 65.dp, 1.dp, 1.dp)
             .clickable { datePickerLog.show() },
