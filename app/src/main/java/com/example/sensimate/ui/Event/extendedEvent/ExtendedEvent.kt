@@ -104,7 +104,7 @@ fun ExtendedEvent(
                                                 )
                                             }
                                         },
-                                        text = state.value.event.chosenSurveyCode.value
+                                        text = state.value.event.chosenSurveyCode
                                     )
                                 }
                                 Column(
@@ -113,9 +113,9 @@ fun ExtendedEvent(
                                 ) {
                                     Button(
                                         onClick = {
-                                            if (state.value.event.chosenSurveyCode.value.length < 4) {
+                                            if (state.value.event.chosenSurveyCode.length < 4) {
                                                 showFieldAlert = true
-                                            } else if (state.value.event.chosenSurveyCode.value ==
+                                            } else if (state.value.event.chosenSurveyCode ==
                                                 state.value.event.surveyCode) {
                                                 navController.popBackStack()
                                                 navController.navigate(Screen.SurveyCreator.route)

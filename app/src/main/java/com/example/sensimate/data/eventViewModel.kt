@@ -2,6 +2,7 @@ package com.example.sensimate.data
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,7 +55,7 @@ class EventViewModel : ViewModel() {
 
     fun updateSurveyCodeString(surveyCode: String) {
         // updateUiState(event = _uiState.value.event.copy(surveyCode = SurveyCode))
-        _uiState.value.event.chosenSurveyCode.value = surveyCode
+        _uiState.value.event.chosenSurveyCode = surveyCode
     }
 
     fun updateDateString(day: String, month: String, year: String){
@@ -64,50 +65,6 @@ class EventViewModel : ViewModel() {
 
     fun updateTime(minute : String, hour : String){
         updateUiState(event = _uiState.value.event.copy(minute = minute, hour = hour))
-    }
-
-
-    fun createHashMapforEvent(
-        titleText: String,
-        descriptionText: String,
-        allergensText: String,
-        locationText: String,
-        surveyCodeText: String,
-        day: String,
-        month: String,
-        year: String,
-        min: String,
-        hour: String,
-        eventId: String,
-    ): HashMap<String, String> {
-
-        uiState.value.event.title = titleText
-        uiState.value.event.description = descriptionText
-        uiState.value.event.allergens = allergensText
-        uiState.value.event.location = locationText
-        uiState.value.event.surveyCode = surveyCodeText
-        uiState.value.event.day = day
-        uiState.value.event.month = month
-        uiState.value.event.year = year
-        uiState.value.event.minute = min
-        uiState.value.event.hour = hour
-        uiState.value.event.eventId = eventId
-
-
-        val event = hashMapOf(
-            "title" to titleText,
-            "description" to descriptionText,
-            "allergens" to allergensText,
-            "location" to locationText,
-            "surveyCode" to surveyCodeText,
-            "day" to day,
-            "month" to month,
-            "year" to year,
-            "minute" to min,
-            "hour" to hour,
-            "eventId" to eventId
-        )
-        return event
     }
 
     fun checkIfTextfieldIsEmpty(
