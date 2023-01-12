@@ -24,20 +24,10 @@ import com.example.sensimate.ui.theme.DarkPurple
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun App(
-    context: Context,
-    appViewModel: AppViewModel = viewModel(),
-    eventViewModel: EventViewModel = EventViewModel(),
-    modifier: Modifier = Modifier
-) {
-    // ViewModels
-    val eventUiState by eventViewModel.eventUiState.collectAsState()
-    // val profileUiState by profileViewModel.profileUiState.collectAsState()
-    // val osv...
-
+fun App(context: Context) {
     // Navigation
     val navController: NavHostController = rememberNavController()
-    SetupNavGraph(navController = navController, eventUIState = eventUiState)
+    SetupNavGraph(navController = navController)
 
     // Locking the screen rotation
     val activity = context as Activity

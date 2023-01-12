@@ -12,12 +12,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sensimate.data.Database.updateSurvey
 import com.example.sensimate.data.EventViewModel
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.questionandsurvey.MyAnswer2
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -74,7 +76,7 @@ fun SurveyCreator(
 
     if (loaded2.value) {
         Log.d("sjdj", "dk")
-        AllPages(navController, questionViewModel.uiState.value.questions, questionViewModel)
+        AllPages(navController, questionViewModel.uiState.value.questions, questionViewModel, surveyId)
     }
 
     LaunchedEffect(key1 = true) {
@@ -128,7 +130,9 @@ fun showLoadingSurvey(showloading: MutableState<Boolean>) {
 fun AllPages(
     navController: NavController,
     questions: List<MyQuestion>,
-    questionViewModel: QuestionViewModel
+    questionViewModel: QuestionViewModel,
+    eventId: String
+
 ) {
     val answers = mutableListOf<String>() //i vm
 
@@ -222,8 +226,10 @@ fun AllPages(
                 }
 
                 if (pagerState.currentPage == pagerState.pageCount - 1) {
-                    FinishButton() {
-                    }
+                    FinishButton(onClick = {
+                        navController.navigate(Screen.EventScreen.route)
+                        questionViewModel.updateAnswer(eventId)
+                    })
                 } else {
                     Row(  modifier = Modifier
                         .fillMaxWidth(),

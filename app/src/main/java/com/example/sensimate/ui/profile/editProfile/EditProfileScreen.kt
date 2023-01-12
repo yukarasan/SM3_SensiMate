@@ -82,6 +82,7 @@ fun EditProfileScreen(navController: NavController) {
                 }
             }
             item { ImageButton() }
+            /*
             item {
                 CustomProfileTextField(
                     text = "Age",
@@ -93,6 +94,7 @@ fun EditProfileScreen(navController: NavController) {
                     }
                 )
             }
+             */
             item {
                 CustomProfileTextField(
                     text = "E-mail",
