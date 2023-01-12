@@ -93,11 +93,31 @@ fun EditEvent(navController: NavController,
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            Column(modifier = Modifier.padding(10.dp)) {
-                OrangeBackButton(onClick = { navController.popBackStack() })
-            }
 
             LazyColumn() {
+                item {
+                    LazyRow(Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween){
+                        item {
+                            Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+                                OrangeBackButton(onClick = { navController.navigate(Screen.EventScreenEmployee.route) })
+                            }
+                        }
+                        item {
+                            AddPhoto(
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .size(50.dp)
+                                    .clickable(
+                                        enabled = true,
+                                        onClickLabel = "Clickable image",
+                                        onClick = { navController.navigate(Screen.EditPage.route) }),
+
+                                id = R.drawable.yelloweditbutton
+                            )
+                        }
+                    }
+                }
                 item {
                     Card(
                         modifier = Modifier
