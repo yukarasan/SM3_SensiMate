@@ -39,34 +39,6 @@ class StartProfileViewModel() : ViewModel() {
     val _uiState = MutableStateFlow(StartProfileUiState())
     val uiState: StateFlow<StartProfileUiState> = _uiState.asStateFlow()
 
-    fun changeMail(mail: String) {
-        _uiState.value.mail.value = mail
-    }
-
-    fun changePassword(password: String) {
-        _uiState.value.password.value = password
-    }
-
-    fun changeConfirmPassword(confirmPassword: String) {
-        _uiState.value.confirmPassword.value = confirmPassword
-    }
-
-    fun changeGender(gender: String) {
-        _uiState.value.gender.value = gender
-    }
-
-    fun changeYear(year: String) {
-        _uiState.value.yearBorn.value = year
-    }
-
-    fun changeMonth(month: String) {
-        _uiState.value.monthBorn.value = month
-    }
-
-    fun changeDay(day: String) {
-        _uiState.value.dayBorn.value = day
-    }
-
     fun changePostalCode(postalCode: String) {
         _uiState.value.postalCode.value = postalCode
     }
@@ -234,6 +206,35 @@ class StartProfileViewModel() : ViewModel() {
                 navController.navigate(Screen.EventScreen.route)
             }
         }
-
     }
+
+    fun changeMail(mail: String) {
+        _uiState.value.mail.value = mail
+    }
+
+    fun changePassword(password: String) {
+        _uiState.value.password.value = password
+    }
+
+    fun changeConfirmPassword(confirmPassword: String) {
+        _uiState.value.confirmPassword.value = confirmPassword
+    }
+
+    fun changeGender(gender: String) {
+        _uiState.value.gender.value = gender
+    }
+
+    fun changeYear(year: String) {
+        _uiState.value.yearBorn.value = year
+    }
+
+    fun changeMonth(month: String) {
+        _uiState.value.monthBorn.value = month
+    }
+
+    fun changeDay(day: String) {
+        _uiState.value.dayBorn.value = day
+    }
+
+
 }
