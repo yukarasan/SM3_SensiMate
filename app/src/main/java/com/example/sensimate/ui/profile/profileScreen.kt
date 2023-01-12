@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -96,12 +97,12 @@ fun ProfileScreen(
                     }
                 )
             }
-            item { InfoAboutUser(desc = "Age", info = profileState.age) }
-            item { InfoAboutUser(desc = "Year Born", info = profileState.yearBorn) }
-            item { InfoAboutUser(desc = "Day Born", info = profileState.dayBorn) }
-            item { InfoAboutUser(desc = "Month Born", info = profileState.monthBorn) }
-            item { InfoAboutUser(desc = "Postal Code", info = profileState.postalCode) }
-            item { InfoAboutUser(desc = "Gender", info = profileState.gender) }
+            item { InfoAboutUser(desc = stringResource(id = R.string.age), info = profileState.age) }
+            item { InfoAboutUser(desc = stringResource(id = R.string.yearBorn), info = profileState.yearBorn) }
+            item { InfoAboutUser(desc = stringResource(id = R.string.dayBorn), info = profileState.dayBorn) }
+            item { InfoAboutUser(desc = stringResource(id = R.string.monthBorn), info = profileState.monthBorn) }
+            item { InfoAboutUser(desc = stringResource(id = R.string.postalCode), info = profileState.postalCode) }
+            item { InfoAboutUser(desc = stringResource(id = R.string.gender), info = profileState.gender) }
         }
     }
 }
@@ -123,7 +124,7 @@ private fun LogoutButton(onClick: () -> Unit) {
             .padding()
     ) {
         Text(
-            text = "Log out",
+            text = stringResource(id = R.string.logOut),
             fontFamily = manropeFamily,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 16.sp,
@@ -155,7 +156,7 @@ private fun EditButton(onClick: () -> Unit) {
 
     ) {
         Text(
-            text = "Edit",
+            text = stringResource(id = R.string.edit),
             fontFamily = manropeFamily,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 16.sp,

@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.profile
+package com.example.sensimate.ui.profile.editProfile
 
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,28 +18,30 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
-import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 
+/**
+ * The EditProfileScreen composable displays a screen that allows the user to edit their email,
+ * password, and gender.
+ * The screen includes a Dialog composable that is used to confirm the user's actions when he/she
+ * wants to delete their account.
+ * @param navController the navigation controller for navigating between screens
+ * @author Yusuf Kara
+ */
 @Composable
 fun EditProfileScreen(navController: NavController) {
     val showDialog = remember { mutableStateOf(false) }
@@ -54,16 +54,17 @@ fun EditProfileScreen(navController: NavController) {
         Dialog(navController = navController, showDialog = showDialog, context = context)
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(
-            Brush.verticalGradient(
-                colors = listOf(
-                    DarkPurple,
-                    BottomGradient
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        DarkPurple,
+                        BottomGradient
+                    )
                 )
             )
-        )
     ) {
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -82,25 +83,12 @@ fun EditProfileScreen(navController: NavController) {
                 }
             }
             item { ImageButton() }
-            /*
             item {
                 CustomProfileTextField(
-                    text = "Age",
-                    description = "Edit your age here",
-                    placeholder = "age",
-                    onValueChange = { /* nothing for this instance. */  },
-                    onClick = {
-                        navController.navigate(Screen.EditAgeScreen.route)
-                    }
-                )
-            }
-             */
-            item {
-                CustomProfileTextField(
-                    text = "E-mail",
-                    description = "Edit your e-mail here",
-                    placeholder = "e-mail",
-                    onValueChange = { /* nothing for this instance. */  },
+                    text = stringResource(id = R.string.email),
+                    description = stringResource(id = R.string.editEmail),
+                    placeholder = stringResource(id = R.string.email),
+                    onValueChange = { /* nothing for this instance. */ },
                     onClick = {
                         navController.navigate(Screen.EditEmailScreen.route)
                     }
@@ -108,10 +96,10 @@ fun EditProfileScreen(navController: NavController) {
             }
             item {
                 CustomProfileTextField(
-                    text = "Password",
-                    description = "Edit your password here",
-                    placeholder = "password",
-                    onValueChange = { /* nothing for this instance. */  },
+                    text = stringResource(id = R.string.password),
+                    description = stringResource(id = R.string.editPassword),
+                    placeholder = stringResource(id = R.string.password),
+                    onValueChange = { /* nothing for this instance. */ },
                     onClick = {
                         navController.navigate(Screen.EditPasswordScreen.route)
                     }
@@ -119,10 +107,10 @@ fun EditProfileScreen(navController: NavController) {
             }
             item {
                 CustomProfileTextField(
-                    text = "Gender",
-                    description = "Edit your gender here",
-                    placeholder = "gender",
-                    onValueChange = { /* nothing for this instance. */  },
+                    text = stringResource(id = R.string.gender),
+                    description = stringResource(id = R.string.editGender),
+                    placeholder = stringResource(id = R.string.gender),
+                    onValueChange = { /* nothing for this instance. */ },
                     onClick = {
                         navController.navigate(Screen.EditGenderScreen.route)
                     }
@@ -130,23 +118,26 @@ fun EditProfileScreen(navController: NavController) {
             }
             item {
                 CustomProfileTextField(
-                    text = "Postal Code",
-                    description = "Edit your postal code here",
-                    placeholder = "gender",
-                    onValueChange = { /* nothing for this instance. */  },
+                    text = stringResource(id = R.string.postalCode),
+                    description = stringResource(id = R.string.editPostalCode),
+                    placeholder = stringResource(id = R.string.postalCode),
+                    onValueChange = { /* nothing for this instance. */ },
                     onClick = {
                         navController.navigate(Screen.EditPostalScreen.route)
                     }
                 )
             }
-
             item { Spacer(modifier = Modifier.height(20.dp)) }
-
             item { DeleteUserProfileButton(showDialog = showDialog) }
         }
     }
 }
 
+/**
+ * The DoneButton composable displays a button that, when clicked, triggers the provided
+ * onClick function.
+ * @param onClick the function that is called when the button is clicked
+ */
 @Composable
 private fun DoneButton(onClick: () -> Unit) {
     Button(
@@ -162,7 +153,7 @@ private fun DoneButton(onClick: () -> Unit) {
             .padding(end = 20.dp)
     ) {
         Text(
-            text = "Done",
+            text = stringResource(id = R.string.doneButton),
             fontFamily = manropeFamily,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 16.sp,
@@ -171,6 +162,13 @@ private fun DoneButton(onClick: () -> Unit) {
     }
 }
 
+/**
+ * The DeleteUserProfileButton composable displays a button that, when clicked, sets the value
+ * of the showDialog state variable to true.
+ * @param showDialog the state variable that is used to control the visibility of the
+ * delete confirmation dialog
+ * @author Yusuf Kara
+ */
 @Composable
 private fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
     Button(
@@ -178,12 +176,12 @@ private fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
             showDialog.value = true
         },
         shape = RoundedCornerShape(100),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(255, 0, 0)),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(184, 58, 58, 255)),
         modifier = Modifier
             .height(40.dp)
     ) {
         Text(
-            text = "Delete profile",
+            text = stringResource(id = R.string.deleteProfile),
             fontFamily = manropeFamily,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 16.sp,
@@ -192,6 +190,18 @@ private fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
     }
 }
 
+/**
+ * The Dialog composable displays an AlertDialog that prompts the user to confirm the deletion
+ * of their profile.
+ * The dialog includes a "Yes" button that, when clicked, deletes the user's profile and
+ * navigates to the login screen, and a "No" button that dismisses the dialog.
+ * The visibility of the dialog is controlled by the showDialog state variable.
+ * @param navController the navigation controller for navigating between screens
+ * @param showDialog the state variable that is used to control the visibility of the
+ * delete confirmation dialog
+ * @param context the context in which the dialog is displayed
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Dialog(
     navController: NavController = rememberNavController(),
@@ -201,23 +211,30 @@ private fun Dialog(
     if (showDialog.value) {
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
-            title = { Text(text = "Are you sure you want to delete your profile?") },
+            title = { Text(text = stringResource(id = R.string.deleteProfileConfirmation)) },
             confirmButton = {
                 TextButton(onClick = {
                     showDialog.value = false
                     navController.navigate(Screen.Login.route)
                     Database.deleteProfile(context = context)
                 })
-                { Text(text = "Yes") }
+                { Text(text = stringResource(id = R.string.yes)) }
             },
             dismissButton = {
                 TextButton(onClick = { showDialog.value = false })
-                { Text(text = "No") }
+                { Text(text = stringResource(id = R.string.no)) }
             },
         )
     }
 }
 
+/**
+ * The InfoAboutUser composable displays a card that contains two text fields. The card is used
+ * to display the users information such as age, email, postal code and so on.
+ * @param desc the text for the description
+ * @param info the text for the info
+ * @author Yusuf Kara
+ */
 @Composable
 private fun ImageButton() {
     val image = painterResource(id = R.drawable.profilepic)

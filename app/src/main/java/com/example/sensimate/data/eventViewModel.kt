@@ -1,9 +1,12 @@
 package com.example.sensimate.data
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.example.sensimate.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -61,8 +64,12 @@ class EventViewModel : ViewModel() {
     }
 
     fun updateSurveyCodeString(surveyCode: String) {
-        // updateUiState(event = _uiState.value.event.copy(surveyCode = SurveyCode))
+        // updateUiState(event = _uiState.value.event.copy(surveyCode = surveyCode))
         _uiState.value.event.chosenSurveyCode.value = surveyCode
+    }
+
+    fun updateSurveyCode(surveyCode: String) {
+        updateUiState(event = _uiState.value.event.copy(surveyCode = surveyCode))
     }
 
     fun updateDateString(day: String, month: String, year: String) {
@@ -74,8 +81,9 @@ class EventViewModel : ViewModel() {
         updateUiState(event = _uiState.value.event.copy(minute = minute, hour = hour))
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun checkIfTextfieldIsEmpty(
-        context: android.content.Context,
+        context: android.content.Context, navController: NavController
     ) {
         if (uiState.value.event.title == "") {
             Toast.makeText(context, "Title was not entered", Toast.LENGTH_SHORT).show()
@@ -93,9 +101,9 @@ class EventViewModel : ViewModel() {
             Toast.makeText(context, "Allergens was not entered", Toast.LENGTH_SHORT).show()
         } else if (uiState.value.event.surveyCode == "") {
             Toast.makeText(context, "SurveyCode was not entered", Toast.LENGTH_SHORT).show()
-        }
-        else
+        } else
             updateEvent()
+            navController.navigate(Screen.EventScreenEmployee.route)
     }
 
     fun updateEvent() {
