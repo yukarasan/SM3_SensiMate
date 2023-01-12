@@ -6,18 +6,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -44,6 +48,7 @@ import com.example.sensimate.ui.theme.DarkPurple
  * such as if the new password is not long enough or if a field is empty.
  * @author Yusuf Kara
  */
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EditPasswordScreen(
     navController: NavController,
@@ -145,15 +150,14 @@ fun EditPasswordScreen(
             text = profileState.currentPassword,
             description = "Current password",
             placeholder = "Enter your current password here",
-            onValueChange = { profileViewModel.updateCurrentPasswordString(input = it) }
+            onValueChange = { profileViewModel.updateCurrentPasswordString(input = it) },
         )
         CustomPasswordField(
             text = profileState.newPassword,
             description = "New password",
             placeholder = "Enter your new password here",
             onValueChange = { profileViewModel.updateNewPasswordString(input = it) },
-
-            )
+        )
         Text(
             text = "To keep your account secure, you can change your password here. Make sure " +
                     "to provide your current password and make sure that your password is at " +
@@ -169,11 +173,17 @@ fun EditPasswordScreen(
  * It has five input parameters: text, description, placeholder, onValueChange, and modifier.
  * @author Yusuf Kara
  */
+@OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("UnrememberedMutableState")
 @Composable
 private fun CustomPasswordField(
-    text: String, description: String, placeholder: String, onValueChange: (String) -> Unit
+    text: String,
+    description: String,
+    placeholder: String,
+    onValueChange: (String) -> Unit,
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -231,7 +241,13 @@ private fun CustomPasswordField(
                         cursorBrush = SolidColor(Color(154, 107, 254)),
                         modifier = Modifier.padding(top = 10.dp, bottom = 2.dp),
                         visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done,
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = { keyboardController?.hide() }
+                        ),
                         maxLines = 1,
                         singleLine = true
                     )
@@ -264,7 +280,13 @@ private fun CustomPasswordField(
                         },
                         cursorBrush = SolidColor(Color(154, 107, 254)),
                         modifier = Modifier.padding(top = 10.dp, bottom = 2.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = { keyboardController?.hide() }
+                        ),
                         maxLines = 1,
                         singleLine = true,
                     )
