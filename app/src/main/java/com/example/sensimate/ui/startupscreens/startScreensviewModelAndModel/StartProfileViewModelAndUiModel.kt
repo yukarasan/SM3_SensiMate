@@ -197,12 +197,11 @@ class StartProfileViewModel() : ViewModel() {
         viewModelScope.launch {
 
             Database.getIsEmployee(context)
+            Database.getIsAdmin(context)
 
-            if (getBooleanFromLocalStorage("isEmployee", context)) {
-                Log.d("er EMPLOYEE", "")
+            if (getBooleanFromLocalStorage("isEmployee", context) || getBooleanFromLocalStorage("isAdmin", context)) {
                 navController.navigate(Screen.EventScreenEmployee.route)
             } else {
-                Log.d("ikke EMPLOYEE", "")
                 navController.navigate(Screen.EventScreen.route)
             }
         }
