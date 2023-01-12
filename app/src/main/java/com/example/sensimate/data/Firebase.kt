@@ -4,9 +4,14 @@ package com.example.sensimate.data
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.*
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.R
@@ -28,6 +33,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
+import java.util.jar.Manifest
 
 
 @SuppressLint("StaticFieldLeak")
@@ -763,7 +769,7 @@ object Database {
 
      */
 
-/*
+
     suspend fun updateSurvey(eventId: String, options: List<String>, newQuestion: MyQuestion) {
         val test = hashMapOf(
             "mainQuestion" to newQuestion.mainQuestion
@@ -795,11 +801,10 @@ object Database {
 
     }
 
- */
 
 
 
-    suspend fun updateSurvey(eventId: String, options: List<String>, newQuestion: MyQuestion) {
+    suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: MyQuestion) {
         // ... your existing code here ...
 
         val test = hashMapOf(
@@ -828,6 +833,7 @@ object Database {
                     // Create a new sheet in the workbook
                     val sheet = workbook.createSheet("Survey Results")
 
+
                     // Add the data to the sheet
                     var rowNum = 0
                     val row = sheet.createRow(rowNum++)
@@ -852,9 +858,11 @@ object Database {
                     row7.createCell(0).setCellValue("Is Employee")
                     row7.createCell(1).setCellValue(survey["isEmployee"].toString())
 
-                    // Write the workbook to a file
-                    val excelExportFolder = File("ExcelExport")
 
+
+
+                    // Write the workbook to a file
+                    val excelExportFolder = File(Environment.getExternalStorageDirectory(), "ExcelExport")
                     if (!excelExportFolder.exists()) {
                         excelExportFolder.mkdir()
                     }
@@ -863,6 +871,7 @@ object Database {
                     val fileOut = FileOutputStream(file)
                     workbook.write(fileOut)
                     fileOut.close()
+
 
                 }
             }
