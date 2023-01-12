@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sensimate.data.Database.updateSurvey
 import com.example.sensimate.data.EventViewModel
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
@@ -128,7 +129,8 @@ fun showLoadingSurvey(showloading: MutableState<Boolean>) {
 fun AllPages(
     navController: NavController,
     questions: List<MyQuestion>,
-    questionViewModel: QuestionViewModel
+    questionViewModel: QuestionViewModel,
+
 ) {
     val answers = mutableListOf<String>() //i vm
 
@@ -222,8 +224,8 @@ fun AllPages(
                 }
 
                 if (pagerState.currentPage == pagerState.pageCount - 1) {
-                    FinishButton() {
-                    }
+                    FinishButton(onClick = {
+                    })
                 } else {
                     Row(  modifier = Modifier
                         .fillMaxWidth(),

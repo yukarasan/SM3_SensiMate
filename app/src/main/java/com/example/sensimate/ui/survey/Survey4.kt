@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
+import com.example.sensimate.data.Database.updateSurvey
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.Database.updateSurvey
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
@@ -267,7 +268,7 @@ fun FinishButton(onClick: () -> Unit) {
 
     }
 
-    //updateSurvey(eventId = eventId, survey = MyQuestion)
+
 }
 
 

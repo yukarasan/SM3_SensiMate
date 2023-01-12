@@ -549,7 +549,15 @@ object Database {
         }
     } //TODO: Ahmad
 
-    fun question5(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String,answer4: String,answer5: String){
+    fun question5(
+        question: String,
+        boolean: Boolean,
+        answer1: String,
+        answer2: String,
+        answer3: String,
+        answer4: String,
+        answer5: String
+    ) {
         val mainQuest = hashMapOf(
             "mainQuestion" to question,
             "oneChoice" to boolean
@@ -564,11 +572,19 @@ object Database {
         val subcollectionRef = db.collection("events").document(docId).collection("questions")
         subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
             mainQuest.set("questionId", docRef.id)
-            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+            subcollectionRef.document(docRef.id).collection("type").document("options")
+                .set(questionAnswer)
         }
     }//TODO: Ahmad
 
-    fun question4(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String,answer4: String){
+    fun question4(
+        question: String,
+        boolean: Boolean,
+        answer1: String,
+        answer2: String,
+        answer3: String,
+        answer4: String
+    ) {
         val mainQuest = hashMapOf(
             "mainQuestion" to question,
             "oneChoice" to boolean
@@ -582,11 +598,18 @@ object Database {
         val subcollectionRef = db.collection("events").document(docId).collection("questions")
         subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
             mainQuest.set("questionId", docRef.id)
-            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+            subcollectionRef.document(docRef.id).collection("type").document("options")
+                .set(questionAnswer)
         }
     }//TODO: Ahmad
 
-    fun question3(question: String, boolean: Boolean,answer1: String,answer2: String,answer3: String){
+    fun question3(
+        question: String,
+        boolean: Boolean,
+        answer1: String,
+        answer2: String,
+        answer3: String
+    ) {
         val mainQuest = hashMapOf(
             "mainQuestion" to question,
             "oneChoice" to boolean
@@ -596,15 +619,16 @@ object Database {
             "answer2" to answer2,
             "answer3" to answer3,
 
-        )
+            )
         val subcollectionRef = db.collection("events").document(docId).collection("questions")
         subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
             mainQuest.set("questionId", docRef.id)
-            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+            subcollectionRef.document(docRef.id).collection("type").document("options")
+                .set(questionAnswer)
         }
     }//TODO: Ahmad
 
-    fun question(question: String, boolean: Boolean,answer1: String,answer2: String){
+    fun question(question: String, boolean: Boolean, answer1: String, answer2: String) {
         val mainQuest = hashMapOf(
             "mainQuestion" to question,
             "oneChoice" to boolean
@@ -613,15 +637,16 @@ object Database {
             "answer1" to answer1,
             "answer2" to answer2,
 
-        )
+            )
         val subcollectionRef = db.collection("events").document(docId).collection("questions")
         subcollectionRef.add(mainQuest).addOnSuccessListener { docRef ->
             mainQuest.set("questionId", docRef.id)
-            subcollectionRef.document(docRef.id).collection("type").document("options").set(questionAnswer)
+            subcollectionRef.document(docRef.id).collection("type").document("options")
+                .set(questionAnswer)
         }
     }//TODO: Ahmad
 
-    fun textAnswer(question: String){
+    fun textAnswer(question: String) {
         val mainQuest = hashMapOf(
             "mainQuestion" to question
         )
@@ -739,26 +764,39 @@ object Database {
      */
 
 
+    suspend fun updateSurvey(eventId: String, options: List<String>, newQuestion: MyQuestion) {
+        val test = hashMapOf(
+            "mainQuestion" to newQuestion.mainQuestion
+        )
 
-    fun updateSurvey(eventId: String, questionId: String, newQuestion: MyQuestion) {
+
+        val profile = fetchProfile()!!
+
+
+        hashMapOf(
+            "postalCode" to profile.postalCode,
+            "yearBorn" to profile.yearBorn,
+            "monthBorn" to profile.monthBorn,
+            "dayBorn" to profile.dayBorn,
+            "gender" to profile.gender,
+            "answer" to options.toString(),
+            "isEmployee" to false
+        )
+
+
         val questionRef = db.collection("events").document(eventId)
-            .collection("questions").document(questionId)
+            .collection("Answers").add(test).addOnSuccessListener { docRef ->
+                docRef.collection("users").add(profile).addOnSuccessListener { docRef ->
 
-        questionRef.update("mainQuestion", newQuestion.mainQuestion)
-        questionRef.update("oneChoice", newQuestion.oneChoice)
 
-        questionRef.collection("type").get().addOnSuccessListener { options ->
-            for (option in options) {
-                questionRef.collection("type").document(option.id).delete()
+                    docRef.collection("surveyAnswer").add(options)
+
+                }
+
             }
-        }
 
-        for (option in newQuestion.options) {
-            questionRef.collection("type").add(option)
-        }
+
     }
-
-
 
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
