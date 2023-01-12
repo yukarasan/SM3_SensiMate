@@ -16,16 +16,21 @@ class EventViewModel : ViewModel() {
         _uiState.value.events.add(event)
     }
 
-    fun getEventById(id: String): Event {
+    fun emptyList(){
+        _uiState.value.events.removeAll(uiState.value.events)
+    }
 
+    fun getEventById(id: String): Event {
         for (event in _uiState.value.events) {
             if (event.eventId == id) {
                 updateUiState(event = event)
+                Log.d("eventbyId",uiState.value.event.toString())
                 return event
             }
         }
         return Event("NO SUCH EVENT")
     }
+
 
     fun updateUiState(event: Event) {
         _uiState.value = _uiState.value.copy(event = event)
@@ -38,6 +43,8 @@ class EventViewModel : ViewModel() {
 
 
     fun updateTitleString(title: String) {
+        //_uiState.value.event = _uiState.value.event.copy(title = title)
+
         updateUiState(event = _uiState.value.event.copy(title = title))
     }
 
@@ -99,5 +106,36 @@ class EventViewModel : ViewModel() {
             Toast.makeText(context, "SurveyCode was not entered", Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun updateEvent(title: String,
+                    description: String,
+                    location: String,
+                    year: String,
+                    month: String,
+                    day: String,
+                    allergens: String,
+                    hour : String,
+                    minute : String,
+                    surveyCode: String,
+                    eventId : String){
+        val event = hashMapOf(
+            "title" to title,
+            "description" to description,
+            "allergens" to allergens,
+            "location" to location,
+            "surveyCode" to surveyCode,
+            "day" to day,
+            "month" to month,
+            "year" to year,
+            "hour" to hour,
+            "minute" to minute,
+            "eventId" to eventId
+        )
+        Log.d("event", event.toString())
+
+        Database.UpdateEvent(event, uiState.value.event.eventId)
+
+    }
+
 
 }

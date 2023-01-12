@@ -1,3 +1,5 @@
+//import com.example.sensimate.ui.Event.editEvent.EditEventViewmodel
+
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -23,7 +25,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -35,23 +36,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
-import com.example.sensimate.ui.Event.createEvent.AddPhoto
-//import com.example.sensimate.ui.Event.editEvent.EditEventViewmodel
-
-import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.*
 import java.util.*
+
 
 /*
 @Preview(showBackground = true)
@@ -87,7 +86,7 @@ fun EditEvent(navController: NavController,
                     )
                 )
             )
-    ) {
+    )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -220,6 +219,29 @@ fun EditEvent(navController: NavController,
                             }
                         }
                     }
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp), verticalArrangement = Arrangement.Center
+                        ) {
+                            Button(
+                                onClick = { Database.deleteEvent(chosenEvent.title) },
+                                shape = CircleShape,
+                                colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
+                                modifier = Modifier.size(240.dp, 50.dp),
+
+                                ) {
+                                Text(
+                                    text = "Delete Event",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 25.sp,
+                                    color = Color.White,
+                                    fontFamily = manropeFamily
+                                )
+                            }
+                        }
+                    }
                 }
             }
 
@@ -253,7 +275,6 @@ fun EditEvent(navController: NavController,
             }
         }
     }
-}
 
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier) {
@@ -404,7 +425,7 @@ private fun Placeholder() {
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun EditPage(
-    navController: NavController,
+    navController: NavHostController,
     //title: String,
     //time: String,
     //location: String,
@@ -414,7 +435,6 @@ fun EditPage(
     eventViewModel: EventViewModel,
     //editEventViewmodel: EditEventViewmodel = viewModel()
 ) {
-    val state1 = eventViewModel.uiState
 
     val state = eventViewModel.uiState.collectAsState()
 
@@ -482,8 +502,6 @@ fun EditPage(
 
                 shape = RoundedCornerShape(15.dp),
                 backgroundColor = Color(0xFF4D3B72)
-
-
             ) {
 
                 Image(
@@ -547,6 +565,10 @@ fun EditPage(
 
                     Button(
                         onClick = {
+
+                            Log.d("before title : ", state.value.event.title)
+
+                            /*
                             eventViewModel.checkIfTextfieldIsEmpty(
                                 context,
                                 state.value.event.title,
@@ -558,7 +580,23 @@ fun EditPage(
                                 state.value.event.allergens,
                                 state.value.event.surveyCode
                             )
-                            //eventViewModel.updateEvent()
+
+                             */
+
+                            Log.d("title", state.value.event.title)
+
+                            eventViewModel.updateEvent(
+                                title = state.value.event.title,
+                                description = state.value.event.description,
+                                location = state.value.event.location,
+                                year = state.value.event.year,
+                                month = state.value.event.month,
+                                day = state.value.event.day,
+                                allergens = state.value.event.allergens,
+                                surveyCode = state.value.event.surveyCode,
+                                minute = state.value.event.minute,
+                                eventId = state.value.event.eventId,
+                                hour = state.value.event.hour)
 
                             /*
                             if (titleText == "") {
@@ -647,11 +685,19 @@ fun EditPage(
                     Spacer(modifier = Modifier.size(55.dp))
                     Button(
                         onClick = {
-                            navController.popBackStack()
-                            navController.popBackStack()
-                            navController.popBackStack()
-                            navController.popBackStack()
-                            navController.navigate(Screen.EventScreenEmployee.route)
+                            navController.navigate(Screen.EventScreenEmployee.route){
+                                navController.popBackStack()
+                                navController.popBackStack()
+                                navController.popBackStack()
+                                navController.popBackStack()
+
+                                /*popUpTo(Screen.EditEvent.route){
+                                   inclusive=true
+                               }
+
+                                 */
+
+                            }
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
