@@ -1,8 +1,6 @@
 package com.example.sensimate.ui.profile
 
-import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -22,12 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
@@ -35,9 +31,15 @@ import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
-import java.util.Calendar
-import kotlinx.coroutines.launch
 
+/**
+ * The ProfileScreen composable displays the user's profile information, including their age,
+ * year and day of birth, postal code, and gender.
+ * It also includes buttons for navigating to the Edit Profile screen, the Event screen, and for
+ * logging out.
+ * If the user is a guest, the Edit button will not be displayed.
+ * @author Yusuf Kara
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(
@@ -50,44 +52,6 @@ fun ProfileScreen(
     if (auth.currentUser != null) {
         profileViewModel.fetchProfileData(context = context)
     }
-
-    /*
-    val yearBorn = remember { mutableStateOf("") }
-    val age = remember { mutableStateOf("") }
-    val dayBorn = remember { mutableStateOf("") }
-    val monthBorn = remember { mutableStateOf("") }
-    val postalCode = remember { mutableStateOf("") }
-    val gender = remember { mutableStateOf("") }
-
-    LaunchedEffect(key1 = true) {
-
-        if (!getBooleanFromLocalStorage("isGuest", context = context)) {
-            scope.launch {
-                val profile = profile()
-
-                val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-                age.value = (currentYear - profile.yearBorn.toInt()).toString()
-
-                dayBorn.value = profile.dayBorn
-                yearBorn.value = profile.yearBorn
-                monthBorn.value = profile.monthBorn
-                postalCode.value = profile.postalCode
-                gender.value = profile.gender
-            }
-        } else {
-            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-            yearBorn.value = getStringFromLocalStorage("yearBorn", context)
-
-            age.value = (currentYear - yearBorn.value.toInt()).toString()
-            dayBorn.value = getStringFromLocalStorage("dayBorn", context)
-            monthBorn.value = getStringFromLocalStorage("monthBorn", context)
-            postalCode.value = getStringFromLocalStorage("postalCode", context)
-            gender.value = getStringFromLocalStorage("gender", context)
-        }
-    }
-    */
-
-
 
     Box(
         modifier = Modifier
@@ -124,27 +88,14 @@ fun ProfileScreen(
             item { ImageButton() }
             item { ProfileMail() }
             item {
-                LogoutButton(onClick = {
-                    Database.signOut(
-                        context = context
-                    )
+                LogoutButton(
+                    onClick = {
+                    Database.signOut(context = context)
                     navController.popBackStack()
-
                     navController.navigate(Screen.Login.route)
-                })
+                    }
+                )
             }
-
-            // val age = Calendar.getInstance().get(Calendar.YEAR) - ((Database.fetchProfile()?.yearBorn
-            //    ?: 0))
-
-            /*
-            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-            val age = Database.fetchProfile()?.let { currentYear - it.yearBorn }
-
-            val profile = async { Database.fetchProfile() }.await()
-            val age = profile?.let { currentYear - it.yearBorn }
-             */
-
             item { InfoAboutUser(desc = "Age", info = profileState.age) }
             item { InfoAboutUser(desc = "Year Born", info = profileState.yearBorn) }
             item { InfoAboutUser(desc = "Day Born", info = profileState.dayBorn) }
@@ -155,6 +106,12 @@ fun ProfileScreen(
     }
 }
 
+/**
+ * The LogoutButton composable displays a button that, when clicked, triggers the provided
+ * onClick function.
+ * @param onClick the function that is called when the button is clicked
+ * @author Yusuf Kara
+ */
 @Composable
 private fun LogoutButton(onClick: () -> Unit) {
     Button(
@@ -175,6 +132,12 @@ private fun LogoutButton(onClick: () -> Unit) {
     }
 }
 
+/**
+ * The EditButton composable displays a button that, when clicked, triggers the provided
+ * onClick function.
+ * @param onClick the function that is called when the button is clicked
+ * @author Yusuf Kara
+ */
 @Composable
 private fun EditButton(onClick: () -> Unit) {
     Button(
@@ -202,6 +165,15 @@ private fun EditButton(onClick: () -> Unit) {
 
 }
 
+/**
+ * The ImageButton composable displays a circular image with a clickable area. The image is loaded
+ * from a drawable resource, and the clickable area is defined by the Box's clickable modifier.
+ * For now the click does nothing. But in future work, one would probably want to implement a
+ * function that when the user clicks on the image, asks the user if they would like to upload
+ * an image of themselves.
+ * @param id the id of the drawable resource used for the image
+ * @param contentDescription the content description of the image
+ */
 @Composable
 private fun ImageButton() {
     val image = painterResource(id = R.drawable.profilepic)
@@ -223,29 +195,20 @@ private fun ImageButton() {
     }
 }
 
-@Composable
-private fun ProfileName() {
-    Text(
-        text = "Hans Jensen",
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.ExtraBold,
-        fontSize = 28.sp,
-        color = Color.White,
-        modifier = Modifier.padding(bottom = 5.dp)
-    )
-}
-
+/**
+ * The ProfileMail composable displays the email of the current user. If the user is not logged
+ * in or the email is null, the composable will display an empty string.
+ * @param auth the instance of authentication from which the email is retrieved
+ * @author Yusuf Kara
+ */
 @Composable
 private fun ProfileMail() {
     Text(
-        //text = auth.currentUser?.email.toString() ?: "Guest profile",
-
         text = if (auth.currentUser?.email != null) {
             auth.currentUser!!.email.toString()
         } else {
             ""
         },
-
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 13.sp,
@@ -254,6 +217,13 @@ private fun ProfileMail() {
     )
 }
 
+/**
+ * The InfoAboutUser composable displays a card that contains two text fields. The card is used
+ * to display the users information such as age, email, postal code and so on.
+ * @param desc the text for the description
+ * @param info the text for the info
+ * @author Yusuf Kara
+ */
 @Composable
 private fun InfoAboutUser(desc: String, info: String) {
     Card(

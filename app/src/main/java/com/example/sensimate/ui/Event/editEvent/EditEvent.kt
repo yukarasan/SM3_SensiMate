@@ -1,5 +1,3 @@
-//import com.example.sensimate.ui.Event.editEvent.EditEventViewmodel
-
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -35,11 +33,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
@@ -52,17 +52,17 @@ import com.example.sensimate.ui.theme.*
 import java.util.*
 
 
-/*
+
 @Preview(showBackground = true)
 @Composable
 fun EditEventPreview() {
-    //EditEvent()
+    EditEvent(navController = rememberNavController())
     //EditPage()
     //EditSurvey()
     //EditSurveyPage()
 }
 
- */
+
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun EditEvent(
@@ -223,17 +223,15 @@ fun EditEvent(
                         }
                     }
                 }
-                Column(
-                    modifier = Modifier.padding(15.dp)
-                    .fillMaxSize(), verticalArrangement = Arrangement.Center
-                ) {
+                Spacer(modifier = Modifier.size(10.dp))
+                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally,) {
                     Button(
                         onClick = { Database.deleteEvent(chosenEvent.title) },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
-                        modifier = Modifier.size(240.dp, 50.dp),
+                        modifier = Modifier.size(240.dp, 50.dp)
 
-                        ) {
+                    ) {
                         Text(
                             text = "Delete Event",
                             fontWeight = FontWeight.Bold,
