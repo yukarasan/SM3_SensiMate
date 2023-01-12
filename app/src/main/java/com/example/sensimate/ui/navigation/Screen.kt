@@ -15,6 +15,7 @@ sealed class Screen(val route: String) {
     object Login : Screen(route = "login")
     object Guest : Screen(route = "guest")
     object ForgotPassword : Screen(route = "password")
+    object NoWifi : Screen(route = "noWifi")
 
     object EventScreen : Screen(route = "event")
     object ExtendedEventScreen :

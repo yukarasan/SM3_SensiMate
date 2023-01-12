@@ -38,6 +38,7 @@ import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
+@Preview(showBackground = true)
 @Composable
 fun InitialStartBackground() {
 

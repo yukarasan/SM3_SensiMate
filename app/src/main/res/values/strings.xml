@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sensimate</string>
+    <string name="app_name">SensiMate</string>
 
 
 
@@ -62,6 +62,10 @@
     <string name="somethingWrong">Something went wrong</string>
 
     <string name="sendRecovery">Send recovery to mail</string>
+
+
+
+    <string name="noNet">No internet connection :/</string>
 
 
 
