@@ -19,6 +19,7 @@ import com.example.sensimate.data.EventViewModel
 //import com.example.sensimate.data.questionandsurvey.MyAnswer2
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -225,9 +226,10 @@ fun AllPages(
                 }
 
                 if (pagerState.currentPage == pagerState.pageCount - 1) {
-                    FinishButton {
+                    FinishButton(onClick = {
+                        navController.navigate(Screen.EventScreen.route)
                         questionViewModel.updateAnswer(eventId)
-                    }
+                    })
                 } else {
                     Row(  modifier = Modifier
                         .fillMaxWidth(),
