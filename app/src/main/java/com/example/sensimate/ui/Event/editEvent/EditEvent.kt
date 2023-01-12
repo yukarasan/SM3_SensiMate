@@ -240,6 +240,29 @@ fun EditEvent(
                             fontFamily = manropeFamily
                         )
                     }
+                    val context = LocalContext.current
+
+                    if(getBooleanFromLocalStorage("isAdmin", context = context)){
+                        
+                        Spacer(modifier = Modifier.size(40.dp))
+                        Button(
+                            onClick = { /*//TODO: HusseAnsh*/ },
+                            shape = CircleShape,
+                            colors = ButtonDefaults.buttonColors(Color(0xFFC0CC5C)),
+                            modifier = Modifier.size(240.dp, 50.dp)
+
+                        ) {
+                            Text(
+                                text = "Extract excel",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 25.sp,
+                                color = Color.White,
+                                fontFamily = manropeFamily
+                            )
+                        }
+                    }
+
+
                 }
             }
         }

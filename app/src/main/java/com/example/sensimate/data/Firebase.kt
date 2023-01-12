@@ -331,7 +331,8 @@ object Database {
             "monthBorn" to monthBorn,
             "dayBorn" to dayBorn,
             "gender" to gender,
-            "isEmployee" to false
+            "isEmployee" to false,
+            "isAdmin" to false
         )
 
         db.collection("users").document(auth.currentUser?.email.toString())
@@ -381,6 +382,26 @@ object Database {
 
             if (myField == true) {
                 SaveBoolToLocalStorage("isEmployee", true, context)
+                isEmp.value = true
+            }
+        }.await()
+
+        return isEmp.value
+
+    }//TODO: Hussein
+
+    suspend fun getIsAdmin(context: Context): Boolean {
+
+        val isEmp = mutableStateOf(false)
+
+        val myDb = db.collection("users").document(auth.currentUser?.email.toString())
+
+        myDb.get().addOnSuccessListener { documentSnapshot ->
+            val myField = documentSnapshot.getBoolean("isAdmin") == true
+
+            if (myField == true) {
+                SaveBoolToLocalStorage("isEmployee", true, context)
+                SaveBoolToLocalStorage("isAdmin", true, context)
                 isEmp.value = true
             }
         }.await()
@@ -495,6 +516,12 @@ object Database {
 
         SaveBoolToLocalStorage(
             "isEmployee",
+            false,
+            context
+        )
+
+        SaveBoolToLocalStorage(
+            "isAdmin",
             false,
             context
         )
