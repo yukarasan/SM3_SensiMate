@@ -65,8 +65,10 @@ fun EditEventPreview() {
  */
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun EditEvent(navController: NavController,
-    eventViewModel: EventViewModel = viewModel()) {
+fun EditEvent(
+    navController: NavController,
+    eventViewModel: EventViewModel = viewModel()
+) {
 
     val eventState = eventViewModel.uiState
     val chosenEvent = eventViewModel.getEventById(eventState.value.chosenSurveyId)
@@ -87,194 +89,194 @@ fun EditEvent(navController: NavController,
                 )
             )
     )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        ) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
 
-            LazyColumn() {
-                item {
-                    LazyRow(Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween){
-                        item {
-                            Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-                                OrangeBackButton(onClick = { navController.navigate(Screen.EventScreenEmployee.route) })
-                            }
-                        }
-                        item {
-                            AddPhoto(
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .size(50.dp)
-                                    .clickable(
-                                        enabled = true,
-                                        onClickLabel = "Clickable image",
-                                        onClick = { navController.navigate(Screen.EditPage.route) }),
-
-                                id = R.drawable.yelloweditbutton
-                            )
+        LazyColumn() {
+            item {
+                LazyRow(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    item {
+                        Column(modifier = Modifier.padding(5.dp, 5.dp)) {
+                            OrangeBackButton(onClick = { navController.navigate(Screen.EventScreenEmployee.route) })
                         }
                     }
-                }
-                item {
-                    Card(
-                        modifier = Modifier
-                            .padding(15.dp)
-                            .fillMaxSize(),
-                        elevation = 5.dp,
-                        shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(2.dp, Color(154, 107, 254)),
-                        backgroundColor = DarkPurple
-                    ) {
-                        Column {
-                            Column(
-                                modifier = Modifier.padding(10.dp)
-                            ) {
-                                Title(title = chosenEvent.title)
-                                Description(description = chosenEvent.description)
-                            }
+                    item {
+                        AddPhoto(
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .size(50.dp)
+                                .clickable(
+                                    enabled = true,
+                                    onClickLabel = "Clickable image",
+                                    onClick = { navController.navigate(Screen.EditPage.route) }),
 
-                            Spacer(modifier = Modifier.height(10.dp))
+                            id = R.drawable.yelloweditbutton
+                        )
+                    }
+                }
+            }
+            item {
+                Card(
+                    modifier = Modifier
+                        .padding(15.dp)
+                        .fillMaxSize(),
+                    elevation = 5.dp,
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(2.dp, Color(154, 107, 254)),
+                    backgroundColor = DarkPurple
+                ) {
+                    Column {
+                        Column(
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            Title(title = chosenEvent.title)
+                            Description(description = chosenEvent.description)
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(start = 10.dp)
+                            ) {
+                                InputField(
+                                    onValueChange = {
+                                        if (it.length <= 4) {
+                                            eventViewModel.updateSurveyCodeString(
+                                                surveyCode = it
+                                            )
+                                        }
+                                    },
+                                    text = state.value.event.chosenSurveyCode.value
+                                )
+                            }
+                            Column(
+                                modifier = Modifier
+                                    .padding(end = 10.dp)
+                            ) {
+                                Button(
+                                    onClick = {
+                                        if (state.value.event.chosenSurveyCode.value.length < 4) {
+                                            showFieldAlert = true
+                                        } else if (state.value.event.chosenSurveyCode.value ==
+                                            state.value.event.surveyCode
+                                        ) {
+                                            navController.popBackStack()
+                                            navController.navigate(Screen.SurveyCreator.route)
+                                        } else {
+                                            showSecondFieldAlert = true
+                                        }
+                                    },
+                                    colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
+                                    modifier = Modifier
+                                        .size(width = 50.dp, height = 60.dp)
+                                        .padding(bottom = 10.dp)
+                                ) {
+                                    Text(
+                                        text = "Go",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 10.sp,
+                                        color = Color.White,
+                                        fontFamily = manropeFamily
+                                    )
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.size(15.dp))
+
+                        Column(
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            Allergens(
+                                title = "Allergens",
+                                allergen = chosenEvent.allergens
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.size(15.dp))
+
+                        Column(
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            Title(title = "Location")
 
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Column(
-                                    modifier = Modifier
-                                        .padding(start = 10.dp)
-                                ) {
-                                    InputField(
-                                        onValueChange = {
-                                            if (it.length <= 4) {
-                                                eventViewModel.updateSurveyCodeString(
-                                                    surveyCode = it
-                                                )
-                                            }
-                                        },
-                                        text = state.value.event.chosenSurveyCode.value
-                                    )
-                                }
-                                Column(
-                                    modifier = Modifier
-                                        .padding(end = 10.dp)
-                                ) {
-                                    Button(
-                                        onClick = {
-                                            if (state.value.event.chosenSurveyCode.value.length < 4) {
-                                                showFieldAlert = true
-                                            } else if (state.value.event.chosenSurveyCode.value ==
-                                                state.value.event.surveyCode
-                                            ) {
-                                                navController.popBackStack()
-                                                navController.navigate(Screen.SurveyCreator.route)
-                                            } else {
-                                                showSecondFieldAlert = true
-                                            }
-                                        },
-                                        colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
-                                        modifier = Modifier
-                                            .size(width = 50.dp, height = 60.dp)
-                                            .padding(bottom = 10.dp)
-                                    ) {
-                                        Text(
-                                            text = "Go",
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 10.sp,
-                                            color = Color.White,
-                                            fontFamily = manropeFamily
-                                        )
-                                    }
-                                }
-                            }
-                            Spacer(modifier = Modifier.size(15.dp))
-
-                            Column(
-                                modifier = Modifier.padding(10.dp)
-                            ) {
-                                Allergens(
-                                    title = "Allergens",
-                                    allergen = chosenEvent.allergens
+                                Time(
+                                    hour = chosenEvent.hour,
+                                    minute = chosenEvent.minute
                                 )
-                            }
-
-                            Spacer(modifier = Modifier.size(15.dp))
-
-                            Column(
-                                modifier = Modifier.padding(10.dp)
-                            ) {
-                                Title(title = "Location")
-
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Time(
-                                        hour = chosenEvent.hour,
-                                        minute = chosenEvent.minute
-                                    )
-                                    Address(address = chosenEvent.location)
-                                }
-                            }
-                        }
-                    }
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(10.dp), verticalArrangement = Arrangement.Center
-                        ) {
-                            Button(
-                                onClick = { Database.deleteEvent(chosenEvent.title) },
-                                shape = CircleShape,
-                                colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
-                                modifier = Modifier.size(240.dp, 50.dp),
-
-                                ) {
-                                Text(
-                                    text = "Delete Event",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 25.sp,
-                                    color = Color.White,
-                                    fontFamily = manropeFamily
-                                )
+                                Address(address = chosenEvent.location)
                             }
                         }
                     }
                 }
-            }
+                Column(
+                    modifier = Modifier.padding(15.dp)
+                    .fillMaxSize(), verticalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        onClick = { Database.deleteEvent(chosenEvent.title) },
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
+                        modifier = Modifier.size(240.dp, 50.dp),
 
-            if (showFieldAlert) {
-                AlertDialog(onDismissRequest = { showFieldAlert = false }, text = {
-                    Text(
-                        "The provided survey code must be exactly 4 characters long. Please " +
-                                "try again"
-                    )
-                }, confirmButton = {
-                    Button(onClick = {
-                        showFieldAlert = false
-                    }) {
-                        Text(text = "OK")
+                        ) {
+                        Text(
+                            text = "Delete Event",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 25.sp,
+                            color = Color.White,
+                            fontFamily = manropeFamily
+                        )
                     }
-                })
-            }
-
-            if (showSecondFieldAlert) {
-                AlertDialog(onDismissRequest = { showSecondFieldAlert = false }, text = {
-                    Text(
-                        "The survey code that you provided is not correct. Please try again."
-                    )
-                }, confirmButton = {
-                    Button(onClick = {
-                        showSecondFieldAlert = false
-                    }) {
-                        Text(text = "OK")
-                    }
-                })
+                }
             }
         }
     }
+
+    if (showFieldAlert) {
+        AlertDialog(onDismissRequest = { showFieldAlert = false }, text = {
+            Text(
+                "The provided survey code must be exactly 4 characters long. Please " +
+                        "try again"
+            )
+        }, confirmButton = {
+            Button(onClick = {
+                showFieldAlert = false
+            }) {
+                Text(text = "OK")
+            }
+        })
+    }
+
+    if (showSecondFieldAlert) {
+        AlertDialog(onDismissRequest = { showSecondFieldAlert = false }, text = {
+            Text(
+                "The survey code that you provided is not correct. Please try again."
+            )
+        }, confirmButton = {
+            Button(onClick = {
+                showSecondFieldAlert = false
+            }) {
+                Text(text = "OK")
+            }
+        })
+    }
+}
+
 
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier) {
@@ -425,7 +427,7 @@ private fun Placeholder() {
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun EditPage(
-    navController: NavHostController,
+    navController: NavController,
     //title: String,
     //time: String,
     //location: String,
@@ -568,102 +570,16 @@ fun EditPage(
 
                             Log.d("before title : ", state.value.event.title)
 
-                            /*
-                            eventViewModel.checkIfTextfieldIsEmpty(
-                                context,
-                                state.value.event.title,
-                                state.value.event.description,
-                                state.value.event.location,
-                                state.value.event.year,
-                                state.value.event.month,
-                                state.value.event.day,
-                                state.value.event.allergens,
-                                state.value.event.surveyCode
-                            )
 
-                             */
+                            eventViewModel.checkIfTextfieldIsEmpty(context)
 
                             Log.d("title", state.value.event.title)
 
-                            eventViewModel.updateEvent(
-                                title = state.value.event.title,
-                                description = state.value.event.description,
-                                location = state.value.event.location,
-                                year = state.value.event.year,
-                                month = state.value.event.month,
-                                day = state.value.event.day,
-                                allergens = state.value.event.allergens,
-                                surveyCode = state.value.event.surveyCode,
-                                minute = state.value.event.minute,
-                                eventId = state.value.event.eventId,
-                                hour = state.value.event.hour)
+                            //eventViewModel.updateEvent()
 
-                            /*
-                            if (titleText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Title was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (descriptionText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Description was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (locationText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Location was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (myYear.value == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Date was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (allergensText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "Allergens was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (surveyCodeText == "") {
-                                Toast.makeText(
-                                    context,
-                                    "SurveyCode was not entered",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-
-                                /*
-
-                             */
-                                val event = hashMapOf(
-                                    "title" to titleText,
-                                    "description" to descriptionText,
-                                    "allergens" to allergensText,
-                                    "location" to locationText,
-                                    "surveyCode" to surveyCodeText,
-                                    "day" to day,
-                                    "month" to month,
-                                    "year" to year,
-                                    // "hour" to hour,
-                                    // "minute" to minute,
-                                    "eventId" to eventId.value
-                                )
-
-                                 */
-                            //val documentID = db.collection("event").document().id
-
-                            // Log.d("DocumentrefB4 : ", documentID)
 
                             Log.d("docref : ", chosenEvent.eventId)
                             Log.d("docref2 : ", state.value.event.eventId)
-
-
-                            /*navController.navigate(Screen.QuestionPageScreen.route)*/
 
 
                         },
@@ -685,18 +601,7 @@ fun EditPage(
                     Spacer(modifier = Modifier.size(55.dp))
                     Button(
                         onClick = {
-                            navController.navigate(Screen.EventScreenEmployee.route){
-                                navController.popBackStack()
-                                navController.popBackStack()
-                                navController.popBackStack()
-                                navController.popBackStack()
-
-                                /*popUpTo(Screen.EditEvent.route){
-                                   inclusive=true
-                               }
-
-                                 */
-
+                            navController.navigate(Screen.EventScreenEmployee.route) {
                             }
                         },
                         shape = CircleShape,
