@@ -34,13 +34,13 @@ class QuestionViewModel : ViewModel() {
         _uiState.value.currentAnswers = answers
     }
 
-    fun updateSurvey(
+    fun updateAnswer(
         eventId: String
     ) {
 
         viewModelScope.launch {
 
-            Database.updateSurvey(eventId = eventId, options = uiState.value.currentQuestion.options, newQuestion = uiState.value.currentQuestion)
+            Database.updateSurvey(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion)
         }
     }
 
