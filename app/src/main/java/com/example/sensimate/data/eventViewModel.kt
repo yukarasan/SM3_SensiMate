@@ -55,7 +55,7 @@ class EventViewModel : ViewModel() {
 
     fun updateSurveyCodeString(surveyCode: String) {
         // updateUiState(event = _uiState.value.event.copy(surveyCode = SurveyCode))
-        _uiState.value.event.chosenSurveyCode = surveyCode
+        _uiState.value.event.chosenSurveyCode.value = surveyCode
     }
 
     fun updateDateString(day: String, month: String, year: String){
