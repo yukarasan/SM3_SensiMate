@@ -15,7 +15,7 @@ data class Event(
     var year: String = "",
     var hour: String = "",
     var minute: String = "",
-    var chosenSurveyCode: String = "",
+    var chosenSurveyCode: MutableState<String> = mutableStateOf(""),
 )
 
 data class EventUiState(
