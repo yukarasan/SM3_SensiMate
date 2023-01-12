@@ -21,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -53,15 +55,19 @@ data class EventScreenState(
  */
 class EventDataViewModel : ViewModel() {
     val state = mutableStateOf(EventScreenState())
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
     init {
         getListOfEvents()
     }
 
-    private fun getListOfEvents() {
+    fun getListOfEvents() {
         viewModelScope.launch {
+            _isLoading.value = true
             val eventList = fetchListOfEvents()
             state.value = state.value.copy(events = eventList)
+            _isLoading.value = false
         }
     }
 }

@@ -231,53 +231,6 @@ fun myButton(
     }
 }
 
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun buttonWithImage(
-    bgcolor: Color,
-    text: String,
-    painter: Painter,
-    textColor: Color,
-    onClick: () -> Unit
-) {
-
-    Surface(
-        modifier = Modifier.size(320.dp, 50.dp),
-        color = bgcolor,
-        shape = CircleShape,
-        onClick = onClick,
-        indication = rememberRipple()
-    ) {
-        Column(
-            verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painter,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(50.dp)
-                        .padding(start = 20.dp)
-                )
-
-                Text(
-                    text,
-                    color = textColor,
-                    fontFamily = manropeFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 19.sp,
-                    modifier = Modifier
-                        .padding(start = 18.dp)
-                )
-            }
-        }
-    }
-}
-
 @Preview
 @Composable
 fun ChooseSignUpPreview() {
