@@ -226,7 +226,8 @@ fun EditEvent(
                 Spacer(modifier = Modifier.size(10.dp))
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally,) {
                     Button(
-                        onClick = { Database.deleteEvent(chosenEvent.title) },
+                        onClick = { Database.deleteEvent(chosenEvent.title)
+                                  navController.navigate(Screen.EventScreenEmployee.route)},
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                         modifier = Modifier.size(240.dp, 50.dp)
@@ -261,8 +262,6 @@ fun EditEvent(
                             )
                         }
                     }
-
-
                 }
             }
         }
