@@ -139,7 +139,7 @@ fun EventScreenEmployee(
 
 @Composable
 private fun AddEventImage(navController: NavController) {
-    val image = painterResource(id = R.drawable.add_event)
+    val image = painterResource(id = R.drawable.add_eventv2)
     Image(
         painter = image,
         contentDescription = null,

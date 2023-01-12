@@ -1,5 +1,6 @@
 package com.example.sensimate.data
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
@@ -80,6 +81,7 @@ class EventViewModel : ViewModel() {
         updateUiState(event = _uiState.value.event.copy(minute = minute, hour = hour))
     }
 
+    @SuppressLint("SuspiciousIndentation")
     fun checkIfTextfieldIsEmpty(
         context: android.content.Context, navController: NavController
     ) {

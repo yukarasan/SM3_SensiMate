@@ -226,7 +226,8 @@ fun EditEvent(
                 Spacer(modifier = Modifier.size(10.dp))
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally,) {
                     Button(
-                        onClick = { Database.deleteEvent(chosenEvent.title) },
+                        onClick = { Database.deleteEvent(chosenEvent.title)
+                                  navController.navigate(Screen.EventScreenEmployee.route)},
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                         modifier = Modifier.size(240.dp, 50.dp)
@@ -239,6 +240,27 @@ fun EditEvent(
                             color = Color.White,
                             fontFamily = manropeFamily
                         )
+                    }
+                    val context = LocalContext.current
+
+                    if(getBooleanFromLocalStorage("isAdmin", context = context)){
+                        
+                        Spacer(modifier = Modifier.size(40.dp))
+                        Button(
+                            onClick = { /*//TODO: HusseAnsh*/ },
+                            shape = CircleShape,
+                            colors = ButtonDefaults.buttonColors(Color(0xFFC0CC5C)),
+                            modifier = Modifier.size(240.dp, 50.dp)
+
+                        ) {
+                            Text(
+                                text = "Extract excel",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 25.sp,
+                                color = Color.White,
+                                fontFamily = manropeFamily
+                            )
+                        }
                     }
                 }
             }

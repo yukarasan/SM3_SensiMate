@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -88,80 +89,86 @@ fun EditPasswordScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    OrangeBackButton(onClick = {
-                        navController.popBackStack()
-                    })
-                }
-                CheckBox(onClick = {
-                    if (
-                        profileState.currentPassword.isNotEmpty()
-                        &&
-                        profileState.newPassword.isNotEmpty()
-                    ) {
-                        if (profileState.newPassword.length < 8) {
-                            showWrongLengthOfPassword = true
-                        } else {
-                            Database.updatePassword(
-                                currentPassword = profileState.currentPassword,
-                                newPassword = profileState.newPassword,
-                                context = context
-                            )
-
+                    OrangeBackButton(
+                        onClick = {
                             navController.popBackStack()
                         }
-                    } else {
-                        showEmptyFieldAlert = true      // At least one of the text fields is empty
+                    )
+                }
+                CheckBox(
+                    onClick = {
+                        if (
+                            profileState.currentPassword.isNotEmpty()
+                            && profileState.newPassword.isNotEmpty()
+                        ) {
+                            if (profileState.newPassword.length < 8) {
+                                showWrongLengthOfPassword = true
+                            } else {
+                                Database.updatePassword(
+                                    currentPassword = profileState.currentPassword,
+                                    newPassword = profileState.newPassword,
+                                    context = context
+                                )
+                                navController.popBackStack()
+                            }
+                        } else {
+                            showEmptyFieldAlert = true // At least one of the text fields is empty
+                        }
                     }
-                })
+                )
             }
         }
 
         if (showEmptyFieldAlert) {
-            AlertDialog(onDismissRequest = { showEmptyFieldAlert = false }, text = {
-                Text(
-                    "Please provide both your current and new password in " +
-                            "their respective fields."
-                )
-            }, confirmButton = {
-                Button(onClick = {
-                    showEmptyFieldAlert = false
-                }) {
-                    Text(text = "OK")
+            AlertDialog(
+                onDismissRequest = { showEmptyFieldAlert = false },
+                text = {
+                    Text(stringResource(id = R.string.provideBothPasswordsAlertMessage))
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showEmptyFieldAlert = false
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.ok))
+                    }
                 }
-            })
+            )
         }
 
         if (showWrongLengthOfPassword) {
-            AlertDialog(onDismissRequest = { showWrongLengthOfPassword = false }, text = {
-                Text(
-                    "The new password is not long enough. Please make sure that it is at " +
-                            "least 8 characters long."
-                )
-            }, confirmButton = {
-                Button(onClick = {
-                    showWrongLengthOfPassword = false
-                }) {
-                    Text(text = "OK")
+            AlertDialog(
+                onDismissRequest = { showWrongLengthOfPassword = false },
+                text = {
+                    Text(stringResource(id = R.string.notLongEnoughPasswordAlertMessage))
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                        showWrongLengthOfPassword = false
+                    }
+                    ) {
+                        Text(text = stringResource(id = R.string.ok))
+                    }
                 }
-            })
+            )
         }
 
         CustomPasswordField(
             text = profileState.currentPassword,
-            description = "Current password",
-            placeholder = "Enter your current password here",
+            description = stringResource(id = R.string.currentPassword),
+            placeholder = stringResource(id = R.string.enterCurrentPassword),
             onValueChange = { profileViewModel.updateCurrentPasswordString(input = it) },
         )
         CustomPasswordField(
             text = profileState.newPassword,
-            description = "New password",
-            placeholder = "Enter your new password here",
+            description = stringResource(id = R.string.newPassword),
+            placeholder = stringResource(id = R.string.enterNewPassword),
             onValueChange = { profileViewModel.updateNewPasswordString(input = it) },
         )
         Text(
-            text = "To keep your account secure, you can change your password here. Make sure " +
-                    "to provide your current password and make sure that your password is at " +
-                    "least 8 characters long",
+            text = stringResource(id = R.string.passwordDescription),
             color = Color.White,
             modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 30.dp)
         )
@@ -212,7 +219,6 @@ private fun CustomPasswordField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (!isPasswordVisible.value) {
-                    Log.d("Password is hidden", isPasswordVisible.toString())
                     BasicTextField(
                         value = text,
                         onValueChange = onValueChange,
@@ -252,7 +258,6 @@ private fun CustomPasswordField(
                         singleLine = true
                     )
                 } else {
-                    Log.d("Password is not hidden", isPasswordVisible.toString())
                     BasicTextField(
                         value = text,
                         onValueChange = onValueChange,

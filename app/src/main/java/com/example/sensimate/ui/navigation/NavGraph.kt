@@ -31,7 +31,6 @@ import com.example.sensimate.ui.InitialStartPage.LogInMail
 import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
 import com.example.sensimate.ui.home.EventScreen
 import com.example.sensimate.ui.home.EventScreenEmployee
-import com.example.sensimate.ui.profile.EditProfileScreen
 import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.profile.editProfile.*
 import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
