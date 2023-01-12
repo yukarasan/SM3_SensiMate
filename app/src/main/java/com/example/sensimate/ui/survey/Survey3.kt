@@ -99,7 +99,6 @@ private fun ProgressPreview() {
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun Information3(questionViewModel: QuestionViewModel) {
-    val checkedState = remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(0) }
 
     val options = questionViewModel.uiState.value.currentQuestion.options
@@ -110,16 +109,6 @@ fun Information3(questionViewModel: QuestionViewModel) {
 
         Log.d("Test2", options.toString())
     }
-
-
-
-/*
-    val myAnswers = selectedAnswers.value.map {
-        MyAnswer(it)
-    }
-    questionViewModel.setAnswer(myAnswers)
-
- */
 
     Card(
         modifier = Modifier
@@ -213,7 +202,6 @@ private fun SurveyImage3(modifier: Modifier = Modifier) {
 }
 
 
-
 @Composable
 private fun Information1(title: String, modifier: Modifier = Modifier) {
     Text(
@@ -226,3 +214,5 @@ private fun Information1(title: String, modifier: Modifier = Modifier) {
             .padding(top = 5.dp, start = 20.dp, end = 20.dp)
     )
 }
+
+
