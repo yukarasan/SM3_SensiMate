@@ -39,6 +39,7 @@ import androidx.compose.foundation.Image
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.util.*
 
@@ -72,7 +73,15 @@ fun EventScreen(
     ) {
         SwipeRefresh(
             state = swipeRefreshState,
-            onRefresh = { dataViewModel.getListOfEvents() }
+            onRefresh = { dataViewModel.getListOfEvents() },
+            indicator = { state, refreshTrigger ->
+                SwipeRefreshIndicator(
+                    state = state,
+                    refreshTriggerDistance = refreshTrigger,
+                    backgroundColor = BottomGradient,
+                    contentColor = Color.White
+                )
+            }
         ) {
             Column() {
                 LazyColumn(
@@ -235,9 +244,6 @@ private fun EventQuickEntry(navController: NavController) {
         }
     }
 }
-
-
-
 
 
 @Composable
