@@ -7,7 +7,6 @@ import EditSurvey
 import EditSurveyPage
 import TextAnswerViewModel
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
+import com.example.sensimate.broadcastreceivers.InternetBroadcastReceiver
 import com.example.sensimate.data.*
 import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.data.SaveBoolToLocalStorage
@@ -38,8 +37,8 @@ import com.example.sensimate.ui.profile.editProfile.*
 import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
+import com.example.sensimate.ui.startupscreens.noNet.NoWifiScreen
 import com.example.sensimate.ui.survey.*
-import com.google.firebase.ktx.Firebase
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -53,21 +52,27 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
     val textAnswerViewModel = TextAnswerViewModel()
 
     val context = LocalContext.current
+    InternetBroadcastReceiver(context)
 
-    LaunchedEffect(key1 = true) {
-        Database.getIsEmployee(context)
+    if (getBooleanFromLocalStorage("hasNet", context)) {
+        LaunchedEffect(key1 = true) {
+            Database.getIsEmployee(context)
+        }
     }
 
     val loadedOnOpen = remember {
         mutableStateOf(false)
     }
 
+
+
     val screen = if (!loadedOnOpen.value) {
         loadedOnOpen.value = true
 
-        Log.d("LOADER IGEN", "LOADER IGEN")
+        if (!getBooleanFromLocalStorage("hasNet", context)) {
+            Screen.NoWifi
 
-        if (getBooleanFromLocalStorage(
+        } else if (getBooleanFromLocalStorage(
                 "acceptedCookie",
                 context
             )
@@ -96,6 +101,7 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         Screen.CookieScreen
     }
 
+
     NavHost(
         navController = navController,
         startDestination = screen.route
@@ -107,6 +113,10 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
         composable(route = Screen.Login.route) {
             LogInMail(navController = navController, startProfileViewModel = startProfileViewModel)
         }
+        composable(route = Screen.NoWifi.route) {
+            NoWifiScreen(navController = navController)
+        }
+
         composable(route = Screen.SignUpWithMail.route) {
             SignUpUsingMail(
                 navController = navController,
@@ -185,10 +195,16 @@ fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) 
             QuestionPageScreen(navController = navController)
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
-            CreateMultpleChoiceQuestionScreen(navController = navController, answerViewModel = answerViewModel)
+            CreateMultpleChoiceQuestionScreen(
+                navController = navController,
+                answerViewModel = answerViewModel
+            )
         }
         composable(route = Screen.CreateTextAnswerQuestionScreen.route) {
-            CreateTextAnswerQuestionScreen(navController = navController, textAnswerViewModel = textAnswerViewModel)
+            CreateTextAnswerQuestionScreen(
+                navController = navController,
+                textAnswerViewModel = textAnswerViewModel
+            )
         }
         /*
         composable(
