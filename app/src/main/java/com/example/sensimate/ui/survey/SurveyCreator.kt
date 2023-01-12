@@ -75,7 +75,7 @@ fun SurveyCreator(
 
     if (loaded2.value) {
         Log.d("sjdj", "dk")
-        AllPages(navController, questionViewModel.uiState.value.questions, questionViewModel)
+        AllPages(navController, questionViewModel.uiState.value.questions, questionViewModel, surveyId)
     }
 
     LaunchedEffect(key1 = true) {
@@ -130,6 +130,7 @@ fun AllPages(
     navController: NavController,
     questions: List<MyQuestion>,
     questionViewModel: QuestionViewModel,
+    eventId: String
 
 ) {
     val answers = mutableListOf<String>() //i vm
@@ -224,8 +225,9 @@ fun AllPages(
                 }
 
                 if (pagerState.currentPage == pagerState.pageCount - 1) {
-                    FinishButton(onClick = {
-                    })
+                    FinishButton {
+                        questionViewModel.updateAnswer(eventId)
+                    }
                 } else {
                     Row(  modifier = Modifier
                         .fillMaxWidth(),

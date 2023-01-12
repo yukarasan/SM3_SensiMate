@@ -773,7 +773,7 @@ object Database {
         val profile = fetchProfile()!!
 
 
-        hashMapOf(
+        val survey = hashMapOf(
             "postalCode" to profile.postalCode,
             "yearBorn" to profile.yearBorn,
             "monthBorn" to profile.monthBorn,
@@ -786,10 +786,7 @@ object Database {
 
         val questionRef = db.collection("events").document(eventId)
             .collection("Answers").add(test).addOnSuccessListener { docRef ->
-                docRef.collection("users").add(profile).addOnSuccessListener { docRef ->
-
-
-                    docRef.collection("surveyAnswer").add(options)
+                docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
 
                 }
 

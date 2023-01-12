@@ -16,16 +16,21 @@ class EventViewModel : ViewModel() {
         _uiState.value.events.add(event)
     }
 
-    fun getEventById(id: String): Event {
+    fun emptyList() {
+        _uiState.value.events.removeAll(uiState.value.events)
+    }
 
+    fun getEventById(id: String): Event {
         for (event in _uiState.value.events) {
             if (event.eventId == id) {
                 updateUiState(event = event)
+                Log.d("eventbyId", uiState.value.event.toString())
                 return event
             }
         }
         return Event("NO SUCH EVENT")
     }
+
 
     fun updateUiState(event: Event) {
         _uiState.value = _uiState.value.copy(event = event)
@@ -38,6 +43,8 @@ class EventViewModel : ViewModel() {
 
 
     fun updateTitleString(title: String) {
+        //_uiState.value.event = _uiState.value.event.copy(title = title)
+
         updateUiState(event = _uiState.value.event.copy(title = title))
     }
 
@@ -58,46 +65,54 @@ class EventViewModel : ViewModel() {
         _uiState.value.event.chosenSurveyCode.value = surveyCode
     }
 
-    fun updateDateString(day: String, month: String, year: String){
+    fun updateDateString(day: String, month: String, year: String) {
         updateUiState(event = _uiState.value.event.copy(day = day, month = month, year = year))
 
     }
 
-    fun updateTime(minute : String, hour : String){
+    fun updateTime(minute: String, hour: String) {
         updateUiState(event = _uiState.value.event.copy(minute = minute, hour = hour))
     }
 
     fun checkIfTextfieldIsEmpty(
         context: android.content.Context,
-        title: String,
-        description: String,
-        location: String,
-        year: String,
-        month: String,
-        day: String,
-        allergens: String,
-        surveyCode: String
     ) {
-
-        if ((title == "").also { uiState.value.event.title = it.toString() }) {
+        if (uiState.value.event.title == "") {
             Toast.makeText(context, "Title was not entered", Toast.LENGTH_SHORT).show()
-        } else if ((description == "").also { uiState.value.event.description = it.toString() }) {
+        } else if (uiState.value.event.description == "") {
             Toast.makeText(context, "Description was not entered", Toast.LENGTH_SHORT).show()
-
-        } else if ((location == "").also { uiState.value.event.location = it.toString() }) {
+        } else if (uiState.value.event.location == "") {
             Toast.makeText(context, "Location was not entered", Toast.LENGTH_SHORT).show()
-
-        } else if ((year == "").also { uiState.value.event.year = it.toString() } ||
-            (month == "").also { uiState.value.event.month = it.toString() } ||
-            (day == "").also { uiState.value.event.day = it.toString() }) {
+        } else if (uiState.value.event.year == "" || uiState.value.event.month == ""
+            || uiState.value.event.day == ""
+        ) {
             Toast.makeText(context, "Date was not entered", Toast.LENGTH_SHORT).show()
-
-        } else if ((allergens == "").also { uiState.value.event.allergens = it.toString() }) {
+        } else if (uiState.value.event.minute == "" || uiState.value.event.hour == "") {
+            Toast.makeText(context, "Time was not entered", Toast.LENGTH_SHORT).show()
+        } else if (uiState.value.event.allergens == "") {
             Toast.makeText(context, "Allergens was not entered", Toast.LENGTH_SHORT).show()
-
-        } else if ((surveyCode == "").also { uiState.value.event.surveyCode = it.toString() }) {
+        } else if (uiState.value.event.surveyCode == "") {
             Toast.makeText(context, "SurveyCode was not entered", Toast.LENGTH_SHORT).show()
         }
+        else
+            updateEvent()
     }
 
+    fun updateEvent() {
+        val event = hashMapOf(
+            "title" to uiState.value.event.title,
+            "description" to uiState.value.event.description,
+            "allergens" to uiState.value.event.allergens,
+            "location" to uiState.value.event.location,
+            "surveyCode" to uiState.value.event.surveyCode,
+            "day" to uiState.value.event.day,
+            "month" to uiState.value.event.month,
+            "year" to uiState.value.event.year,
+            "hour" to uiState.value.event.hour,
+            "minute" to uiState.value.event.minute,
+            "eventId" to uiState.value.event.eventId
+        )
+        Log.d("event", event.toString())
+        Database.UpdateEvent(event, uiState.value.event.eventId)
+    }
 }

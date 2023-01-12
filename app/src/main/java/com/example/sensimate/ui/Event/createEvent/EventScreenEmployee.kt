@@ -108,6 +108,9 @@ fun EventScreenEmployee(
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 20.dp),
             ) {
+
+                eventViewModel.emptyList()
+
                 state.events?.let {
                     items(it.toList()) { event ->
 
