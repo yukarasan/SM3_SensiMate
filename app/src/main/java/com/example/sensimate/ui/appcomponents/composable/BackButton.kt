@@ -24,7 +24,7 @@ fun OrangeBackButton(onClick: () -> Unit) {
         onClick = onClick,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
-        modifier = Modifier.size(60.dp)
+        modifier = Modifier.size(55.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
