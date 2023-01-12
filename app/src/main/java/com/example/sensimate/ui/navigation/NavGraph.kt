@@ -43,7 +43,7 @@ import com.google.firebase.ktx.Firebase
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SetupNavGraph(navController: NavHostController, eventUIState: EventUiState) {
+fun SetupNavGraph(navController: NavHostController) {
 
     val questionViewModel = QuestionViewModel()
     val eventViewModel = EventViewModel()
