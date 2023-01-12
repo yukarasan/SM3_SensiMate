@@ -154,7 +154,7 @@ fun EditEvent(navController: NavController,
                                                 )
                                             }
                                         },
-                                        text = state.value.event.chosenSurveyCode
+                                        text = state.value.event.chosenSurveyCode.value
                                     )
                                 }
                                 Column(
@@ -163,9 +163,9 @@ fun EditEvent(navController: NavController,
                                 ) {
                                     Button(
                                         onClick = {
-                                            if (state.value.event.chosenSurveyCode.length < 4) {
+                                            if (state.value.event.chosenSurveyCode.value.length < 4) {
                                                 showFieldAlert = true
-                                            } else if (state.value.event.chosenSurveyCode ==
+                                            } else if (state.value.event.chosenSurveyCode.value ==
                                                 state.value.event.surveyCode
                                             ) {
                                                 navController.popBackStack()
