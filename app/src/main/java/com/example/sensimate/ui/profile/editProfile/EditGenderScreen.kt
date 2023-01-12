@@ -1,6 +1,5 @@
 package com.example.sensimate.ui.profile.editProfile
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,17 +15,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.sensimate.data.Database
+import com.example.sensimate.R
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
-import kotlinx.coroutines.launch
+
 
 @Composable
 fun EditGenderScreen(
@@ -53,26 +53,29 @@ fun EditGenderScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    OrangeBackButton(onClick = {
-                        navController.popBackStack()
-                    })
+                    OrangeBackButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
-                CheckBox(onClick = {
-                    navController.popBackStack()
-                    if (profileState.gender == "") {
-                        // Dont do anything
-                    } else {
-                        profileViewModel.updateGender(gender = profileState.gender)
+                CheckBox(
+                    onClick = {
+                        navController.popBackStack()
+                        if (profileState.gender == "") {
+                            // Don't do anything
+                        } else {
+                            profileViewModel.updateGender(gender = profileState.gender)
+                        }
                     }
-                })
+                )
             }
         }
 
         DropDownMenu(selectedGender = profileState.gender, profileViewModel = profileViewModel)
 
         Text(
-            text = "To give more insightful information to the company, we would like to now about" +
-                    " your gender. If you would like, you can change it here.",
+            text = stringResource(id = R.string.genderDescription),
             color = Color.White,
             modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 30.dp)
         )
@@ -82,7 +85,11 @@ fun EditGenderScreen(
 @Composable
 private fun DropDownMenu(selectedGender: String, profileViewModel: ProfileViewModel) {
     var expanded by remember { mutableStateOf(false) }
-    val suggestions = listOf("Male", "Female", "Other")
+    val suggestions = listOf(
+        stringResource(id = R.string.male),
+        stringResource(id = R.string.female),
+        stringResource(id = R.string.other)
+    )
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
     val icon = if (expanded)
@@ -111,11 +118,13 @@ private fun DropDownMenu(selectedGender: String, profileViewModel: ProfileViewMo
                     //This value is used to assign to the DropDown the same width
                     textFieldSize = coordinates.size.toSize()
                 },
-            label = { Text("Gender") },
+            label = { Text(stringResource(id = R.string.gender)) },
             trailingIcon = {
                 Icon(
-                    icon, "",
-                    Modifier.clickable { expanded = !expanded }, tint = Color.White
+                    imageVector = icon,
+                    modifier = Modifier.clickable { expanded = !expanded },
+                    contentDescription = "",
+                    tint = Color.White
                 )
             }
         )
@@ -126,10 +135,12 @@ private fun DropDownMenu(selectedGender: String, profileViewModel: ProfileViewMo
                 .width(with(LocalDensity.current) { textFieldSize.width.toDp() })
         ) {
             suggestions.forEach { label ->
-                DropdownMenuItem(onClick = {
-                    profileViewModel.updateSelectedGenderString(label)
-                    expanded = false
-                }) {
+                DropdownMenuItem(
+                    onClick = {
+                        profileViewModel.updateSelectedGenderString(label)
+                        expanded = false
+                    }
+                ) {
                     Text(text = label)
                 }
             }

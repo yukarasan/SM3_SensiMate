@@ -2,13 +2,10 @@ package com.example.sensimate.ui.InitialStartPage
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.util.Log
 import android.widget.DatePicker
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
@@ -39,7 +35,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -49,7 +44,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.toSize
 import com.example.sensimate.R
-import com.example.sensimate.data.Database
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
@@ -60,7 +54,6 @@ fun SignUpUsingMail(
     navController: NavController,
     startProfileViewModel: StartProfileViewModel
 ) {
-
     val state = startProfileViewModel._uiState.collectAsState()
 
     InitialStartBackground()

@@ -1,8 +1,6 @@
 package com.example.sensimate.ui.InitialStartPage
 
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,12 +29,8 @@ import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
-import com.example.sensimate.ui.startupscreens.signUp.buttonWithImage
 import com.example.sensimate.ui.startupscreens.signUp.myButton
-import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
-import com.example.sensimate.ui.theme.employeelogin
-import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable

@@ -1,70 +1,41 @@
 <resources>
-    <string name="app_name">Sensimate</string>
+    <string name="app_name">SensiMate</string>
 
-
-
-    //HUSSEIN USAGE
+    // Hussein:
     <string name="myName">SensiMate</string>
     <string name="enterMail">Enter E-mail</string>
-
     <string name="enterPassword">Enter password</string>
     <string name="confirmPassword">Confirm password</string>
     <string name="forgotPassword">Forgot password?</string>
-
-
     <string name="postalcode">Postal code</string>
-
-
     <string name="passworderror">Passwords do not match</string>
-
     <string name="signUp">Sign up</string>
     <string name="signIn">Sign in</string>
-
     <string name="guest">Guest</string>
-
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
-
     <string name="gender">Gender</string>
-
     <string name="continueGuest">Continue as guest</string>
-
     <string name="rememberInfoError">Remember to fill out all info</string>
-
     <string name="passwordMailError">Remember to write in a password and email</string>
-
     <string name="rememberPostal">Please choose a valid postal code</string>
-
     <string name="rememberGender">Remember to choose your gender</string>
-
-
     <string name="rememberBirth">Remember to choose your date of birth</string>
-
     <string name="successAcount">Account successfully created</string>
-
     <string name="authFailed">Authentication failed.</string>
-
     <string name="successLogged">Account successfully logged in</string>
-
-
     <string name="loginFail">Log in failed.</string>
-
-
     <string name="guestSuccessful">Successfully logged in as guest</string>
-
     <string name="recoveryMailSent">Successfully sent a recovery e-mail</string>
-
     <string name="recoveryMailFail">Failed to send e-mail. Is your e-mail correct?</string>
-
     <string name="deletedSuccess">Account successfully deleted</string>
-
     <string name="somethingWrong">Something went wrong</string>
-
     <string name="sendRecovery">Send recovery to mail</string>
 
 
 
+    <string name="noNet">No internet connection :/</string>
 
 
 
@@ -75,6 +46,64 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Yusuf
+    <string name="genderDescription">To give more insightful information to the company, we would
+        like to now about your gender. If you would like, you can change it here.</string>
+    <string name="age">Age</string>
+    <string name="yearBorn">Year Born</string>
+    <string name="dayBorn">Day Born</string>
+    <string name="monthBorn">Month Born</string>
+    <string name="postalCode">Postal Code</string>
+    <string name="logOut">Log out</string>
+    <string name="edit">Edit</string>
+    <string name="email">E-mail</string>
+    <string name="editEmail">Edit your e-mail here</string>
+    <string name="password">Password</string>
+    <string name="editPassword">Edit your password here</string>
+    <string name="editGender">Edit your gender here</string>
+    <string name="editPostalCode">Edit your postal code here</string>
+    <string name="doneButton">Done</string>
+    <string name="deleteProfile">Delete Profile</string>
+    <string name="deleteProfileConfirmation">Are you sure you want to delete your profile?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="enterPostalCode">Enter your postal code here</string>
+    <string name="successfulUpdateOfPostalCode">Successfully updated your postal code</string>
+    <string name="postalCodeDescription">To give more insightful information to the company,
+        we would like to now about your postal code. If you would like, you can change
+        it here.</string>
+    <string name="postalCodeAlertMessage">The postal code must consist of 4 numbers.</string>
+    <string name="provideBothPasswordsAlertMessage">Please provide both your current and new
+        password in their respective fields.</string>
+    <string name="ok">OK</string>
+    <string name="notLongEnoughPasswordAlertMessage">The new password is not long enough.
+        Please make sure that it is at least 8 characters long.</string>
+    <string name="currentPassword">Current password</string>
+    <string name="enterCurrentPassword">Enter your current password here</string>
+    <string name="newPassword">New password</string>
+    <string name="enterNewPassword">Enter your new password here</string>
+    <string name="passwordDescription">To keep your account secure, you can change your password
+        here. Make sure to provide your current password and make sure that your password is at
+        least 8 characters long</string>
 
 
 

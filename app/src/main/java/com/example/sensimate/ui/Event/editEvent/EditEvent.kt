@@ -240,6 +240,29 @@ fun EditEvent(
                             fontFamily = manropeFamily
                         )
                     }
+                    val context = LocalContext.current
+
+                    if(getBooleanFromLocalStorage("isAdmin", context = context)){
+                        
+                        Spacer(modifier = Modifier.size(40.dp))
+                        Button(
+                            onClick = { /*//TODO: HusseAnsh*/ },
+                            shape = CircleShape,
+                            colors = ButtonDefaults.buttonColors(Color(0xFFC0CC5C)),
+                            modifier = Modifier.size(240.dp, 50.dp)
+
+                        ) {
+                            Text(
+                                text = "Extract excel",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 25.sp,
+                                color = Color.White,
+                                fontFamily = manropeFamily
+                            )
+                        }
+                    }
+
+
                 }
             }
         }
@@ -528,7 +551,7 @@ fun EditPage(
 
                 SurveyCodeText(state.value.event.surveyCode) {
                     if (it.length <= maxChar) {
-                        eventViewModel.updateSurveyCodeString(surveyCode = it)
+                        eventViewModel.updateSurveyCode(surveyCode = it)
                     }
                 }
                 EventDateChosen(
@@ -565,21 +588,12 @@ fun EditPage(
 
                     Button(
                         onClick = {
-
-                            Log.d("before title : ", state.value.event.title)
-
-
-                            eventViewModel.checkIfTextfieldIsEmpty(context)
+                            eventViewModel.checkIfTextfieldIsEmpty(context, navController)
 
                             Log.d("title", state.value.event.title)
 
-                            //eventViewModel.updateEvent()
-
-
                             Log.d("docref : ", chosenEvent.eventId)
                             Log.d("docref2 : ", state.value.event.eventId)
-
-
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -740,8 +754,10 @@ fun EventDateChosen(
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DescriptionText(descriptionText: String, onValueChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = descriptionText,
@@ -753,15 +769,20 @@ fun DescriptionText(descriptionText: String, onValueChange: (String) -> Unit) {
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
         )
 
     }
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TitleText(titleText: String, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = titleText,
@@ -774,14 +795,19 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) }
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()})
         )
     }
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LocationText(locationText: String, onValueChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = locationText,
@@ -804,18 +830,24 @@ fun LocationText(locationText: String, onValueChange: (String) -> Unit) {
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()}),
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
                 .padding(1.dp, 2.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
+
         )
     }
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = allergensText,
@@ -828,6 +860,8 @@ fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()}),
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
@@ -838,8 +872,10 @@ fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     ContentColor1Component(contentColor = Color.White) {
         TextField(
             value = surveyCodeText,
@@ -850,66 +886,19 @@ fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
                     color = Color(0xFFB874A6)
                 )
             },
+
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()}),
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+
             modifier = Modifier
                 .padding(1.dp, 254.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
         )
     }
 }
-
-
-@Composable
-fun TextFiledTitleText() {
-    var text by remember { mutableStateOf("Coca Cola") }
-    ContentColor1Component(contentColor = Color.White) {
-        TextField(
-            value = text,
-            onValueChange = { newText ->
-                text = newText
-            },
-            label = {
-                Text(
-                    text = "Title",
-                    color = Color(0xFFB874A6)
-                )
-            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
-            modifier = Modifier
-                .padding(55.dp, 55.dp, 30.dp, 30.dp)
-        )
-    }
-}
-
-
-@Composable
-fun TextFiledDescriptionText() {
-    var text by remember { mutableStateOf("Come and taste the freshing sensation of Coca Cola. Get a whole six pack for free.") }
-    ContentColor1Component(contentColor = Color.White) {
-        TextField(
-            value = text,
-            onValueChange = { newText ->
-                text = newText
-            },
-            label = {
-                Text(
-                    text = "Description",
-                    color = Color(0xFFB874A6)
-                )
-            }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
-            modifier = Modifier
-                .padding(55.dp, 150.dp, 30.dp, 30.dp)
-        )
-
-    }
-}
-
 
 @Composable
 fun ContentColor1Component(
@@ -920,93 +909,6 @@ fun ContentColor1Component(
         LocalContentColor provides contentColor,
         content = content
     )
-}
-
-
-@Composable
-fun TextToPhoto() {
-    Text(
-        text = "Edit Photo",
-        color = Color(0xFFB874A6), fontSize = 11.sp,
-        maxLines = 1,
-        modifier = Modifier
-            .padding(330.dp, 44.dp, 2.dp, 1.dp)
-
-    )
-}
-
-
-@Composable
-fun TextFiledLoctionText() {
-    var text by remember { mutableStateOf("Helsingørmotervejen 15, 2500 lyngby") }
-    ContentColorComponent(contentColor = Color.White) {
-        TextField(
-            value = text,
-            onValueChange = { newText ->
-                text = newText
-            },
-            label = {
-                Text(
-                    text = "Location",
-                    color = Color(0xFFB874A6)
-                )
-            }, trailingIcon = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.redlocationicon),
-                        modifier = Modifier
-                            .size(20.dp),
-                        contentDescription = ""
-                    )
-
-                }
-            },
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
-            modifier = Modifier
-                .padding(1.dp, 65.dp, 1.dp, 1.dp)
-                .fillMaxWidth()
-        )
-    }
-}
-
-
-@Composable
-fun TextFiledTimeText() {
-    var text by remember { mutableStateOf("??/??/?? - ??:??") }
-    ContentColorComponent(contentColor = Color.White) {
-        TextField(
-            value = text,
-            onValueChange = { newText ->
-                text = newText
-            },
-            label = {
-                Text(
-                    text = "Date and time",
-                    color = Color(0xFFB874A6)
-                )
-            }, trailingIcon = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.yellowpencil),
-                        modifier = Modifier
-                            .size(20.dp),
-                        contentDescription = ""
-                    )
-
-                }
-            },
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
-            modifier = Modifier
-                .padding(1.dp, 2.dp, 1.dp, 1.dp)
-                .fillMaxWidth()
-        )
-    }
 }
 
 @Composable

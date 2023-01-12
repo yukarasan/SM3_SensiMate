@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
@@ -14,8 +15,10 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.ui.navigation.SetupNavGraph
 import com.example.sensimate.ui.Event.EventViewModel
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 

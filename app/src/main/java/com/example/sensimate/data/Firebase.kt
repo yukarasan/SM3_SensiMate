@@ -1,5 +1,6 @@
 package com.example.sensimate.data
 
+//import com.example.sensimate.data.questionandsurvey.MyAnswer
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -8,10 +9,8 @@ import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchListOfEvents
-//import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.Event.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider
@@ -19,15 +18,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
-import kotlin.collections.HashMap
 
 
 @SuppressLint("StaticFieldLeak")
@@ -331,7 +331,8 @@ object Database {
             "monthBorn" to monthBorn,
             "dayBorn" to dayBorn,
             "gender" to gender,
-            "isEmployee" to false
+            "isEmployee" to false,
+            "isAdmin" to false
         )
 
         db.collection("users").document(auth.currentUser?.email.toString())
@@ -381,6 +382,26 @@ object Database {
 
             if (myField == true) {
                 SaveBoolToLocalStorage("isEmployee", true, context)
+                isEmp.value = true
+            }
+        }.await()
+
+        return isEmp.value
+
+    }//TODO: Hussein
+
+    suspend fun getIsAdmin(context: Context): Boolean {
+
+        val isEmp = mutableStateOf(false)
+
+        val myDb = db.collection("users").document(auth.currentUser?.email.toString())
+
+        myDb.get().addOnSuccessListener { documentSnapshot ->
+            val myField = documentSnapshot.getBoolean("isAdmin") == true
+
+            if (myField == true) {
+                SaveBoolToLocalStorage("isEmployee", true, context)
+                SaveBoolToLocalStorage("isAdmin", true, context)
                 isEmp.value = true
             }
         }.await()
@@ -495,6 +516,12 @@ object Database {
 
         SaveBoolToLocalStorage(
             "isEmployee",
+            false,
+            context
+        )
+
+        SaveBoolToLocalStorage(
+            "isAdmin",
             false,
             context
         )
@@ -763,7 +790,7 @@ object Database {
 
      */
 
-
+/*
     suspend fun updateSurvey(eventId: String, options: List<String>, newQuestion: MyQuestion) {
         val test = hashMapOf(
             "mainQuestion" to newQuestion.mainQuestion
@@ -794,6 +821,80 @@ object Database {
 
 
     }
+
+ */
+
+
+
+    suspend fun updateSurvey(eventId: String, options: List<String>, newQuestion: MyQuestion) {
+        // ... your existing code here ...
+
+        val test = hashMapOf(
+            "mainQuestion" to newQuestion.mainQuestion
+        )
+
+
+        val profile = fetchProfile()!!
+
+
+        val survey = hashMapOf(
+            "postalCode" to profile.postalCode,
+            "yearBorn" to profile.yearBorn,
+            "monthBorn" to profile.monthBorn,
+            "dayBorn" to profile.dayBorn,
+            "gender" to profile.gender,
+            "answer" to options.toString(),
+            "isEmployee" to false
+        )
+
+        val questionRef = db.collection("events").document(eventId)
+            .collection("Answers").add(test).addOnSuccessListener { docRef ->
+                docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
+                    // Create a new Excel workbook
+                    val workbook = XSSFWorkbook()
+                    // Create a new sheet in the workbook
+                    val sheet = workbook.createSheet("Survey Results")
+
+                    // Add the data to the sheet
+                    var rowNum = 0
+                    val row = sheet.createRow(rowNum++)
+                    row.createCell(0).setCellValue("Postal Code")
+                    row.createCell(1).setCellValue(survey["postalCode"].toString())
+                    val row2 = sheet.createRow(rowNum++)
+                    row2.createCell(0).setCellValue("Year Born")
+                    row2.createCell(1).setCellValue(survey["yearBorn"].toString())
+                    val row3 = sheet.createRow(rowNum++)
+                    row3.createCell(0).setCellValue("Month Born")
+                    row3.createCell(1).setCellValue(survey["monthBorn"].toString())
+                    val row4 = sheet.createRow(rowNum++)
+                    row4.createCell(0).setCellValue("Day Born")
+                    row4.createCell(1).setCellValue(survey["dayBorn"].toString())
+                    val row5 = sheet.createRow(rowNum++)
+                    row5.createCell(0).setCellValue("Gender")
+                    row5.createCell(1).setCellValue(survey["gender"].toString())
+                    val row6 = sheet.createRow(rowNum++)
+                    row6.createCell(0).setCellValue("Answer")
+                    row6.createCell(1).setCellValue(survey["answer"].toString())
+                    val row7 = sheet.createRow(rowNum++)
+                    row7.createCell(0).setCellValue("Is Employee")
+                    row7.createCell(1).setCellValue(survey["isEmployee"].toString())
+
+                    // Write the workbook to a file
+                    val excelExportFolder = File("ExcelExport")
+
+                    if (!excelExportFolder.exists()) {
+                        excelExportFolder.mkdir()
+                    }
+
+                    val file = File(excelExportFolder, "survey_results.xlsx")
+                    val fileOut = FileOutputStream(file)
+                    workbook.write(fileOut)
+                    fileOut.close()
+
+                }
+            }
+    }
+
 
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
