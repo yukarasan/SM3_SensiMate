@@ -224,10 +224,21 @@ fun EditEvent(
                     }
                 }
                 Spacer(modifier = Modifier.size(10.dp))
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally,) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
                     Button(
-                        onClick = { Database.deleteEvent(chosenEvent.title)
-                                  navController.navigate(Screen.EventScreenEmployee.route)},
+                        onClick = {
+                            Database.deleteEvent(chosenEvent.title)
+
+                            navController.navigate(Screen.EventScreenEmployee.route){
+                                popUpTo(Screen.EventScreenEmployee.route){
+                                    inclusive = true
+                                }
+                                navController.clearBackStack(Screen.EditEvent.route)
+                            }
+                        },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                         modifier = Modifier.size(240.dp, 50.dp)
@@ -244,7 +255,7 @@ fun EditEvent(
                     val context = LocalContext.current
 
                     if(getBooleanFromLocalStorage("isAdmin", context = context)){
-                        
+
                         Spacer(modifier = Modifier.size(40.dp))
                         Button(
                             onClick = { /*//TODO: HusseAnsh*/ },
@@ -771,7 +782,7 @@ fun DescriptionText(descriptionText: String, onValueChange: (String) -> Unit) {
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
 
     }
@@ -797,7 +808,7 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
     }
 }
@@ -831,7 +842,7 @@ fun LocationText(locationText: String, onValueChange: (String) -> Unit) {
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()}),
+                onDone = { keyboardController?.hide() }),
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
@@ -860,7 +871,7 @@ fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()}),
+            keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
@@ -889,7 +900,7 @@ fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()}),
+            keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
 
             modifier = Modifier
@@ -988,7 +999,13 @@ fun EditSurveyPage(navController: NavController) {
 
  */
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton(onClick = { navController.popBackStack() }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+        OrangeBackButton(onClick = {
+            navController.navigate(Screen.EventScreenEmployee.route){
+               popUpTo(Screen.EditEvent.route){
+                   inclusive=true
+               }
+            }
+        }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
     }
     AddPhoto(
         modifier = Modifier

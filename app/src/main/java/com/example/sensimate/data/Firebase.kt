@@ -567,7 +567,8 @@ object Database {
         month: String,
         year: String,
         hour: String,
-        minute: String
+        minute: String,
+        //eventCode : String
     ) {
         val event = hashMapOf(
             "title" to title,
@@ -579,7 +580,8 @@ object Database {
             "month" to month,
             "year" to year,
             "hour" to hour,
-            "minute" to minute
+            "minute" to minute,
+            //"eventCode" to eventCode
         )
         db.collection("events").add(event).addOnSuccessListener { docRef ->
             event.set("eventId", docRef.id)

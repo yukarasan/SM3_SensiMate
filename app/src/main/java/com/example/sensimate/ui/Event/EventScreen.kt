@@ -58,6 +58,8 @@ fun EventScreen(
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
 
     var checked by remember { mutableStateOf(false) }
+    var incorrectEventCode by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier
@@ -95,7 +97,15 @@ fun EventScreen(
                         ) {
                             if (checked) {
                                 Dialog(onDismissRequest = { /*TODO*/ }) {
-                                    EventQuickEntry(navController = navController)
+                                    EventQuickEntry(navController = navController){ input ->
+                                        val event = state.events?.find { it.eventId == input}
+                                        if(event !=null){
+                                            navController.navigate(Screen.ExtendedEventScreen.route)
+                                            eventViewModel.setChosenEventId(event.eventId)
+                                        }else{
+                                            incorrectEventCode = true
+                                        }
+                                    }
                                 }
                             }
                             QuickEntryImage(
@@ -164,6 +174,19 @@ fun EventScreen(
             }
         }
     }
+    if (incorrectEventCode) {
+        AlertDialog(onDismissRequest = { incorrectEventCode = false }, text = {
+            Text(
+                "The eventcode or the title that you have provided is incorrect. Please try again."
+            )
+        }, confirmButton = {
+            Button(onClick = {
+                incorrectEventCode = false
+            }) {
+                Text(text = "OK")
+            }
+        })
+    }
 }
 
 
@@ -179,7 +202,7 @@ fun ProfileLogo(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EventQuickEntry(navController: NavController) {
+private fun EventQuickEntry(navController: NavController, param: (Any) -> Unit) {
     Card(
         modifier = Modifier
             .padding(start = 25.dp, end = 25.dp, top = 10.dp)
@@ -223,7 +246,8 @@ private fun EventQuickEntry(navController: NavController) {
 
                 {
                     myButton(
-                        onClick = { navController.navigate(Screen.Survey.route) },
+                        onClick = { //måsske skal det være her
+                            navController.navigate(Screen.Survey.route) },
                         color = Color.Black, title = "Enter", buttonColor = Color(199, 242, 219)
                     )
                 }
@@ -322,7 +346,7 @@ private fun EventInputField(onClick: () -> Unit) {
                     shape = RoundedCornerShape(35.dp)
                 )
                 .width(400.dp)
-                .height(40.dp)
+                .height(50.dp)
                 .background(
                     Color(74, 75, 90),
                     shape = RoundedCornerShape(35.dp)
