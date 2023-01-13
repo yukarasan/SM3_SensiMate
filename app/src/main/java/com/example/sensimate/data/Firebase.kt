@@ -893,7 +893,6 @@ object Database {
 
 
 
-
                     // Write the workbook to a file
                     val excelExportFolder = File(Environment.getExternalStorageDirectory(), "ExcelExport")
                     if (!excelExportFolder.exists()) {

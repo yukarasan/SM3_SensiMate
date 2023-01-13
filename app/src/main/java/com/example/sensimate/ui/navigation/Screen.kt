@@ -10,6 +10,7 @@ const val DESCRIPTION_OF_EVENT = "description"
 const val SURVEYCODE = "surveyCode"
 
 sealed class Screen(val route: String) {
+    object SplashScreen : Screen(route = "splash")
     object CookieScreen : Screen(route = "cookie")
     object SignUpWithMail : Screen(route = "mailSignup")
     object Login : Screen(route = "login")

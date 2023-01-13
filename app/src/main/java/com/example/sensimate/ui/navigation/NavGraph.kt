@@ -37,6 +37,7 @@ import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.startupscreens.noNet.NoWifiScreen
+import com.example.sensimate.ui.startupscreens.splashscreen.SplashScreen
 import com.example.sensimate.ui.survey.*
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -104,7 +105,16 @@ fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = screen.route
-    ) {      // Screen.CookieScreen.route
+    ) {
+
+        // Splash-Screen
+       /* composable(route = Screen.SplashScreen.route) {
+            SplashScreen(navController = navController)
+        }
+
+        */
+
+        // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)
