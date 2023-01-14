@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.Event
+package com.example.sensimate.ui.Event.viewModels
 
 /**
  * Data class that represents the event UI state

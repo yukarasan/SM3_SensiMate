@@ -28,8 +28,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
-import com.example.sensimate.data.EventDataViewModel
 import com.example.sensimate.data.EventViewModel
+import com.example.sensimate.ui.Event.viewModels.EventDataViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple

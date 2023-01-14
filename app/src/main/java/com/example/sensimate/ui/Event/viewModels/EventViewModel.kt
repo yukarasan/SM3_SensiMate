@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.Event
+package com.example.sensimate.ui.Event.viewModels
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

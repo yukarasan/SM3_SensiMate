@@ -2,13 +2,11 @@ package com.example.sensimate.ui.startupscreens.signUp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -32,10 +30,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
-import com.example.sensimate.ui.theme.FaceBookColor
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
 @Preview(showBackground = true)

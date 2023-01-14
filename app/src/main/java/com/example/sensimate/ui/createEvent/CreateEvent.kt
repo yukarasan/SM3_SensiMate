@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.Event.createEvent
+package com.example.sensimate.ui.createEvent
 
 import AnswerViewModel
 import TextAnswerViewModel

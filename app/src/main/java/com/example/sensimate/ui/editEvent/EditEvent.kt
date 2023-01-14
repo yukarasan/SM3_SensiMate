@@ -46,6 +46,9 @@ import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.createEvent.AddPhoto
+import com.example.sensimate.ui.createEvent.ContentColorComponent
+import com.example.sensimate.ui.createEvent.TextToPhoto
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.*
@@ -1024,7 +1027,7 @@ fun EditSurveyPage(navController: NavController) {
 @Composable
 fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
     var text by remember { mutableStateOf(string) }
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
@@ -1048,7 +1051,7 @@ fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
 @Composable
 fun TextFiledEditAnswerText(modifier: Modifier, string: String) {
     var text by remember { mutableStateOf(string) }
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->

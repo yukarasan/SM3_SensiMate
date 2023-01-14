@@ -23,12 +23,12 @@ import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
-import com.example.sensimate.ui.Event.EventUiState
 import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail
 import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
+import com.example.sensimate.ui.createEvent.*
 import com.example.sensimate.ui.home.EventScreen
 import com.example.sensimate.ui.home.EventScreenEmployee
 import com.example.sensimate.ui.profile.ProfileScreen
@@ -37,7 +37,6 @@ import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.startupscreens.noNet.NoWifiScreen
-import com.example.sensimate.ui.startupscreens.splashscreen.SplashScreen
 import com.example.sensimate.ui.survey.*
 
 @RequiresApi(Build.VERSION_CODES.O)

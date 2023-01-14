@@ -36,6 +36,7 @@ import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import androidx.compose.foundation.Image
+import com.example.sensimate.ui.Event.viewModels.EventDataViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -52,7 +53,6 @@ fun EventScreen(
     eventViewModel: EventViewModel = viewModel()
 ) {
     val state = dataViewModel.state.value
-    val state1 = eventViewModel.uiState.collectAsState()
     val isLoadingViewModel = viewModel<EventDataViewModel>()
     val isLoading by isLoadingViewModel.isLoading.collectAsState()
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)

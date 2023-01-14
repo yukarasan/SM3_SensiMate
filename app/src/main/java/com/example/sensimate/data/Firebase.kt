@@ -4,20 +4,17 @@ package com.example.sensimate.data
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.*
-import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchListOfEvents
 import com.example.sensimate.data.questionandsurvey.MyQuestion
-import com.example.sensimate.ui.Event.createEvent.docId
+import com.example.sensimate.ui.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -40,43 +37,6 @@ import java.util.jar.Manifest
 
 @SuppressLint("StaticFieldLeak")
 val db = Firebase.firestore
-
-/**
- * The EventScreenState data class represents the state of the event screen in the application.
- * It contains a MutableList of Event objects representing the events to be displayed on the screen.
- * @param events MutableList of Event objects that needs to be displayed on the screen.
- * @author Yusuf Kara
- */
-data class EventScreenState(
-    val events: MutableList<Event>? = null
-)
-
-/**
- * The EventDataViewModel is a view model class used to store and manage the data for the event
- * screen in the application.
- * It uses the fetchListOfEvents() function to populate the events list and updates the state
- * of the events.
- * It uses the mutableStateOf() function to keep the track of the latest state of the events.
- * It has a getListOfEvents() function that is responsible for populating the state.
- */
-class EventDataViewModel : ViewModel() {
-    val state = mutableStateOf(EventScreenState())
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
-
-    init {
-        getListOfEvents()
-    }
-
-    fun getListOfEvents() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            val eventList = fetchListOfEvents()
-            state.value = state.value.copy(events = eventList)
-            _isLoading.value = false
-        }
-    }
-}
 
 // Initialize Firebase Auth
 val auth = Firebase.auth
@@ -149,14 +109,6 @@ object Database {
      * current email.
      * It then updates the email in Firebase's Authentication service and in the Firestore database
      * itself.
-     * @param postalCode The postal code of the user
-     * @param yearBorn the year of birth of the user
-     * @param monthBorn the month of birth of the user
-     * @param dayBorn the day of birth of the user
-     * @param gender the gender of the user
-     * @param currentPassword the current password of the user
-     * @param newEmail the new email for the user
-     * @param context the context of the application
      * @author Yusuf Kara
      */
     fun updateEmail(
