@@ -27,7 +27,13 @@ import com.example.sensimate.ui.profile.ProfileViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 
-
+/**
+ * EditGenderScreen is a composable that allows the user to edit their gender and update
+ * their profile.
+ * @param navController: a NavController object that controls navigation within the app.
+ * @param profileViewModel: a ProfileViewModel object that holds the state of the user's profile.
+ * @author Yusuf Kara
+ */
 @Composable
 fun EditGenderScreen(
     navController: NavController,
@@ -82,6 +88,14 @@ fun EditGenderScreen(
     }
 }
 
+/**
+ * DropDownMenu is a composable that allows the user to select their gender from a drop-down menu.
+ * This composable have been made by Hussein, but have been modified slightly to fit this screen.
+ * @param selectedGender: a String representing the currently selected gender.
+ * @param profileViewModel: a ProfileViewModel object that holds the state of the user's
+ * profile and updates the selected gender.
+ * @author Hussein
+ */
 @Composable
 private fun DropDownMenu(selectedGender: String, profileViewModel: ProfileViewModel) {
     var expanded by remember { mutableStateOf(false) }

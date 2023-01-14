@@ -1,7 +1,6 @@
 package com.example.sensimate.ui.profile.editProfile
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -49,7 +48,6 @@ import com.example.sensimate.ui.theme.DarkPurple
  * such as if the new password is not long enough or if a field is empty.
  * @author Yusuf Kara
  */
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EditPasswordScreen(
     navController: NavController,
@@ -62,7 +60,7 @@ fun EditPasswordScreen(
      * a viewModel, since they are only used within this composable.
      * Defining them here, allows them to be easily modified within the composable, but they are
      * not accessible from outside the composable.
-     * If "showWrongLengthOfPassword" and "showEmptyFieldAlert" are needed by other composables or
+     * If "showWrongLengthOfPassword" and "showEmptyFieldAlert" are needed by other composable or
      * parts of the app, it would be necessary to include them in a viewModel so that they can
      * be observed and accessed from other locations.
      * @author Yusuf Kara
@@ -146,8 +144,8 @@ fun EditPasswordScreen(
                 confirmButton = {
                     Button(
                         onClick = {
-                        showWrongLengthOfPassword = false
-                    }
+                            showWrongLengthOfPassword = false
+                        }
                     ) {
                         Text(text = stringResource(id = R.string.ok))
                     }
@@ -296,13 +294,15 @@ private fun CustomPasswordField(
                         singleLine = true,
                     )
                 }
-                IconButton(onClick = {
-                    if (!isPasswordVisible.value) {
-                        isPasswordVisible.value = true
-                    } else if (isPasswordVisible.value) {
-                        isPasswordVisible.value = false
+                IconButton(
+                    onClick = {
+                        if (!isPasswordVisible.value) {
+                            isPasswordVisible.value = true
+                        } else if (isPasswordVisible.value) {
+                            isPasswordVisible.value = false
+                        }
                     }
-                }) {
+                ) {
                     Image(
                         painter = painterResource(id = R.drawable.eyeoff),
                         contentDescription = "",

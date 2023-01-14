@@ -1,7 +1,5 @@
 package com.example.sensimate.ui.profile
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,7 +39,6 @@ import com.example.sensimate.ui.theme.DarkPurple
  * If the user is a guest, the Edit button will not be displayed.
  * @author Yusuf Kara
  */
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(
     navController: NavController,
@@ -172,8 +169,6 @@ private fun EditButton(onClick: () -> Unit) {
  * For now the click does nothing. But in future work, one would probably want to implement a
  * function that when the user clicks on the image, asks the user if they would like to upload
  * an image of themselves.
- * @param id the id of the drawable resource used for the image
- * @param contentDescription the content description of the image
  */
 @Composable
 private fun ImageButton() {
@@ -199,7 +194,6 @@ private fun ImageButton() {
 /**
  * The ProfileMail composable displays the email of the current user. If the user is not logged
  * in or the email is null, the composable will display an empty string.
- * @param auth the instance of authentication from which the email is retrieved
  * @author Yusuf Kara
  */
 @Composable

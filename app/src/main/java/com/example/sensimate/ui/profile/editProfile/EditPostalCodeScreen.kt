@@ -29,6 +29,7 @@ import com.example.sensimate.ui.theme.DarkPurple
  * @param navController: NavController, is used for navigation between screens.
  * @param profileViewModel: ProfileViewModel = viewModel() is the view model containing
  * the state of the user's profile.
+ * @author Yusuf Kara
  */
 @Composable
 fun EditPostalCodeScreen(
@@ -43,7 +44,7 @@ fun EditPostalCodeScreen(
      * used within this composable.
      * Defining it here, allows it to be easily modified within the composable, but is
      * not accessible from outside the composable.
-     * If it is needed by other composables or parts of the app, it would be necessary to
+     * If it is needed by other composable or parts of the app, it would be necessary to
      * include it in a viewModel so that it can be observed and accessed from other locations.
      * @author Yusuf Kara
      */
@@ -73,19 +74,21 @@ fun EditPostalCodeScreen(
                         }
                     )
                 }
-                CheckBox(onClick = {
-                    if (profileState.postalCode.length < 4) {
-                        showAlertMessage = true
-                    } else {
-                        navController.popBackStack()
-                        profileViewModel.updatePostalCode(profileState.postalCode)
-                        Toast.makeText(
-                            context,
-                            context.resources.getString(R.string.successfulUpdateOfPostalCode),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                CheckBox(
+                    onClick = {
+                        if (profileState.postalCode.length < 4) {
+                            showAlertMessage = true
+                        } else {
+                            navController.popBackStack()
+                            profileViewModel.updatePostalCode(profileState.postalCode)
+                            Toast.makeText(
+                                context,
+                                context.resources.getString(R.string.successfulUpdateOfPostalCode),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                })
+                )
             }
         }
         CustomProfileTextField(
@@ -116,7 +119,7 @@ fun EditPostalCodeScreen(
                             showAlertMessage = false
                         }
                     ) {
-                        Text(text = "OK")
+                        Text(text = stringResource(id = R.string.ok))
                     }
                 }
             )
