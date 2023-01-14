@@ -341,7 +341,7 @@ private fun Placeholder() {
         text = "Enter event code here to open the survey", //TODO: Make text as recourse
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 12.sp,
+        fontSize = 10.sp,
         color = Color.White
     )
 }
