@@ -32,8 +32,8 @@ import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
-import com.example.sensimate.ui.startupscreens.signUp.myButton
+import com.example.sensimate.ui.startupscreens.components.InitialStartBackground
+import com.example.sensimate.ui.startupscreens.components.myButton
 import com.example.sensimate.ui.theme.Purple200
 
 @Preview(showBackground = true)

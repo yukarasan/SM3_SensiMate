@@ -26,8 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
-import com.example.sensimate.ui.startupscreens.signUp.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
 import java.util.*
 import androidx.compose.material.DropdownMenu
@@ -46,7 +44,9 @@ import androidx.compose.ui.unit.toSize
 import com.example.sensimate.R
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
-import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
+import com.example.sensimate.ui.startupscreens.components.InitialStartBackground
+import com.example.sensimate.ui.startupscreens.components.myButton
+import com.example.sensimate.ui.startupscreens.components.textFieldWithImage
 import com.example.sensimate.ui.theme.Purple200
 
 @Composable
@@ -140,24 +140,22 @@ fun SignUpUsingMail(
                 Color.Gray
             )
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(start = 20.dp, end = 10.dp)
-            ) {
-                textFieldWithImage(
-                    painterResource(id = R.drawable.locationicon),
-                    text = state.value.postalCode.value,
-                    onValueChange = {
-                        if (it.length <= 4) {
-                            startProfileViewModel.changePostalCode(it)
-                        }
-                    },
-                    stringResource(id = R.string.postalcode)
-                )
-                Spacer(modifier = Modifier.size(20.dp))
-                DropDownMenu(state.value.gender)
-            }
+            Spacer(modifier = Modifier.size(25.dp))
+
+            textFieldWithImage(
+                painterResource(id = R.drawable.locationicon),
+                text = state.value.postalCode.value,
+                onValueChange = {
+                    if (it.length <= 4) {
+                        startProfileViewModel.changePostalCode(it)
+                    }
+                },
+                stringResource(id = R.string.postalcode)
+            )
+            
+
+            
+            DropDownMenu(state.value.gender)
 
             ChooseBirthDate(
                 LocalContext.current,

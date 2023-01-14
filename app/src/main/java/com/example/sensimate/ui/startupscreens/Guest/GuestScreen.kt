@@ -29,9 +29,9 @@ import com.example.sensimate.ui.InitialStartPage.MySensimateLogo
 import com.example.sensimate.ui.InitialStartPage.SignMenus
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
-import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
-import com.example.sensimate.ui.startupscreens.signUp.myButton
-import com.example.sensimate.ui.startupscreens.signUp.textFieldWithImage
+import com.example.sensimate.ui.startupscreens.components.InitialStartBackground
+import com.example.sensimate.ui.startupscreens.components.myButton
+import com.example.sensimate.ui.startupscreens.components.textFieldWithImage
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
 @Preview(showBackground = true)
