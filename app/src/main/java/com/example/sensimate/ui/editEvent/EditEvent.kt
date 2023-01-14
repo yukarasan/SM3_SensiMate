@@ -44,8 +44,10 @@ import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.createEvent.AddPhoto
+import com.example.sensimate.ui.createEvent.ContentColorComponent
+import com.example.sensimate.ui.createEvent.TextToPhoto
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.*
@@ -224,9 +226,21 @@ fun EditEvent(
                     }
                 }
                 Spacer(modifier = Modifier.size(10.dp))
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally,) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
                     Button(
-                        onClick = { Database.deleteEvent(chosenEvent.title) },
+                        onClick = {
+                            Database.deleteEvent(chosenEvent.title)
+
+                            navController.navigate(Screen.EventScreenEmployee.route){
+                                popUpTo(Screen.EventScreenEmployee.route){
+                                    inclusive = true
+                                }
+                                navController.clearBackStack(Screen.EditEvent.route)
+                            }
+                        },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                         modifier = Modifier.size(240.dp, 50.dp)
@@ -243,7 +257,7 @@ fun EditEvent(
                     val context = LocalContext.current
 
                     if(getBooleanFromLocalStorage("isAdmin", context = context)){
-                        
+
                         Spacer(modifier = Modifier.size(40.dp))
                         Button(
                             onClick = { /*//TODO: HusseAnsh*/ },
@@ -261,8 +275,6 @@ fun EditEvent(
                             )
                         }
                     }
-
-
                 }
             }
         }
@@ -772,7 +784,7 @@ fun DescriptionText(descriptionText: String, onValueChange: (String) -> Unit) {
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
 
     }
@@ -798,7 +810,7 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()})
+                onDone = { keyboardController?.hide() })
         )
     }
 }
@@ -832,7 +844,7 @@ fun LocationText(locationText: String, onValueChange: (String) -> Unit) {
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()}),
+                onDone = { keyboardController?.hide() }),
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
@@ -861,7 +873,7 @@ fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()}),
+            keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
 
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
             modifier = Modifier
@@ -890,7 +902,7 @@ fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()}),
+            keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
             placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
 
             modifier = Modifier
@@ -989,7 +1001,13 @@ fun EditSurveyPage(navController: NavController) {
 
  */
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
-        OrangeBackButton(onClick = { navController.popBackStack() }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+        OrangeBackButton(onClick = {
+            navController.navigate(Screen.EventScreenEmployee.route){
+               popUpTo(Screen.EditEvent.route){
+                   inclusive=true
+               }
+            }
+        }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
     }
     AddPhoto(
         modifier = Modifier
@@ -1008,7 +1026,7 @@ fun EditSurveyPage(navController: NavController) {
 @Composable
 fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
     var text by remember { mutableStateOf(string) }
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->
@@ -1032,7 +1050,7 @@ fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
 @Composable
 fun TextFiledEditAnswerText(modifier: Modifier, string: String) {
     var text by remember { mutableStateOf(string) }
-    com.example.sensimate.ui.Event.createEvent.ContentColorComponent(contentColor = Color.White) {
+    ContentColorComponent(contentColor = Color.White) {
         TextField(
             value = text,
             onValueChange = { newText ->

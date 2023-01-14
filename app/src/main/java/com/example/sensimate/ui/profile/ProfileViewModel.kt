@@ -1,8 +1,6 @@
 package com.example.sensimate.ui.profile
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sensimate.data.Database
@@ -64,7 +62,6 @@ class ProfileViewModel : ViewModel() {
      * coroutines to retrieve the data from local storage and store it in the _uiState variable.
      * @author Yusuf Kara
      */
-    @RequiresApi(Build.VERSION_CODES.O)
     fun fetchProfileData(context: Context) {
         if (!getBooleanFromLocalStorage(key = "isGuest", context = context)) {
             viewModelScope.launch {
@@ -226,4 +223,6 @@ class ProfileViewModel : ViewModel() {
     fun updateEmailString(input: String) {
         _uiState.value = _uiState.value.copy(email = input)
     }
+
+    // TODO: Remove logic from screens to methods in here. Example, check if strings match
 }

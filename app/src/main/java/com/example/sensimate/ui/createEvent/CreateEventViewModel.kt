@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.Event.createEvent
+package com.example.sensimate.ui.createEvent
 
 import android.content.Context
 import android.widget.Toast
@@ -23,7 +23,8 @@ data class CreateEventUistate(
     val myMonth: MutableState<String> =  mutableStateOf(""),
     val myDay: MutableState<String> = mutableStateOf(""),
     val myHour: MutableState<String> = mutableStateOf(""),
-    val myMinute: MutableState<String> = mutableStateOf("")
+    val myMinute: MutableState<String> = mutableStateOf(""),
+   // val eventCode : MutableState<String> = mutableStateOf("")
 )
 class CreateEventViewModel: ViewModel(){
    val  _uistate = MutableStateFlow(CreateEventUistate())
@@ -80,7 +81,14 @@ class CreateEventViewModel: ViewModel(){
                 "Please enter a 4 digit SurveyCode",
                 Toast.LENGTH_SHORT
             ).show()
-        }else {
+        }/*else if (uistate.value.eventCode.value.length < 4) {
+                Toast.makeText(
+                    context,
+                    "Please enter a 4 digit EventCode",
+                    Toast.LENGTH_SHORT
+                ).show()
+                */
+        else {
             Database.createEvent(
                 title = uistate.value.titleText.value,
                 description = uistate.value.descriptionText.value,
@@ -91,7 +99,8 @@ class CreateEventViewModel: ViewModel(){
                 month = uistate.value.myMonth.value,
                 year = uistate.value.myYear.value,
                 hour = uistate.value.myHour.value,
-                minute = uistate.value.myMinute.value
+                minute = uistate.value.myMinute.value,
+                //eventCode = uistate.value.eventCode.value
             )
             navController.navigate(Screen.QuestionPageScreen.route)
             _uistate.value = _uistate.value.copy(titleText = mutableStateOf(""),

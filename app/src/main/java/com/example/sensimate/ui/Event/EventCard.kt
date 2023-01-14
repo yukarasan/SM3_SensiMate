@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -23,7 +24,6 @@ fun EventCard(
     minute: String,
     address: String,
     onClick: () -> Unit,
-    //function: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -48,6 +48,7 @@ fun EventCard(
                     Row {
                         EventTitle(title)
                     }
+                    Spacer(modifier = Modifier.size(10.dp))
                     Row {
                         LocationIcon()
                         Column(modifier = Modifier.padding(start = 5.dp)) {
@@ -105,7 +106,7 @@ private fun Address(address: String, modifier: Modifier = Modifier) {
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
         color = Color.White,
-        modifier = modifier.width(183.dp)
+        modifier = modifier.fillMaxWidth()
     )
 }
 

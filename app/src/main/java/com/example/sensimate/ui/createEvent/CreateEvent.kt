@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.Event.createEvent
+package com.example.sensimate.ui.createEvent
 
 import AnswerViewModel
 import TextAnswerViewModel
@@ -112,6 +112,11 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
             Spacer(modifier = Modifier.size(27.dp))
             TextFiledDescriptionText(state.value.descriptionText) { state.value.descriptionText.value = it }
             Spacer(modifier = Modifier.size(55.dp))
+            /*TextFiledEventCodeText(eventCode = state.value.eventCode, textChange = {
+                if (it.length <= maxChar) state.value.eventCode.value = it})
+
+             */
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -198,6 +203,38 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
         }
     }
 }
+
+/*
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun TextFiledEventCodeText(eventCode: MutableState<String>, textChange: (String) -> Unit) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    ContentColorComponent(contentColor = Color.White) {
+        TextField(
+            value = eventCode.value,
+            onValueChange = {textChange(it)},
+            label = {
+                Text(
+                    text = "EventCode (4 Digit Code)",
+                    color = Color(0xFFB874A6)
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number,imeAction = ImeAction.Done),
+            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            keyboardActions = KeyboardActions(
+                onDone = {keyboardController?.hide()}),
+
+            modifier = Modifier
+                //.padding(start = 20.dp, end = 20.dp, top = 10.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+ */
+
 
 @Composable
 fun ChooseEventDate(
@@ -850,9 +887,10 @@ fun DropDownMenu(selectedQuestion: MutableState<String>) {
     else
         Icons.Filled.KeyboardArrowDown
 
-    Column(Modifier
-        .fillMaxWidth()
-        .padding(20.dp)) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(20.dp)) {
         OutlinedTextField(
             value = selectedQuestion.value,
             onValueChange = { selectedQuestion.value = it },

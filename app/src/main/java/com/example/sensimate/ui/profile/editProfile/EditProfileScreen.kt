@@ -85,8 +85,8 @@ fun EditProfileScreen(navController: NavController) {
             item { ImageButton() }
             item {
                 CustomProfileTextField(
-                    text = stringResource(id = R.string.email),
-                    description = stringResource(id = R.string.editEmail),
+                    text = stringResource(id = R.string.editEmail),
+                    description = stringResource(id = R.string.email),
                     placeholder = stringResource(id = R.string.email),
                     onValueChange = { /* nothing for this instance. */ },
                     onClick = {
@@ -96,8 +96,8 @@ fun EditProfileScreen(navController: NavController) {
             }
             item {
                 CustomProfileTextField(
-                    text = stringResource(id = R.string.password),
-                    description = stringResource(id = R.string.editPassword),
+                    text = stringResource(id = R.string.editPassword),
+                    description = stringResource(id = R.string.password),
                     placeholder = stringResource(id = R.string.password),
                     onValueChange = { /* nothing for this instance. */ },
                     onClick = {
@@ -107,8 +107,8 @@ fun EditProfileScreen(navController: NavController) {
             }
             item {
                 CustomProfileTextField(
-                    text = stringResource(id = R.string.gender),
-                    description = stringResource(id = R.string.editGender),
+                    text = stringResource(id = R.string.editGender),
+                    description = stringResource(id = R.string.gender),
                     placeholder = stringResource(id = R.string.gender),
                     onValueChange = { /* nothing for this instance. */ },
                     onClick = {
@@ -118,8 +118,8 @@ fun EditProfileScreen(navController: NavController) {
             }
             item {
                 CustomProfileTextField(
-                    text = stringResource(id = R.string.postalCode),
-                    description = stringResource(id = R.string.editPostalCode),
+                    text = stringResource(id = R.string.editPostalCode),
+                    description = stringResource(id = R.string.postalCode),
                     placeholder = stringResource(id = R.string.postalCode),
                     onValueChange = { /* nothing for this instance. */ },
                     onClick = {
@@ -231,8 +231,6 @@ private fun Dialog(
 /**
  * The InfoAboutUser composable displays a card that contains two text fields. The card is used
  * to display the users information such as age, email, postal code and so on.
- * @param desc the text for the description
- * @param info the text for the info
  * @author Yusuf Kara
  */
 @Composable
@@ -245,7 +243,7 @@ private fun ImageButton() {
             .clip(CircleShape)
             .size(180.dp)
             .padding(bottom = 5.dp)
-            .clickable { /* TODO */ }
+            .clickable { /* TODO: Future work  */ }
     ) {
         Image(
             painter = image,

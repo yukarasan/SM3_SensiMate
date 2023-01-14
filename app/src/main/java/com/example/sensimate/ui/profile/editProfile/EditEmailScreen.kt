@@ -1,9 +1,6 @@
 package com.example.sensimate.ui.profile.editProfile
 
 import android.annotation.SuppressLint
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -27,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
@@ -36,9 +35,14 @@ import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
-import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
+/**
+ * EditEmailScreen is a composable that allows the user to edit their email and update their
+ * profile.
+ * @param navController: a NavController object that controls navigation within the app.
+ * @param profileViewModel: a ProfileViewModel object that holds the state of the user's profile.
+ * @author Yusuf Kara
+ */
 @Composable
 fun EditEmailScreen(
     navController: NavController,
@@ -49,11 +53,8 @@ fun EditEmailScreen(
     var showEmptyFieldAlert by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    // var codeExecuted by remember { mutableStateOf(false) }
-
-    if (auth.currentUser != null /* && !codeExecuted */) {
+    if (auth.currentUser != null) {
         profileViewModel.fetchProfileData(context = context)
-        // codeExecuted = true
     }
 
     Column(
@@ -74,57 +75,55 @@ fun EditEmailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
-                    OrangeBackButton(onClick = {
-                        navController.popBackStack()
-                    })
+                    OrangeBackButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
-                CheckBox(onClick = {
-                    if (
-                        profileState.currentPassword.isNotEmpty()
-                        &&
-                        profileState.email.isNotEmpty()
-                    ) {
-                        Database.updateEmail(
-                            postalCode = profileState.postalCode,
-                            yearBorn = profileState.yearBorn,
-                            monthBorn = profileState.monthBorn,
-                            dayBorn = profileState.dayBorn,
-                            gender = profileState.gender,
-                            currentPassword = profileState.currentPassword,
-                            newEmail = profileState.email,
-                            context = context
-                        )
-
-                        // codeExecuted = false
-
-                        navController.popBackStack()
-                    } else {
-                        // At least one of the text fields is empty
-                        showEmptyFieldAlert = true
+                CheckBox(
+                    onClick = {
+                        if (
+                            profileState.currentPassword.isNotEmpty()
+                            &&
+                            profileState.email.isNotEmpty()
+                        ) {
+                            Database.updateEmail(
+                                postalCode = profileState.postalCode,
+                                yearBorn = profileState.yearBorn,
+                                monthBorn = profileState.monthBorn,
+                                dayBorn = profileState.dayBorn,
+                                gender = profileState.gender,
+                                currentPassword = profileState.currentPassword,
+                                newEmail = profileState.email,
+                                context = context
+                            )
+                            navController.popBackStack()
+                        } else {
+                            showEmptyFieldAlert = true
+                        }
                     }
-                })
+                )
             }
         }
         CustomPasswordField(
             text = profileState.currentPassword,
-            description = "Current password",
-            placeholder = "Enter your current password here",
+            description = stringResource(id = R.string.currentPassword),
+            placeholder = stringResource(id = R.string.enterCurrentPassword),
             onValueChange = {
                 profileViewModel.updateCurrentPasswordString(input = it)
             }
         )
         CustomProfileTextField(
             text = profileState.email,
-            description = "E-mail",
-            placeholder = "Enter your new e-mail here",
+            description = stringResource(id = R.string.email),
+            placeholder = stringResource(id = R.string.enterNewEmail),
             onValueChange = {
                 profileViewModel.updateEmailString(input = it)
             }
         )
         Text(
-            text = "To give you the best experience, we recommend that your email is up to date. " +
-                    "You can change it here. For this we will need you to confirm the change by " +
-                    "entering your password as well",
+            text = stringResource(id = R.string.emailDescription),
             color = Color.White,
             modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 30.dp)
         )
@@ -132,17 +131,14 @@ fun EditEmailScreen(
         if (showEmptyFieldAlert) {
             AlertDialog(
                 onDismissRequest = { showEmptyFieldAlert = false },
-                text = {
-                    Text(
-                        "Please provide both your current password and your desired e-mail " +
-                                "in their respective fields."
-                    )
-                },
+                text = { Text(stringResource(id = R.string.emailAlert)) },
                 confirmButton = {
-                    Button(onClick = {
-                        showEmptyFieldAlert = false
-                    }) {
-                        Text(text = "OK")
+                    Button(
+                        onClick = {
+                            showEmptyFieldAlert = false
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.ok))
                     }
                 }
             )
@@ -150,6 +146,15 @@ fun EditEmailScreen(
     }
 }
 
+/**
+ * CustomPasswordField is a composable that creates a text field for the user to enter
+ * their password.
+ * @param text: the current text in the text field.
+ * @param description: a description of the text field.
+ * @param placeholder: a placeholder text to be displayed when the text field is empty.
+ * @param onValueChange: a function that is called when the text in the text field changes.
+ * @author Yusuf Kara
+ */
 @SuppressLint("UnrememberedMutableState")
 @Composable
 private fun CustomPasswordField(
@@ -169,7 +174,7 @@ private fun CustomPasswordField(
             mutableStateOf(false)
         }
 
-        Column() {
+        Column {
             Text(
                 modifier = Modifier
                     .padding(top = 10.dp)
@@ -186,7 +191,6 @@ private fun CustomPasswordField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 if (!isPasswordVisible.value) {
-                    Log.d("Password is hidden", isPasswordVisible.toString())
                     BasicTextField(
                         value = text,
                         onValueChange = onValueChange,
@@ -198,7 +202,7 @@ private fun CustomPasswordField(
                             textAlign = TextAlign.Start
                         ),
                         decorationBox = { innerTextField ->
-                            Row() {
+                            Row {
                                 if (text.isEmpty()) {
                                     Text(
                                         text = placeholder,
@@ -221,7 +225,6 @@ private fun CustomPasswordField(
                         singleLine = true
                     )
                 } else {
-                    Log.d("Password is not hidden", isPasswordVisible.toString())
                     BasicTextField(
                         value = text,
                         onValueChange = onValueChange,
@@ -233,7 +236,7 @@ private fun CustomPasswordField(
                             textAlign = TextAlign.Start
                         ),
                         decorationBox = { innerTextField ->
-                            Row() {
+                            Row {
                                 if (text.isEmpty()) {
                                     Text(
                                         text = placeholder,
@@ -255,15 +258,17 @@ private fun CustomPasswordField(
                         singleLine = true
                     )
                 }
-                IconButton(onClick = {
-                    if (isPasswordVisible.value == false) {
-                        isPasswordVisible.value = true
-                    } else if (isPasswordVisible.value == true) {
-                        isPasswordVisible.value = false
+                IconButton(
+                    onClick = {
+                        if (!isPasswordVisible.value) {
+                            isPasswordVisible.value = true
+                        } else if (isPasswordVisible.value) {
+                            isPasswordVisible.value = false
+                        }
                     }
-                }) {
+                ) {
                     Image(
-                        painter = painterResource(id = com.example.sensimate.R.drawable.eyeoff),
+                        painter = painterResource(id = R.drawable.eyeoff),
                         contentDescription = "",
                         modifier = Modifier.size(25.dp)
                     )

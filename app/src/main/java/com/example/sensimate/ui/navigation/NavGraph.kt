@@ -23,12 +23,11 @@ import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
-import com.example.sensimate.ui.Event.EventUiState
-import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail
 import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
+import com.example.sensimate.ui.createEvent.*
 import com.example.sensimate.ui.home.EventScreen
 import com.example.sensimate.ui.home.EventScreenEmployee
 import com.example.sensimate.ui.profile.ProfileScreen
@@ -104,7 +103,16 @@ fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = screen.route
-    ) {      // Screen.CookieScreen.route
+    ) {
+
+        // Splash-Screen
+       /* composable(route = Screen.SplashScreen.route) {
+            SplashScreen(navController = navController)
+        }
+
+        */
+
+        // Screen.CookieScreen.route
         //Screens when starting up
         composable(route = Screen.CookieScreen.route) {
             CookiesScreen(navController = navController)

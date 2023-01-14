@@ -104,6 +104,15 @@
     <string name="passwordDescription">To keep your account secure, you can change your password
         here. Make sure to provide your current password and make sure that your password is at
         least 8 characters long</string>
+    <string name="enterNewEmail">Enter your new e-mail here</string>
+    <string name="emailDescription">To give you the best experience, we recommend that your email
+        is up to date. You can change it here. For this we will need you to confirm the change by
+        entering your password as well</string>
+    <string name="emailAlert">Please provide both your current password and your desired e-mail
+        in their respective fields.</string>
+    <string name="enterAge">Enter the year that you were born</string>
+    <string name="ageDescription">To give more insightful information to the company, we would like
+        to now about your age. If you would like, you can change it here.</string>
 
 
 
