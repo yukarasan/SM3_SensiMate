@@ -8,6 +8,8 @@ import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sensimate.R
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.createEvent.docId
@@ -18,13 +20,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
+import kotlin.collections.HashMap
+
 
 @SuppressLint("StaticFieldLeak")
 val db = Firebase.firestore
@@ -781,17 +787,13 @@ object Database {
                 docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
 
                 }
-
             }
 
 
     }
 
 
-
-
     suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: MyQuestion) {
-        // ... your existing code here ...
 
         val test = hashMapOf(
             "mainQuestion" to newQuestion.mainQuestion
@@ -814,8 +816,27 @@ object Database {
         val questionRef = db.collection("events").document(eventId)
             .collection("Answers").add(test).addOnSuccessListener { docRef ->
                 docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
+
+                    val optionsString = options.joinToString(",")
+                    exportToExcel(
+                        postalCode = profile.postalCode,
+                        yearBorn = profile.yearBorn.toInt(),
+                        monthBorn = profile.monthBorn.toInt(),
+                        dayBorn = profile.dayBorn.toInt(),
+                        gender = profile.gender,
+                        answer = optionsString,
+                        isEmployee = false
+                    )
+
+
+                }
+            }
+    }
+
                     // Create a new Excel workbook
+/*
                     val workbook = XSSFWorkbook()
+
                     // Create a new sheet in the workbook
                     val sheet = workbook.createSheet("Survey Results")
 
@@ -845,9 +866,9 @@ object Database {
                     row7.createCell(1).setCellValue(survey["isEmployee"].toString())
 
 
-
                     // Write the workbook to a file
-                    val excelExportFolder = File(Environment.getExternalStorageDirectory(), "ExcelExport")
+                    val excelExportFolder =
+                        File(Environment.getExternalStorageDirectory(), "ExcelExport")
                     if (!excelExportFolder.exists()) {
                         excelExportFolder.mkdir()
                     }
@@ -857,10 +878,8 @@ object Database {
                     workbook.write(fileOut)
                     fileOut.close()
 
+ */
 
-                }
-            }
-    }
 
 
 
@@ -899,19 +918,109 @@ object Database {
             }
     }
 
-}
+    private fun exportToExcel(
+        postalCode: String,
+        yearBorn: Int,
+        monthBorn: Int,
+        dayBorn: Int,
+        gender: String,
+        answer: String,
+        isEmployee: Boolean
+    ) {
+        val workbook = XSSFWorkbook()
+        val sheet = workbook.createSheet("Survey")
 
-fun exportToExcel() {} //TODO: LATER
+        // Create the headers
+        val headers = arrayOf(
+            "postalCode",
+            "yearBorn",
+            "monthBorn",
+            "dayBorn",
+            "gender",
+            "answer",
+            "isEmployee"
+        )
+        val row = sheet.createRow(0)
+        for (i in headers.indices) {
+            val cell = row.createCell(i)
+            cell.setCellValue(headers[i])
+        }
+
+        // Create the data row
+        val dataRow = sheet.createRow(1)
+        dataRow.createCell(0).setCellValue(postalCode)
+        dataRow.createCell(1).setCellValue(yearBorn.toString())
+        dataRow.createCell(2).setCellValue(monthBorn.toString())
+        dataRow.createCell(3).setCellValue(dayBorn.toString())
+        dataRow.createCell(4).setCellValue(gender)
+        dataRow.createCell(5).setCellValue(answer)
+        dataRow.createCell(6).setCellValue(isEmployee.toString())
 
 
-data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
+        // Write the workbook to a file
+        val file = File("survey.xlsx")
+        val fileOut = FileOutputStream(file)
+        workbook.write(fileOut)
+        fileOut.close()
+        workbook.close()
+    }
 
 
-object OurCalendar {
-    fun getMonthName(month: Int): String? {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, month)
-        return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+/*
+    private fun exportToExcel(survey: HashMap<String, Any>) {
+        val workbook = XSSFWorkbook()
+        val sheet = workbook.createSheet("Survey")
 
+        // Create the headers
+        val headers = arrayOf(
+            "postalCode",
+            "yearBorn",
+            "monthBorn",
+            "dayBorn",
+            "gender",
+            "answer",
+            "isEmployee"
+        )
+        val row = sheet.createRow(0)
+        for (i in headers.indices) {
+            val cell = row.createCell(i)
+            cell.setCellValue(headers[i])
+        }
+
+        // Create the data rows
+        val dataRow = sheet.createRow(1)
+        dataRow.createCell(0).setCellValue(survey["postalCode"] as String)
+        dataRow.createCell(1).setCellValue(survey["yearBorn"].toString())
+        dataRow.createCell(2).setCellValue(survey["monthBorn"].toString())
+        dataRow.createCell(3).setCellValue(survey["dayBorn"].toString())
+        dataRow.createCell(4).setCellValue(survey["gender"] as String)
+        dataRow.createCell(5).setCellValue(survey["answer"] as String)
+        dataRow.createCell(6).setCellValue(survey["isEmployee"] as Boolean)
+
+
+        // Write the workbook to a file
+        val file = File("survey.xlsx")
+        val fileOut = FileOutputStream(file)
+        workbook.write(fileOut)
+        fileOut.close()
+        workbook.close()
+    }
+
+ */
+
+
+    //TODO: LATER
+
+
+    data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
+
+
+    object OurCalendar {
+        fun getMonthName(month: Int): String? {
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.MONTH, month)
+            return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+
+        }
     }
 }

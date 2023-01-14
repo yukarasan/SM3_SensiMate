@@ -228,6 +228,7 @@ fun AllPages(
                 if (pagerState.currentPage == pagerState.pageCount - 1) {
                     FinishButton(onClick = {
                         navController.navigate(Screen.EventScreen.route)
+                        //questionViewModel.updateAnswer(eventId)
                         questionViewModel.updateAnswer(eventId)
                     })
                 } else {
