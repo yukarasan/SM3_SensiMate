@@ -58,7 +58,7 @@ fun EventScreen(
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
 
     var checked by remember { mutableStateOf(false) }
-    var incorrectEventCode by remember { mutableStateOf(false) }
+    var incorrectEventCodeAlert by remember { mutableStateOf(false) }
 
 
     Box(
@@ -97,13 +97,13 @@ fun EventScreen(
                         ) {
                             if (checked) {
                                 Dialog(onDismissRequest = { /*TODO*/ }) {
-                                    EventQuickEntry(navController = navController){ input ->
-                                        val event = state.events?.find { it.eventId == input}
-                                        if(event !=null){
+                                    EventQuickEntry(navController = navController) { input ->
+                                        val event = state.events?.find { it.eventId == input }
+                                        if (event != null) {
                                             navController.navigate(Screen.ExtendedEventScreen.route)
                                             eventViewModel.setChosenEventId(event.eventId)
-                                        }else{
-                                            incorrectEventCode = true
+                                        } else {
+                                            incorrectEventCodeAlert = true
                                         }
                                     }
                                 }
@@ -174,18 +174,24 @@ fun EventScreen(
             }
         }
     }
-    if (incorrectEventCode) {
-        AlertDialog(onDismissRequest = { incorrectEventCode = false }, text = {
-            Text(
-                "The eventcode or the title that you have provided is incorrect. Please try again."
-            )
-        }, confirmButton = {
-            Button(onClick = {
-                incorrectEventCode = false
-            }) {
-                Text(text = "OK")
+    if (incorrectEventCodeAlert) {
+        AlertDialog(
+            onDismissRequest = { incorrectEventCodeAlert = false },
+            text = {
+                Text(
+                    "The eventcode or the title that you have provided is incorrect. Please try again."
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        incorrectEventCodeAlert = false
+                    }
+                ) {
+                    Text(text = "OK")
+                }
             }
-        })
+        )
     }
 }
 
@@ -242,12 +248,11 @@ private fun EventQuickEntry(navController: NavController, param: (Any) -> Unit) 
                     verticalAlignment = Alignment.Bottom,
                     modifier = Modifier
                         .padding(top = 20.dp)
-                )
-
-                {
+                ) {
                     myButton(
                         onClick = { //måsske skal det være her
-                            navController.navigate(Screen.Survey.route) },
+                            navController.navigate(Screen.Survey.route)
+                        },
                         color = Color.Black, title = "Enter", buttonColor = Color(199, 242, 219)
                     )
                 }
@@ -261,8 +266,6 @@ private fun EventQuickEntry(navController: NavController, param: (Any) -> Unit) 
                         onClick = { navController.navigate(Screen.EventScreen.route) },
                         color = Color.Black, title = "Back", buttonColor = Color.White
                     )
-
-
                 }
             }
         }

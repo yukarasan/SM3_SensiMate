@@ -23,7 +23,6 @@ import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
-import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail

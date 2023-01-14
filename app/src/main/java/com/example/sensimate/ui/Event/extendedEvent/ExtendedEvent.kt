@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -14,11 +15,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -88,57 +91,22 @@ fun ExtendedEvent(
 
                             Spacer(modifier = Modifier.height(10.dp))
 
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
+                            Column(
+                                modifier = Modifier.padding(start = 20.dp, end = 20.dp)
                             ) {
-                                Column(
-                                    modifier = Modifier
-                                        .padding(start = 10.dp)
-                                ) {
-                                    InputField(
-                                        onValueChange = {
-                                            if (it.length <= 4) {
-                                                eventViewModel.updateSurveyCodeString(
-                                                    surveyCode = it
-                                                )
-                                            }
-                                        },
-                                        text = state.value.event.chosenSurveyCode.value
-                                    )
-                                }
-                                Column(
-                                    modifier = Modifier
-                                        .padding(end = 10.dp)
-                                ) {
-                                    Button(
-                                        onClick = {
-                                            if (state.value.event.chosenSurveyCode.value.length < 4) {
-                                                showFieldAlert = true
-                                            } else if (state.value.event.chosenSurveyCode.value ==
-                                                state.value.event.surveyCode) {
-                                                navController.popBackStack()
-                                                navController.navigate(Screen.SurveyCreator.route)
-                                            } else {
-                                                showSecondFieldAlert = true
-                                            }
-                                        },
-                                        colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
-                                        modifier = Modifier
-                                            .size(width = 50.dp, height = 60.dp)
-                                            .padding(bottom = 10.dp)
-                                    ) {
-                                        Text(
-                                            text = "Go",
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 10.sp,
-                                            color = Color.White,
-                                            fontFamily = manropeFamily
-                                        )
-                                    }
-                                }
+                                InputField(
+                                    onValueChange = {
+                                        if (it.length <= 4) {
+                                            eventViewModel.updateSurveyCodeString(
+                                                surveyCode = it
+                                            )
+                                        }
+                                    },
+                                    text = state.value.event.chosenSurveyCode.value
+                                )
                             }
-                            Spacer(modifier = Modifier.size(15.dp))
+
+                            Spacer(modifier = Modifier.size(10.dp))
 
                             Column(
                                 modifier = Modifier.padding(10.dp)
@@ -161,9 +129,46 @@ fun ExtendedEvent(
                                     Address(address = chosenEvent.location)
                                 }
                             }
+                            Spacer(modifier = Modifier.size(10.dp))
                         }
                     }
                 }
+
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, end = 10.dp)
+                    ) {
+                        Button(
+                            onClick = {
+                                if (state.value.event.chosenSurveyCode.value.length < 4) {
+                                    showFieldAlert = true
+                                } else if (state.value.event.chosenSurveyCode.value ==
+                                    state.value.event.surveyCode) {
+                                    navController.popBackStack()
+                                    navController.navigate(Screen.SurveyCreator.route)
+                                } else {
+                                    showSecondFieldAlert = true
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
+                            shape = RoundedCornerShape(20.dp),
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Enter Survey",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp,
+                                color = Color.White,
+                                fontFamily = manropeFamily
+                            )
+                        }
+                    }
+                }
+
             }
 
             if (showFieldAlert) {
@@ -280,8 +285,7 @@ private fun Allergens(title: String, allergen: String, modifier: Modifier = Modi
 @Composable
 private fun InputField(onValueChange: (String) -> Unit, text: String) {
     Column(
-        modifier = Modifier
-            .padding(bottom = 10.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current
         TextField(
@@ -296,12 +300,11 @@ private fun InputField(onValueChange: (String) -> Unit, text: String) {
                 fontWeight = FontWeight.Bold
             ),
             modifier = Modifier
-                .width(240.dp)
+                .fillMaxWidth()
                 .height(50.dp)
-                .padding(end = 10.dp)
                 .background(
                     Color(74, 75, 90),
-                    shape = RoundedCornerShape(35.dp)
+                    shape = RoundedCornerShape(10.dp)
                 ),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
