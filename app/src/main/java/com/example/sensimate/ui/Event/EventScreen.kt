@@ -112,12 +112,14 @@ fun EventScreen(
                                 modifier = Modifier
                                     .size(65.dp)
                                     .padding(top = 12.dp, start = 10.dp)
-                                    .clickable(enabled = true,
+                                    .clickable(
+                                        enabled = true,
                                         onClickLabel = "quick entry",
                                         onClick = {
                                             checked = true
                                         }
-                                    ))
+                                    )
+                            )
                             ProfileLogo(
                                 modifier = Modifier
                                     .size(72.dp)
@@ -276,7 +278,7 @@ private fun EventQuickEntry(navController: NavController, param: (Any) -> Unit) 
 @Composable
 private fun QuickEntryImage(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.ic_add_circle_outlined)
-    Box(modifier = Modifier.padding(top = 5.dp, start = 20.dp)) {
+    Box(modifier = Modifier.padding(top = 5.dp, start = 10.dp)) {
         Image(
             painter = image,
             contentDescription = null,

@@ -67,7 +67,7 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth(),
-            contentPadding = PaddingValues(bottom = 80.dp, top = 20.dp)
+            contentPadding = PaddingValues(bottom = 20.dp, top = 20.dp)
         ) {
             item {
                 Row(
