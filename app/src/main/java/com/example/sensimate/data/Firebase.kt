@@ -8,11 +8,7 @@ import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.*
-import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.sensimate.R
-import com.example.sensimate.data.Database.fetchListOfEvents
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider
@@ -23,17 +19,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
-import java.util.jar.Manifest
-
 
 @SuppressLint("StaticFieldLeak")
 val db = Firebase.firestore
@@ -90,7 +81,7 @@ object Database {
 
     /**
      * This function is used to update fields in the user's profile document in the Firebase
-     * Firestore database.
+     * FireStore database.
      * It retrieves the document of the current user from the "users" collection and updates
      * the provided fields.
      * @param fields A map of field names and their corresponding values to update in the document.
@@ -162,12 +153,6 @@ object Database {
     /**
      * This function deletes the current user's profile from FireStore's users collection
      * and reinserts it with the new email.
-     * @param postalCode The postal code of the user
-     * @param yearBorn the year of birth of the user
-     * @param monthBorn the month of birth of the user
-     * @param dayBorn the day of birth of the user
-     * @param gender the gender of the user
-     * @param newEmail the new email for the user
      * @author Yusuf Kara
      */
     fun deleteAndInsertEmailToFireStore(
@@ -195,6 +180,20 @@ object Database {
         )
     }
 
+    /**
+     * Update the password of the currently logged in user using Firebase Authentication.
+     * It first checks if the user trying to update their password is actually them, by first
+     * asking for their own password, so they can get authenticated.
+     * While this method may be effective, it should be noted that it lacks a certain level
+     * of security. Specifically, the current password can be easily obtained by printing it out.
+     * To ensure a more secure solution, incorporating encryption would be recommended.
+     * However, as it is not a requirement for the current course of study, the current method
+     * remains sufficient for the time being.
+     * @param currentPassword the current password of the user
+     * @param newPassword the new password to be set
+     * @param context the context of the activity or fragment that calls this method
+     * @author Yusuf Kara
+     */
     fun updatePassword(currentPassword: String, newPassword: String, context: Context) {
         val user = FirebaseAuth.getInstance().currentUser
         val credential = EmailAuthProvider
@@ -221,7 +220,7 @@ object Database {
                 ).show()
             }
         }
-    } // TODO: Yusuf
+    }
 
     fun signUserUp(
         email: String,
