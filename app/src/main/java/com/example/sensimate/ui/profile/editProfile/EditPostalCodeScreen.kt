@@ -39,6 +39,11 @@ fun EditPostalCodeScreen(
     val profileState by profileViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
+    // TODO: Check if postal code matches
+    val assetManager = context.assets
+    val inputStream = assetManager.open("postalcodes.txt")
+    val inputString = inputStream.bufferedReader().use { it.readText() }
+
     /**
      * It is not necessary to include "showAlertMessage" in the viewModel, since it is only
      * used within this composable.
@@ -49,6 +54,7 @@ fun EditPostalCodeScreen(
      * @author Yusuf Kara
      */
     var showAlertMessage by remember { mutableStateOf(false) }
+    var showWrongPostalCodeAlert by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -78,7 +84,7 @@ fun EditPostalCodeScreen(
                     onClick = {
                         if (profileState.postalCode.length < 4) {
                             showAlertMessage = true
-                        } else {
+                        } else if (inputString.contains(profileState.postalCode)) {
                             navController.popBackStack()
                             profileViewModel.updatePostalCode(profileState.postalCode)
                             Toast.makeText(
@@ -86,6 +92,8 @@ fun EditPostalCodeScreen(
                                 context.resources.getString(R.string.successfulUpdateOfPostalCode),
                                 Toast.LENGTH_SHORT
                             ).show()
+                        } else {
+                            showWrongPostalCodeAlert = true
                         }
                     }
                 )
@@ -117,6 +125,23 @@ fun EditPostalCodeScreen(
                     Button(
                         onClick = {
                             showAlertMessage = false
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.ok))
+                    }
+                }
+            )
+        }
+
+        if (showWrongPostalCodeAlert) {
+            AlertDialog(onDismissRequest = { showWrongPostalCodeAlert = false },
+                text = {
+                    Text("The postal code you provided is not valid")
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showWrongPostalCodeAlert = false
                         }
                     ) {
                         Text(text = stringResource(id = R.string.ok))
