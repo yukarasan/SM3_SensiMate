@@ -28,8 +28,8 @@ import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.MySensimateLogo
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.components.OrangeBackButton
-import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
-import com.example.sensimate.ui.startupscreens.signUp.myButton
+import com.example.sensimate.ui.startupscreens.components.InitialStartBackground
+import com.example.sensimate.ui.startupscreens.components.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
 
 @Preview(showBackground = true)

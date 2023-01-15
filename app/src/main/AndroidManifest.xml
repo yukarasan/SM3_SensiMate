@@ -4,6 +4,7 @@
     package="com.example.sensimate">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -29,8 +30,18 @@
                 android:name="android.app.lib_name"
                 android:value="" />
 
+
         </activity>
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.file-provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/excel_download" />
+        </provider>
 
     </application>
 

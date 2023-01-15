@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -21,21 +22,19 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(navController: NavController) {
     val scale = remember {
-        Animatable(0f)
+        androidx.compose.animation.core.Animatable(0f)
     }
 
-    // Animation
+    // AnimationEffect
     LaunchedEffect(key1 = true) {
         scale.animateTo(
-            targetValue = 0.7f,
-            // tween Animation
+            targetValue = 0.8f,
             animationSpec = tween(
-                durationMillis = 800,
+                durationMillis = 900,
                 easing = {
                     OvershootInterpolator(4f).getInterpolation(it)
                 })
         )
-        // Customize the delay time
         delay(3000L)
         navController.navigate("main_screen")
     }
@@ -43,10 +42,8 @@ fun SplashScreen(navController: NavController) {
     // Image
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()) {
-        // Change the logo
         Image(painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
-            modifier = Modifier.size(100.dp))
-        //modifier = Modifier.scale(scale.value))
+            modifier = Modifier.scale(scale.value))
     }
 }

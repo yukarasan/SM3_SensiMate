@@ -6,6 +6,7 @@ import EditPage
 import EditSurvey
 import EditSurveyPage
 import TextAnswerViewModel
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+//import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail
@@ -36,8 +38,10 @@ import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.startupscreens.noNet.NoWifiScreen
+import com.example.sensimate.ui.startupscreens.splashscreen.SplashScreen
 import com.example.sensimate.ui.survey.*
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
@@ -104,13 +108,13 @@ fun SetupNavGraph(navController: NavHostController) {
         navController = navController,
         startDestination = screen.route
     ) {
-
+/*
         // Splash-Screen
-       /* composable(route = Screen.SplashScreen.route) {
+       composable(route = Screen.SplashScreen.route) {
             SplashScreen(navController = navController)
         }
 
-        */
+ */
 
         // Screen.CookieScreen.route
         //Screens when starting up

@@ -28,8 +28,8 @@ import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
-import com.example.sensimate.ui.startupscreens.signUp.InitialStartBackground
-import com.example.sensimate.ui.startupscreens.signUp.myButton
+import com.example.sensimate.ui.startupscreens.components.InitialStartBackground
+import com.example.sensimate.ui.startupscreens.components.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
 import java.util.*
 
@@ -320,7 +320,7 @@ fun MyOptionChosen(
             .buttonColors(
                 backgroundColor = buttonColor
             ),
-        modifier = Modifier.size(103.dp, 40.dp),
+        modifier = Modifier.size(110.dp, 40.dp),
         shape = CircleShape,
     ) {
         Text(
@@ -345,7 +345,7 @@ fun MyOtherOption(
             .buttonColors(
                 backgroundColor = Color.Transparent
             ),
-        modifier = Modifier.size(103.dp, 40.dp),
+        modifier = Modifier.size(110.dp, 40.dp),
         shape = CircleShape,
     ) {
         Text(

@@ -17,5 +17,6 @@ data class ProfileUiState(
     var email: String = "",
     var currentPassword: String = "",
     var newPassword: String = "",
-    var isEmployee: Boolean = false
+    var isEmployee: Boolean = false,
+    var isAdmin: Boolean = false
 )
