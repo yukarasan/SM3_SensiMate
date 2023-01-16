@@ -191,7 +191,8 @@ object Database {
             monthBorn = monthBorn,
             dayBorn = dayBorn,
             gender = gender,
-            newEmail = newEmail
+            newEmail = newEmail,
+            isEmployee = false
         )
     }
 
@@ -247,7 +248,8 @@ object Database {
         monthBorn: String,
         dayBorn: String,
         gender: String,
-        successLoggedIn: MutableState<Boolean>
+        successLoggedIn: MutableState<Boolean>,
+        isEmployee: Boolean
     ) {
         showLoading.value = true
 
@@ -262,7 +264,14 @@ object Database {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    setUpProfileInfo(postalCode, yearBorn, monthBorn, dayBorn, gender)
+                    setUpProfileInfo(
+                        postalCode,
+                        yearBorn,
+                        monthBorn,
+                        dayBorn,
+                        gender,
+                        isEmployee
+                    )
 
                 } else {
                     showLoading.value = false
@@ -281,7 +290,8 @@ object Database {
         monthBorn: String,
         dayBorn: String,
         gender: String,
-        newEmail: String
+        newEmail: String,
+        isEmployee: Boolean
     ) {
         val profile = hashMapOf(
             "postalCode" to postalCode,
@@ -301,7 +311,8 @@ object Database {
         yearBorn: String,
         monthBorn: String,
         dayBorn: String,
-        gender: String
+        gender: String,
+        isEmployee: Boolean
     ) {
         val profile = hashMapOf(
             "postalCode" to postalCode,
@@ -309,7 +320,7 @@ object Database {
             "monthBorn" to monthBorn,
             "dayBorn" to dayBorn,
             "gender" to gender,
-            "isEmployee" to false,
+            "isEmployee" to isEmployee,
             "isAdmin" to false
         )
 
@@ -404,8 +415,6 @@ object Database {
                 ).show()
             }
         }
-
-
 
 
         /*
@@ -794,7 +803,13 @@ object Database {
      */
 
 
-    suspend fun updateSurvey(context: Context, eventId: String, options: List<String>, newQuestion: MyQuestion, boolean: Boolean) {
+    suspend fun updateSurvey(
+        context: Context,
+        eventId: String,
+        options: List<String>,
+        newQuestion: MyQuestion,
+        boolean: Boolean
+    ) {
         val test = hashMapOf(
             "mainQuestion" to newQuestion.mainQuestion
         )
@@ -812,13 +827,13 @@ object Database {
             "answer" to options.toString(),
             "isEmployee" to false
         )
-            val scope = MainScope()
+        val scope = MainScope()
 
         val questionRef = db.collection("events").document(eventId)
             .collection("Answers").add(test).addOnSuccessListener { docRef ->
                 docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
 
-                    if(boolean) {
+                    if (boolean) {
                         scope.launch {
                             main(context = context, newQuestion, options)
                         }
@@ -871,28 +886,28 @@ object Database {
     @SuppressLint("SuspiciousIndentation")
     suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
 //        val out = FileOutputStream(File("./test_file.xlsx"))
-       // val filepath = "./test_file.xlsx"
-            // Creating excel workbook
+        // val filepath = "./test_file.xlsx"
+        // Creating excel workbook
 
 
-            val workbook = XSSFWorkbook()
+        val workbook = XSSFWorkbook()
 
-            //Creating first sheet inside workbook
-            //Constants.SHEET_NAME is a string value of sheet name
-            val sheet: Sheet = workbook.createSheet("Survey Results")
+        //Creating first sheet inside workbook
+        //Constants.SHEET_NAME is a string value of sheet name
+        val sheet: Sheet = workbook.createSheet("Survey Results")
 
-            //Create Header Cell Style
-            val cellStyle = getHeaderStyle(workbook)
+        //Create Header Cell Style
+        val cellStyle = getHeaderStyle(workbook)
 
-            //Creating sheet header row
-            createSheetHeader(cellStyle, sheet)
+        //Creating sheet header row
+        createSheetHeader(cellStyle, sheet)
 
         val profile = fetchProfile()!!
 
-            //Adding data to the sheet
-            addData(0, sheet, newQuestion = newQuestion, options, profile)
+        //Adding data to the sheet
+        addData(0, sheet, newQuestion = newQuestion, options, profile)
 
-        createExcel(workbook,context)
+        createExcel(workbook, context)
         /*
         try {
             val xlWb = XSSFWorkbook()
@@ -916,9 +931,9 @@ object Database {
 
          */
     }
-        //Instantiate Excel workbook:
+    //Instantiate Excel workbook:
 
-    }
+}
 
 
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
@@ -928,7 +943,16 @@ private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
     val row = sheet.createRow(0)
 
     //Header list
-    val HEADER_LIST = listOf("mainQuestion", "postalCode", "yearBorn","monthBorn", "dayBorn", "gender", "answer","isEmployee")
+    val HEADER_LIST = listOf(
+        "mainQuestion",
+        "postalCode",
+        "yearBorn",
+        "monthBorn",
+        "dayBorn",
+        "gender",
+        "answer",
+        "isEmployee"
+    )
 
     //Loop to populate each column of header row
     for ((index, value) in HEADER_LIST.withIndex()) {
@@ -989,20 +1013,17 @@ private fun addData(
     createCell(row, 4, profile.dayBorn) //Column 3
     createCell(row, 5, profile.gender) //Column 3
     createCell(row, 6, options.toString()) //Column 3
-    createCell(row, 7, false ) //Column 3
-
+    createCell(row, 7, false) //Column 3
 
 
 }
-
-
 
 
 private fun createCell(row: Row, columnIndex: Int, value: String?) {
     val cell = row.createCell(columnIndex)
     cell?.setCellValue(value)
 
-   // val headerRow = sheet.createRow(0)
+    // val headerRow = sheet.createRow(0)
     /*headerRow.createCell(0).setCellValue("mainQuestion")
     headerRow.createCell(1).setCellValue("postalCode")
     headerRow.createCell(2).setCellValue("yearBorn")
@@ -1035,7 +1056,7 @@ private fun createExcel(workbook: Workbook, context: Context) {
     }
 
     //Create excel file with extension .xlsx
-    val excelFile = File(appDirectory,"survey.xlsx")
+    val excelFile = File(appDirectory, "survey.xlsx")
 
     //Write workbook to file using FileOutputStream
     try {
@@ -1101,13 +1122,20 @@ private fun createExcel(workbook: Workbook, context: Context) {
         val downloadAppIntent = Intent(Intent.ACTION_VIEW)
 
  */
-    val contentUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".file-provider", excelFile)
+    val contentUri = FileProvider.getUriForFile(
+        context,
+        context.applicationContext.packageName + ".file-provider",
+        excelFile
+    )
     val packageManager = context.packageManager
     val intent = Intent(Intent.ACTION_VIEW)
-    intent.setDataAndType(contentUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    intent.setDataAndType(
+        contentUri,
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
     val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-    if(list.size > 0) {
+    if (list.size > 0) {
         context.startActivity(intent)
     } else {
         // Show message to user that no app can open the file
@@ -1122,11 +1150,6 @@ private fun createExcel(workbook: Workbook, context: Context) {
 
 
 }
-
-
-
-
-
 
 
 /*
@@ -1215,47 +1238,47 @@ private fun createExcel(workbook: Workbook, context: Context) {
  */
 
 
-    suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: MyQuestion) {
+suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: MyQuestion) {
 
-        val test = hashMapOf(
-            "mainQuestion" to newQuestion.mainQuestion
-        )
-
-
-        val profile = fetchProfile()!!
+    val test = hashMapOf(
+        "mainQuestion" to newQuestion.mainQuestion
+    )
 
 
-        val survey = hashMapOf(
-            "postalCode" to profile.postalCode,
-            "yearBorn" to profile.yearBorn,
-            "monthBorn" to profile.monthBorn,
-            "dayBorn" to profile.dayBorn,
-            "gender" to profile.gender,
-            "answer" to options.toString(),
-            "isEmployee" to false
-        )
-
-        val questionRef = db.collection("events").document(eventId)
-            .collection("Answers").add(test).addOnSuccessListener { docRef ->
-                docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
-
-                    val optionsString = options.joinToString(",")
-                    exportToExcel(
-                        postalCode = profile.postalCode,
-                        yearBorn = profile.yearBorn.toInt(),
-                        monthBorn = profile.monthBorn.toInt(),
-                        dayBorn = profile.dayBorn.toInt(),
-                        gender = profile.gender,
-                        answer = optionsString,
-                        isEmployee = false
-                    )
+    val profile = fetchProfile()!!
 
 
-                }
+    val survey = hashMapOf(
+        "postalCode" to profile.postalCode,
+        "yearBorn" to profile.yearBorn,
+        "monthBorn" to profile.monthBorn,
+        "dayBorn" to profile.dayBorn,
+        "gender" to profile.gender,
+        "answer" to options.toString(),
+        "isEmployee" to false
+    )
+
+    val questionRef = db.collection("events").document(eventId)
+        .collection("Answers").add(test).addOnSuccessListener { docRef ->
+            docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
+
+                val optionsString = options.joinToString(",")
+                exportToExcel(
+                    postalCode = profile.postalCode,
+                    yearBorn = profile.yearBorn.toInt(),
+                    monthBorn = profile.monthBorn.toInt(),
+                    dayBorn = profile.dayBorn.toInt(),
+                    gender = profile.gender,
+                    answer = optionsString,
+                    isEmployee = false
+                )
+
+
             }
-    }
+        }
+}
 
-                    // Create a new Excel workbook
+// Create a new Excel workbook
 /*
                     val workbook = XSSFWorkbook()
 
@@ -1305,92 +1328,92 @@ private fun createExcel(workbook: Workbook, context: Context) {
 
 
 
-    fun getEmployeeProfiles() {} //TODO: Sabirin
+fun getEmployeeProfiles() {} //TODO: Sabirin
 
-    fun createEmployee() {} //TODO: Anshjyot
+fun createEmployee() {} //TODO: Anshjyot
 
 
-    fun getSurveyWudia(eventId: String) {
-        val db = FirebaseFirestore.getInstance()
-        val eventsRef = db.collection("events")
+fun getSurveyWudia(eventId: String) {
+    val db = FirebaseFirestore.getInstance()
+    val eventsRef = db.collection("events")
 
-        eventsRef.get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val eventId = document.id
-                    val eventRef = eventsRef.document(eventId)
-                    val questionsRef = eventRef.collection("questions")
-                    val questionRef = questionsRef.document("q1")
+    eventsRef.get()
+        .addOnSuccessListener { result ->
+            for (document in result) {
+                val eventId = document.id
+                val eventRef = eventsRef.document(eventId)
+                val questionsRef = eventRef.collection("questions")
+                val questionRef = questionsRef.document("q1")
 
-                    questionRef.get()
-                        .addOnSuccessListener { result ->
-                            val mainQuestion = result.getString("mainQuestion")
-                            val oneChoice = result.getBoolean("oneChoice")
+                questionRef.get()
+                    .addOnSuccessListener { result ->
+                        val mainQuestion = result.getString("mainQuestion")
+                        val oneChoice = result.getBoolean("oneChoice")
 
-                            val optionsRef = questionRef.collection("options")
-                            val answerRef = optionsRef.document("answer")
+                        val optionsRef = questionRef.collection("options")
+                        val answerRef = optionsRef.document("answer")
 
-                            answerRef.get()
-                                .addOnSuccessListener { result ->
-                                    val answer = result.getString("answer")
-                                    // val question = Question2(mainQuestion, oneChoice, answer)
-                                }
-                        }
-                }
+                        answerRef.get()
+                            .addOnSuccessListener { result ->
+                                val answer = result.getString("answer")
+                                // val question = Question2(mainQuestion, oneChoice, answer)
+                            }
+                    }
             }
-    }
-
-    private fun exportToExcel(
-        postalCode: String,
-        yearBorn: Int,
-        monthBorn: Int,
-        dayBorn: Int,
-        gender: String,
-        answer: String,
-        isEmployee: Boolean
-    ) {
-        val workbook = XSSFWorkbook()
-        val sheet = workbook.createSheet("Survey")
-
-        // Create the headers
-        val headers = arrayOf(
-            "postalCode",
-            "yearBorn",
-            "monthBorn",
-            "dayBorn",
-            "gender",
-            "answer",
-            "isEmployee"
-        )
-        val row = sheet.createRow(0)
-        for (i in headers.indices) {
-            val cell = row.createCell(i)
-            cell.setCellValue(headers[i])
         }
+}
 
-        // Create the data row
-        val dataRow = sheet.createRow(1)
-        dataRow.createCell(0).setCellValue(postalCode)
-        dataRow.createCell(1).setCellValue(yearBorn.toString())
-        dataRow.createCell(2).setCellValue(monthBorn.toString())
-        dataRow.createCell(3).setCellValue(dayBorn.toString())
-        dataRow.createCell(4).setCellValue(gender)
-        dataRow.createCell(5).setCellValue(answer)
-        dataRow.createCell(6).setCellValue(isEmployee.toString())
+private fun exportToExcel(
+    postalCode: String,
+    yearBorn: Int,
+    monthBorn: Int,
+    dayBorn: Int,
+    gender: String,
+    answer: String,
+    isEmployee: Boolean
+) {
+    val workbook = XSSFWorkbook()
+    val sheet = workbook.createSheet("Survey")
 
-
-        // Write the workbook to a file
-        val file = File("survey.xlsx")
-        val fileOut = FileOutputStream(file)
-        workbook.write(fileOut)
-        fileOut.close()
-        workbook.close()
+    // Create the headers
+    val headers = arrayOf(
+        "postalCode",
+        "yearBorn",
+        "monthBorn",
+        "dayBorn",
+        "gender",
+        "answer",
+        "isEmployee"
+    )
+    val row = sheet.createRow(0)
+    for (i in headers.indices) {
+        val cell = row.createCell(i)
+        cell.setCellValue(headers[i])
     }
 
+    // Create the data row
+    val dataRow = sheet.createRow(1)
+    dataRow.createCell(0).setCellValue(postalCode)
+    dataRow.createCell(1).setCellValue(yearBorn.toString())
+    dataRow.createCell(2).setCellValue(monthBorn.toString())
+    dataRow.createCell(3).setCellValue(dayBorn.toString())
+    dataRow.createCell(4).setCellValue(gender)
+    dataRow.createCell(5).setCellValue(answer)
+    dataRow.createCell(6).setCellValue(isEmployee.toString())
 
-    fun excel2() {
 
-    }
+    // Write the workbook to a file
+    val file = File("survey.xlsx")
+    val fileOut = FileOutputStream(file)
+    workbook.write(fileOut)
+    fileOut.close()
+    workbook.close()
+}
+
+
+fun excel2() {
+
+}
 
 /*
 
@@ -1436,20 +1459,18 @@ private fun createExcel(workbook: Workbook, context: Context) {
  */
 
 
+//TODO: LATER
 
 
-    //TODO: LATER
+data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
 
 
-    data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
+object OurCalendar {
+    fun getMonthName(month: Int): String? {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.MONTH, month)
+        return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
 
-
-    object OurCalendar {
-        fun getMonthName(month: Int): String? {
-            val calendar = Calendar.getInstance()
-            calendar.set(Calendar.MONTH, month)
-            return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
-
-        }
     }
+}
 
