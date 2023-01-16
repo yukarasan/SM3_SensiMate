@@ -94,28 +94,14 @@ fun EventScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 if (checked.value) {
-                                    Dialog(onDismissRequest = { /*TODO*/ }) {
-                                        EventQuickEntry1(
+                                    Dialog(onDismissRequest = { checked.value = false }) {
+                                        EventQuickEntry(
                                             navController = navController,
                                             dataViewModel = dataViewModel,
                                             eventViewModel = eventViewModel,
                                             checked = checked
                                         )
                                     }
-
-                                    /*
-                                        Dialog(onDismissRequest = { /*TODO*/ }) {
-                                            EventQuickEntry(navController = navController) { input ->
-                                                val event = state.events?.find { it.eventId == input }
-                                                if (event != null) {
-                                                    navController.navigate(Screen.ExtendedEventScreen.route)
-                                                    eventViewModel.setChosenEventId(event.eventId)
-                                                } else {
-                                                    incorrectEventCodeAlert = true
-                                                }
-                                            }
-                                        }
-                                     */
                                 }
                                 QuickEntryImage(
                                     modifier = Modifier
@@ -161,25 +147,6 @@ fun EventScreen(
                                 )
                             }
                         }
-
-
-                        /*
-                        val events = mutableListOf<Event>()
-                        val eventReference = db.collection("events")
-
-                        eventReference.get()
-                            .addOnSuccessListener { collection ->
-                                for (document in collection) {
-                                    val event = document.toObject(Event::class.java)
-                                    events.add(event)
-                                }
-
-
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.d(ContentValues.TAG, "Error getting events: ", exception)
-                            }
-                         */
                     }
                 }
             }
@@ -285,7 +252,7 @@ fun ProfileLogo(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun EventQuickEntry1(
+fun EventQuickEntry(
     navController: NavController,
     dataViewModel: EventDataViewModel,
     eventViewModel: EventViewModel,
@@ -311,7 +278,7 @@ fun EventQuickEntry1(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp),
+                    .padding(start = 20.dp, top = 10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -382,7 +349,7 @@ fun EventQuickEntry1(
                             }
                         }
                     },
-                    modifier = Modifier.padding(start = 30.dp, top = 10.dp, bottom = 10.dp)
+                    modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 10.dp)
                 )
                 MyButton(
                     color = Color.White,
@@ -391,7 +358,7 @@ fun EventQuickEntry1(
                     onClick = {
                         checked.value = false
                     },
-                    modifier = Modifier.padding(end = 30.dp, top = 10.dp, bottom = 10.dp)
+                    modifier = Modifier.padding(end = 10.dp, top = 10.dp, bottom = 10.dp)
                 )
             }
         }
@@ -415,73 +382,6 @@ fun EventQuickEntry1(
         )
     }
 }
-
-/*
-@Composable
-private fun EventQuickEntry(navController: NavController, param: (Any) -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(start = 25.dp, end = 25.dp, top = 10.dp)
-            .fillMaxWidth(),
-        elevation = 5.dp,
-        shape = RoundedCornerShape(20.dp),
-        backgroundColor = Color(red = 44, green = 44, blue = 59)
-    ) {
-        Column(
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                QuickEntryImage2()
-                QuickEntryTitle("Quick Entry")
-            }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 60.dp, top = 20.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    EventInputField({})
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                ) {
-                    myButton(
-                        onClick = { //måsske skal det være her
-                            navController.navigate(Screen.Survey.route)
-                        },
-                        color = Color.Black, title = "Enter", buttonColor = Color(199, 242, 219)
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                ) {
-                    myButton(
-                        onClick = { navController.navigate(Screen.EventScreen.route) },
-                        color = Color.Black, title = "Back", buttonColor = Color.White
-                    )
-                }
-            }
-        }
-    }
-}
- */
 
 @Composable
 private fun QuickEntryImage(modifier: Modifier = Modifier) {
