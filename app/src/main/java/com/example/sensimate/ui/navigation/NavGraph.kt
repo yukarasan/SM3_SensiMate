@@ -5,6 +5,7 @@ import EditEvent
 import EditPage
 import EditSurvey
 import EditSurveyPage
+import QuestionPageViewModel
 import TextAnswerViewModel
 import android.annotation.SuppressLint
 import android.os.Build
@@ -51,6 +52,7 @@ fun SetupNavGraph(navController: NavHostController) {
     val createEventViewModel = CreateEventViewModel()
     val answerViewModel = AnswerViewModel()
     val textAnswerViewModel = TextAnswerViewModel()
+    val questionPageViewModel = QuestionPageViewModel()
 
     val context = LocalContext.current
     InternetBroadcastReceiver(context)
@@ -202,7 +204,7 @@ fun SetupNavGraph(navController: NavHostController) {
             )
         }
         composable(route = Screen.QuestionPageScreen.route) {
-            QuestionPageScreen(navController = navController)
+            QuestionPageScreen(navController = navController,questionPageViewModel = questionPageViewModel)
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
             CreateMultpleChoiceQuestionScreen(

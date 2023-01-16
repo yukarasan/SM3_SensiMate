@@ -1,6 +1,7 @@
 package com.example.sensimate.ui.createEvent
 
 import AnswerViewModel
+import QuestionPageViewModel
 import TextAnswerViewModel
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -54,6 +55,7 @@ import com.example.sensimate.data.Database
 import com.example.sensimate.data.db
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.*
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
 
@@ -61,7 +63,7 @@ import java.util.*
 @Composable
 fun CreateEventPreview() {
    //CreateEventScreen(rememberNavController())
-    QuestionPageScreen(rememberNavController())
+    //QuestionPageScreen(rememberNavController())
     //CreateMultpleChoiceQuestionScreen(rememberNavController())
     //CreateTextAnswerQuestionScreen(rememberNavController())
 }
@@ -519,11 +521,12 @@ fun TextFiledSurveyCodeText(surveyCodeText: MutableState<String>, textChange: (S
     }
 }
 
-
+var nonQuestion: Int = 0
 // figur 2
 @Composable
-fun QuestionPageScreen(navController: NavController) {
-    val selectedQuestion = remember { mutableStateOf("") }
+fun QuestionPageScreen(navController: NavController,questionPageViewModel: QuestionPageViewModel) {
+    //val selectedQuestion = remember { mutableStateOf("") }
+    val state = questionPageViewModel._uistate.collectAsState()
     val context = LocalContext.current
     Box(
         modifier = Modifier
@@ -538,9 +541,10 @@ fun QuestionPageScreen(navController: NavController) {
                 )
             )
     )
-    Column(Modifier
-        .padding(top = 150.dp)
-        .fillMaxSize()) {
+    Column(
+        Modifier
+            .padding(top = 150.dp)
+            .fillMaxSize()) {
         Card(
             modifier = Modifier
                 //.padding(top = 150.dp, bottom = 150.dp)
@@ -551,7 +555,7 @@ fun QuestionPageScreen(navController: NavController) {
 
         ) {  //TODO
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                DropDownMenu(selectedQuestion = selectedQuestion)
+                DropDownMenu(selectedQuestion = state.value.selectedQuestion)
             }
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
                 Text(
@@ -569,25 +573,7 @@ fun QuestionPageScreen(navController: NavController) {
                         .padding(end = 55.dp, top = 225.dp)
                         .size(25.dp)
                         .clickable(enabled = true,
-                            onClick = {
-                                when (selectedQuestion.value) {
-                                    "Multiple-Choice Question" -> {
-                                        navController.navigate(Screen.CreateMultpleChoiceQuestionScreen.route)
-                                    }
-                                    "Text Answer Question" -> {
-                                        navController.navigate(Screen.CreateTextAnswerQuestionScreen.route)
-                                    }
-                                    else -> {
-                                        Toast
-                                            .makeText(
-                                                context,
-                                                "Please Choose a Question Type",
-                                                Toast.LENGTH_SHORT
-                                            )
-                                            .show()
-                                    }
-                                }
-                            }),
+                            onClick = {questionPageViewModel.checkQuestion(navController,context)}),
                     id = R.drawable.redaddplus
                 )
             }
@@ -596,13 +582,7 @@ fun QuestionPageScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedButton(
-                    onClick = {
-                        navController.navigate(Screen.EventScreenEmployee.route){
-                            popUpTo(Screen.EventScreenEmployee.route){
-                                inclusive = true
-                            }
-                        }
-                              },
+                    onClick = { questionPageViewModel.checkNonQuestion(navController,context)},
                     shape = CircleShape,
                     border = BorderStroke(1.dp, color = Color.Green),
                     colors = ButtonDefaults.buttonColors(
@@ -733,7 +713,7 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewMo
 
             Spacer(modifier = Modifier.size(55.dp))
             Button(
-                onClick = { navController.popBackStack() },
+                onClick = { answerViewModel.goBack(navController)},
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
                 modifier = Modifier.size(240.dp, 50.dp)
@@ -807,7 +787,7 @@ fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewM
 
             Spacer(modifier = Modifier.size(55.dp))
             Button(
-                onClick = { navController.popBackStack() },
+                onClick = { textAnswerViewModel.goBack(navController) },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
                 modifier = Modifier.size(240.dp, 50.dp)

@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.sensimate.data.Database
+import com.example.sensimate.ui.createEvent.nonQuestion
 import com.example.sensimate.ui.navigation.Screen
 import com.google.api.Context
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,5 +33,9 @@ class TextAnswerViewModel :ViewModel(){
             _uistate.value = _uistate.value.copy(questionText = mutableStateOf(""))
         }
 
+    }
+    fun goBack(navController: NavController){
+        nonQuestion -=1
+        navController.popBackStack()
     }
 }
