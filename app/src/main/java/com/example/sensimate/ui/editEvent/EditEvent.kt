@@ -43,7 +43,6 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
@@ -62,7 +61,6 @@ import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.*
 import java.io.File
 import java.util.*
-
 
 
 @Preview(showBackground = true)
@@ -89,6 +87,8 @@ fun EditEvent(
     //val context2 = remember { requireContext() }
     var showFieldAlert by remember { mutableStateOf(false) }
     var showSecondFieldAlert by remember { mutableStateOf(false) }
+    var showConfirmation by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier
@@ -243,19 +243,11 @@ fun EditEvent(
                 ) {
                     Button(
                         onClick = {
-                            Database.deleteEvent(chosenEvent.title)
-
-                            navController.navigate(Screen.EventScreenEmployee.route){
-                                popUpTo(Screen.EventScreenEmployee.route){
-                                    inclusive = true
-                                }
-                                navController.clearBackStack(Screen.EditEvent.route)
-                            }
+                            showConfirmation = true
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
                         modifier = Modifier.size(240.dp, 50.dp)
-
                     ) {
                         Text(
                             text = "Delete Event",
@@ -265,9 +257,56 @@ fun EditEvent(
                             fontFamily = manropeFamily
                         )
                     }
-                    val context = LocalContext.current
+                    if (showConfirmation) {
 
-                    if(getBooleanFromLocalStorage("isAdmin", context = context)){
+                        AlertDialog(
+                            onDismissRequest = {
+                                showConfirmation = false
+                            },
+                            title = {
+                                Text(text = "Confirm Deletion")
+                            },
+                            text = {
+                                Text("Are you sure you want to delete this event?")
+                            },
+                            confirmButton = {
+                                Button(
+
+                                    onClick = {
+                                        Database.deleteEvent(chosenEvent.title)
+
+                                         navController.navigate(Screen.EventScreenEmployee.route){
+                                             popUpTo(Screen.EventScreenEmployee.route){
+                                                 inclusive = true
+                                             }
+                                             navController.clearBackStack(Screen.EditEvent.route)
+                                         }
+
+                                        showConfirmation = false
+
+                                    }) {
+                                    Text("Delete Event")
+                                }
+                            },
+                            dismissButton = {
+                                Button(
+
+                                    onClick = {
+                                        showConfirmation = false
+                                    }) {
+                                    Text("Cancel")
+                                }
+                            }
+                        )
+                    }
+                }
+
+            }
+        }
+
+        val context = LocalContext.current
+
+        if (getBooleanFromLocalStorage("isAdmin", context = context)) {
 
                         Spacer(modifier = Modifier.size(40.dp))
                         Button(
@@ -349,48 +388,16 @@ fun EditEvent(
                             colors = ButtonDefaults.buttonColors(Color(0xFFC0CC5C)),
                             modifier = Modifier.size(240.dp, 50.dp)
 
-                        ) {
-                            Text(
-                                text = "Extract excel",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 25.sp,
-                                color = Color.White,
-                                fontFamily = manropeFamily
-                            )
-                        }
-                    }
-                }
+            ) {
+                Text(
+                    text = "Extract excel",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 25.sp,
+                    color = Color.White,
+                    fontFamily = manropeFamily
+                )
             }
         }
-    }
-
-    if (showFieldAlert) {
-        AlertDialog(onDismissRequest = { showFieldAlert = false }, text = {
-            Text(
-                "The provided survey code must be exactly 4 characters long. Please " +
-                        "try again"
-            )
-        }, confirmButton = {
-            Button(onClick = {
-                showFieldAlert = false
-            }) {
-                Text(text = "OK")
-            }
-        })
-    }
-
-    if (showSecondFieldAlert) {
-        AlertDialog(onDismissRequest = { showSecondFieldAlert = false }, text = {
-            Text(
-                "The survey code that you provided is not correct. Please try again."
-            )
-        }, confirmButton = {
-            Button(onClick = {
-                showSecondFieldAlert = false
-            }) {
-                Text(text = "OK")
-            }
-        })
     }
 }
 
@@ -1086,10 +1093,10 @@ fun EditSurveyPage(navController: NavController) {
  */
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
         OrangeBackButton(onClick = {
-            navController.navigate(Screen.EventScreenEmployee.route){
-               popUpTo(Screen.EditEvent.route){
-                   inclusive=true
-               }
+            navController.navigate(Screen.EventScreenEmployee.route) {
+                popUpTo(Screen.EditEvent.route) {
+                    inclusive = true
+                }
             }
         }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
     }

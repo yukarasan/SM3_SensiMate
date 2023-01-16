@@ -36,6 +36,8 @@ import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import androidx.compose.foundation.Image
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import com.example.sensimate.ui.Event.viewModels.EventDataViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
@@ -46,7 +48,6 @@ import java.util.*
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-
 fun EventScreen(
     navController: NavController,
     dataViewModel: EventDataViewModel = viewModel(),
@@ -60,7 +61,6 @@ fun EventScreen(
     var checked by remember { mutableStateOf(false) }
     var incorrectEventCodeAlert by remember { mutableStateOf(false) }
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,21 +73,125 @@ fun EventScreen(
                 )
             )
     ) {
-        SwipeRefresh(
-            state = swipeRefreshState,
-            onRefresh = { dataViewModel.getListOfEvents() },
-            indicator = { state, refreshTrigger ->
-                SwipeRefreshIndicator(
-                    state = state,
-                    refreshTriggerDistance = refreshTrigger,
-                    backgroundColor = BottomGradient,
-                    contentColor = Color.White
-                )
+        if (state.events?.size != 0) {
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = { dataViewModel.getListOfEvents() },
+                indicator = { state, refreshTrigger ->
+                    SwipeRefreshIndicator(
+                        state = state,
+                        refreshTriggerDistance = refreshTrigger,
+                        backgroundColor = BottomGradient,
+                        contentColor = Color.White
+                    )
+                }
+            ) {
+                Column() {
+                    LazyColumn(
+                        contentPadding = PaddingValues(bottom = 20.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                if (checked) {
+                                    Dialog(onDismissRequest = { /*TODO*/ }) {
+                                        EventQuickEntry(navController = navController) { input ->
+                                            val event = state.events?.find { it.eventId == input }
+                                            if (event != null) {
+                                                navController.navigate(Screen.ExtendedEventScreen.route)
+                                                eventViewModel.setChosenEventId(event.eventId)
+                                            } else {
+                                                incorrectEventCodeAlert = true
+                                            }
+                                        }
+                                    }
+                                }
+                                QuickEntryImage(
+                                    modifier = Modifier
+                                        .size(65.dp)
+                                        .padding(top = 12.dp, start = 10.dp)
+                                        .clickable(
+                                            enabled = true,
+                                            onClickLabel = "quick entry",
+                                            onClick = {
+                                                checked = true
+                                            }
+                                        )
+                                )
+                                ProfileLogo(
+                                    modifier = Modifier
+                                        .size(72.dp)
+                                        .padding(top = 20.dp, end = 20.dp)
+                                        .clickable(enabled = true,
+                                            onClickLabel = "profile",
+                                            onClick = {
+                                                navController.navigate(Screen.ProfileScreen.route)
+                                            }
+                                        )
+                                )
+                            }
+                        }
+
+                        state.events?.let {
+                            items(it.toList()) { event ->
+                                eventViewModel.insertEvent(event)
+
+                                EventCard(
+                                    title = event.title,
+                                    hour = event.hour,
+                                    minute = event.minute,
+                                    address = event.location,
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.ExtendedEventScreen.route
+                                        )
+                                        eventViewModel.setChosenEventId(event.eventId)
+                                    }
+                                )
+                            }
+                        }
+
+
+                        /*
+                        val events = mutableListOf<Event>()
+                        val eventReference = db.collection("events")
+
+                        eventReference.get()
+                            .addOnSuccessListener { collection ->
+                                for (document in collection) {
+                                    val event = document.toObject(Event::class.java)
+                                    events.add(event)
+                                }
+
+
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.d(ContentValues.TAG, "Error getting events: ", exception)
+                            }
+                         */
+                    }
+                }
             }
-        ) {
-            Column() {
+        } else {
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = { dataViewModel.getListOfEvents() },
+                indicator = { state, refreshTrigger ->
+                    SwipeRefreshIndicator(
+                        state = state,
+                        refreshTriggerDistance = refreshTrigger,
+                        backgroundColor = BottomGradient,
+                        contentColor = Color.White
+                    )
+                }
+            ) {
                 LazyColumn(
                     contentPadding = PaddingValues(bottom = 20.dp),
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     item {
                         Row(
@@ -96,17 +200,21 @@ fun EventScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             if (checked) {
-                                Dialog(onDismissRequest = { /*TODO*/ }) {
-                                    EventQuickEntry(navController = navController) { input ->
-                                        val event = state.events?.find { it.eventId == input }
-                                        if (event != null) {
-                                            navController.navigate(Screen.ExtendedEventScreen.route)
-                                            eventViewModel.setChosenEventId(event.eventId)
-                                        } else {
-                                            incorrectEventCodeAlert = true
+                                AlertDialog(onDismissRequest = { checked = false },
+                                    text = {
+                                        Text("No events to join. Please wait until an " +
+                                                "event is displayed")
+                                    },
+                                    confirmButton = {
+                                        Button(
+                                            onClick = {
+                                                checked = false
+                                            }
+                                        ) {
+                                            Text(text = stringResource(id = R.string.ok))
                                         }
                                     }
-                                }
+                                )
                             }
                             QuickEntryImage(
                                 modifier = Modifier
@@ -133,55 +241,31 @@ fun EventScreen(
                             )
                         }
                     }
-
-                    state.events?.let {
-                        items(it.toList()) { event ->
-
-                            eventViewModel.insertEvent(event)
-
-
-                            EventCard(
-                                title = event.title,
-                                hour = event.hour,
-                                minute = event.minute,
-                                address = event.location,
-                                onClick = {
-                                    navController.navigate(
-                                        Screen.ExtendedEventScreen.route
-                                    )
-                                    eventViewModel.setChosenEventId(event.eventId)
-                                }
-                            )
-                        }
-                    }
-
-                    /*
-                    val events = mutableListOf<Event>()
-                    val eventReference = db.collection("events")
-
-                    eventReference.get()
-                        .addOnSuccessListener { collection ->
-                            for (document in collection) {
-                                val event = document.toObject(Event::class.java)
-                                events.add(event)
-                            }
-
-
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.d(ContentValues.TAG, "Error getting events: ", exception)
-                        }
-                     */
+                }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(
+                        text = "No events are currently available",
+                        fontFamily = manropeFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 32.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }
     }
+
     if (incorrectEventCodeAlert) {
         AlertDialog(
             onDismissRequest = { incorrectEventCodeAlert = false },
             text = {
                 Text(
-                    "The eventcode or the title that you have provided is incorrect. Please try again."
+                    "The event code or the title that you have provided is incorrect. Please try again."
                 )
             },
             confirmButton = {
