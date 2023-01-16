@@ -119,19 +119,21 @@ fun EmployeesListScreen(
                 onClick = {
                     Database.signOut(context = context)
                     navController.popBackStack()
+                    navController.popBackStack()
                     navController.navigate(Screen.Login.route)
                 }
             )
         }
+
+        Spacer(modifier = Modifier.size(20.dp))
+        EmployeeListTitle()
+        Spacer(modifier = Modifier.size(5.dp))
 
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.size(20.dp))
-            EmployeeListTitle()
-            Spacer(modifier = Modifier.size(5.dp))
 
             if (state.value.loaded.value) {
                 BuildProfileList(emails = state.value.mails, showDialog, chosenMail)
@@ -143,10 +145,6 @@ fun EmployeesListScreen(
         }
     }
 
-
-
-
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -155,10 +153,7 @@ fun EmployeesListScreen(
             DeleteProfileDialog(email = chosenMail.value, showDialog, adminViewModel = viewModel)
         }
     }
-
-
 }
-
 
 @Composable
 fun BuildProfileList(
@@ -178,7 +173,7 @@ fun BuildProfileList(
     }
 }
 
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun PreviewBuildProfileList() {
     BuildProfileList(
@@ -335,14 +330,18 @@ private fun EmployeeListTitle() {
                     )
                 )
         ) {
-            Text(
-                "Employee List",
-                style = TextStyle(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
+
+            Column(modifier = Modifier.padding(start = 6.dp)) {
+                Text(
+                    "Employee List",
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    )
                 )
-            )
+            }
+
         }
         Box(
             modifier = Modifier

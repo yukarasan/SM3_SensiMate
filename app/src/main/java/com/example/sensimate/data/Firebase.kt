@@ -459,6 +459,13 @@ object Database {
             ).update("isEmployee", false)
     } //TODO: Hussein
 
+    fun employProfile(context: Context, email: String) {
+        db.collection("users")
+            .document(
+                email
+            ).update("isEmployee", true)
+    } //TODO: Hussein
+
     fun forgotPassword(
         email: String,
         context: Context,
