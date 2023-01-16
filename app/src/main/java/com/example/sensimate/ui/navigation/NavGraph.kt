@@ -38,7 +38,6 @@ import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.startupscreens.noNet.NoWifiScreen
-import com.example.sensimate.ui.startupscreens.splashscreen.SplashScreen
 import com.example.sensimate.ui.survey.*
 
 @SuppressLint("StateFlowValueCalledInComposition")
