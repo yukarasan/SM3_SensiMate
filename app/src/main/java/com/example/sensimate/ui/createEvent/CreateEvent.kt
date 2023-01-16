@@ -112,10 +112,6 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
             Spacer(modifier = Modifier.size(27.dp))
             TextFiledDescriptionText(state.value.descriptionText) { state.value.descriptionText.value = it }
             Spacer(modifier = Modifier.size(55.dp))
-            /*TextFiledEventCodeText(eventCode = state.value.eventCode, textChange = {
-                if (it.length <= maxChar) state.value.eventCode.value = it})
-
-             */
 
             Card(
                 modifier = Modifier

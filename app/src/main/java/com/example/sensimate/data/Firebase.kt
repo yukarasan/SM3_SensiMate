@@ -525,7 +525,6 @@ object Database {
         year: String,
         hour: String,
         minute: String,
-        //eventCode : String
     ) {
         val event = hashMapOf(
             "title" to title,
@@ -538,7 +537,6 @@ object Database {
             "year" to year,
             "hour" to hour,
             "minute" to minute,
-            //"eventCode" to eventCode
         )
         db.collection("events").add(event).addOnSuccessListener { docRef ->
             event.set("eventId", docRef.id)
@@ -654,7 +652,8 @@ object Database {
 
     fun editEvent() {} //TODO: Sabirin
 
-    fun deleteEvent(eventtitle: String) {
+    fun deleteEvent(eventtitle: String
+    ) {
         //val docref = db.collection()
         db.collection("events").whereEqualTo("title", eventtitle)
             .get()
