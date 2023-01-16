@@ -1,5 +1,6 @@
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.util.Log
@@ -78,6 +79,7 @@ fun EditEvent(
 
     var showFieldAlert by remember { mutableStateOf(false) }
     var showSecondFieldAlert by remember { mutableStateOf(false) }
+    var showConfirmation by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -232,14 +234,62 @@ fun EditEvent(
                 ) {
                     Button(
                         onClick = {
+                            showConfirmation = true
+                        },
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
+                        modifier = Modifier.size(240.dp, 50.dp)
+                    ) {
+                        Text(
+                            text = "Delete Event",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 25.sp,
+                            color = Color.White,
+                            fontFamily = manropeFamily
+                        )
+                    }
+
+                    if (showConfirmation) {
+                        AlertDialog(
+                            onDismissRequest = { showConfirmation = false },
+                            title = { Text("Confirm Deletion") },
+                            text = { Text("Are you sure you want to delete this event?") },
+                            buttons = {
+                                Button(onClick = {
+                                    Database.deleteEvent(chosenEvent.title)
+                                    /*
+                                     navController.navigate(Screen.EventScreenEmployee.route){
+                                         popUpTo(Screen.EventScreenEmployee.route){
+                                             inclusive = true
+                                         }
+                                         navController.clearBackStack(Screen.EditEvent.route)
+                                     }
+                                     */
+                                    showConfirmation = false
+                                }) {
+                                    Text("Delete")
+                                }
+                                Button(onClick = { showConfirmation = false }) {
+                                    Text("Cancel")
+                                }
+                            }
+                        )
+                    }
+
+                    /*
+                    Button(
+                        onClick = {
                             Database.deleteEvent(chosenEvent.title)
 
+                            /*
                             navController.navigate(Screen.EventScreenEmployee.route){
                                 popUpTo(Screen.EventScreenEmployee.route){
                                     inclusive = true
                                 }
                                 navController.clearBackStack(Screen.EditEvent.route)
                             }
+
+                             */
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
@@ -254,6 +304,8 @@ fun EditEvent(
                             fontFamily = manropeFamily
                         )
                     }
+
+                     */
                     val context = LocalContext.current
 
                     if(getBooleanFromLocalStorage("isAdmin", context = context)){
