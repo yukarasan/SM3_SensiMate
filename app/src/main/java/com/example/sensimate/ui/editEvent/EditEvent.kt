@@ -2,6 +2,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.os.Environment
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.TimePicker
@@ -36,12 +38,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
+import com.example.sensimate.data.Database.main
+import com.example.sensimate.data.Database.su
+import com.example.sensimate.data.Database.updateSurvey
+
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -51,6 +60,7 @@ import com.example.sensimate.ui.createEvent.TextToPhoto
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.*
+import java.io.File
 import java.util.*
 
 
@@ -58,7 +68,7 @@ import java.util.*
 @Preview(showBackground = true)
 @Composable
 fun EditEventPreview() {
-    EditEvent(navController = rememberNavController())
+    EditEvent(navController = rememberNavController(), questionViewModel = QuestionViewModel())
     //EditPage()
     //EditSurvey()
     //EditSurveyPage()
@@ -69,13 +79,14 @@ fun EditEventPreview() {
 @Composable
 fun EditEvent(
     navController: NavController,
-    eventViewModel: EventViewModel = viewModel()
+    eventViewModel: EventViewModel = viewModel(),
+    questionViewModel: QuestionViewModel
 ) {
 
     val eventState = eventViewModel.uiState
     val chosenEvent = eventViewModel.getEventById(eventState.value.chosenSurveyId)
     val state = eventViewModel.uiState.collectAsState()
-
+    //val context2 = remember { requireContext() }
     var showFieldAlert by remember { mutableStateOf(false) }
     var showSecondFieldAlert by remember { mutableStateOf(false) }
 
@@ -260,7 +271,80 @@ fun EditEvent(
 
                         Spacer(modifier = Modifier.size(40.dp))
                         Button(
-                            onClick = { /*//TODO: HusseAnsh*/ },
+                            onClick = {
+                                //main(emptyArray())
+                                questionViewModel.updateAnswer(chosenEvent.eventId, context = context,
+                                    boolean = true
+                                )
+                                //su()
+                                //su()
+                                //val file = File("survey_results.xlsx")
+                                //val folder = File(context.getExternalFilesDir(null)?.absolutePath + File.separator + "ExcelExport")
+
+                                /*val folder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "ExcelExport")
+                                if (!folder.exists()) {
+                                    folder.mkdirs()
+                                }
+                                val file = File(folder,"survey_results.xlsx")
+                                //val file = File(context.getExternalFilesDir(folder),"survey_results.xlsx")
+                                if (file.exists()) {
+                                    val contentUri = FileProvider.getUriForFile(
+                                        context,
+                                        "com.example.file-provider",
+                                        file
+                                    )
+                                    val openFileIntent = Intent(Intent.ACTION_VIEW)
+                                    openFileIntent.setDataAndType(
+                                        contentUri,
+                                        "application/vnd.ms-excel"
+                                    )
+                                    openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    openFileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    context.startActivity(openFileIntent)
+
+                                 */
+
+
+                                navController.navigate(Screen.EditEvent.route)
+
+                                /*
+                                val activity = currentActivity.value
+                                val file = File("survey_results.xlsx")
+                                val contentUri = FileProvider.getUriForFile(activity, "com.example.fileprovider", file)
+                                val openFileIntent = Intent(Intent.ACTION_VIEW)
+                                openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
+                                openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                openFileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                activity?.startActivity(openFileIntent)
+
+                                 */
+
+                                /*
+                                val file = File("survey_results.xlsx")
+                                val contentUri = FileProvider.getUriForFile(context2, "com.example.file-provider", file)
+                                val openFileIntent = Intent(Intent.ACTION_VIEW)
+                                openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
+                                openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                context.startActivity(openFileIntent)
+
+                                 */
+                                /*
+                                val file = File("survey_results.xlsx")
+                                val contentUri = FileProvider.getUriForFile(context, "com.example.fileprovider", file)
+                                val openFileIntent = Intent(Intent.ACTION_VIEW)
+                                openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
+                                openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                startActivity(openFileIntent)
+
+                                 */
+
+                                /*val file = File("survey_results.xlsx")
+                          val contentUri = FileProvider.getUriForFile(context, "com.example.fileprovider", file)
+                          val openFileIntent = Intent(Intent.ACTION_VIEW)
+                          openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
+                          openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                          startActivity(openFileIntent) */
+                                /*//TODO: HusseAnsh*/ },
                             shape = CircleShape,
                             colors = ButtonDefaults.buttonColors(Color(0xFFC0CC5C)),
                             modifier = Modifier.size(240.dp, 50.dp)

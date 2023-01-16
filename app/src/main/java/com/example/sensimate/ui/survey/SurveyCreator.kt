@@ -26,6 +26,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
@@ -138,6 +140,7 @@ fun AllPages(
 
     //val selectedAnswers = remember { mutableStateOf(listOf<MyAnswer>()) }
 
+    val progressState = remember { mutableStateOf(0f) }
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
@@ -151,6 +154,8 @@ fun AllPages(
         // for (question in questions) {
         //questions[questionIndex]
 
+
+        progressState.value = (pagerState.currentPage + 1) / questions.size.toFloat()
 
         for (option in questions[questionIndex].options) {
             answers.add(option)
@@ -204,7 +209,6 @@ fun AllPages(
                 .fillMaxSize()
                 .padding(bottom = 50.dp)
         ) {
-
             Row(
                 modifier = Modifier
                     .padding(start = 15.dp, end = 15.dp)
@@ -225,11 +229,14 @@ fun AllPages(
                     })
                 }
 
+                val context = LocalContext.current
+
+
                 if (pagerState.currentPage == pagerState.pageCount - 1) {
                     FinishButton(onClick = {
-                        navController.navigate(Screen.EventScreen.route)
                         //questionViewModel.updateAnswer(eventId)
-                        questionViewModel.updateAnswer(eventId)
+                        questionViewModel.updateAnswer(eventId, context = context, boolean = false)
+                        navController.navigate(Screen.EventScreen.route)
                     })
                 } else {
                     Row(  modifier = Modifier
@@ -258,6 +265,8 @@ fun AllPages(
         }
     }
 }
+
+
 
 
 

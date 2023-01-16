@@ -59,8 +59,8 @@ fun Survey4(title: String, navController: NavController, questionViewModel: Ques
                     .fillMaxSize()
                     .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
             ) {
-                OrangeBackButton({navController.popBackStack()})
-                ProgressPreview()
+                OrangeBackButton { navController.popBackStack() }
+                //ProgressPreview()
                 Question(title)
                 SurveyTitle(title)
                 Information4(questionViewModel)
@@ -83,9 +83,9 @@ fun Survey4(title: String, navController: NavController, questionViewModel: Ques
 
 
 
-
+/*
 @Composable
-private fun ProgressPreview() {
+private fun ProgressPreview(progress: Float) {
     LinearProgressIndicator(
         modifier = Modifier
             .padding(top = 20.dp, start = 0.dp)
@@ -94,9 +94,11 @@ private fun ProgressPreview() {
             .clip(RoundedCornerShape(15.dp)),
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
-        progress = 1f //TODO:  Needs state hoisting in future.
+        progress = progress //1f //TODO:  Needs state hoisting in future.
     )
 }
+
+ */
 
 
 @SuppressLint("StateFlowValueCalledInComposition", "MutableCollectionMutableState")

@@ -49,10 +49,12 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sensimate.MainActivity
 //import com.example.sensimate.ExcelDownloader
 import com.example.sensimate.ui.startupscreens.splashscreen.SplashScreen
 import kotlinx.coroutines.delay
@@ -84,36 +86,25 @@ open class QuestionViewModel : ViewModel() {
     }
 
     fun updateAnswer(
-        eventId: String
+        eventId: String, boolean: Boolean, context: Context
     ) {
 
+        //Database.requestStoragePermission(context as Activity)
         viewModelScope.launch {
 
-            Database.updateSurvey(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion)
+
+            Database.updateSurvey(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion,
+                boolean = boolean, context = context
+            )
         }
     }
 
-/*
-    private lateinit var excelDownloader: ExcelDownloader
 
-    fun setExcelDownloader(context: Context) {
-        excelDownloader = context as ExcelDownloader
-    }
-
- */
-
-
-/*
-    fun setExcelDownloader(excelDownloader: ExcelDownloader) {
-        this.excelDownloader = excelDownloader
-    }
-
- */
 
 
     fun excel(eventId: String) {
         viewModelScope.launch {
-            Database.updateSurvey2(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion)
+            //Database.updateSurvey2(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion)
             //excelDownloader.downloadExcel()
         }
     }

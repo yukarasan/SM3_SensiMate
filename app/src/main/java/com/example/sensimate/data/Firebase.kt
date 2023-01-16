@@ -1,16 +1,20 @@
 package com.example.sensimate.data
 
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.*
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.sensimate.R
+import com.example.sensimate.data.Database.fetchProfile
 import com.example.sensimate.data.questionandsurvey.MyQuestion
 import com.example.sensimate.ui.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider
@@ -21,15 +25,16 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import org.apache.poi.ss.usermodel.*
+import org.apache.poi.xssf.usermodel.IndexedColorMap
+import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.io.IOException
 import java.util.*
-import kotlin.collections.HashMap
 
 
 @SuppressLint("StaticFieldLeak")
@@ -762,7 +767,7 @@ object Database {
      */
 
 
-    suspend fun updateSurvey(eventId: String, options: List<String>, newQuestion: MyQuestion) {
+    suspend fun updateSurvey(context: Context, eventId: String, options: List<String>, newQuestion: MyQuestion, boolean: Boolean) {
         val test = hashMapOf(
             "mainQuestion" to newQuestion.mainQuestion
         )
@@ -780,17 +785,326 @@ object Database {
             "answer" to options.toString(),
             "isEmployee" to false
         )
-
+            val scope = MainScope()
 
         val questionRef = db.collection("events").document(eventId)
             .collection("Answers").add(test).addOnSuccessListener { docRef ->
                 docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
+
+                    if(boolean) {
+                        scope.launch {
+                            main(context = context, newQuestion, options)
+                        }
+
+                    }
 
                 }
             }
 
 
     }
+
+    private val REQUEST_CODE_STORAGE_PERMISSION = 1
+/*
+    fun requestStoragePermission(activity: Activity) :Boolean {
+        val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+        return ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE_STORAGE_PERMISSION) == PackageManager.PERMISSION_GRANTED
+    }
+
+ */
+/*
+    fun requestStoragePermission(activity: Activity) :Boolean {
+        val writePermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                || ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Toast.makeText(activity, "The app needs storage permission to save survey results in an excel file on your device.", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Please provide storage permission to save survey results.", Toast.LENGTH_LONG).show()
+            }
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_STORAGE_PERMISSION)
+            return false
+        }else{
+            return true
+        }
+    }
+
+ */
+
+
+    fun su() {
+        val workbook = XSSFWorkbook()
+        val sheet = workbook.createSheet("Survey Results")
+        sheet.createRow(0).createCell(0).setCellValue("Hello")
+        val output = FileOutputStream("/test.xlsx")
+        workbook.write(output)
+        workbook.close()
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
+//        val out = FileOutputStream(File("./test_file.xlsx"))
+       // val filepath = "./test_file.xlsx"
+            // Creating excel workbook
+            val workbook = XSSFWorkbook()
+
+            //Creating first sheet inside workbook
+            //Constants.SHEET_NAME is a string value of sheet name
+            val sheet: Sheet = workbook.createSheet("Survey Results")
+
+            //Create Header Cell Style
+            val cellStyle = getHeaderStyle(workbook)
+
+            //Creating sheet header row
+            createSheetHeader(cellStyle, sheet)
+
+        val profile = fetchProfile()!!
+
+            //Adding data to the sheet
+            addData(0, sheet, newQuestion = newQuestion, options, profile)
+
+        createExcel(workbook,context)
+        /*
+        try {
+            val xlWb = XSSFWorkbook()
+            //Instantiate Excel worksheet:
+            val xlWs = xlWb.createSheet()
+            //Row index specifies the row in the worksheet (starting at 0):
+            val rowNumber = 0
+            //Cell index specifies the column within the chosen row (starting at 0):
+            val columnNumber = 0
+            //Write text value to cell located at ROW_NUMBER / COLUMN_NUMBER:
+            val xlRow = xlWs.createRow(rowNumber)
+            val xlCol = xlRow.createCell(columnNumber)
+            xlCol.setCellValue("Test")
+            //Write file:
+            val outputStream = FileOutputStream(File("./test_file.xlsx"))
+            xlWb.write(outputStream)
+            xlWb.close()
+        }
+        catch (E:Exception) {
+            Log.d("TESTTEST","EXCEL")
+
+         */
+    }
+        //Instantiate Excel workbook:
+
+    }
+
+
+private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
+    //setHeaderStyle is a custom function written below to add header style
+
+    //Create sheet first row
+    val row = sheet.createRow(0)
+
+    //Header list
+    val HEADER_LIST = listOf("mainQuestion", "postalCode", "yearBorn","monthBorn", "dayBorn", "gender", "answer","isEmployee")
+
+    //Loop to populate each column of header row
+    for ((index, value) in HEADER_LIST.withIndex()) {
+
+        val columnWidth = (15 * 500)
+
+        //index represents the column number
+        sheet.setColumnWidth(index, columnWidth)
+
+        //Create cell
+        val cell = row.createCell(index)
+
+        //value represents the header value from HEADER_LIST
+        cell?.setCellValue(value)
+
+        //Apply style to cell
+        cell.cellStyle = cellStyle
+    }
+}
+
+private fun getHeaderStyle(workbook: Workbook): CellStyle {
+
+    //Cell style for header row
+    val cellStyle: CellStyle = workbook.createCellStyle()
+
+    //Apply cell color
+    val colorMap: IndexedColorMap = (workbook as XSSFWorkbook).stylesSource.indexedColors
+    var color = XSSFColor(IndexedColors.RED, colorMap).indexed
+    cellStyle.fillForegroundColor = color
+    cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+
+    //Apply font style on cell text
+    val whiteFont = workbook.createFont()
+    color = XSSFColor(IndexedColors.WHITE, colorMap).indexed
+    whiteFont.color = color
+    whiteFont.bold = true
+    cellStyle.setFont(whiteFont)
+
+
+    return cellStyle
+}
+
+private fun addData(
+    rowIndex: Int,
+    sheet: Sheet,
+    newQuestion: MyQuestion,
+    options: List<String>,
+    profile: Profile
+) {
+
+    //Create row based on row index
+    val row = sheet.createRow(rowIndex)
+    //Add data to each cell
+    createCell(row, 0, newQuestion.mainQuestion) //Column 1
+    createCell(row, 1, profile.postalCode) //Column 2
+    createCell(row, 2, profile.yearBorn) //Column 3
+    createCell(row, 3, profile.monthBorn) //Column 3
+    createCell(row, 4, profile.dayBorn) //Column 3
+    createCell(row, 5, profile.gender) //Column 3
+    createCell(row, 6, options.toString()) //Column 3
+    createCell(row, 7, false ) //Column 3
+
+
+
+}
+
+
+
+
+private fun createCell(row: Row, columnIndex: Int, value: String?) {
+    val cell = row.createCell(columnIndex)
+    cell?.setCellValue(value)
+
+   // val headerRow = sheet.createRow(0)
+    /*headerRow.createCell(0).setCellValue("mainQuestion")
+    headerRow.createCell(1).setCellValue("postalCode")
+    headerRow.createCell(2).setCellValue("yearBorn")
+    headerRow.createCell(3).setCellValue("monthBorn")
+    headerRow.createCell(4).setCellValue("dayBorn")
+    headerRow.createCell(5).setCellValue("gender")
+    headerRow.createCell(6).setCellValue("answer")
+    headerRow.createCell(7).setCellValue("isEmployee")
+
+     */
+
+}
+
+private fun createCell(row: Row, columnIndex: Int, value: Boolean) {
+    val cell = row.createCell(columnIndex)
+    cell?.setCellValue(value)
+
+}
+
+
+private fun createExcel(workbook: Workbook, context: Context) {
+
+    //Get App Director, APP_DIRECTORY_NAME is a string
+    val appDirectory = context.getExternalFilesDir("Sensimate")
+
+    //Check App Directory whether it exists or not, create if not.
+    if (appDirectory != null && !appDirectory.exists()) {
+        appDirectory.mkdirs()
+    }
+
+    //Create excel file with extension .xlsx
+    val excelFile = File(appDirectory,"survey.xlsx")
+
+    //Write workbook to file using FileOutputStream
+    try {
+
+    } catch (e: FileNotFoundException) {
+        e.printStackTrace()
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+
+    val fileOut = FileOutputStream(excelFile)
+    workbook.write(fileOut)
+    fileOut.close()
+}
+
+
+
+
+
+
+/*
+
+    suspend fun test2(context:Context, eventId: String, options: List<String>, newQuestion: MyQuestion) {
+        val test = hashMapOf(
+            "mainQuestion" to newQuestion.mainQuestion
+        )
+
+        val profile = fetchProfile()!!
+
+        val survey = hashMapOf(
+            "postalCode" to profile.postalCode,
+            "yearBorn" to profile.yearBorn,
+            "monthBorn" to profile.monthBorn,
+            "dayBorn" to profile.dayBorn,
+            "gender" to profile.gender,
+            "answer" to options.toString(),
+            "isEmployee" to false
+        )
+
+        val questionRef = db.collection("events").document(eventId)
+            .collection("Answers").add(test).addOnSuccessListener { docRef ->
+                docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
+                    val workbook = XSSFWorkbook()
+                    val sheet = workbook.createSheet("Survey Results")
+
+                    val headerRow = sheet.createRow(0)
+                    headerRow.createCell(0).setCellValue("mainQuestion")
+                    headerRow.createCell(1).setCellValue("postalCode")
+                    headerRow.createCell(2).setCellValue("yearBorn")
+                    headerRow.createCell(3).setCellValue("monthBorn")
+                    headerRow.createCell(4).setCellValue("dayBorn")
+                    headerRow.createCell(5).setCellValue("gender")
+                    headerRow.createCell(6).setCellValue("answer")
+                    headerRow.createCell(7).setCellValue("isEmployee")
+
+                    val dataRow = sheet.createRow(1)
+                    dataRow.createCell(0).setCellValue(newQuestion.mainQuestion)
+                    dataRow.createCell(1).setCellValue(profile.postalCode)
+                    dataRow.createCell(2).setCellValue(profile.yearBorn)
+                    dataRow.createCell(3).setCellValue(profile.monthBorn)
+                    dataRow.createCell(4).setCellValue(profile.dayBorn)
+                    dataRow.createCell(5).setCellValue(profile.gender)
+                    dataRow.createCell(6).setCellValue(options.toString())
+                    dataRow.createCell(7).setCellValue(false)
+                    if(requestStoragePermission(context as Activity)){
+                        val folder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),"ExcelExport")
+                        if (!folder.exists()) {
+                            if(folder.mkdirs()){
+                                val file = File(folder,"survey_results.xlsx")
+                                try {
+                                    val outputStream = FileOutputStream(file)
+                                    workbook.write(outputStream)
+                                    outputStream.close()
+                                    Toast.makeText(context, "File saved successfully at ${folder.path}", Toast.LENGTH_LONG).show()
+                                } catch (e: IOException) {
+                                    Toast.makeText(context, "Error saving file: ${e.message}", Toast.LENGTH_LONG).show()
+                                }
+                            }else{
+                                Toast.makeText(context, "Error creating directory", Toast.LENGTH_LONG).show()
+                            }
+                        }else{
+                            val file = File(folder,"survey_results.xlsx")
+                            try {
+                                val outputStream = FileOutputStream(file)
+                                workbook.write(outputStream)
+                                outputStream.close()
+                                Toast.makeText(context, "File saved successfully at ${folder.path}", Toast.LENGTH_LONG).show()
+                            } catch (e: IOException) {
+                                Toast.makeText(context, "Error saving file: ${e.message}", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }else{
+                        Toast.makeText(context, "Permission denied, please provide storage permission", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+    }
+
+ */
 
 
     suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: MyQuestion) {
@@ -966,7 +1280,12 @@ object Database {
     }
 
 
+    fun excel2() {
+
+    }
+
 /*
+
     private fun exportToExcel(survey: HashMap<String, Any>) {
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Survey")
@@ -1009,6 +1328,8 @@ object Database {
  */
 
 
+
+
     //TODO: LATER
 
 
@@ -1023,4 +1344,4 @@ object Database {
 
         }
     }
-}
+

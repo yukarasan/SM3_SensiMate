@@ -255,7 +255,7 @@ fun SetupNavGraph(navController: NavHostController) {
          */
 
         composable(Screen.EditEvent.route) {
-            EditEvent(navController = navController, eventViewModel = eventViewModel)
+            EditEvent(navController = navController, eventViewModel = eventViewModel, questionViewModel)
         }
 
         /*

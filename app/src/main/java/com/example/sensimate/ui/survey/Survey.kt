@@ -39,6 +39,7 @@ import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
@@ -68,7 +69,7 @@ fun Survey(
                     .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
             ) {
                 OrangeBackButton({navController.popBackStack()})
-                ProgressPreview()
+                //ProgressPreview()
                 Question(title)
                 SurveyTitle(title)
                 Information(
@@ -94,7 +95,7 @@ fun Survey(
 
 
 @Composable
-private fun ProgressPreview() {
+fun ProgressPreview(progress: Float) {
     LinearProgressIndicator(
         modifier = Modifier
             .padding(top = 20.dp, start = 0.dp)
@@ -103,7 +104,7 @@ private fun ProgressPreview() {
             .clip(RoundedCornerShape(15.dp)),
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
-        progress = 0.25f //TODO:  Needs state hoisting in future.
+        progress = progress //0.25f //TODO:  Needs state hoisting in future.
 
     )
 }
