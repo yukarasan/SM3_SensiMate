@@ -6,13 +6,16 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.sensimate.R
 import com.example.sensimate.data.Database.fetchProfile
 import com.example.sensimate.data.questionandsurvey.MyQuestion
@@ -845,6 +848,7 @@ object Database {
 //        val out = FileOutputStream(File("./test_file.xlsx"))
        // val filepath = "./test_file.xlsx"
             // Creating excel workbook
+
             val workbook = XSSFWorkbook()
 
             //Creating first sheet inside workbook
@@ -1018,7 +1022,63 @@ private fun createExcel(workbook: Workbook, context: Context) {
     val fileOut = FileOutputStream(excelFile)
     workbook.write(fileOut)
     fileOut.close()
+
+/*
+    val intent = Intent(Intent.ACTION_VIEW)
+    val uri: Uri = FileProvider.getUriForFile(
+        context, context.applicationContext.packageName + "com.example.file-provider", excelFile)
+    intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    context.startActivity(intent)
+
+ */
+/*
+    val activity = currentActivity.value
+    val file = File("survey_results.xlsx")
+    val contentUri = FileProvider.getUriForFile(activity, "com.example.fileprovider", file)
+    val openFileIntent = Intent(Intent.ACTION_VIEW)
+    openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
+    openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    openFileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    activity?.startActivity(openFileIntent)
+
+ */
+/*
+    val contentUri = FileProvider.getUriForFile(context, "com.example.file-provider", excelFile)
+    val openFileIntent = Intent(Intent.ACTION_VIEW)
+    openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
+    openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    context.startActivity(openFileIntent)
+
+ */
+/*
+    val file = File(context.getExternalFilesDir(null), "test_file.xlsx")
+    val out = FileOutputStream(file)
+    workbook.write(out)
+    out.close()
+
+ */
+
+    val contentUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".file-provider", excelFile)
+    val packageManager = context.packageManager
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.setDataAndType(contentUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+    if(list.size > 0) {
+        context.startActivity(intent)
+    } else {
+        // Show message to user that no app can open the file
+        Toast.makeText(context, "No app found to open this file type, " +
+                "Would you like to download a spreadsheet app?", Toast.LENGTH_SHORT).show()
+        val downloadAppIntent = Intent(Intent.ACTION_VIEW)
+        downloadAppIntent.data = Uri.parse("https://play.google.com/store/search?q=spreadsheet&c=apps")
+        context.startActivity(downloadAppIntent)
+    }
+
+
 }
+
 
 
 

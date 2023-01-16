@@ -3,6 +3,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.widget.DatePicker
@@ -342,6 +343,9 @@ fun EditEvent(
                                     context.startActivity(openFileIntent)
 
                                  */
+
+
+
 
 
                                 navController.navigate(Screen.EditEvent.route)
