@@ -5,6 +5,7 @@ import EditEvent
 import EditPage
 import EditSurvey
 import EditSurveyPage
+import QuestionPageViewModel
 import TextAnswerViewModel
 import android.annotation.SuppressLint
 import android.os.Build
@@ -40,7 +41,6 @@ import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.startupscreens.noNet.NoWifiScreen
-import com.example.sensimate.ui.startupscreens.splashscreen.SplashScreen
 import com.example.sensimate.ui.survey.*
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -54,6 +54,7 @@ fun SetupNavGraph(navController: NavHostController) {
     val createEventViewModel = CreateEventViewModel()
     val answerViewModel = AnswerViewModel()
     val textAnswerViewModel = TextAnswerViewModel()
+    val questionPageViewModel = QuestionPageViewModel()
 
     val context = LocalContext.current
     InternetBroadcastReceiver(context)
@@ -209,7 +210,7 @@ fun SetupNavGraph(navController: NavHostController) {
             )
         }
         composable(route = Screen.QuestionPageScreen.route) {
-            QuestionPageScreen(navController = navController)
+            QuestionPageScreen(navController = navController,questionPageViewModel = questionPageViewModel)
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
             CreateMultpleChoiceQuestionScreen(
@@ -261,7 +262,7 @@ fun SetupNavGraph(navController: NavHostController) {
          */
 
         composable(Screen.EditEvent.route) {
-            EditEvent(navController = navController, eventViewModel = eventViewModel)
+            EditEvent(navController = navController, eventViewModel = eventViewModel, questionViewModel)
         }
 
         /*

@@ -1,13 +1,6 @@
 package com.example.sensimate.ui.home
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.Color.BLACK
-import android.graphics.Color.WHITE
-import android.media.Image
-import android.media.tv.TvContract.Programs.Genres.encode
-import android.net.Uri.encode
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sensimate.R
@@ -36,8 +28,13 @@ import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.window.Dialog
 import com.example.sensimate.ui.Event.viewModels.EventDataViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
@@ -58,8 +55,7 @@ fun EventScreen(
     val isLoading by isLoadingViewModel.isLoading.collectAsState()
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
 
-    var checked by remember { mutableStateOf(false) }
-    var incorrectEventCodeAlert by remember { mutableStateOf(false) }
+    val checked = remember { mutableStateOf<Boolean>(false) }
 
     Box(
         modifier = Modifier
@@ -97,17 +93,14 @@ fun EventScreen(
                                     .fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                if (checked) {
-                                    Dialog(onDismissRequest = { /*TODO*/ }) {
-                                        EventQuickEntry(navController = navController) { input ->
-                                            val event = state.events?.find { it.eventId == input }
-                                            if (event != null) {
-                                                navController.navigate(Screen.ExtendedEventScreen.route)
-                                                eventViewModel.setChosenEventId(event.eventId)
-                                            } else {
-                                                incorrectEventCodeAlert = true
-                                            }
-                                        }
+                                if (checked.value) {
+                                    Dialog(onDismissRequest = { checked.value = false }) {
+                                        EventQuickEntry(
+                                            navController = navController,
+                                            dataViewModel = dataViewModel,
+                                            eventViewModel = eventViewModel,
+                                            checked = checked
+                                        )
                                     }
                                 }
                                 QuickEntryImage(
@@ -118,7 +111,7 @@ fun EventScreen(
                                             enabled = true,
                                             onClickLabel = "quick entry",
                                             onClick = {
-                                                checked = true
+                                                checked.value = true
                                             }
                                         )
                                 )
@@ -154,25 +147,6 @@ fun EventScreen(
                                 )
                             }
                         }
-
-
-                        /*
-                        val events = mutableListOf<Event>()
-                        val eventReference = db.collection("events")
-
-                        eventReference.get()
-                            .addOnSuccessListener { collection ->
-                                for (document in collection) {
-                                    val event = document.toObject(Event::class.java)
-                                    events.add(event)
-                                }
-
-
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.d(ContentValues.TAG, "Error getting events: ", exception)
-                            }
-                         */
                     }
                 }
             }
@@ -199,16 +173,18 @@ fun EventScreen(
                                 .fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            if (checked) {
-                                AlertDialog(onDismissRequest = { checked = false },
+                            if (checked.value) {
+                                AlertDialog(onDismissRequest = { checked.value = false },
                                     text = {
-                                        Text("No events to join. Please wait until an " +
-                                                "event is displayed")
+                                        Text(
+                                            "No events to join. Please wait until an " +
+                                                    "event is displayed"
+                                        )
                                     },
                                     confirmButton = {
                                         Button(
                                             onClick = {
-                                                checked = false
+                                                checked.value = false
                                             }
                                         ) {
                                             Text(text = stringResource(id = R.string.ok))
@@ -224,7 +200,7 @@ fun EventScreen(
                                         enabled = true,
                                         onClickLabel = "quick entry",
                                         onClick = {
-                                            checked = true
+                                            checked.value = true
                                         }
                                     )
                             )
@@ -259,26 +235,6 @@ fun EventScreen(
             }
         }
     }
-
-    if (incorrectEventCodeAlert) {
-        AlertDialog(
-            onDismissRequest = { incorrectEventCodeAlert = false },
-            text = {
-                Text(
-                    "The event code or the title that you have provided is incorrect. Please try again."
-                )
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        incorrectEventCodeAlert = false
-                    }
-                ) {
-                    Text(text = "OK")
-                }
-            }
-        )
-    }
 }
 
 
@@ -293,71 +249,139 @@ fun ProfileLogo(modifier: Modifier = Modifier) {
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-private fun EventQuickEntry(navController: NavController, param: (Any) -> Unit) {
+fun EventQuickEntry(
+    navController: NavController,
+    dataViewModel: EventDataViewModel,
+    eventViewModel: EventViewModel,
+    checked: MutableState<Boolean> = mutableStateOf(false)
+) {
+    var incorrectEventCodeAlert by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Card(
         modifier = Modifier
-            .padding(start = 25.dp, end = 25.dp, top = 10.dp)
+            .padding(start = 25.dp, end = 25.dp, top = 25.dp)
             .fillMaxWidth(),
         elevation = 5.dp,
         shape = RoundedCornerShape(20.dp),
         backgroundColor = Color(red = 44, green = 44, blue = 59)
     ) {
         Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, top = 10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                QuickEntryImage2()
-                QuickEntryTitle("Quick Entry") //TODO: Make text as recourse
+                AlertQuickEntryImage(
+                    modifier = Modifier
+                        .size(50.dp)
+                )
+                Text(
+                    text = "Quick Entry",
+                    fontSize = 22.sp,
+                    fontFamily = manropeFamily,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, top = 10.dp),
+                    textAlign = TextAlign.Left,
+                    color = Color.White,
+                )
             }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 60.dp, top = 20.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    EventInputField({})
-                }
+            TextField(
+                value = eventViewModel.uiState.value.event.chosenSurveyCode.value,
+                onValueChange = {
+                    if (it.length <= 4) {
+                        eventViewModel.updateSurveyCodeString(it)
+                    }
+                },
+                label = { Text("Enter Survey Code", color = Color.White) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { keyboardController?.hide() }
+                ),
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 2.dp),
+                textStyle = TextStyle(
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontFamily = manropeFamily,
+                    fontWeight = FontWeight.Bold
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = DarkPurple,
+                    unfocusedIndicatorColor = DarkPurple
+                )
+            )
 
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                ) {
-                    myButton(
-                        onClick = { //måsske skal det være her
-                            navController.navigate(Screen.Survey.route)
-                        },
-                        color = Color.Black, title = "Enter", buttonColor = Color(199, 242, 219)
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier
-                        .padding(top = 20.dp)
-                ) {
-                    myButton(
-                        onClick = { navController.navigate(Screen.EventScreen.route) },
-                        color = Color.Black, title = "Back", buttonColor = Color.White
-                    )
-                }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MyButton(
+                    color = Color.White,
+                    title = "Submit",
+                    buttonColor = BottomGradient,
+                    onClick = {
+                        // retrieve event from FireStore database using the survey code
+                        dataViewModel.getEventBySurveyCode(
+                            eventViewModel.uiState.value.event.chosenSurveyCode.value
+                        ) { event ->
+                            if (event != null) {
+                                navController.navigate(Screen.ExtendedEventScreen.route)
+                                eventViewModel.setChosenEventId(event.eventId)
+                            } else {
+                                incorrectEventCodeAlert = true
+                            }
+                        }
+                    },
+                    modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 10.dp)
+                )
+                MyButton(
+                    color = Color.White,
+                    title = "Cancel",
+                    buttonColor = Color(184, 58, 58, 255),
+                    onClick = {
+                        checked.value = false
+                    },
+                    modifier = Modifier.padding(end = 10.dp, top = 10.dp, bottom = 10.dp)
+                )
             }
         }
     }
-}
 
+    if (incorrectEventCodeAlert) {
+        AlertDialog(
+            onDismissRequest = { incorrectEventCodeAlert = false },
+            title = { Text("Incorrect Survey Code") },
+            text = { Text("The survey code you entered does not match any event.") },
+            buttons = {
+                Button(
+                    onClick = {
+                        incorrectEventCodeAlert = false
+                    },
+                    modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+            }
+        )
+    }
+}
 
 @Composable
 private fun QuickEntryImage(modifier: Modifier = Modifier) {
@@ -375,17 +399,13 @@ private fun QuickEntryImage(modifier: Modifier = Modifier) {
 
 
 @Composable
-private fun QuickEntryImage2(modifier: Modifier = Modifier) {
+private fun AlertQuickEntryImage(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.ic_add_circle_outlined)
-    Box(modifier = Modifier.padding(top = 5.dp, start = 15.dp)) {
-        Image(
-            painter = image,
-            contentDescription = null,
-            modifier = modifier
-                // .fillMaxSize()
-                .size(50.dp)
-        )
-    }
+    Image(
+        painter = image,
+        contentDescription = null,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -434,7 +454,7 @@ private fun EventInputField(onClick: () -> Unit) {
                     ),
                     shape = RoundedCornerShape(35.dp)
                 )
-                .width(400.dp)
+                .fillMaxWidth()
                 .height(50.dp)
                 .background(
                     Color(74, 75, 90),
@@ -475,11 +495,12 @@ private fun Placeholder() {
 }
 
 @Composable
-fun myButton(
+fun MyButton(
     color: Color,
     title: String,
     buttonColor: Color,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
@@ -487,7 +508,7 @@ fun myButton(
             .buttonColors(
                 backgroundColor = buttonColor
             ),
-        modifier = Modifier.size(110.dp, 35.dp),
+        modifier = modifier,
         shape = CircleShape,
     ) {
         Text(

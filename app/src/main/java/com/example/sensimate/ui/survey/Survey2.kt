@@ -53,10 +53,10 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
         items(1) {
-            OrangeBackButton({navController.popBackStack()})
+            OrangeBackButton { navController.popBackStack() }
         }
         items(1) {
-            ProgressPreview()
+            //ProgressPreview()
         }
         items(1) {
             Question(title)
@@ -82,8 +82,9 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
     }
 }
 
+/*
 @Composable
-private fun ProgressPreview() {
+private fun ProgressPreview(progress: Float) {
     LinearProgressIndicator(
         modifier = Modifier
             .padding(top = 20.dp, start = 0.dp)
@@ -92,10 +93,12 @@ private fun ProgressPreview() {
             .clip(RoundedCornerShape(15.dp)),
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
-        progress = 0.50f //TODO:  Needs state hoisting in future.
+        progress = progress //0.50f //TODO:  Needs state hoisting in future.
 
     )
 }
+
+ */
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable

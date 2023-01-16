@@ -11,10 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Brush
@@ -33,6 +30,9 @@ import com.example.sensimate.ui.Event.viewModels.EventDataViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 
 @Preview(showBackground = true)
@@ -53,15 +53,16 @@ fun EventScreenEmployee(
     val state = dataViewModel.state.value
 
     val state1 = eventViewModel.uiState
+    val isLoadingViewModel = viewModel<EventDataViewModel>()
     val chosenEvent = eventViewModel.getEventById(state1.value.chosenSurveyId)
+    val isLoading by isLoadingViewModel.isLoading.collectAsState()
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
 
     Log.d("CHOSENNNNNN", chosenEvent.eventId)
 
     val showDialog = remember {
         mutableStateOf(false)
     }
-
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -81,55 +82,71 @@ fun EventScreenEmployee(
             MyDialog(navController = navController, showDialog)
         }
 
-        Column() {
-            LazyColumn(
-                contentPadding = PaddingValues(bottom = 20.dp),
-            ) {
-                //val state = dataViewModel.state.value
-
-                item {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        AddEventImage(navController = navController)
-                        ProfileLogo(
-                            Modifier
-                                .clickable { showDialog.value = true }
-                                .size(64.dp)
-                                .padding(end = 13.dp, top = 15.dp))
-                    }
-
-                }
+        SwipeRefresh(
+            state = swipeRefreshState,
+            onRefresh = { dataViewModel.getListOfEvents() },
+            indicator = { state, refreshTrigger ->
+                SwipeRefreshIndicator(
+                    state = state,
+                    refreshTriggerDistance = refreshTrigger,
+                    backgroundColor = BottomGradient,
+                    contentColor = Color.White
+                )
             }
+        ) {
+            Column() {
+                LazyColumn(
+                    contentPadding = PaddingValues(bottom = 20.dp),
+                ) {
+                    //val state = dataViewModel.state.value
 
+                    item {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            AddEventImage(navController = navController)
+                            ProfileLogo(
+                                Modifier
+                                    .clickable { showDialog.value = true }
+                                    .size(64.dp)
+                                    .padding(end = 13.dp, top = 15.dp))
+                        }
 
-            LazyColumn(
-                contentPadding = PaddingValues(bottom = 20.dp),
-            ) {
-
-                eventViewModel.emptyList()
-
-                state.events?.let {
-                    items(it.toList()) { event ->
-
-                        eventViewModel.insertEvent(event)
-
-                        EventCard(
-                            title = event.title,
-                            hour = event.hour,
-                            minute = event.minute,
-                            address = event.location,
-                            onClick = {
-                                navController.navigate(
-                                    Screen.EditEvent.route
-                                )
-                                eventViewModel.setChosenEventId(event.eventId)
-                                Log.d("CLICKED",event.eventId )
-                            }
-                        )
                     }
+                }
+
+                if (state.events?.size != 0) {
+                    LazyColumn(
+                        contentPadding = PaddingValues(bottom = 20.dp),
+                    ) {
+
+                        eventViewModel.emptyList()
+
+                        state.events?.let {
+                            items(it.toList()) { event ->
+
+                                eventViewModel.insertEvent(event)
+
+                                EventCard(
+                                    title = event.title,
+                                    hour = event.hour,
+                                    minute = event.minute,
+                                    address = event.location,
+                                    onClick = {
+                                        navController.navigate(
+                                            Screen.EditEvent.route
+                                        )
+                                        eventViewModel.setChosenEventId(event.eventId)
+                                        Log.d("CLICKED", event.eventId)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    // todo:
                 }
             }
         }
