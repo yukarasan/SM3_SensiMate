@@ -81,13 +81,7 @@ class CreateEventViewModel: ViewModel(){
                 "Please enter a 4 digit SurveyCode",
                 Toast.LENGTH_SHORT
             ).show()
-        }/*else if (uistate.value.eventCode.value.length < 4) {
-                Toast.makeText(
-                    context,
-                    "Please enter a 4 digit EventCode",
-                    Toast.LENGTH_SHORT
-                ).show()
-                */
+        }
         else {
             Database.createEvent(
                 title = uistate.value.titleText.value,
@@ -100,7 +94,6 @@ class CreateEventViewModel: ViewModel(){
                 year = uistate.value.myYear.value,
                 hour = uistate.value.myHour.value,
                 minute = uistate.value.myMinute.value,
-                //eventCode = uistate.value.eventCode.value
             )
             navController.navigate(Screen.QuestionPageScreen.route)
             _uistate.value = _uistate.value.copy(titleText = mutableStateOf(""),
