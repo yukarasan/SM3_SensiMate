@@ -1,6 +1,5 @@
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.util.Log
@@ -39,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
@@ -79,6 +77,7 @@ fun EditEvent(
     var showFieldAlert by remember { mutableStateOf(false) }
     var showSecondFieldAlert by remember { mutableStateOf(false) }
     var showConfirmation by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier
@@ -247,35 +246,6 @@ fun EditEvent(
                             fontFamily = manropeFamily
                         )
                     }
-/*
-                    if (showConfirmation) {
-                        AlertDialog(
-                            onDismissRequest = { showConfirmation = false },
-                            title = { Text("Confirm Deletion") },
-                            text = { Text("Are you sure you want to delete this event?") },
-                            buttons = {
-                                Button(onClick = {
-                                    Database.deleteEvent(chosenEvent.title)
-                                    /*
-                                     navController.navigate(Screen.EventScreenEmployee.route){
-                                         popUpTo(Screen.EventScreenEmployee.route){
-                                             inclusive = true
-                                         }
-                                         navController.clearBackStack(Screen.EditEvent.route)
-                                     }
-                                     */
-                                    showConfirmation = false
-                                }) {
-                                    Text("Delete")
-                                }
-                                Button(onClick = { showConfirmation = false }) {
-                                    Text("Cancel")
-                                }
-                            }
-                        )
-                    }
-
- */
                     if (showConfirmation) {
 
                         AlertDialog(
@@ -290,16 +260,17 @@ fun EditEvent(
                             },
                             confirmButton = {
                                 Button(
+
                                     onClick = {
                                         Database.deleteEvent(chosenEvent.title)
-                                        /*
+
                                          navController.navigate(Screen.EventScreenEmployee.route){
                                              popUpTo(Screen.EventScreenEmployee.route){
                                                  inclusive = true
                                              }
                                              navController.clearBackStack(Screen.EditEvent.route)
                                          }
-                                         */
+
                                         showConfirmation = false
 
                                     }) {
@@ -322,37 +293,6 @@ fun EditEvent(
             }
         }
 
-
-        /*
-        Button(
-            onClick = {
-                Database.deleteEvent(chosenEvent.title)
-
-                /*
-                navController.navigate(Screen.EventScreenEmployee.route){
-                    popUpTo(Screen.EventScreenEmployee.route){
-                        inclusive = true
-                    }
-                    navController.clearBackStack(Screen.EditEvent.route)
-                }
-
-                 */
-            },
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(Color(0xFFB83A3A)),
-            modifier = Modifier.size(240.dp, 50.dp)
-
-        ) {
-            Text(
-                text = "Delete Event",
-                fontWeight = FontWeight.Bold,
-                fontSize = 25.sp,
-                color = Color.White,
-                fontFamily = manropeFamily
-            )
-        }
-
-         */
         val context = LocalContext.current
 
         if (getBooleanFromLocalStorage("isAdmin", context = context)) {
