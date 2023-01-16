@@ -185,7 +185,10 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
                     }
                     Spacer(modifier = Modifier.size(55.dp))
                     Button(
-                        onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                        onClick = {
+                            navController.navigate(Screen.EventScreenEmployee.route){
+                                navController.popBackStack()
+                            } },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = RedColor),
                         modifier = Modifier.size(240.dp, 50.dp)
@@ -597,7 +600,13 @@ fun QuestionPageScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedButton(
-                    onClick = { navController.navigate(Screen.EventScreenEmployee.route) },
+                    onClick = {
+                        navController.navigate(Screen.EventScreenEmployee.route){
+                            popUpTo(Screen.EventScreenEmployee.route){
+                                inclusive = true
+                            }
+                        }
+                              },
                     shape = CircleShape,
                     border = BorderStroke(1.dp, color = Color.Green),
                     colors = ButtonDefaults.buttonColors(
