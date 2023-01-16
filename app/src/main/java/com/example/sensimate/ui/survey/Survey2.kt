@@ -47,27 +47,17 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
                 )
             )
     )
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
-        items(1) {
-            OrangeBackButton { navController.popBackStack() }
-        }
-        items(1) {
+
+        OrangeBackButton { navController.popBackStack() }
             //ProgressPreview()
-        }
-        items(1) {
             Question(title)
-        }
-        items(1) {
             SurveyTitle(title)
-        }
-        items(1) {
             Information2(questionViewModel)
-        }
-        items(1) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Bottom,
@@ -80,7 +70,7 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
             }
         }
     }
-}
+
 
 /*
 @Composable

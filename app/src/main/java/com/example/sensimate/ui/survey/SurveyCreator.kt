@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -52,7 +53,11 @@ fun SurveyCreator(
     {
     }
 
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         val showLoading = remember {
             mutableStateOf(true)
         }
@@ -60,11 +65,9 @@ fun SurveyCreator(
     }
 
 
-
     val surveyId = eventViewModel.uiState.value.chosenSurveyId
     val state = questionViewModel.uiState.value
     var hasOther: Boolean = false
-
 
 
     // Returns a scope that's cancelled when F is removed from composition
@@ -78,7 +81,12 @@ fun SurveyCreator(
 
     if (loaded2.value) {
         Log.d("sjdj", "dk")
-        AllPages(navController, questionViewModel.uiState.value.questions, questionViewModel, surveyId)
+        AllPages(
+            navController,
+            questionViewModel.uiState.value.questions,
+            questionViewModel,
+            surveyId
+        )
     }
 
     LaunchedEffect(key1 = true) {
@@ -154,15 +162,11 @@ fun AllPages(
         // for (question in questions) {
         //questions[questionIndex]
 
-
         progressState.value = (pagerState.currentPage + 1) / questions.size.toFloat()
 
         for (option in questions[questionIndex].options) {
             answers.add(option)
-
             questionViewModel.setCurrentQuestion(questions[questionIndex])
-
-
             if (!questions[questionIndex].oneChoice) {
 
                 Survey4(
@@ -173,17 +177,24 @@ fun AllPages(
                 )
 
 
-
             } else if (questions[questionIndex].oneChoice) {
 
-                Survey2(
-                    title = questions[questionIndex].mainQuestion,
-                    navController = navController,
-                    questionViewModel
-                )
+                LazyColumn() {
+                    item {
+                        ProgressPreview(progress = progressState.value)
+                        Survey2(
+                            title = questions[questionIndex].mainQuestion,
+                            navController = navController,
+                            questionViewModel
+                        )
+
+                        
+                    }
+                }
+            }
 
 
-            } else if (questions[questionIndex].oneChoice2) {
+             else if (questions[questionIndex].oneChoice2) {
 
                 Survey3(
                     title = questions[questionIndex].mainQuestion,
@@ -239,9 +250,11 @@ fun AllPages(
                         navController.navigate(Screen.EventScreen.route)
                     })
                 } else {
-                    Row(  modifier = Modifier
-                        .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
                         NextButton(onClick = {
                             if (pagerState.currentPage < pagerState.pageCount - 1) {
                                 scope.launch {
@@ -265,6 +278,8 @@ fun AllPages(
         }
     }
 }
+
+
 
 
 

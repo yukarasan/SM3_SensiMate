@@ -37,8 +37,10 @@ class CreateEmployeeViewModel: ViewModel() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-           // Database.createEmployee(uiState.value.email.value,
-              //  uiState.value.password.value )
+            /*Database.createEmployee(uiState.value.email.value,
+                uiState.value.password.value )
+
+             */
             //insæt i databasen.
             //navigere til en anden screen.
         }
