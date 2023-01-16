@@ -63,8 +63,6 @@ fun EventScreenEmployee(
     val showDialog = remember {
         mutableStateOf(false)
     }
-
-
     Box(
         modifier = Modifier
             .fillMaxSize()
