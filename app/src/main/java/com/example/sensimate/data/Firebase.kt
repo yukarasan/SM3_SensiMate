@@ -849,6 +849,7 @@ object Database {
        // val filepath = "./test_file.xlsx"
             // Creating excel workbook
 
+
             val workbook = XSSFWorkbook()
 
             //Creating first sheet inside workbook
@@ -997,6 +998,7 @@ private fun createCell(row: Row, columnIndex: Int, value: Boolean) {
 }
 
 
+@SuppressLint("QueryPermissionsNeeded")
 private fun createExcel(workbook: Workbook, context: Context) {
 
     //Get App Director, APP_DIRECTORY_NAME is a string
@@ -1058,13 +1060,28 @@ private fun createExcel(workbook: Workbook, context: Context) {
     out.close()
 
  */
-
+/*
     val contentUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".file-provider", excelFile)
     val packageManager = context.packageManager
     val intent = Intent(Intent.ACTION_VIEW)
     intent.setDataAndType(contentUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
     val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+    if(list.size > 0) {
+        context.startActivity(intent)
+    } else {
+        // Show message to user that no app can open the file
+        Toast.makeText(context, "No app found to open this file type, " +
+                "Would you like to download a spreadsheet app?", Toast.LENGTH_SHORT).show()
+        val downloadAppIntent = Intent(Intent.ACTION_VIEW)
+
+ */
+    val contentUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".file-provider", excelFile)
+    val packageManager = context.packageManager
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.setDataAndType(contentUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
     if(list.size > 0) {
         context.startActivity(intent)
     } else {
