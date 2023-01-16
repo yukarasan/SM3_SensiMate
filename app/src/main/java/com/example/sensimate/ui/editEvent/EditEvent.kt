@@ -2,11 +2,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.DownloadManager
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.util.Log
 import android.widget.DatePicker
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -97,15 +100,13 @@ fun EditEvent(
 
     val context = LocalContext.current
 
-    when {
+    when (PackageManager.PERMISSION_GRANTED) {
         ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED -> {
+        ) -> {
             // You can use the API that requires the permission.
-
         }
-
         else -> {
             // You can directly ask for the permission.
             requestPermissions(
@@ -113,6 +114,10 @@ fun EditEvent(
                 100)
         }
     }
+
+
+
+
 
     Box(
         modifier = Modifier
@@ -335,10 +340,11 @@ fun EditEvent(
                         Spacer(modifier = Modifier.size(40.dp))
                         Button(
                             onClick = {
-                                //main(emptyArray())
+                                //download(context)
                                 questionViewModel.updateAnswer(chosenEvent.eventId, context = context,
                                     boolean = true
                                 )
+
                                 //su()
                                 //su()
                                 //val file = File("survey_results.xlsx")

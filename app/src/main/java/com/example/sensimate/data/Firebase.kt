@@ -1086,11 +1086,13 @@ private fun createExcel(workbook: Workbook, context: Context) {
         context.startActivity(intent)
     } else {
         // Show message to user that no app can open the file
-        Toast.makeText(context, "No app found to open this file type, " +
+        /*Toast.makeText(context, "No app found to open this file type, " +
                 "Would you like to download a spreadsheet app?", Toast.LENGTH_SHORT).show()
         val downloadAppIntent = Intent(Intent.ACTION_VIEW)
         downloadAppIntent.data = Uri.parse("https://play.google.com/store/search?q=spreadsheet&c=apps")
         context.startActivity(downloadAppIntent)
+
+         */
     }
 
 

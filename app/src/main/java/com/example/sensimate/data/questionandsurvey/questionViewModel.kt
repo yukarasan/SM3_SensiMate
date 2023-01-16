@@ -1,5 +1,6 @@
 package com.example.sensimate.data.questionandsurvey
 
+import android.Manifest
 import android.content.Intent
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
@@ -14,11 +15,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import android.app.Activity
+import android.app.DownloadManager
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -49,7 +54,9 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -91,8 +98,6 @@ open class QuestionViewModel : ViewModel() {
 
         //Database.requestStoragePermission(context as Activity)
         viewModelScope.launch {
-
-
             Database.updateSurvey(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion,
                 boolean = boolean, context = context
             )

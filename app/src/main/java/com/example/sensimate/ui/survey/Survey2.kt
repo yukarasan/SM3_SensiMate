@@ -81,6 +81,7 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
         }
     }
 }
+
 /*
 @Composable
 private fun ProgressPreview(progress: Float) {
