@@ -19,6 +19,9 @@ sealed class Screen(val route: String) {
     object NoWifi : Screen(route = "noWifi")
 
     object EventScreen : Screen(route = "event")
+
+    object AdminListOfEmployeeScreen : Screen(route = "listOfEmployeeScreen")
+
     object ExtendedEventScreen :
         Screen(route = "extendedEvent/{$TITLE_OF_EVENT}/{$TIME_OF_EVENT}/{$LOCATION_OF_EVENT}/" +
                 "{$ALLERGENS}/{$DESCRIPTION_OF_EVENT}/{$SURVEYCODE}") {

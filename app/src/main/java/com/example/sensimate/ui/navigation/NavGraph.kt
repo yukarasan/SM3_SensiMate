@@ -24,6 +24,8 @@ import com.example.sensimate.data.SaveBoolToLocalStorage
 import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.ui.AdminScreens.AdminViewModel
+import com.example.sensimate.ui.AdminScreens.EmployeesListScreen
 //import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
@@ -156,6 +158,10 @@ fun SetupNavGraph(navController: NavHostController) {
             ExtendedEvent(
                 navController = navController, eventViewModel = eventViewModel
             )
+        }
+
+        composable(route = Screen.AdminListOfEmployeeScreen.route) {
+            EmployeesListScreen(navController = navController, viewModel = AdminViewModel())
         }
 
         /*

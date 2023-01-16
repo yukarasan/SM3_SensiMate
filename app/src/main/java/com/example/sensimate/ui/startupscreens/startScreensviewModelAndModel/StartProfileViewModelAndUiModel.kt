@@ -187,7 +187,8 @@ class StartProfileViewModel() : ViewModel() {
                     monthBorn = uiState.value.monthBorn.value,
                     dayBorn = uiState.value.dayBorn.value,
                     gender = uiState.value.gender.value,
-                    successLoggedIn = successLoggedIn
+                    successLoggedIn = successLoggedIn,
+                    isEmployee = false
                 )
             }
         }

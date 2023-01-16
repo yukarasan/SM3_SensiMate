@@ -182,7 +182,8 @@ object Database {
             monthBorn = monthBorn,
             dayBorn = dayBorn,
             gender = gender,
-            newEmail = newEmail
+            newEmail = newEmail,
+            isEmployee = false
         )
     }
 
@@ -238,7 +239,8 @@ object Database {
         monthBorn: String,
         dayBorn: String,
         gender: String,
-        successLoggedIn: MutableState<Boolean>
+        successLoggedIn: MutableState<Boolean>,
+        isEmployee: Boolean
     ) {
         showLoading.value = true
 
@@ -272,7 +274,8 @@ object Database {
         monthBorn: String,
         dayBorn: String,
         gender: String,
-        newEmail: String
+        newEmail: String,
+        isEmployee: Boolean
     ) {
         val profile = hashMapOf(
             "postalCode" to postalCode,
@@ -469,6 +472,13 @@ object Database {
         }
     } //TODO: Hussein
 
+    fun unemployProfile(context: Context, email: String) {
+        db.collection("users")
+            .document(
+                email
+            ).update("isEmployee", false)
+    } //TODO: Hussein
+
     fun signOut(context: Context) {
         auth.signOut()
         SaveBoolToLocalStorage(
@@ -497,22 +507,22 @@ object Database {
 
     } //TODO: Hussein
 
-    /*
-    item.forEach { document ->
-                    val eventTitle = document.get("title").toString()
-                    val eventAddress = document.get("address").toString()
-                    val eventDescription = document.get("description").toString()
-                    val eventDistance = document.get("distanceToEvent").toString()
+/*
+item.forEach { document ->
+                val eventTitle = document.get("title").toString()
+                val eventAddress = document.get("address").toString()
+                val eventDescription = document.get("description").toString()
+                val eventDistance = document.get("distanceToEvent").toString()
 
-                    val event = Event(
-                        title = eventTitle,
-                        address = eventAddress,
-                        description = eventDescription,
-                        distanceToEvent = eventDistance
-                    )
-                    events.add(event)
-                }
-     */
+                val event = Event(
+                    title = eventTitle,
+                    address = eventAddress,
+                    description = eventDescription,
+                    distanceToEvent = eventDistance
+                )
+                events.add(event)
+            }
+ */
 
     fun createEvent(
         title: String,
@@ -720,6 +730,21 @@ object Database {
         return questions
     }
 
+
+    suspend fun getAllEmployeesList(): MutableList<String> {
+        val usersMail = mutableListOf<String>()
+        val query = FirebaseFirestore.getInstance().collection("users")
+            .whereEqualTo("isEmployee", true)
+
+        query.get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    usersMail.add(document.id)
+                }
+            }.await()
+        return usersMail
+    }//TODO: Hussein
+
 /*
     fun updateSurvey(eventId: String, survey: List<MyAnswer>) { //TODO: Ansh og (Hussein?)
         val questionsRef = db.collection("events").document(eventId).collection("questions")
@@ -742,24 +767,24 @@ object Database {
  */
 
 
-    /*
+/*
 
-    suspend fun updateAnswer(eventId: String, questionId: String, answerId: String, newAnswer: Any) {
-        val answerRef = db.collection("events").document(eventId).collection("questions")
-            .document(questionId).collection("answers").document(answerId)
-        answerRef.update("answer", newAnswer).await()
-    }
+suspend fun updateAnswer(eventId: String, questionId: String, answerId: String, newAnswer: Any) {
+    val answerRef = db.collection("events").document(eventId).collection("questions")
+        .document(questionId).collection("answers").document(answerId)
+    answerRef.update("answer", newAnswer).await()
+}
 
-     */
+ */
 
-    /*
-    suspend fun insertAnswer(eventId: String, questionId: String, answer: Any) {
-        val answerRef = db.collection("events").document(eventId).collection("questions")
-            .document(questionId).collection("answers").document()
-        answerRef.set(mapOf("answer" to answer)).await()
-    }
+/*
+suspend fun insertAnswer(eventId: String, questionId: String, answer: Any) {
+    val answerRef = db.collection("events").document(eventId).collection("questions")
+        .document(questionId).collection("answers").document()
+    answerRef.set(mapOf("answer" to answer)).await()
+}
 
-     */
+ */
 
 
     suspend fun updateSurvey(eventId: String, options: List<String>, newQuestion: MyQuestion) {
@@ -833,7 +858,7 @@ object Database {
             }
     }
 
-                    // Create a new Excel workbook
+// Create a new Excel workbook
 /*
                     val workbook = XSSFWorkbook()
 
@@ -879,8 +904,6 @@ object Database {
                     fileOut.close()
 
  */
-
-
 
 
     fun getEmployeeProfiles() {} //TODO: Sabirin
@@ -1009,7 +1032,7 @@ object Database {
  */
 
 
-    //TODO: LATER
+//TODO: LATER
 
 
     data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)

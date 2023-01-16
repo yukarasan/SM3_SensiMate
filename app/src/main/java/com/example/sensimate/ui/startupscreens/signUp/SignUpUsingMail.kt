@@ -153,8 +153,6 @@ fun SignUpUsingMail(
                 stringResource(id = R.string.postalcode)
             )
 
-
-
             DropDownMenu(state.value.gender)
 
             ChooseBirthDate(
@@ -164,7 +162,7 @@ fun SignUpUsingMail(
                 myDay = state.value.dayBorn
             )
 
-            val showMessage = mutableStateOf(false)
+            val showMessage = remember{mutableStateOf(false)}
             showMessage(
                 message = stringResource(id = R.string.passworderror),
                 showMessage
