@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.AdminScreens
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +34,10 @@ class AdminViewModel() : ViewModel() {
         }
     }
 
-    fun clickOnEmployee() {}
+    fun clickOnCreateEmployee() {}
 
-    fun clickOnDeleteEmployee() {}
+    fun clickOnDeleteEmployee(email: String, context: Context) {
+        _uiState.value.mails.remove(email)
+        Database.unemployProfile(context, email)
+    }
 }

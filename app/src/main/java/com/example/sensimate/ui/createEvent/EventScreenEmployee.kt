@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.EventViewModel
+import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.ui.Event.viewModels.EventDataViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
@@ -94,6 +95,7 @@ fun EventScreenEmployee(
                 )
             }
         ) {
+            val context = LocalContext.current
             Column() {
                 LazyColumn(
                     contentPadding = PaddingValues(bottom = 20.dp),
@@ -109,7 +111,19 @@ fun EventScreenEmployee(
                             AddEventImage(navController = navController)
                             ProfileLogo(
                                 Modifier
-                                    .clickable { showDialog.value = true }
+                                    .clickable {
+
+                                        if(!getBooleanFromLocalStorage("isAdmin", context = context)){
+                                            showDialog.value = true
+                                        }else{
+
+                                            navController.navigate(Screen.AdminListOfEmployeeScreen.route)
+
+                                        }
+
+
+
+                                    }
                                     .size(64.dp)
                                     .padding(end = 13.dp, top = 15.dp))
                         }

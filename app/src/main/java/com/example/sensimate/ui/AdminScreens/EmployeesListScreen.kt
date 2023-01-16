@@ -1,10 +1,9 @@
 package com.example.sensimate.ui.AdminScreens
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -19,6 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,11 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.Profile
+import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.showLoading
 import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.startupscreens.components.InitialStartBackground
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
@@ -38,13 +42,26 @@ import com.example.sensimate.ui.theme.Purple200
 import com.example.sensimate.ui.theme.PurpleButtonColor
 import org.apache.poi.xddf.usermodel.chart.Shape
 
-
 @Composable
 fun EmployeesListScreen(
     viewModel: AdminViewModel,
     navController: NavController
 ) {
     val state = viewModel._uiState.collectAsState()
+
+    val context = LocalContext.current
+
+    val showLoading = remember {
+        mutableStateOf(false)
+    }
+
+    val showDialog = remember {
+        mutableStateOf(false)
+    }
+
+    val chosenMail = remember {
+        mutableStateOf("")
+    }
 
     Box(
         modifier = Modifier
@@ -60,66 +77,82 @@ fun EmployeesListScreen(
             )
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
-        horizontalAlignment = Alignment.Start
-    ) {
 
-        OrangeBackButton {
-            navController.popBackStack()
+    Column() {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            OrangeBackButton {
+                navController.popBackStack()
+            }
+
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "tilføj")
+            }
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Spacer(modifier = Modifier.size(10.dp))
+            Text(
+                text = if (auth.currentUser?.email != null) {
+                    auth.currentUser!!.email.toString()
+                } else {
+                    ""
+                },
+                fontFamily = manropeFamily,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 13.sp,
+                color = Color(199, 242, 219),
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+
+            LogoutButton(
+                onClick = {
+                    Database.signOut(context = context)
+                    navController.popBackStack()
+                    navController.navigate(Screen.Login.route)
+                }
+            )
+        }
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Spacer(modifier = Modifier.size(20.dp))
+            EmployeeListTitle()
+            Spacer(modifier = Modifier.size(5.dp))
+
+            if (state.value.loaded.value) {
+                BuildProfileList(emails = state.value.mails, showDialog, chosenMail)
+                showLoading.value = false
+            } else {
+                showLoading.value = true
+                showLoading(showloading = showLoading)
+            }
         }
     }
 
-    val showDialog = remember {
-        mutableStateOf(false)
-    }
-
-    val chosenMail = remember {
-        mutableStateOf("")
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-        val showLoading = remember {
-            mutableStateOf(false)
-        }
 
 
-        if (state.value.loaded.value) {
-            Log.d("hvad er der imails:", state.value.mails.toString())
-            BuildProfileList(emails = state.value.mails, showDialog, chosenMail)
-            showLoading.value = false
-        } else {
-            showLoading.value = true
-            showLoading(showloading = showLoading)
-        }
 
-        /*
-        if (viewModel.hasLoaded.value) {
-            onlyOnce.value = true
-
-            Log.d("DATABASEHUSSEIN", state.value.mails.toString())
-
-            BuildProfileList(emails = state.value.mails)
-        }
-
-         */
-
-
-    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         if (showDialog.value) {
-            DeleteProfileDialog(email = chosenMail.value, showDialog)
+            DeleteProfileDialog(email = chosenMail.value, showDialog, adminViewModel = viewModel)
         }
     }
 
@@ -134,7 +167,6 @@ fun BuildProfileList(
     chosenMail: MutableState<String>
 ) {
     LazyVerticalGrid(
-
         columns = GridCells.Fixed(2),
     ) {
         itemsIndexed(emails) { index, email ->
@@ -169,7 +201,7 @@ fun ShowProfile(mail: String, onClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .padding(start = 4.dp, end = 4.dp, top = 20.dp, bottom = 20.dp)
+            .padding(20.dp)
             .clickable { onClick.invoke() }
     ) {
 
@@ -198,14 +230,21 @@ fun ShowProfile(mail: String, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDeleteProfileDialog() {
-    DeleteProfileDialog(email = "husseinelzeinprivat@gmail.com", remember {
-        mutableStateOf(false)
-    })
+    DeleteProfileDialog(
+        email = "husseinelzeinprivat@gmail.com", remember {
+            mutableStateOf(false)
+        },
+        AdminViewModel()
+    )
 }
 
 
 @Composable
-fun DeleteProfileDialog(email: String, showDialog: MutableState<Boolean>) {
+fun DeleteProfileDialog(
+    email: String,
+    showDialog: MutableState<Boolean>,
+    adminViewModel: AdminViewModel
+) {
 
     val context = LocalContext.current
     AlertDialog(
@@ -228,7 +267,10 @@ fun DeleteProfileDialog(email: String, showDialog: MutableState<Boolean>) {
             ) {
                 Button(
                     {
-                        Database.unemployProfile(context, email)
+                        adminViewModel.clickOnDeleteEmployee(
+                            email = email,
+                            context = context
+                        )
                         showDialog.value = false
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFA26161))
@@ -253,4 +295,65 @@ fun DeleteProfileDialog(email: String, showDialog: MutableState<Boolean>) {
         shape = RoundedCornerShape(15.dp)
 
     )
+}
+
+
+@Composable
+private fun LogoutButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        shape = RoundedCornerShape(100),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
+        modifier = Modifier
+            .height(40.dp)
+            .padding()
+    ) {
+        Text(
+            text = stringResource(id = R.string.logOut),
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EmployeeListTitle() {
+    Column(modifier = Modifier.fillMaxWidth()) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            Color(0xFF706299),
+                            Color(0xFFF7EBFF)
+                        )
+                    )
+                )
+        ) {
+            Text(
+                "Employee List",
+                style = TextStyle(
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp
+                )
+            )
+        }
+        Box(
+            modifier = Modifier
+                .padding(top = 4.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
+                .background(color = Color.White.copy(alpha = 0.1f))
+        ) {
+            Text(
+                "A list of all the employees in the company",
+                style = TextStyle(color = Color.White, fontSize = 14.sp)
+            )
+        }
+    }
+
 }
