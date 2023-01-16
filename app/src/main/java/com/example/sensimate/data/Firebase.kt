@@ -406,6 +406,8 @@ object Database {
         }
 
 
+
+
         /*
     .addOnCompleteListener(this) { task ->
         if (task.isSuccessful) {
@@ -426,6 +428,27 @@ object Database {
 
          */
     }
+
+    suspend fun getAllEmployeesList(): MutableList<String> {
+        val usersMail = mutableListOf<String>()
+        val query = FirebaseFirestore.getInstance().collection("users")
+            .whereEqualTo("isEmployee", true)
+
+        query.get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    usersMail.add(document.id)
+                }
+            }.await()
+        return usersMail
+    }//TODO: Hussein
+
+    fun unemployProfile(context: Context, email: String) {
+        db.collection("users")
+            .document(
+                email
+            ).update("isEmployee", false)
+    } //TODO: Hussein
 
     fun forgotPassword(
         email: String,
