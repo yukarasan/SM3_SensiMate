@@ -1,6 +1,7 @@
 package com.example.sensimate.ui.createEmployee
 
 import android.content.Context
+import android.provider.ContactsContract.Data
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -39,11 +40,14 @@ class CreateEmployeeViewModel: ViewModel() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-           Database.signUserUp(email = uiState.value.email.value, password = uiState.value.password.value,
+           /*Database.signUserUp(email = uiState.value.email.value, password = uiState.value.password.value,
                context = context, showLoading = showLoading, postalCode = "null", yearBorn = "null",
                monthBorn = "null", gender = "null", dayBorn = "null", successLoggedIn = successLoggedIn,
                isEmployee = true
            )
+            */
+
+            Database.employProfile(context = context, email = uiState.value.email.value)
         }
     }
 }

@@ -32,6 +32,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.AdminScreens.AdminViewModel
+import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
@@ -71,23 +73,33 @@ fun CreateEmployeeScreen(
                 )
             )
     )
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Title("Create an Employee", modifier = Modifier
-            .size(550.dp)
-            .padding(start = 50.dp, top = 167.dp))
-        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 10.dp)) {
-            Image(modifier = Modifier.size(360.dp), id = R.drawable.emp )
-        }
-    }
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
+        item {
+            Column() {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OrangeBackButton( onClick = {
+                        navController.popBackStack()
+                    })
+                }
+            }
+        }
+        item {
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Title("Create an Employee", modifier = Modifier
+                    .padding(start = 0.dp, top = 10.dp))
+            }
+        }
         item {
 
             EmailTextField(titleText = state.value.email.value, textChange = {
@@ -100,10 +112,16 @@ fun CreateEmployeeScreen(
             Spacer(modifier = Modifier.size(70.dp))
             Button(
                 onClick = {
-                    //eventviewmodel
                           createEmployeeViewModel.checkIfTextFieldIsEmpty(context = context,
                               navController = navController, showLoading = showLoading,
                               successLoggedIn = successLoggedIn )
+
+                    //eventviewmodel
+                          /*createEmployeeViewModel.checkIfTextFieldIsEmpty(context = context,
+                              navController = navController, showLoading = showLoading,
+                              successLoggedIn = successLoggedIn )
+
+                           */
                 },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -121,6 +139,12 @@ fun CreateEmployeeScreen(
                 )
             }
         }
+        item {
+            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 10.dp, top = 20.dp, end = 10.dp)) {
+                Image(modifier = Modifier.size(360.dp), id = R.drawable.emp )
+            }
+        }
     }
 }
 
@@ -134,8 +158,7 @@ private fun Title(title: String, modifier: Modifier = Modifier) {
         fontSize = 26.sp,
         color = Color.White,
         modifier = modifier
-            .padding(start = 8.dp, bottom = 8.dp)
-            .width(220.dp)
+
     )
 }
 
