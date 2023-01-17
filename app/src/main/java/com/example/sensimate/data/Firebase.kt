@@ -516,7 +516,20 @@ object Database {
         db.collection("users")
             .document(
                 email
-            ).update("isEmployee", true)
+            ).update("isEmployee", true).addOnSuccessListener {
+                Toast.makeText(
+                    context,
+                    "Employee is created",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .addOnFailureListener(){
+                Toast.makeText(
+                    context,
+                    "failed, and employee couldnt be created",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     } //TODO: Hussein
 
     /**
