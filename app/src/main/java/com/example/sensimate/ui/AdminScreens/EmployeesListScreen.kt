@@ -41,7 +41,14 @@ import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.Purple200
 import com.example.sensimate.ui.theme.PurpleButtonColor
 import org.apache.poi.xddf.usermodel.chart.Shape
-
+/**
+ *  The EmployeesListScreen composable function provides the UI of the employee's list screen.
+ *  it takes an AdminViewModel and NavController as a parameter, it uses the BuildProfileList
+ *  function to create the list of profiles and the DeleteProfileDialog to delete a profile.
+ * @author Hussein El-Zein
+ * @param viewModel an instance of AdminViewModel that provides the data and logic of the screen
+ * @param navController a NavController that handle the navigation to other screens
+ * */
 @Composable
 fun EmployeesListScreen(
     viewModel: AdminViewModel,
@@ -155,6 +162,15 @@ fun EmployeesListScreen(
     }
 }
 
+/**
+ *  The BuildProfileList composable function provides a list of employee's profiles, it takes a list of emails,
+ *  a MutableState of showDialog and a MutableState of chosenMail as parameter
+ *  it uses the LazyVerticalGrid to create the grid of profiles and ShowProfile function to create each profile.
+ * @author Hussein El-Zein
+ * @param emails a list of emails associated with the employee profiles that should be displayed
+ * @param showDialog a MutableState that is used to control the visibility of the dialog
+ * @param chosenMail a MutableState that is used to store the email of the chosen profile
+ */
 @Composable
 fun BuildProfileList(
     emails: List<String>,
@@ -189,7 +205,14 @@ fun PreviewBuildProfileList() {
     )
 }
 
-
+/**
+ *  The ShowProfile composable function provides a button that displays the email
+ *  of an employee and takes the user to the employee's profile when clicked
+ *  it takes an email, and a callback function as a parameter.
+ * @author Hussein El-Zein
+ * @param mail the email associated with the employee that should be displayed
+ * @param onClick callback function that will be called when the button is clicked
+ */
 @Composable
 fun ShowProfile(mail: String, onClick: () -> Unit) {
     Column(
@@ -217,8 +240,6 @@ fun ShowProfile(mail: String, onClick: () -> Unit) {
         )
 
     }
-
-
 }
 
 
@@ -233,7 +254,14 @@ fun PreviewDeleteProfileDialog() {
     )
 }
 
-
+/**
+ *  The DeleteProfileDialog composable function provides a dialog that allows the admin to delete an employee profile
+ *  it takes an email, showDialog and adminViewModel as a parameter and it uses the adminViewModel to delete the profile.
+ * @author Hussein El-Zein
+ * @param email the email associated with the profile that should be deleted
+ * @param showDialog a MutableState that is used to control the visibility of the dialog
+ * @param adminViewModel the viewModel that provides the functionality to delete the profile
+ */
 @Composable
 fun DeleteProfileDialog(
     email: String,
@@ -313,6 +341,11 @@ private fun LogoutButton(onClick: () -> Unit) {
     }
 }
 
+/**
+ *  The EmployeeListTitle composable function provides a title and a description for the employee list screen
+ *  it will be rendered in the top of employee list
+ * @author Hussein El-Zein
+ */
 @Preview(showBackground = true)
 @Composable
 private fun EmployeeListTitle() {

@@ -42,11 +42,15 @@ fun NoWifiPreview() {
     NoWifiScreen(navController = rememberNavController())
 }
 
+/**
+@author Hussein el-zein
+Function that displays the no internet connection screen and handles the logic for reloading the app.
+@param navController Navigation controller for navigating between screens.
+ */
 @Composable
 fun NoWifiScreen(navController: NavController) {
 
     InitialStartBackground()
-
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -81,11 +85,6 @@ fun NoWifiScreen(navController: NavController) {
             InternetBroadcastReceiver(context)
 
             if (getBooleanFromLocalStorage("hasNet", context)) {
-                Log.d("you", "have net")
-
-
-                //////////////////
-
 
                 if (getBooleanFromLocalStorage(
                         "acceptedCookie",
@@ -117,9 +116,4 @@ fun NoWifiScreen(navController: NavController) {
             }
         })
     }
-
-
-    ///////////////////
-
-
 }
