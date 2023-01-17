@@ -273,13 +273,13 @@ fun DeleteProfileDialog(
     AlertDialog(
         title = {
             Text(
-                "Delete Profile",
+                stringResource(id = R.string.deleteEmpTitle),
                 style = typography.h6
             )
         },
         text = {
             Text(
-                "Are you sure you want to delete the profile associated with the email $email ?",
+                 stringResource(id = R.string.deleteEmpSure) +" $email ?",
                 style = typography.body2
             )
         },
@@ -299,14 +299,14 @@ fun DeleteProfileDialog(
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFA26161))
                 ) {
                     // Perform the delete action here
-                    Text(text = "Confirm deletion", color = Color.White)
+                    Text(text = stringResource(id = R.string.confirm), color = Color.White)
                 }
                 Button(
                     { showDialog.value = false },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF707070))
                 ) {
                     // Close the dialog
-                    Text(text = "Cancel", color = Color.White)
+                    Text(text = stringResource(id = R.string.cancel), color = Color.White)
                 }
             }
 
@@ -366,7 +366,7 @@ private fun EmployeeListTitle() {
 
             Column(modifier = Modifier.padding(start = 6.dp)) {
                 Text(
-                    "Employee List",
+                    stringResource(id = R.string.aListTitle),
                     style = TextStyle(
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
@@ -382,7 +382,7 @@ private fun EmployeeListTitle() {
                 .background(color = Color.White.copy(alpha = 0.1f))
         ) {
             Text(
-                "A list of all the employees in the company",
+                stringResource(id = R.string.aList),
                 style = TextStyle(color = Color.White, fontSize = 14.sp)
             )
         }

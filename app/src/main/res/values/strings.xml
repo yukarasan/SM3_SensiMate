@@ -32,12 +32,17 @@
     <string name="deletedSuccess">Account successfully deleted</string>
     <string name="somethingWrong">Something went wrong</string>
     <string name="sendRecovery">Send recovery to mail</string>
-
-
-
     <string name="noNet">No internet connection :/</string>
+    <string name="aListTitle">Employee list</string>
+    <string name="aList">A list of all the employees in the company</string>
 
+    <string name="deleteEmpTitle">Delete profile</string>
 
+    <string name="deleteEmpSure">Are you sure you want to delete the profile associated with the email </string>
+
+    <string name="confirm">Confirm deletion</string>
+
+    <string name="cancel">Cancel</string>
 
 
 
