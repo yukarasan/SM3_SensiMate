@@ -12,8 +12,22 @@ data class QuestionsUiState(
     var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList(),
     var questionsStarted: Boolean = false,
     var currentQuestion: MyQuestion = MyQuestion(),
-    var currentAnswers: List<String> = emptyList()
+    var currentAnswers: MutableList<String> = mutableListOf(),
+    var currentAnswersMap: MutableMap<String, String> = mutableMapOf()
 )
+
+/*
+
+data class QuestionsUiState(
+    var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList(),
+    var questionsStarted: Boolean = false,
+    var currentQuestion: MyQuestion = MyQuestion(),
+    var currentAnswers: MutableList<String> = mutableListOf()
+)
+
+ */
+
+
 /*
 class MyAnswer(
     var myAnswer: String,
@@ -37,4 +51,12 @@ class MyQuestion(
     var oneChoice: Boolean = false,
     var oneChoice2: Boolean = false,
 )
+/*
+class Question(
+    var answers: MutableList<String> = emptyList<String>().toMutableList(),
+    var oneChoice: Boolean = false,
+)
+
+ */
+
 

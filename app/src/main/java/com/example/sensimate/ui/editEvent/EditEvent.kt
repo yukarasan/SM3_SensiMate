@@ -346,77 +346,11 @@ fun EditEvent(
                         boolean = true
                     )
 
-                    //su()
-                    //su()
-                    //val file = File("survey_results.xlsx")
-                    //val folder = File(context.getExternalFilesDir(null)?.absolutePath + File.separator + "ExcelExport")
-
-                    /*val folder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "ExcelExport")
-                    if (!folder.exists()) {
-                        folder.mkdirs()
-                    }
-                    val file = File(folder,"survey_results.xlsx")
-                    //val file = File(context.getExternalFilesDir(folder),"survey_results.xlsx")
-                    if (file.exists()) {
-                        val contentUri = FileProvider.getUriForFile(
-                            context,
-                            "com.example.file-provider",
-                            file
-                        )
-                        val openFileIntent = Intent(Intent.ACTION_VIEW)
-                        openFileIntent.setDataAndType(
-                            contentUri,
-                            "application/vnd.ms-excel"
-                        )
-                        openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        openFileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(openFileIntent)
-
-                     */
-
-
-
 
 
                     navController.navigate(Screen.EditEvent.route)
 
-                    /*
-                    val activity = currentActivity.value
-                    val file = File("survey_results.xlsx")
-                    val contentUri = FileProvider.getUriForFile(activity, "com.example.fileprovider", file)
-                    val openFileIntent = Intent(Intent.ACTION_VIEW)
-                    openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
-                    openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    openFileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    activity?.startActivity(openFileIntent)
 
-                     */
-
-                    /*
-                    val file = File("survey_results.xlsx")
-                    val contentUri = FileProvider.getUriForFile(context2, "com.example.file-provider", file)
-                    val openFileIntent = Intent(Intent.ACTION_VIEW)
-                    openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
-                    openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    context.startActivity(openFileIntent)
-
-                     */
-                    /*
-                    val file = File("survey_results.xlsx")
-                    val contentUri = FileProvider.getUriForFile(context, "com.example.fileprovider", file)
-                    val openFileIntent = Intent(Intent.ACTION_VIEW)
-                    openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
-                    openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    startActivity(openFileIntent)
-
-                     */
-
-                    /*val file = File("survey_results.xlsx")
-              val contentUri = FileProvider.getUriForFile(context, "com.example.fileprovider", file)
-              val openFileIntent = Intent(Intent.ACTION_VIEW)
-              openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
-              openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-              startActivity(openFileIntent) */
                     /*//TODO: Ansh*/
                 },
                 shape = CircleShape,

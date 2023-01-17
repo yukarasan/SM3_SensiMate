@@ -208,7 +208,9 @@ fun CheckBox(questionViewModel: QuestionViewModel, option: MutableList<String>, 
         onCheckedChange = {
             checkedState.value = it
             option.add(options)
-            questionViewModel.setAnswer(option)
+            questionViewModel.addAnswer(option.toString())
+            //questionViewModel.addQuestion(questionTitle = questionViewModel.uiState.value.currentQuestion.mainQuestion, answers = option, onechoice = false)
+
             Log.d("Test1", options)
         },
         colors = CheckboxDefaults
