@@ -1,7 +1,6 @@
 package com.example.sensimate.ui.survey
 
 
-
 import android.annotation.SuppressLint
 import android.util.Log
 import com.example.sensimate.ui.components.OrangeBackButton
@@ -52,33 +51,29 @@ fun Survey4(title: String, navController: NavController, questionViewModel: Ques
                 )
             )
     )
-    LazyColumn(){
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
-            ) {
-                OrangeBackButton { navController.popBackStack() }
-                //ProgressPreview()
-                Question(title)
-                SurveyTitle(title)
-                Information4(questionViewModel)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
+    ) {
+        OrangeBackButton { navController.popBackStack() }
+        //ProgressPreview()
+        Question("Question")
+        SurveyTitle(title)
+        Information4(questionViewModel)
 
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 70.dp)
-                ) {
-                    //PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
-                    //FinishButton(onClick = { navController.navigate(Screen.EventScreen.route) } )
-                }
-            }
-
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 70.dp)
+        ) {
+            //PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
+            //FinishButton(onClick = { navController.navigate(Screen.EventScreen.route) } )
         }
     }
+
 }
 
 
@@ -138,7 +133,7 @@ fun Information4(questionViewModel: QuestionViewModel) {
                     CheckBox(questionViewModel, option = answer, option)
                     Option(title = option)
                     Spacer(modifier = Modifier.width((120.dp)))
-                   // questionViewModel.setAnswer(answers = options)
+                    // questionViewModel.setAnswer(answers = options)
                 }
             }
 
@@ -170,8 +165,8 @@ fun Information4(questionViewModel: QuestionViewModel) {
                 MyTextField(
                     text = other,
                     textSize = 10,
-                    onValueChange = {other = it} ,
-                    placeHolder = "" ,
+                    onValueChange = { other = it },
+                    placeHolder = "",
                     width = 100,
                     height = 20,
                     keyboardType = KeyboardType.Number,
@@ -184,8 +179,6 @@ fun Information4(questionViewModel: QuestionViewModel) {
         }
     }
 }
-
-
 
 
 @Composable
@@ -203,31 +196,31 @@ private fun Option(title: String, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun CheckBox(questionViewModel: QuestionViewModel, option: MutableList<String>,options: String) {
+fun CheckBox(questionViewModel: QuestionViewModel, option: MutableList<String>, options: String) {
     //val isChecked = remember { mutableStateOf(false) }
     val checkedState = remember { mutableStateOf(false) }
 
     //if (isChecked.value) {
-            Checkbox(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 0.dp),
-                checked = checkedState.value,
-                onCheckedChange = {
-                    checkedState.value = it
-                    option.add(options)
-                    questionViewModel.setAnswer(option)
-                    Log.d("Test1", options)
-                },
-                colors = CheckboxDefaults
-                    .colors(
-                        uncheckedColor = GreyColor,
-                        checkmarkColor = lightpurple,
-                        checkedColor = lightpurple,
+    Checkbox(
+        modifier = Modifier
+            .padding(start = 0.dp, top = 0.dp),
+        checked = checkedState.value,
+        onCheckedChange = {
+            checkedState.value = it
+            option.add(options)
+            questionViewModel.setAnswer(option)
+            Log.d("Test1", options)
+        },
+        colors = CheckboxDefaults
+            .colors(
+                uncheckedColor = GreyColor,
+                checkmarkColor = lightpurple,
+                checkedColor = lightpurple,
 
-                        disabledColor = darkbluegrey,
-                        disabledIndeterminateColor = GreyColor,
-                    )
+                disabledColor = darkbluegrey,
+                disabledIndeterminateColor = GreyColor,
             )
+    )
 }
 
 
@@ -252,7 +245,7 @@ fun FinishButton(onClick: () -> Unit) {
                 "Finish",
                 color = Color.White,
                 fontSize = 15.sp,
-               // modifier = Modifier.padding(start = 0.dp)
+                // modifier = Modifier.padding(start = 0.dp)
             )
 
 

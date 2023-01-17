@@ -61,7 +61,7 @@ fun SurveyCreator(
         val showLoading = remember {
             mutableStateOf(true)
         }
-        showLoadingSurvey(showLoading)
+       // showLoadingSurvey(showLoading)
     }
 
 
@@ -181,14 +181,18 @@ fun AllPages(
 
                 LazyColumn() {
                     item {
-                        ProgressPreview(progress = progressState.value)
+                        Row(modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)) {
+                            ProgressPreview(progress = progressState.value)
+                        }
                         Survey2(
                             title = questions[questionIndex].mainQuestion,
                             navController = navController,
                             questionViewModel
                         )
 
-                        
+
                     }
                 }
             }

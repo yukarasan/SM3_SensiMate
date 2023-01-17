@@ -70,7 +70,7 @@ fun Survey(
             ) {
                 OrangeBackButton({navController.popBackStack()})
                 //ProgressPreview()
-                Question(title)
+                Question("Question")
                 SurveyTitle(title)
                 Information(
                     titles = listOf("Age", "Gender", "Postal code"),
