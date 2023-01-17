@@ -42,13 +42,14 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.sensimate.file-provider"
+            android:authorities="com.example.sensimate.excel_download"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/excel_download" />
         </provider>
+
 
     </application>
 

@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
@@ -979,7 +980,47 @@ object Database {
         //Adding data to the sheet
         addData(0, sheet, newQuestion = newQuestion, options, profile)
 
-        createExcel(workbook, context)
+        val filepath = context.getExternalFilesDir(null)?.absolutePath + "/survey.xlsx"
+        val out = FileOutputStream(File(filepath))
+        workbook.write(out)
+        out.close()
+
+        val file = File(filepath)
+        val uri = FileProvider.getUriForFile(context, "com.example.sensimate.excel_download", file)
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        val packageManager = context.packageManager
+        val activities = packageManager.queryIntentActivities(intent, 0)
+        val isIntentSafe = activities.size > 0
+        if (isIntentSafe) {
+            context.startActivity(intent)
+        } else {
+            Toast.makeText(
+                context, "No app found to open this file type, " +
+                        "Would you like to download a spreadsheet app?", Toast.LENGTH_SHORT
+            ).show()
+            val downloadAppIntent = Intent(Intent.ACTION_VIEW)
+            downloadAppIntent.data =
+                Uri.parse("https://play.google.com/store/search?q=spreadsheet&c=apps")
+            context.startActivity(downloadAppIntent)
+        }
+
+        /*
+        val filepath = context.getExternalFilesDir(null)?.absolutePath + "/survey.xlsx"
+        val out = FileOutputStream(File(filepath))
+        workbook.write(out)
+        out.close()
+        val file = File(filepath)
+        val uri = FileProvider.getUriForFile(context, context.packageName + ".file-provider", file)
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        context.startActivity(intent)
+
+         */
+
+        //createExcel(workbook,context)
         /*
         try {
             val xlWb = XSSFWorkbook()
@@ -1003,9 +1044,9 @@ object Database {
 
          */
     }
-    //Instantiate Excel workbook:
+        //Instantiate Excel workbook:
 
-}
+    }
 
 
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
@@ -1095,7 +1136,7 @@ private fun createCell(row: Row, columnIndex: Int, value: String?) {
     val cell = row.createCell(columnIndex)
     cell?.setCellValue(value)
 
-    // val headerRow = sheet.createRow(0)
+   // val headerRow = sheet.createRow(0)
     /*headerRow.createCell(0).setCellValue("mainQuestion")
     headerRow.createCell(1).setCellValue("postalCode")
     headerRow.createCell(2).setCellValue("yearBorn")
@@ -1194,20 +1235,13 @@ private fun createExcel(workbook: Workbook, context: Context) {
         val downloadAppIntent = Intent(Intent.ACTION_VIEW)
 
  */
-    val contentUri = FileProvider.getUriForFile(
-        context,
-        context.applicationContext.packageName + ".file-provider",
-        excelFile
-    )
+    val contentUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".file-provider", excelFile)
     val packageManager = context.packageManager
     val intent = Intent(Intent.ACTION_VIEW)
-    intent.setDataAndType(
-        contentUri,
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
+    intent.setDataAndType(contentUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
     val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-    if (list.size > 0) {
+    if(list.size > 0) {
         context.startActivity(intent)
     } else {
         // Show message to user that no app can open the file
@@ -1231,9 +1265,7 @@ private fun createExcel(workbook: Workbook, context: Context) {
             "mainQuestion" to newQuestion.mainQuestion
         )
 
-
         val profile = fetchProfile()!!
-
 
         val survey = hashMapOf(
             "postalCode" to profile.postalCode,
@@ -1244,7 +1276,6 @@ private fun createExcel(workbook: Workbook, context: Context) {
             "answer" to options.toString(),
             "isEmployee" to false
         )
-
 
         val questionRef = db.collection("events").document(eventId)
             .collection("Answers").add(test).addOnSuccessListener { docRef ->
@@ -1303,8 +1334,6 @@ private fun createExcel(workbook: Workbook, context: Context) {
                     }
                 }
             }
-
-
     }
 
  */
