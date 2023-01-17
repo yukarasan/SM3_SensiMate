@@ -35,6 +35,13 @@ fun CookieScreenPreview() {
     CookiesScreen(rememberNavController())
 }
 
+/**
+@author hussein el-zein
+CookiesScreen function is responsible for displaying the cookie consent screen to the user.
+The function takes in a NavController as a parameter which is used to navigate to the login screen.
+The function also uses the remember composable to keep track of the state of the checkbox.
+The function also uses various composables such as Box, LazyColumn, Image, Text, Checkbox, and Button to create the layout of the screen.
+ */
 @Composable
 fun CookiesScreen(navController: NavController) {
     val checkedState = remember {

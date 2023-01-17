@@ -49,6 +49,12 @@ import com.example.sensimate.ui.startupscreens.components.myButton
 import com.example.sensimate.ui.startupscreens.components.textFieldWithImage
 import com.example.sensimate.ui.theme.Purple200
 
+/**
+@author Hussein El-Zein
+SignUpUsingMail function that handles the sign up process using email.
+@param navController - navigation controller used to navigate between screens
+@param startProfileViewModel - view model that holds the data for the sign up process
+ */
 @Composable
 fun SignUpUsingMail(
     navController: NavController,
@@ -162,7 +168,7 @@ fun SignUpUsingMail(
                 myDay = state.value.dayBorn
             )
 
-            val showMessage = remember{mutableStateOf(false)}
+            val showMessage = remember { mutableStateOf(false) }
             showMessage(
                 message = stringResource(id = R.string.passworderror),
                 showMessage

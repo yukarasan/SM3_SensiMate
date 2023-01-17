@@ -38,6 +38,15 @@ fun ForgotPasswordPreview() {
     ForgotPassword(rememberNavController(), viewModel())
 }
 
+/**
+@author hussein el-zein
+ForgotPassword function is responsible for displaying the forgot password screen to the user.
+The function takes in a NavController and a StartProfileViewModel as parameters.
+The function also uses the remember composable to keep track of the state of the showLoading.
+The function also uses various composables such as LazyColumn, Row, Column, MySensimateLogo, Text,
+MyTextField, and myButton to create the layout of the screen.
+The function also calls the Database.forgotPassword function to send a recovery email to the user.
+ */
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ForgotPassword(

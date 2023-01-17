@@ -240,6 +240,13 @@ object Database {
         }
     }
 
+    /**
+    @author hussein el-zein
+    This function is used to log the user in with their email and password. It also updates the
+    'showLoading' state variable to indicate that the login process is currently in progress.
+    If the login is successful, the 'successLoggedIn' state variable is updated to indicate that the user
+    is now logged in.
+     */
     fun signUserUp(
         email: String,
         password: String,
@@ -308,6 +315,11 @@ object Database {
             .set(profile)
     }
 
+    /**
+    This function sets up user's profile information and stores it in the firestore database
+    @author hussein el-zein
+    @param isEmployee whether the user is an employee or not
+     */
     fun setUpProfileInfo(
         postalCode: String,
         yearBorn: String,
@@ -331,6 +343,17 @@ object Database {
     }
 
 
+    /**
+    @author hussein el-zein
+    logIn function is used to log in the user into the application
+    by taking the email and password as arguments and authenticating them against
+    the firebase authentication service.
+    @param email The email of the user trying to log in.
+    @param password The password of the user trying to log in.
+    @param showLoading MutableState object to control the visibility of the loading indicator.
+    @param context The context of the activity or fragment calling the function.
+    @param successLoggedIn MutableState object to store the success of the login operation.
+     */
     fun logIn(
         email: String,
         password: String,
@@ -362,6 +385,11 @@ object Database {
 
     } //TODO: Hussein
 
+    /**
+     * retrieving if the active user is an employee
+     *
+     * @author hussein el-zein
+     */
     suspend fun getIsEmployee(context: Context): Boolean {
 
         val isEmp = mutableStateOf(false)
@@ -381,6 +409,11 @@ object Database {
 
     }//TODO: Hussein
 
+    /**
+     * retrieving if the current user is an admin
+     *
+     * @author hussein el-zein
+     */
     suspend fun getIsAdmin(context: Context): Boolean {
 
         val isEmp = mutableStateOf(false)
@@ -401,6 +434,11 @@ object Database {
 
     }//TODO: Hussein
 
+    /**
+     * when logging in as a "guest", firebase knows it as anonymous
+     *
+     * @author hussein el-zein
+     */
     fun loginAnonymously(context: Context) {
         auth.signInAnonymously().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -440,6 +478,10 @@ object Database {
          */
     }
 
+    /**
+     * getAllEmployeesList is a suspending function that retrieves all the emails of the employees from firestore.
+     * @author Hussein El-Zein
+     */
     suspend fun getAllEmployeesList(): MutableList<String> {
         val usersMail = mutableListOf<String>()
         val query = FirebaseFirestore.getInstance().collection("users")
@@ -454,6 +496,11 @@ object Database {
         return usersMail
     }//TODO: Hussein
 
+    /**
+     * update the employee status to unemployed
+     *
+     * @author hussein el-zein
+     */
     fun unemployProfile(context: Context, email: String) {
         db.collection("users")
             .document(
@@ -461,6 +508,10 @@ object Database {
             ).update("isEmployee", false)
     } //TODO: Hussein
 
+    /**
+     * update the employee status to employed
+     * @author hussein el-zein
+     */
     fun employProfile(context: Context, email: String) {
         db.collection("users")
             .document(
@@ -468,6 +519,10 @@ object Database {
             ).update("isEmployee", true)
     } //TODO: Hussein
 
+    /**
+     * send recovery mail to user
+     * @author hussein el-zein
+     */
     fun forgotPassword(
         email: String,
         context: Context,
@@ -493,9 +548,13 @@ object Database {
                 ).show()
             }
         }
-
     }//TODO: Hussein
 
+
+    /**
+     * delete the user account and profile
+     * @author hussein el-zein
+     */
     fun deleteProfile(context: Context) {
         db.collection("users")
             .document(
@@ -742,6 +801,12 @@ object Database {
     } //TODO: Sabirin
 
 
+    /**
+    @author Hussein El-Zein
+    Retrieves a list of all the questions associated with an event
+    @param eventId the id of the event to retrieve questions from
+    @return list of all questions associated with the event
+     */
     suspend fun getSurveyAsList(eventId: String): List<MyQuestion> {
         val questions: MutableList<MyQuestion> = mutableListOf()
         val questionsRef = db.collection("events").document(eventId).collection("questions")

@@ -35,6 +35,10 @@ data class StartProfileUiState(
     var postalCode: MutableState<String> = mutableStateOf(""),
 )
 
+/**
+@author Hussein El-Zein
+StartProfileViewModel class that handles the data for the sign up process
+ */
 class StartProfileViewModel() : ViewModel() {
     val _uiState = MutableStateFlow(StartProfileUiState())
     val uiState: StateFlow<StartProfileUiState> = _uiState.asStateFlow()
@@ -200,7 +204,11 @@ class StartProfileViewModel() : ViewModel() {
             Database.getIsEmployee(context)
             Database.getIsAdmin(context)
 
-            if (getBooleanFromLocalStorage("isEmployee", context) || getBooleanFromLocalStorage("isAdmin", context)) {
+            if (getBooleanFromLocalStorage(
+                    "isEmployee",
+                    context
+                ) || getBooleanFromLocalStorage("isAdmin", context)
+            ) {
                 navController.navigate(Screen.EventScreenEmployee.route)
             } else {
                 navController.navigate(Screen.EventScreen.route)

@@ -144,13 +144,13 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
                 }
 
                 ChooseEventDate(
-                    LocalContext.current,
+                    context = context,
                     myYear = state.value.myYear,
                     myMonth = state.value.myMonth,
                     myDay = state.value.myDay
                 )
 
-                ChooseTime(context = LocalContext.current, myHour = state.value.myHour, myMinute = state.value.myMinute)
+                ChooseTime(context = context, myHour = state.value.myHour, myMinute = state.value.myMinute)
 
                 Column(
 
@@ -205,37 +205,6 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
     }
 }
 
-/*
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-fun TextFiledEventCodeText(eventCode: MutableState<String>, textChange: (String) -> Unit) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    ContentColorComponent(contentColor = Color.White) {
-        TextField(
-            value = eventCode.value,
-            onValueChange = {textChange(it)},
-            label = {
-                Text(
-                    text = "EventCode (4 Digit Code)",
-                    color = Color(0xFFB874A6)
-                )
-            },
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number,imeAction = ImeAction.Done),
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
-            keyboardActions = KeyboardActions(
-                onDone = {keyboardController?.hide()}),
-
-            modifier = Modifier
-                //.padding(start = 20.dp, end = 20.dp, top = 10.dp)
-                .fillMaxWidth()
-        )
-    }
-}
-
- */
-
 
 @Composable
 fun ChooseEventDate(
@@ -289,7 +258,7 @@ fun ChooseEventDate(
             backgroundColor = Color.Transparent
         ),
         enabled = false,
-        value = text /*if(myDay.value.isNotEmpty()) "${myDay.value}/${myMonth.value}/${myYear.value}" else ""*/,
+        value = text,
         label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
         onValueChange = {},
         modifier = Modifier
@@ -525,7 +494,6 @@ var nonQuestion: Int = 0
 // figur 2
 @Composable
 fun QuestionPageScreen(navController: NavController,questionPageViewModel: QuestionPageViewModel) {
-    //val selectedQuestion = remember { mutableStateOf("") }
     val state = questionPageViewModel._uistate.collectAsState()
     val context = LocalContext.current
     Box(
@@ -547,13 +515,11 @@ fun QuestionPageScreen(navController: NavController,questionPageViewModel: Quest
             .fillMaxSize()) {
         Card(
             modifier = Modifier
-                //.padding(top = 150.dp, bottom = 150.dp)
-                .padding(15.dp)
-                //.fillMaxSize(),
-            ,shape = RoundedCornerShape(14.dp),
+                .padding(15.dp),
+            shape = RoundedCornerShape(14.dp),
             backgroundColor = Color(red = 44, green = 44, blue = 59)
 
-        ) {  //TODO
+        ) {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                 DropDownMenu(selectedQuestion = state.value.selectedQuestion)
             }
@@ -633,7 +599,6 @@ fun CreateMultpleChoiceQuestionScreen(navController: NavController, answerViewMo
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        /*verticalArrangement = Arrangement.Center*/
     ) {
         item {
             Spacer(modifier = Modifier.size(27.dp))
@@ -754,7 +719,6 @@ fun CreateTextAnswerQuestionScreen(navController: NavController, textAnswerViewM
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        /*verticalArrangement = Arrangement.Center*/
     ) {
         item {
             Spacer(modifier = Modifier.size(27.dp))

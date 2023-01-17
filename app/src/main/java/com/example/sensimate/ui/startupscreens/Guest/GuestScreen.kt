@@ -40,6 +40,12 @@ fun GuestScreenPrev() {
     GuestScreen(navController = rememberNavController(), viewModel())
 }
 
+/**
+@author Hussein el-zein
+Function that displays the guest screen and handles the logic for guest login.
+@param navController Navigation controller for navigating between screens.
+@param startProfileViewModel ViewModel for managing the guest login process.
+ */
 @Composable
 fun GuestScreen(
     navController: NavController,

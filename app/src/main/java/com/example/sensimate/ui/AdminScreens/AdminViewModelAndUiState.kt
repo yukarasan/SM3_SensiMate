@@ -17,7 +17,11 @@ data class AdminUiState(
     var mails: MutableList<String> = mutableListOf(),
     var loaded: MutableState<Boolean> = mutableStateOf(false)
 )
-
+/**
+ * AdminViewModel is a class that provides the data and logic of the Admin screens,
+ * it consists of the state of the UI, and the functions that handle the UI state changes.
+ * @author Hussein El-Zein
+ */
 class AdminViewModel() : ViewModel() {
     val _uiState = MutableStateFlow(AdminUiState())
     val uiState: StateFlow<AdminUiState> = _uiState.asStateFlow()

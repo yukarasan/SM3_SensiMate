@@ -123,11 +123,7 @@ fun textFieldWithImage(
                     )
             }
         }
-
-
     }
-
-
 }
 
 
@@ -156,9 +152,3 @@ fun myButton(
         )
     }
 }
-
-
-
-
-
-
