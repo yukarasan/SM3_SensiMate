@@ -88,6 +88,7 @@ sealed class Screen(val route: String) {
     object Survey3 : Screen(route = "survey3")
     object Survey4 : Screen(route = "survey4")
     object SurveyCreator : Screen(route = "AllSurveys")
+    object CreateScreenEmployee : Screen(route = "createEmployee")
 
 
 }

@@ -23,7 +23,9 @@ class CreateEmployeeViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(CreateEmployeeUIState())
     val uiState: StateFlow<CreateEmployeeUIState> = _uiState.asStateFlow()
 
-    fun checkIfTextFieldIsEmpty(context: Context, navController: NavController) {
+    fun checkIfTextFieldIsEmpty(context: Context, navController: NavController,
+                                showLoading: MutableState<Boolean>,
+                                successLoggedIn: MutableState<Boolean>) {
         if (uiState.value.email.value == "") {
             Toast.makeText(
                 context,
@@ -37,12 +39,11 @@ class CreateEmployeeViewModel: ViewModel() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            /*Database.createEmployee(uiState.value.email.value,
-                uiState.value.password.value )
-
-             */
-            //insæt i databasen.
-            //navigere til en anden screen.
+           Database.signUserUp(email = uiState.value.email.value, password = uiState.value.password.value,
+               context = context, showLoading = showLoading, postalCode = "null", yearBorn = "null",
+               monthBorn = "null", gender = "null", dayBorn = "null", successLoggedIn = successLoggedIn,
+               isEmployee = true
+           )
         }
     }
 }

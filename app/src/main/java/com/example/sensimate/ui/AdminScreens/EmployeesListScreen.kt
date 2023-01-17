@@ -98,8 +98,8 @@ fun EmployeesListScreen(
                 navController.popBackStack()
             }
 
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "tilføj")
+            Button(onClick = { navController.navigate(Screen.CreateScreenEmployee.route) }) {
+                Text(text = "Add")
             }
         }
 

@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,6 +33,8 @@ import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail
 import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
+import com.example.sensimate.ui.createEmployee.CreateEmployeeScreen
+import com.example.sensimate.ui.createEmployee.CreateEmployeeViewModel
 import com.example.sensimate.ui.createEvent.*
 import com.example.sensimate.ui.home.EventScreen
 import com.example.sensimate.ui.home.EventScreenEmployee
@@ -55,6 +58,7 @@ fun SetupNavGraph(navController: NavHostController) {
     val answerViewModel = AnswerViewModel()
     val textAnswerViewModel = TextAnswerViewModel()
     val questionPageViewModel = QuestionPageViewModel()
+    val createEmployeeViewModel = CreateEmployeeViewModel()
 
     val context = LocalContext.current
     InternetBroadcastReceiver(context)
@@ -165,6 +169,9 @@ fun SetupNavGraph(navController: NavHostController) {
             EmployeesListScreen(navController = navController, viewModel = AdminViewModel())
         }
 
+
+
+
         /*
         composable(
             route = Screen.ExtendedEventScreen.route,
@@ -224,6 +231,11 @@ fun SetupNavGraph(navController: NavHostController) {
                 textAnswerViewModel = textAnswerViewModel
             )
         }
+
+        composable(route = Screen.CreateScreenEmployee.route) {
+            CreateEmployeeScreen(navController = navController, createEmployeeViewModel = createEmployeeViewModel)
+        }
+
         /*
         composable(
             route = Screen.EditEvent.route,
@@ -302,6 +314,7 @@ fun SetupNavGraph(navController: NavHostController) {
         }
 
          */
+
 
         composable(route = Screen.EditPage.route) {
             EditPage(navController = navController, eventViewModel = eventViewModel)

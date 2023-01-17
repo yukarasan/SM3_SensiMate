@@ -31,6 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
+import com.example.sensimate.ui.AdminScreens.AdminViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
@@ -44,8 +45,7 @@ fun createEmployeePreview() {
 @Composable
 fun CreateEmployeeScreen(
     navController: NavController,
-    createEmployeeViewModel:
-    CreateEmployeeViewModel = viewModel()
+    createEmployeeViewModel: CreateEmployeeViewModel = viewModel()
 ) {
 
     val state = createEmployeeViewModel.uiState.collectAsState()
