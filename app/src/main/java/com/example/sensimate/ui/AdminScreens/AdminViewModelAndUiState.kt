@@ -28,7 +28,6 @@ class AdminViewModel() : ViewModel() {
 
     init {
         getListOfEmails()
-        Log.d("LOG", "LOG")
     }
 
     fun getListOfEmails() {
@@ -38,7 +37,9 @@ class AdminViewModel() : ViewModel() {
         }
     }
 
-    fun clickOnCreateEmployee() {}
+    fun createdEmployee(email: String, context: Context) {
+        _uiState.value.mails.add(email)
+    }
 
     fun clickOnDeleteEmployee(email: String, context: Context) {
         _uiState.value.mails.remove(email)

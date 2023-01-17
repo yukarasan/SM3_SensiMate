@@ -58,6 +58,7 @@ fun SetupNavGraph(navController: NavHostController) {
     val textAnswerViewModel = TextAnswerViewModel()
     val questionPageViewModel = QuestionPageViewModel()
     val createEmployeeViewModel = CreateEmployeeViewModel()
+    val adminViewModel = AdminViewModel()
 
     val context = LocalContext.current
     InternetBroadcastReceiver(context)
@@ -71,7 +72,6 @@ fun SetupNavGraph(navController: NavHostController) {
     val loadedOnOpen = remember {
         mutableStateOf(false)
     }
-
 
 
     val screen = if (!loadedOnOpen.value) {
@@ -165,10 +165,8 @@ fun SetupNavGraph(navController: NavHostController) {
         }
 
         composable(route = Screen.AdminListOfEmployeeScreen.route) {
-            EmployeesListScreen(navController = navController, viewModel = AdminViewModel())
+            EmployeesListScreen(navController = navController, viewModel = adminViewModel)
         }
-
-
 
 
         /*
@@ -216,7 +214,10 @@ fun SetupNavGraph(navController: NavHostController) {
             )
         }
         composable(route = Screen.QuestionPageScreen.route) {
-            QuestionPageScreen(navController = navController,questionPageViewModel = questionPageViewModel)
+            QuestionPageScreen(
+                navController = navController,
+                questionPageViewModel = questionPageViewModel
+            )
         }
         composable(route = Screen.CreateMultpleChoiceQuestionScreen.route) {
             CreateMultipleChoiceQuestionScreen(
@@ -232,7 +233,11 @@ fun SetupNavGraph(navController: NavHostController) {
         }
 
         composable(route = Screen.CreateScreenEmployee.route) {
-            CreateEmployeeScreen(navController = navController, createEmployeeViewModel = createEmployeeViewModel)
+            CreateEmployeeScreen(
+                navController = navController,
+                createEmployeeViewModel = createEmployeeViewModel,
+                adminViewModel = adminViewModel
+            )
         }
 
         /*
@@ -273,7 +278,11 @@ fun SetupNavGraph(navController: NavHostController) {
          */
 
         composable(Screen.EditEvent.route) {
-            EditEvent(navController = navController, eventViewModel = eventViewModel, questionViewModel)
+            EditEvent(
+                navController = navController,
+                eventViewModel = eventViewModel,
+                questionViewModel
+            )
         }
 
         /*
