@@ -2,6 +2,7 @@ package com.example.sensimate.data
 
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 import android.annotation.SuppressLint
+import android.app.DownloadManager
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
@@ -980,32 +981,6 @@ object Database {
         //Adding data to the sheet
         addData(0, sheet, newQuestion = newQuestion, options, profile)
 
-        val filepath = context.getExternalFilesDir(null)?.absolutePath + "/survey.xlsx"
-        val out = FileOutputStream(File(filepath))
-        workbook.write(out)
-        out.close()
-
-        val file = File(filepath)
-        val uri = FileProvider.getUriForFile(context, "com.example.sensimate.excel_download", file)
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        val packageManager = context.packageManager
-        val activities = packageManager.queryIntentActivities(intent, 0)
-        val isIntentSafe = activities.size > 0
-        if (isIntentSafe) {
-            context.startActivity(intent)
-        } else {
-            Toast.makeText(
-                context, "No app found to open this file type, " +
-                        "Would you like to download a spreadsheet app?", Toast.LENGTH_SHORT
-            ).show()
-            val downloadAppIntent = Intent(Intent.ACTION_VIEW)
-            downloadAppIntent.data =
-                Uri.parse("https://play.google.com/store/search?q=spreadsheet&c=apps")
-            context.startActivity(downloadAppIntent)
-        }
-
         /*
         val filepath = context.getExternalFilesDir(null)?.absolutePath + "/survey.xlsx"
         val out = FileOutputStream(File(filepath))
@@ -1020,7 +995,8 @@ object Database {
 
          */
 
-        //createExcel(workbook,context)
+        createExcel(workbook,context)
+
         /*
         try {
             val xlWb = XSSFWorkbook()
@@ -1162,14 +1138,15 @@ private fun createExcel(workbook: Workbook, context: Context) {
 
     //Get App Director, APP_DIRECTORY_NAME is a string
     val appDirectory = context.getExternalFilesDir("Sensimate")
+    val downloadDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
     //Check App Directory whether it exists or not, create if not.
-    if (appDirectory != null && !appDirectory.exists()) {
-        appDirectory.mkdirs()
+    if (downloadDirectory != null && !downloadDirectory.exists()) {
+        downloadDirectory.mkdirs()
     }
 
     //Create excel file with extension .xlsx
-    val excelFile = File(appDirectory, "survey.xlsx")
+    val excelFile = File(downloadDirectory, "survey.xlsx")
 
     //Write workbook to file using FileOutputStream
     try {
@@ -1184,26 +1161,24 @@ private fun createExcel(workbook: Workbook, context: Context) {
     workbook.write(fileOut)
     fileOut.close()
 
+
 /*
-    val intent = Intent(Intent.ACTION_VIEW)
-    val uri: Uri = FileProvider.getUriForFile(
-        context, context.applicationContext.packageName + "com.example.file-provider", excelFile)
-    intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    context.startActivity(intent)
+    val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+    val downloadUri = Uri.fromFile(excelFile)
+    val request = DownloadManager.Request(downloadUri)
+        .setTitle("Survey.xlsx") // Title of the Download Notification
+        .setDescription("Downloading") // Description of the Download Notification
+        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE) // Visibility of the download Notification
+        .setDestinationUri(Uri.fromFile(excelFile)) // Uri of the destination file
+        .setAllowedOverMetered(true)
+        .setAllowedOverRoaming(true)
+    val downloadId = downloadManager.enqueue(request)
 
  */
-/*
-    val activity = currentActivity.value
-    val file = File("survey_results.xlsx")
-    val contentUri = FileProvider.getUriForFile(activity, "com.example.fileprovider", file)
-    val openFileIntent = Intent(Intent.ACTION_VIEW)
-    openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
-    openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    openFileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    activity?.startActivity(openFileIntent)
 
- */
+
+
+
 /*
     val contentUri = FileProvider.getUriForFile(context, "com.example.file-provider", excelFile)
     val openFileIntent = Intent(Intent.ACTION_VIEW)
@@ -1219,13 +1194,14 @@ private fun createExcel(workbook: Workbook, context: Context) {
     out.close()
 
  */
-/*
+    /*
+
     val contentUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".file-provider", excelFile)
     val packageManager = context.packageManager
     val intent = Intent(Intent.ACTION_VIEW)
-    intent.setDataAndType(contentUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    intent.setDataAndType(contentUri, "application/vnd.ms-excel")
     intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+    val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
     if(list.size > 0) {
         context.startActivity(intent)
     } else {
@@ -1233,29 +1209,16 @@ private fun createExcel(workbook: Workbook, context: Context) {
         Toast.makeText(context, "No app found to open this file type, " +
                 "Would you like to download a spreadsheet app?", Toast.LENGTH_SHORT).show()
         val downloadAppIntent = Intent(Intent.ACTION_VIEW)
-
- */
-    val contentUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".file-provider", excelFile)
-    val packageManager = context.packageManager
-    val intent = Intent(Intent.ACTION_VIEW)
-    intent.setDataAndType(contentUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-    if(list.size > 0) {
-        context.startActivity(intent)
-    } else {
-        // Show message to user that no app can open the file
-        /*Toast.makeText(context, "No app found to open this file type, " +
-                "Would you like to download a spreadsheet app?", Toast.LENGTH_SHORT).show()
-        val downloadAppIntent = Intent(Intent.ACTION_VIEW)
         downloadAppIntent.data = Uri.parse("https://play.google.com/store/search?q=spreadsheet&c=apps")
         context.startActivity(downloadAppIntent)
 
-         */
+     */
+
+
     }
 
 
-}
+
 
 
 /*

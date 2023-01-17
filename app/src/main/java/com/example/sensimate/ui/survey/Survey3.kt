@@ -54,7 +54,7 @@ fun Survey3(title: String, navController: NavController, questionViewModel: Ques
             //ProgressPreview()
         }
         items(1) {
-            Question(title)
+            Question("Question")
         }
         items(1) {
             SurveyTitle(title)

@@ -56,7 +56,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.data.Database.main
-import com.example.sensimate.data.Database.su
 import com.example.sensimate.data.Database.updateSurvey
 
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel

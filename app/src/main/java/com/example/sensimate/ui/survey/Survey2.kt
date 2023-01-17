@@ -55,7 +55,7 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
 
         OrangeBackButton { navController.popBackStack() }
             //ProgressPreview()
-            Question(title)
+            Question("Question")
             SurveyTitle(title)
             Information2(questionViewModel)
             Row(
@@ -96,6 +96,7 @@ fun Information2(questionViewModel: QuestionViewModel) {
     // Add a state variable to track the selected option
     var selectedOption by remember { mutableStateOf(0) }
     val options = questionViewModel.uiState.value.currentQuestion.options
+    val answer = remember { mutableListOf<String>() }
 
     //val myanswer = getAnswer(questionViewModel.uiState.value.currentQuestion).myanswer
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
@@ -103,6 +104,7 @@ fun Information2(questionViewModel: QuestionViewModel) {
 
 
         selectedOption = i
+        val test = options[i]
 
 
         questionViewModel.setAnswer(listOf(options[i]))
