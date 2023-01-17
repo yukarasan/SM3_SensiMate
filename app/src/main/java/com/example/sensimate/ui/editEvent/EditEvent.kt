@@ -328,44 +328,37 @@ fun EditEvent(
                             }
                         )
                     }
+                    if (getBooleanFromLocalStorage("isAdmin", context = context)) {
+
+                        Spacer(modifier = Modifier.size(40.dp))
+                        Button(
+                            onClick = {
+                                //download(context)
+                                questionViewModel.updateAnswer(
+                                    chosenEvent.eventId, context = context,
+                                    boolean = true
+                                )
+                                navController.navigate(Screen.EditEvent.route)
+                            },
+                            shape = CircleShape,
+                            colors = ButtonDefaults.buttonColors(Color(0xFF217225)),
+                            modifier = Modifier.size(240.dp, 50.dp)
+                        ) {
+                            Text(
+                                text = "Extract excel",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 25.sp,
+                                color = Color.White,
+                                fontFamily = manropeFamily
+                            )
+                        }
+                    }
                 }
-
             }
         }
 
-        val context = LocalContext.current
+        //val context = LocalContext.current
 
-        if (getBooleanFromLocalStorage("isAdmin", context = context)) {
-
-            Spacer(modifier = Modifier.size(40.dp))
-            Button(
-                onClick = {
-                    //download(context)
-                    questionViewModel.updateAnswer(
-                        chosenEvent.eventId, context = context,
-                        boolean = true
-                    )
-
-
-
-                    navController.navigate(Screen.EditEvent.route)
-
-
-                    /*//TODO: Ansh*/
-                },
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(Color(0xFFC0CC5C)),
-                modifier = Modifier.size(240.dp, 50.dp)
-            ) {
-                Text(
-                    text = "Extract excel",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 25.sp,
-                    color = Color.White,
-                    fontFamily = manropeFamily
-                )
-            }
-        }
     }
 }
 
