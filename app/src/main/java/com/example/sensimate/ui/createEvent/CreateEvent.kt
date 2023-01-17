@@ -144,13 +144,13 @@ fun CreateEventScreen(navController: NavController, createEventViewModel: Create
                 }
 
                 ChooseEventDate(
-                    LocalContext.current,
+                    context = context,
                     myYear = state.value.myYear,
                     myMonth = state.value.myMonth,
                     myDay = state.value.myDay
                 )
 
-                ChooseTime(context = LocalContext.current, myHour = state.value.myHour, myMinute = state.value.myMinute)
+                ChooseTime(context = context, myHour = state.value.myHour, myMinute = state.value.myMinute)
 
                 Column(
 
