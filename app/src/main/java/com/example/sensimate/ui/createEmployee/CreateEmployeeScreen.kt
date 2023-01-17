@@ -11,13 +11,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -31,7 +31,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.createEvent.TextFiledTitleText
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
@@ -52,6 +51,13 @@ fun CreateEmployeeScreen(
     val state = createEmployeeViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
+    val showLoading = remember {
+        mutableStateOf(false)
+    }
+    val successLoggedIn = remember {
+        mutableStateOf(false)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -65,38 +71,15 @@ fun CreateEmployeeScreen(
                 )
             )
     )
-    /*
-    Column(
-        modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start) {
-            Title("Add an Employee", modifier = Modifier.size(500.dp))
-            Image(modifier = Modifier.size(300.dp).align(Alignment.CenterVertically), id = R.drawable.emp)
+    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Title("Create an Employee", modifier = Modifier
+            .size(550.dp)
+            .padding(start = 50.dp, top = 167.dp))
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 10.dp)) {
+            Image(modifier = Modifier.size(360.dp), id = R.drawable.emp )
         }
     }
-
-     */
-
-    /*
-    Column(
-        modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Column() {
-            Image(modifier = Modifier.size(50.dp), id = R.drawable.emp)
-            Title("Add an Employee", modifier = Modifier.size(500.dp))
-        }
-        Row(verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center) {
-
-            }
-        }
-
-     */
 
     LazyColumn(
         modifier = Modifier
@@ -104,6 +87,7 @@ fun CreateEmployeeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
         item {
 
             EmailTextField(titleText = state.value.email.value, textChange = {
@@ -118,8 +102,8 @@ fun CreateEmployeeScreen(
                 onClick = {
                     //eventviewmodel
                           createEmployeeViewModel.checkIfTextFieldIsEmpty(context = context,
-                              navController = navController)
-
+                              navController = navController, showLoading = showLoading,
+                              successLoggedIn = successLoggedIn )
                 },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
