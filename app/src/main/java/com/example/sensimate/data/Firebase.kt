@@ -848,46 +848,13 @@ object Database {
         return questions
     }
 
-/*
-    fun updateSurvey(eventId: String, survey: List<MyAnswer>) { //TODO: Ansh og (Hussein?)
-        val questionsRef = db.collection("events").document(eventId).collection("questions")
-        for (question in survey) {
-            val docRef = questionsRef.document(question.mainQuestion)
-            docRef.update("oneChoice", question.oneChoice)
-                .addOnSuccessListener {
-                }
-                .addOnFailureListener {
-                }
-            docRef.collection("type").document("options")
-                .set(question.options.mapIndexed { index, i -> index.toString() to i }.toMap())
-                .addOnSuccessListener {
-                }
-                .addOnFailureListener {
-                }
-        }
-    }
-
- */
-
-
-    /*
-
-    suspend fun updateAnswer(eventId: String, questionId: String, answerId: String, newAnswer: Any) {
-        val answerRef = db.collection("events").document(eventId).collection("questions")
-            .document(questionId).collection("answers").document(answerId)
-        answerRef.update("answer", newAnswer).await()
-    }
-
-     */
-
-    /*
     suspend fun insertAnswer(eventId: String, questionId: String, answer: Any) {
         val answerRef = db.collection("events").document(eventId).collection("questions")
             .document(questionId).collection("answers").document()
         answerRef.set(mapOf("answer" to answer)).await()
     }
 
-     */
+
 
 
     suspend fun updateSurvey(
@@ -933,42 +900,7 @@ object Database {
 
     }
 
-    private val REQUEST_CODE_STORAGE_PERMISSION = 1
-/*
-    fun requestStoragePermission(activity: Activity) :Boolean {
-        val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-        return ActivityCompat.requestPermissions(activity, permissions, REQUEST_CODE_STORAGE_PERMISSION) == PackageManager.PERMISSION_GRANTED
-    }
 
- */
-/*
-    fun requestStoragePermission(activity: Activity) :Boolean {
-        val writePermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val readPermission = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
-        if (writePermission != PackageManager.PERMISSION_GRANTED || readPermission != PackageManager.PERMISSION_GRANTED) {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                || ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Toast.makeText(activity, "The app needs storage permission to save survey results in an excel file on your device.", Toast.LENGTH_LONG).show()
-                Toast.makeText(activity, "Please provide storage permission to save survey results.", Toast.LENGTH_LONG).show()
-            }
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_STORAGE_PERMISSION)
-            return false
-        }else{
-            return true
-        }
-    }
-
- */
-
-
-    fun su() {
-        val workbook = XSSFWorkbook()
-        val sheet = workbook.createSheet("Survey Results")
-        sheet.createRow(0).createCell(0).setCellValue("Hello")
-        val output = FileOutputStream("/test.xlsx")
-        workbook.write(output)
-        workbook.close()
-    }
 
     @SuppressLint("SuspiciousIndentation")
     suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
@@ -994,50 +926,15 @@ object Database {
         //Adding data to the sheet
         addData(0, sheet, newQuestion = newQuestion, options, profile)
 
-        /*
-        val filepath = context.getExternalFilesDir(null)?.absolutePath + "/survey.xlsx"
-        val out = FileOutputStream(File(filepath))
-        workbook.write(out)
-        out.close()
-        val file = File(filepath)
-        val uri = FileProvider.getUriForFile(context, context.packageName + ".file-provider", file)
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        context.startActivity(intent)
-
-         */
 
         createExcel(workbook,context)
 
-        /*
-        try {
-            val xlWb = XSSFWorkbook()
-            //Instantiate Excel worksheet:
-            val xlWs = xlWb.createSheet()
-            //Row index specifies the row in the worksheet (starting at 0):
-            val rowNumber = 0
-            //Cell index specifies the column within the chosen row (starting at 0):
-            val columnNumber = 0
-            //Write text value to cell located at ROW_NUMBER / COLUMN_NUMBER:
-            val xlRow = xlWs.createRow(rowNumber)
-            val xlCol = xlRow.createCell(columnNumber)
-            xlCol.setCellValue("Test")
-            //Write file:
-            val outputStream = FileOutputStream(File("./test_file.xlsx"))
-            xlWb.write(outputStream)
-            xlWb.close()
-        }
-        catch (E:Exception) {
-            Log.d("TESTTEST","EXCEL")
-
-         */
-    }
-        //Instantiate Excel workbook:
-
     }
 
 
+    }
+
+/*
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
     //setHeaderStyle is a custom function written below to add header style
 
@@ -1075,6 +972,8 @@ private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
     }
 }
 
+ */
+
 private fun getHeaderStyle(workbook: Workbook): CellStyle {
 
     //Cell style for header row
@@ -1097,6 +996,20 @@ private fun getHeaderStyle(workbook: Workbook): CellStyle {
     return cellStyle
 }
 
+
+
+private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
+    //setHeaderStyle is a custom function written below to add header style
+    val row = sheet.createRow(0)
+    val HEADER_NAME = "Data"
+    val columnWidth = (15 * 500)
+    sheet.setColumnWidth(0, columnWidth)
+    val cell = row.createCell(0)
+    cell?.setCellValue(HEADER_NAME)
+    cell.cellStyle = cellStyle
+}
+
+/*
 private fun addData(
     rowIndex: Int,
     sheet: Sheet,
@@ -1120,22 +1033,32 @@ private fun addData(
 
 }
 
+ */
+
+private fun addData(
+    rowIndex: Int,
+    sheet: Sheet,
+    newQuestion: MyQuestion,
+    options: List<String>,
+    profile: Profile
+) {
+    // Create a new row
+    val row = sheet.createRow(rowIndex)
+    row.createCell(0).setCellValue(newQuestion.mainQuestion)
+    row.createCell(1).setCellValue(profile.postalCode)
+    row.createCell(2).setCellValue(profile.yearBorn)
+    row.createCell(3).setCellValue(profile.monthBorn)
+    row.createCell(4).setCellValue(profile.dayBorn)
+    row.createCell(5).setCellValue(profile.gender)
+    row.createCell(6).setCellValue(options.toString())
+    row.createCell(7).setCellValue(false)
+
+}
 
 private fun createCell(row: Row, columnIndex: Int, value: String?) {
     val cell = row.createCell(columnIndex)
     cell?.setCellValue(value)
 
-   // val headerRow = sheet.createRow(0)
-    /*headerRow.createCell(0).setCellValue("mainQuestion")
-    headerRow.createCell(1).setCellValue("postalCode")
-    headerRow.createCell(2).setCellValue("yearBorn")
-    headerRow.createCell(3).setCellValue("monthBorn")
-    headerRow.createCell(4).setCellValue("dayBorn")
-    headerRow.createCell(5).setCellValue("gender")
-    headerRow.createCell(6).setCellValue("answer")
-    headerRow.createCell(7).setCellValue("isEmployee")
-
-     */
 
 }
 
@@ -1175,144 +1098,10 @@ private fun createExcel(workbook: Workbook, context: Context) {
     fileOut.close()
 
 
-/*
-    val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-    val downloadUri = Uri.fromFile(excelFile)
-    val request = DownloadManager.Request(downloadUri)
-        .setTitle("Survey.xlsx") // Title of the Download Notification
-        .setDescription("Downloading") // Description of the Download Notification
-        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE) // Visibility of the download Notification
-        .setDestinationUri(Uri.fromFile(excelFile)) // Uri of the destination file
-        .setAllowedOverMetered(true)
-        .setAllowedOverRoaming(true)
-    val downloadId = downloadManager.enqueue(request)
-
- */
-
-
-
-
-/*
-    val contentUri = FileProvider.getUriForFile(context, "com.example.file-provider", excelFile)
-    val openFileIntent = Intent(Intent.ACTION_VIEW)
-    openFileIntent.setDataAndType(contentUri, "application/vnd.ms-excel")
-    openFileIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    context.startActivity(openFileIntent)
-
- */
-/*
-    val file = File(context.getExternalFilesDir(null), "test_file.xlsx")
-    val out = FileOutputStream(file)
-    workbook.write(out)
-    out.close()
-
- */
-    /*
-
-    val contentUri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".file-provider", excelFile)
-    val packageManager = context.packageManager
-    val intent = Intent(Intent.ACTION_VIEW)
-    intent.setDataAndType(contentUri, "application/vnd.ms-excel")
-    intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    val list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-    if(list.size > 0) {
-        context.startActivity(intent)
-    } else {
-        // Show message to user that no app can open the file
-        Toast.makeText(context, "No app found to open this file type, " +
-                "Would you like to download a spreadsheet app?", Toast.LENGTH_SHORT).show()
-        val downloadAppIntent = Intent(Intent.ACTION_VIEW)
-        downloadAppIntent.data = Uri.parse("https://play.google.com/store/search?q=spreadsheet&c=apps")
-        context.startActivity(downloadAppIntent)
-
-     */
-
 
     }
 
 
-
-
-
-/*
-
-    suspend fun test2(context:Context, eventId: String, options: List<String>, newQuestion: MyQuestion) {
-        val test = hashMapOf(
-            "mainQuestion" to newQuestion.mainQuestion
-        )
-
-        val profile = fetchProfile()!!
-
-        val survey = hashMapOf(
-            "postalCode" to profile.postalCode,
-            "yearBorn" to profile.yearBorn,
-            "monthBorn" to profile.monthBorn,
-            "dayBorn" to profile.dayBorn,
-            "gender" to profile.gender,
-            "answer" to options.toString(),
-            "isEmployee" to false
-        )
-
-        val questionRef = db.collection("events").document(eventId)
-            .collection("Answers").add(test).addOnSuccessListener { docRef ->
-                docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
-                    val workbook = XSSFWorkbook()
-                    val sheet = workbook.createSheet("Survey Results")
-
-                    val headerRow = sheet.createRow(0)
-                    headerRow.createCell(0).setCellValue("mainQuestion")
-                    headerRow.createCell(1).setCellValue("postalCode")
-                    headerRow.createCell(2).setCellValue("yearBorn")
-                    headerRow.createCell(3).setCellValue("monthBorn")
-                    headerRow.createCell(4).setCellValue("dayBorn")
-                    headerRow.createCell(5).setCellValue("gender")
-                    headerRow.createCell(6).setCellValue("answer")
-                    headerRow.createCell(7).setCellValue("isEmployee")
-
-                    val dataRow = sheet.createRow(1)
-                    dataRow.createCell(0).setCellValue(newQuestion.mainQuestion)
-                    dataRow.createCell(1).setCellValue(profile.postalCode)
-                    dataRow.createCell(2).setCellValue(profile.yearBorn)
-                    dataRow.createCell(3).setCellValue(profile.monthBorn)
-                    dataRow.createCell(4).setCellValue(profile.dayBorn)
-                    dataRow.createCell(5).setCellValue(profile.gender)
-                    dataRow.createCell(6).setCellValue(options.toString())
-                    dataRow.createCell(7).setCellValue(false)
-                    if(requestStoragePermission(context as Activity)){
-                        val folder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),"ExcelExport")
-                        if (!folder.exists()) {
-                            if(folder.mkdirs()){
-                                val file = File(folder,"survey_results.xlsx")
-                                try {
-                                    val outputStream = FileOutputStream(file)
-                                    workbook.write(outputStream)
-                                    outputStream.close()
-                                    Toast.makeText(context, "File saved successfully at ${folder.path}", Toast.LENGTH_LONG).show()
-                                } catch (e: IOException) {
-                                    Toast.makeText(context, "Error saving file: ${e.message}", Toast.LENGTH_LONG).show()
-                                }
-                            }else{
-                                Toast.makeText(context, "Error creating directory", Toast.LENGTH_LONG).show()
-                            }
-                        }else{
-                            val file = File(folder,"survey_results.xlsx")
-                            try {
-                                val outputStream = FileOutputStream(file)
-                                workbook.write(outputStream)
-                                outputStream.close()
-                                Toast.makeText(context, "File saved successfully at ${folder.path}", Toast.LENGTH_LONG).show()
-                            } catch (e: IOException) {
-                                Toast.makeText(context, "Error saving file: ${e.message}", Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }else{
-                        Toast.makeText(context, "Permission denied, please provide storage permission", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-    }
-
- */
 
 
 suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: MyQuestion) {
