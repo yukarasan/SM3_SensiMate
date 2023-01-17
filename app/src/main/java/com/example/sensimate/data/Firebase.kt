@@ -901,7 +901,7 @@ object Database {
     }
 
 
-
+/** Code inspiration regarding excel: https://medium.com/geekculture/a-simple-way-to-work-with-excel-in-android-app-94c727e9a138   */
     @SuppressLint("SuspiciousIndentation")
     suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
 //        val out = FileOutputStream(File("./test_file.xlsx"))
@@ -1103,7 +1103,7 @@ private fun createExcel(workbook: Workbook, context: Context) {
 
 
 
-
+/*
 suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: MyQuestion) {
 
     val test = hashMapOf(
@@ -1143,6 +1143,8 @@ suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: M
             }
         }
 }
+
+ */
 
 // Create a new Excel workbook
 /*

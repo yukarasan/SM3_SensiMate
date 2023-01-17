@@ -107,7 +107,9 @@ fun Information3(questionViewModel: QuestionViewModel) {
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
         selectedOption = i
 
-        questionViewModel.setAnswer(options)
+        questionViewModel.addAnswer(options[i])
+        //questionViewModel.addQuestion(questionTitle = questionViewModel.uiState.value.currentQuestion.mainQuestion, answers = mutableListOf(options[i]), onechoice = true)
+
 
         Log.d("Test2", options.toString())
     }
