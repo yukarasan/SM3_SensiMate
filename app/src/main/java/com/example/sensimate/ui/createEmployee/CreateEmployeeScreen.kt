@@ -111,10 +111,13 @@ fun CreateEmployeeScreen(
             EmailTextField(titleText = state.value.email.value, textChange = {
                 state.value.email.value = it
             })
-
+            //Maybe for later use:
+            /*
             PasswordTextField(titleText = state.value.password.value, textChange = {
                 state.value.password.value = it
             })
+
+             */
             Spacer(modifier = Modifier.size(70.dp))
             Button(
                 onClick = {
@@ -123,13 +126,6 @@ fun CreateEmployeeScreen(
                         navController = navController, showLoading = showLoading,
                         successLoggedIn = successLoggedIn, adminViewModel = adminViewModel
                     )
-
-                    //eventviewmodel
-                    /*createEmployeeViewModel.checkIfTextFieldIsEmpty(context = context,
-                        navController = navController, showLoading = showLoading,
-                        successLoggedIn = successLoggedIn )
-
-                     */
                 },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -198,7 +194,8 @@ fun EmailTextField(titleText: String, textChange: (String) -> Unit) {
     }
 }
 
-
+/*
+//for later use;
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PasswordTextField(titleText: String, textChange: (String) -> Unit) {
@@ -222,6 +219,8 @@ fun PasswordTextField(titleText: String, textChange: (String) -> Unit) {
         )
     }
 }
+
+ */
 
 @Composable
 fun Image(modifier: Modifier = Modifier, id: Int) {

@@ -54,22 +54,22 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
     ) {
 
         OrangeBackButton { navController.popBackStack() }
-            //ProgressPreview()
-            Question("Question")
-            SurveyTitle(title)
-            Information2(questionViewModel)
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 70.dp)
-            ) {
-                // PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
-                // NextButton(onClick = { navController.navigate(Screen.Survey3.route) } )
-            }
+        //ProgressPreview()
+        Question("Question")
+        SurveyTitle(title)
+        Information2(questionViewModel)
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 70.dp)
+        ) {
+            // PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
+            // NextButton(onClick = { navController.navigate(Screen.Survey3.route) } )
         }
     }
+}
 
 
 /*
@@ -84,10 +84,8 @@ private fun ProgressPreview(progress: Float) {
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
         progress = progress //0.50f //TODO:  Needs state hoisting in future.
-
     )
 }
-
  */
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -107,32 +105,19 @@ fun Information2(questionViewModel: QuestionViewModel) {
         val test = options[i]
 
 
-        questionViewModel.addAnswer(options[i])
+        questionViewModel.setAnswer(listOf(options[i]))
 
         Log.d("Test3", listOf(options[i]).toString())
     }
 
 
 
-    /*
-
-    var listener: ((option: Int, value: Boolean) -> Unit)? = { option: Int, value: Boolean ->
-    if (value) {
-        answer.add(options[option])
-    } else {
-        answer.remove(options[option])
-    }
-    questionViewModel.setAnswer(answer)
-}
-
-     */
-
     // Define a list of options and their corresponding titles
 
 
 
 
-   // val options = remember { MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList() }
+    // val options = remember { MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList() }
 
     Card(
         modifier = Modifier
@@ -153,8 +138,6 @@ fun Information2(questionViewModel: QuestionViewModel) {
                 ) {
                     // Pass the selectedOption state variable as a parameter to RoundedCheckView
                     RoundedCheckView(listener, selectedOption, option = i)
-                    //RoundedCheckView(options, listener, selectedOption, index)
-
                     Option(options[i])
 
                     Spacer(modifier = Modifier.width((120.dp)))
@@ -164,7 +147,6 @@ fun Information2(questionViewModel: QuestionViewModel) {
     }
 }
 
-//fun RoundedCheckView(options: List<String>, listener: ((Int, Boolean)-> Unit)? = null, state: Int, option: Int) {
 @Composable
 fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, option: Int) {
     // Add a state variable to track whether the checkbox is checked
@@ -180,22 +162,20 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
         color.value = lightpurple
     }
     else {
-    circleSize.value = 22.dp
-    circleThickness.value = 2.dp
-    color.value = GreyColor
+        circleSize.value = 22.dp
+        circleThickness.value = 2.dp
+        color.value = GreyColor
     }
 
-        Row(
+    Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             // Add a clickable modifier to the Row element
             .clickable(onClick =  {
                 // Update the isChecked state variable
-              //  isChecked.value = !isChecked.value
+                //  isChecked.value = !isChecked.value
 
                 listener?.invoke(option, isChecked)
-
-                //listener?.invoke(options.indexOf(options[option]), isChecked)
 
             })
     ) {
@@ -209,7 +189,7 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
                 .background(darkbluegrey) ,
             contentAlignment = Center
         ) {
-             if (isChecked || state == option) {
+            if (isChecked || state == option) {
                 Box(
                     modifier = Modifier
                         .size(circleSize2.value)
@@ -233,18 +213,5 @@ private fun Option(title: String, modifier: Modifier = Modifier) {
             .padding(top = 5.dp, start = 20.dp)
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

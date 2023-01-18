@@ -92,7 +92,6 @@ private fun ProgressPreview(progress: Float) {
         progress = progress //1f //TODO:  Needs state hoisting in future.
     )
 }
-
  */
 
 
@@ -111,7 +110,6 @@ fun Information4(questionViewModel: QuestionViewModel) {
         MyAnswer(it)
     }
     questionViewModel.setAnswer(myAnswers)
-
  */
 
     Card(
@@ -208,9 +206,7 @@ fun CheckBox(questionViewModel: QuestionViewModel, option: MutableList<String>, 
         onCheckedChange = {
             checkedState.value = it
             option.add(options)
-            questionViewModel.addAnswer(option.toString())
-            //questionViewModel.addQuestion(questionTitle = questionViewModel.uiState.value.currentQuestion.mainQuestion, answers = option, onechoice = false)
-
+            questionViewModel.setAnswer(option)
             Log.d("Test1", options)
         },
         colors = CheckboxDefaults
@@ -267,10 +263,6 @@ fun FinishButton(onClick: () -> Unit) {
 
 
 }
-
-
-
-
 
 
 

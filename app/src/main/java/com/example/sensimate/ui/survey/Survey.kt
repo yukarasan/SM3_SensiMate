@@ -85,8 +85,8 @@ fun Survey(
                         .padding(top = 150.dp)
                 ) {
                     //TODO: Remember to Implement Scaffold so the buttons does not move, but does not move
-                   // PreviousButton(onClick = { navController.navigate(Screen.Survey.route) })
-                   //NextButton(onClick = { navController.navigate(Screen.Survey2.route) })
+                    // PreviousButton(onClick = { navController.navigate(Screen.Survey.route) })
+                    //NextButton(onClick = { navController.navigate(Screen.Survey2.route) })
                 }
             }
         }
@@ -233,14 +233,14 @@ fun PreviousButton(onClick: () -> Unit) {
                 colorFilter = ColorFilter.tint(Color.White),
 
 
-            )
+                )
             Text(
                 "Previous",
                 color = Color.White,
                 fontSize = 14.sp,
                 modifier =
-                    Modifier.padding(start = 2.dp)
-                )
+                Modifier.padding(start = 2.dp)
+            )
         }
 
     }
@@ -268,7 +268,7 @@ fun NextButton(onClick: () -> Unit) {
                 "Next",
                 color = Color.White,
                 fontSize = 19.sp,
-               modifier =
+                modifier =
                 Modifier.padding(start = 2.dp)
             )
 
@@ -279,14 +279,9 @@ fun NextButton(onClick: () -> Unit) {
                 colorFilter = ColorFilter.tint(Color.White),
                 contentDescription = "Next",
 
-            )
+                )
 
         }
     }
 
 }
-
-
-
-
-

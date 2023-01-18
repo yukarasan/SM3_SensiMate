@@ -1,11 +1,10 @@
-package com.example.sensimate.ui.home
+package com.example.sensimate.ui.Event
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -16,6 +15,18 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.theme.DarkPurple
 
+/**
+ * EventCard is a composable that creates a card with the given title, time and address.
+ * When the card is clicked, the onClick function is called and in our case, it navigates to the
+ * extended event screen.
+ * The card also includes a title and a location icon, time of event and address.
+ * @param title the title of the event
+ * @param hour time of event
+ * @param minute time of event
+ * @param address location of the event
+ * @param onClick function call that navigates to the extended event screen.
+ * @author Yusuf Kara
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EventCard(
@@ -62,6 +73,11 @@ fun EventCard(
     }
 }
 
+/**
+ * This composable displays the title of an event.
+ * @param title the title of the event.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun EventTitle(title: String, modifier: Modifier = Modifier) {
     Text(
@@ -71,11 +87,15 @@ private fun EventTitle(title: String, modifier: Modifier = Modifier) {
         fontSize = 25.sp,
         color = Color.White,
         modifier = modifier
-            .padding(start = 8.dp)
-            .width(220.dp)
+            .padding(start = 8.dp, end = 8.dp)
+            .fillMaxWidth()
     )
 }
 
+/**
+ * Location image
+ * @author Yusuf Kara
+ */
 @Composable
 private fun LocationIcon() {
     Icon(
@@ -86,6 +106,11 @@ private fun LocationIcon() {
     )
 }
 
+/**
+ * This composable takes in the time of an event, and concatenate the minute parameter with
+ * the hour parameter.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun TimeOfEvent(minute: String, hour: String, modifier: Modifier = Modifier) {
     Text(
@@ -98,6 +123,10 @@ private fun TimeOfEvent(minute: String, hour: String, modifier: Modifier = Modif
     )
 }
 
+/**
+ * This composable is used to display the adress of an event.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Address(address: String, modifier: Modifier = Modifier) {
     Text(

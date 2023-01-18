@@ -10,7 +10,10 @@ import com.google.api.Context
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
+/**
+@author Ahmad Sandhu
+TextAnswerViewModel class that handles the data for text answer question
+ */
 data class TextAnswerUistate(
     var questionText: MutableState<String> = mutableStateOf("")
 )
