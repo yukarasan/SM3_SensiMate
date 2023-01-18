@@ -38,13 +38,15 @@ class CreateEmployeeViewModel : ViewModel() {
                 Toast.LENGTH_SHORT
             ).show()
 
-        } else if (uiState.value.password.value == "") {
+        } //maybe for later use;
+        /*else if (uiState.value.password.value == "") {
             Toast.makeText(
                 context,
                 "Password was not entered, try again",
                 Toast.LENGTH_SHORT
             ).show()
-        } else {
+            */
+         else {
             /*Database.signUserUp(email = uiState.value.email.value, password = uiState.value.password.value,
                 context = context, showLoading = showLoading, postalCode = "null", yearBorn = "null",
                 monthBorn = "null", gender = "null", dayBorn = "null", successLoggedIn = successLoggedIn,
