@@ -35,7 +35,7 @@ import com.example.sensimate.ui.InitialStartPage.SignUpUsingMail
 import com.example.sensimate.ui.createEmployee.CreateEmployeeScreen
 import com.example.sensimate.ui.createEmployee.CreateEmployeeViewModel
 import com.example.sensimate.ui.createEvent.*
-import com.example.sensimate.ui.home.EventScreen
+import com.example.sensimate.ui.Event.EventScreen
 import com.example.sensimate.ui.home.EventScreenEmployee
 import com.example.sensimate.ui.profile.ProfileScreen
 import com.example.sensimate.ui.profile.editProfile.*

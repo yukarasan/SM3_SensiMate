@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.sensimate.R
 import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.navigation.Screen
@@ -32,7 +34,14 @@ import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 
-
+/**
+ * ExtendedEvent is a composable function uses the eventViewModel to fetch the chosen event by
+ * its id and display it's details.
+ * It displays a card displaying the event's details, such as title, description, survey code,
+ * allergens, time, and location.
+ * This composable was originally made by Sabirin, but has later been modified by Yusuf.
+ * @author Sabirin & Yusuf
+ */
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun ExtendedEvent(
@@ -43,8 +52,12 @@ fun ExtendedEvent(
     val chosenEvent = eventViewModel.getEventById(eventState.value.chosenSurveyId)
     val state = eventViewModel.uiState.collectAsState()
 
-    var showFieldAlert by remember { mutableStateOf(false) }
-    var showSecondFieldAlert by remember { mutableStateOf(false) }
+    /*
+    The following states could in theory be a part of the viewModel, but since they are only
+    used within this composable, it is easier and more accessible to have them defined here.
+     */
+    var surveyCodeNotLongEnough by remember { mutableStateOf(false) }
+    var surveyCodeNotCorrect by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -64,7 +77,11 @@ fun ExtendedEvent(
                 .padding(10.dp)
         ) {
             Column(modifier = Modifier.padding(10.dp)) {
-                OrangeBackButton(onClick = { navController.popBackStack() })
+                OrangeBackButton(
+                    onClick = {
+                        navController.popBackStack()
+                    }
+                )
             }
 
             LazyColumn() {
@@ -108,7 +125,10 @@ fun ExtendedEvent(
                             Column(
                                 modifier = Modifier.padding(10.dp)
                             ) {
-                                Allergens(title = "Allergens", allergen = chosenEvent.allergens)
+                                Allergens(
+                                    title = stringResource(id = R.string.allergens),
+                                    allergen = chosenEvent.allergens
+                                )
                             }
 
                             Spacer(modifier = Modifier.size(15.dp))
@@ -116,7 +136,7 @@ fun ExtendedEvent(
                             Column(
                                 modifier = Modifier.padding(10.dp)
                             ) {
-                                Title(title = "Location")
+                                Title(title = stringResource(id = R.string.location))
 
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
@@ -126,6 +146,7 @@ fun ExtendedEvent(
                                     Address(address = chosenEvent.location)
                                 }
                             }
+
                             Spacer(modifier = Modifier.size(10.dp))
                         }
                     }
@@ -140,13 +161,14 @@ fun ExtendedEvent(
                         Button(
                             onClick = {
                                 if (state.value.event.chosenSurveyCode.value.length < 4) {
-                                    showFieldAlert = true
+                                    surveyCodeNotLongEnough = true
                                 } else if (state.value.event.chosenSurveyCode.value ==
-                                    state.value.event.surveyCode) {
+                                    state.value.event.surveyCode
+                                ) {
                                     navController.popBackStack()
                                     navController.navigate(Screen.SurveyCreator.route)
                                 } else {
-                                    showSecondFieldAlert = true
+                                    surveyCodeNotCorrect = true
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
@@ -156,7 +178,7 @@ fun ExtendedEvent(
                                 .fillMaxWidth()
                         ) {
                             Text(
-                                text = "Enter Survey",
+                                text = stringResource(id = R.string.enterSurvey),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 18.sp,
                                 color = Color.White,
@@ -165,41 +187,51 @@ fun ExtendedEvent(
                         }
                     }
                 }
-
             }
 
-            if (showFieldAlert) {
-                AlertDialog(onDismissRequest = { showFieldAlert = false }, text = {
-                    Text(
-                        "The provided survey code must be exactly 4 characters long. Please " +
-                                "try again"
-                    )
-                }, confirmButton = {
-                    Button(onClick = {
-                        showFieldAlert = false
-                    }) {
-                        Text(text = "OK")
+            if (surveyCodeNotLongEnough) {
+                AlertDialog(
+                    onDismissRequest = { surveyCodeNotLongEnough = false },
+                    text = {
+                        Text(stringResource(id = R.string.surveyCodeNotLongEnough))
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                surveyCodeNotLongEnough = false
+                            }
+                        ) {
+                            Text(text = stringResource(id = R.string.ok))
+                        }
                     }
-                })
+                )
             }
 
-            if (showSecondFieldAlert) {
-                AlertDialog(onDismissRequest = { showSecondFieldAlert = false }, text = {
-                    Text(
-                        "The survey code that you provided is not correct. Please try again."
-                    )
-                }, confirmButton = {
-                    Button(onClick = {
-                        showSecondFieldAlert = false
-                    }) {
-                        Text(text = "OK")
+            if (surveyCodeNotCorrect) {
+                AlertDialog(
+                    onDismissRequest = { surveyCodeNotCorrect = false },
+                    text = {
+                        Text(stringResource(id = R.string.surveyCodeNotCorrect))
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                surveyCodeNotCorrect = false
+                            }
+                        ) {
+                            Text(text = stringResource(id = R.string.ok))
+                        }
                     }
-                })
+                )
             }
         }
     }
 }
 
+/**
+ * This composable displays the title of an event on the extended event screen.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier) {
     Text(
@@ -214,6 +246,10 @@ private fun Title(title: String, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * This composable displays the description of an event on the extended event screen.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Description(description: String, modifier: Modifier = Modifier) {
     Text(
@@ -228,6 +264,10 @@ private fun Description(description: String, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * This composable displays the time of an event on the extended event screen.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Time(hour: String, minute: String, modifier: Modifier = Modifier) {
     Text(
@@ -240,6 +280,10 @@ private fun Time(hour: String, minute: String, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * This composable displays the address of an event on the extended event screen.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Address(address: String, modifier: Modifier = Modifier) {
     Text(
@@ -252,6 +296,10 @@ private fun Address(address: String, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * This composable displays the allergens of an event on the extended event screen.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Allergens(title: String, allergen: String, modifier: Modifier = Modifier) {
     Column() {
@@ -278,6 +326,13 @@ private fun Allergens(title: String, allergen: String, modifier: Modifier = Modi
     }
 }
 
+/**
+ * This composable function creates an input field for the user to enter a survey code.
+ * @param onValueChange the value of the text field changes
+ * @param text the initial text displayed in the input field
+ * This composable was originally made by Yusuf, but later modified by Sabirin
+ * @author Sabirin and Sabirin
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun InputField(onValueChange: (String) -> Unit, text: String) {
@@ -316,15 +371,20 @@ private fun InputField(onValueChange: (String) -> Unit, text: String) {
                 onDone = { keyboardController?.hide() }
             ),
             singleLine = true,
-            maxLines = 1 //TODO: maxLines not working. Fix this.
+            maxLines = 1
         )
     }
 }
 
+/**
+ * Label is a composable function that renders a text element with the text
+ * "Enter event code" in the text field.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Label() {
     Text(
-        text = "Enter event code", //TODO: Make text as recourse
+        text = stringResource(id = R.string.enterEventCode),
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
@@ -332,10 +392,15 @@ private fun Label() {
     )
 }
 
+/**
+ * Placeholder is a composable function that renders a text element with the text
+ * "Enter event code to open survey" in the text field.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun Placeholder() {
     Text(
-        text = "Enter event code here to open the survey", //TODO: Make text as recourse
+        text = stringResource(id = R.string.enterEventCodeToOpenSurvey),
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 10.sp,

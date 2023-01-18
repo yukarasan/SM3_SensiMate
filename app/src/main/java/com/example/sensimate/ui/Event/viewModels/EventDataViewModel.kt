@@ -19,6 +19,9 @@ import kotlinx.coroutines.launch
  * of the events.
  * It uses the mutableStateOf() function to keep the track of the latest state of the events.
  * It has a getListOfEvents() function that is responsible for populating the state.
+ * It also has getEventBySurveyCode(), which is a function used for when checking if a user has
+ * entered the correct survey code in the quick entry text field.
+ * @author Yusuf Kara
  */
 class EventDataViewModel : ViewModel() {
     val state = mutableStateOf(EventDataState())
@@ -52,7 +55,6 @@ class EventDataViewModel : ViewModel() {
                 }
             }
             .addOnFailureListener { exception ->
-                Log.e("EventDataViewModel", "Error getting event by survey code", exception)
                 onComplete(null)
             }
     }

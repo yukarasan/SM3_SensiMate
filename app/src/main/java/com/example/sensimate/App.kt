@@ -31,11 +31,6 @@ fun App(context: Context) {
     val systemUiController = rememberSystemUiController()
 
     // Setting the color of the status bar and navigation bar
-
-
-    /*
-     * Setting the color of the status bar and navigation bar
-     */
     SideEffect {
         systemUiController.setStatusBarColor(
             color = DarkPurple,
@@ -46,7 +41,4 @@ fun App(context: Context) {
             darkIcons = false
         )
     }
-
-
-
 }

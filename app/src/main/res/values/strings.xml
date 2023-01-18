@@ -118,7 +118,25 @@
     <string name="enterAge">Enter the year that you were born</string>
     <string name="ageDescription">To give more insightful information to the company, we would like
         to now about your age. If you would like, you can change it here.</string>
-
-
+    <string name="quickEntryLower">quick entry</string>
+    <string name="profile">profile</string>
+    <string name="noEventsAvailableToJoin">No events are available to join. Please wait until
+        an event is displayed on your home screen.</string>
+    <string name="noEventsAvailable">No events are currently available</string>
+    <string name="quickEntry">Quick Entry</string>
+    <string name="enterSurveyCode">Enter Survey Code</string>
+    <string name="submit">Submit</string>
+    <string name="incorrectSurveyCode">Incorrect Survey Code</string>
+    <string name="surveyCodeDoesNotMatch">The survey code you entered does not match any
+        event.</string>
+    <string name="allergens">Allergens</string>
+    <string name="location">Location</string>
+    <string name="enterSurvey">Enter Survey</string>
+    <string name="surveyCodeNotLongEnough">The provided survey code must be exactly 4 characters
+        long. Please try again</string>
+    <string name="surveyCodeNotCorrect">The survey code that you provided is not correct.
+        Please try again.</string>
+    <string name="enterEventCode">Enter event code</string>
+    <string name="enterEventCodeToOpenSurvey">Enter event code here to open the survey</string>
 
 </resources>

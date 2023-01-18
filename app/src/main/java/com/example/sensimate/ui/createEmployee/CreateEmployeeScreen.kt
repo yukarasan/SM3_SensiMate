@@ -111,10 +111,12 @@ fun CreateEmployeeScreen(
             EmailTextField(titleText = state.value.email.value, textChange = {
                 state.value.email.value = it
             })
-
+            /*
             PasswordTextField(titleText = state.value.password.value, textChange = {
                 state.value.password.value = it
             })
+
+             */
             Spacer(modifier = Modifier.size(70.dp))
             Button(
                 onClick = {
