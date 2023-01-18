@@ -38,6 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -76,7 +77,7 @@ import java.util.*
 @Composable
 fun EditEventPreview() {
     EditEvent(navController = rememberNavController(), questionViewModel = QuestionViewModel())
-    //EditPage()
+    EditPage(navController = rememberNavController(), eventViewModel = EventViewModel())
     //EditSurvey()
     //EditSurveyPage()
 }
@@ -116,10 +117,6 @@ fun EditEvent(
         }
     }
 
-
-
-
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -156,7 +153,7 @@ fun EditEvent(
                                 .size(50.dp)
                                 .clickable(
                                     enabled = true,
-                                    onClickLabel = "Clickable image",
+                                    onClickLabel = "",
                                     onClick = { navController.navigate(Screen.EditPage.route) }),
 
                             id = R.drawable.yelloweditbutton
@@ -188,7 +185,7 @@ fun EditEvent(
                             modifier = Modifier.padding(10.dp)
                         ) {
                             Allergens(
-                                title = "Allergens",
+                                title = stringResource(id = R.string.allergens),
                                 allergen = chosenEvent.allergens
                             )
                         }
@@ -198,7 +195,7 @@ fun EditEvent(
                         Column(
                             modifier = Modifier.padding(10.dp)
                         ) {
-                            Title(title = "Location")
+                            Title(title = stringResource(id = R.string.location))
 
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -227,7 +224,7 @@ fun EditEvent(
                         modifier = Modifier.size(240.dp, 50.dp)
                     ) {
                         Text(
-                            text = "Delete Event",
+                            text = stringResource(id = R.string.deleteEvent),
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp,
                             color = Color.White,
@@ -241,10 +238,10 @@ fun EditEvent(
                                 showConfirmation = false
                             },
                             title = {
-                                Text(text = "Confirm Deletion")
+                                Text(text = stringResource(id = R.string.confirmDeletion))
                             },
                             text = {
-                                Text("Are you sure you want to delete this event?")
+                                Text(text = stringResource(id = R.string.deleteEventSure))
                             },
                             confirmButton = {
                                 Button(
@@ -262,7 +259,7 @@ fun EditEvent(
                                         showConfirmation = false
 
                                     }) {
-                                    Text("Delete Event")
+                                    Text(stringResource(id = R.string.deleteEvent))
                                 }
                             },
                             dismissButton = {
@@ -271,12 +268,16 @@ fun EditEvent(
                                     onClick = {
                                         showConfirmation = false
                                     }) {
-                                    Text("Cancel")
+                                    Text(stringResource(id = R.string.cancel))
                                 }
                             }
                         )
                     }
-                    if (getBooleanFromLocalStorage("isAdmin", context = context)) {
+                    if (getBooleanFromLocalStorage(
+                            stringResource(id = R.string.isAdmin),
+                            context = context
+                        )
+                    ) {
 
                         Spacer(modifier = Modifier.size(25.dp))
                         Button(
@@ -292,7 +293,7 @@ fun EditEvent(
                             modifier = Modifier.size(240.dp, 50.dp)
                         ) {
                             Text(
-                                text = "Extract excel",
+                                text = stringResource(id = R.string.extractExcel),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 25.sp,
                                 color = Color.White,
@@ -304,9 +305,6 @@ fun EditEvent(
                 }
             }
         }
-
-        //val context = LocalContext.current
-
     }
 }
 
@@ -437,7 +435,7 @@ private fun InputField(onValueChange: (String) -> Unit, text: String) {
 @Composable
 private fun Label() {
     Text(
-        text = "Enter event code", //TODO: Make text as recourse
+        text = stringResource(id = R.string.enterEventCode), //TODO: Make text as recourse
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
@@ -448,7 +446,7 @@ private fun Label() {
 @Composable
 private fun Placeholder() {
     Text(
-        text = "Enter event code here to open the survey", //TODO: Make text as recourse
+        text = stringResource(id = R.string.enterEventCodeToOpenSurvey), //TODO: Make text as recourse
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
@@ -461,30 +459,20 @@ private fun Placeholder() {
 @Composable
 fun EditPage(
     navController: NavController,
-    //title: String,
-    //time: String,
-    //location: String,
-    //allergens: String,
-    //description: String,
-    //surveyCode: String,
     eventViewModel: EventViewModel,
-    //editEventViewmodel: EditEventViewmodel = viewModel()
 ) {
 
     val state = eventViewModel.uiState.collectAsState()
-
     val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
-
-    Log.d("huske", eventViewModel.uiState.value.chosenSurveyId)
 
     val maxChar = 4
 
-
+/*
     var year: String
     var month: String
     var day: String
 
-    //Log.d("docrefagain :", chosenEvent.eventId)
+ */
 
     val context = LocalContext.current
 
@@ -601,11 +589,6 @@ fun EditPage(
                     Button(
                         onClick = {
                             eventViewModel.checkIfTextfieldIsEmpty(context, navController)
-
-                            Log.d("title", state.value.event.title)
-
-                            Log.d("docref : ", chosenEvent.eventId)
-                            Log.d("docref2 : ", state.value.event.eventId)
                         },
                         shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -615,7 +598,7 @@ fun EditPage(
                     ) {
 
                         Text(
-                            text = "Finish Editing",
+                            text = stringResource(id = R.string.finishEditing),
                             color = Color.White,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Medium,
@@ -633,7 +616,7 @@ fun EditPage(
                         modifier = Modifier.size(240.dp, 50.dp)
                     ) {
                         Text(
-                            text = "Go Back",
+                            text = stringResource(id = R.string.goBack),
                             color = Color.White,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Medium,
@@ -686,7 +669,7 @@ fun Time(
         enabled = false,
         value = "$myHour : $myMinute",
         label = {
-            Text(text = "Time Of The Event", color = Color(0xFFB874A6))
+            Text(text = stringResource(id = R.string.timeOfEvent), color = Color(0xFFB874A6))
         },
         onValueChange = {},
         modifier = Modifier
@@ -740,14 +723,6 @@ fun EventDateChosen(
 
             }, selectedYear.value, selectedMonth.value, selectedDay.value
         )
-    /*
-    if (hasChosen.value) {
-        myYear = selectedYear.value.toString()
-        myMonth.value = (selectedMonth.value + 1).toString()
-        myDay.value = selectedDay.value.toString()
-    }
-
-     */
 
     datePickerLog.datePicker.minDate = calendar.timeInMillis
     TextField(
@@ -757,7 +732,12 @@ fun EventDateChosen(
         ),
         enabled = false,
         value = "$myDay/$myMonth/$myYear",
-        label = { Text(text = "Date For The Event", color = Color(0xFFB874A6)) },
+        label = {
+            Text(
+                text = stringResource(id = R.string.dateOfEvent),
+                color = Color(0xFFB874A6)
+            )
+        },
         onValueChange = {},
         modifier = Modifier
             .padding(1.dp, 65.dp, 1.dp, 1.dp)
@@ -776,12 +756,17 @@ fun DescriptionText(descriptionText: String, onValueChange: (String) -> Unit) {
             onValueChange = { onValueChange(it) },
             label = {
                 Text(
-                    text = "Description",
+                    text = stringResource(id = R.string.description),
                     color = Color(0xFFB874A6)
                 )
             }, colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.type),
+                    color = Color(0xEFFF7067)
+                )
+            },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
                 onDone = { keyboardController?.hide() })
@@ -801,13 +786,18 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
             onValueChange = { textChange(it) },
             label = {
                 Text(
-                    text = "Title",
+                    text = stringResource(id = R.string.Title),
                     color = Color(0xFFB874A6)
                 )
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.type),
+                    color = Color(0xEFFF7067)
+                )
+            },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
                 onDone = { keyboardController?.hide() })
@@ -826,7 +816,7 @@ fun LocationText(locationText: String, onValueChange: (String) -> Unit) {
             onValueChange = { onValueChange(it) },
             label = {
                 Text(
-                    text = "Location",
+                    text = stringResource(id = R.string.location),
                     color = Color(0xFFB874A6)
                 )
             }, trailingIcon = {
@@ -846,7 +836,12 @@ fun LocationText(locationText: String, onValueChange: (String) -> Unit) {
             keyboardActions = KeyboardActions(
                 onDone = { keyboardController?.hide() }),
 
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.type),
+                    color = Color(0xEFFF7067)
+                )
+            },
             modifier = Modifier
                 .padding(1.dp, 2.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -866,7 +861,7 @@ fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
             onValueChange = { onValueChange(it) },
             label = {
                 Text(
-                    text = "Allergens",
+                    text = stringResource(id = R.string.allergens),
                     color = Color(0xFFB874A6)
                 )
             },
@@ -875,7 +870,12 @@ fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
 
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.type),
+                    color = Color(0xEFFF7067)
+                )
+            },
             modifier = Modifier
                 .padding(1.dp, 191.dp, 1.dp, 1.dp)
                 .fillMaxWidth()
@@ -894,7 +894,7 @@ fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
             onValueChange = textChange,
             label = {
                 Text(
-                    text = "Survey Code (4 Digit Code)",
+                    text = stringResource(id = R.string.surveyCode),
                     color = Color(0xFFB874A6)
                 )
             },
@@ -903,7 +903,12 @@ fun SurveyCodeText(surveyCodeText: String, textChange: (String) -> Unit) {
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.type),
+                    color = Color(0xEFFF7067)
+                )
+            },
 
             modifier = Modifier
                 .padding(1.dp, 254.dp, 1.dp, 1.dp)
@@ -932,11 +937,13 @@ fun EditSurvey(navController: NavController, questionViewModel: QuestionViewMode
             .size(50.dp)
             .clickable(
                 enabled = true,
-                onClickLabel = "Clickable image",
+                onClickLabel = stringResource(id = R.string.clickImage),
                 onClick = { navController.navigate(Screen.EditSurveyPage.route) }),
         id = R.drawable.yelloweditbutton
     )
 }
+
+//For later use, so that we can edit the survey
 
 @Composable
 fun EditSurveyPage(navController: NavController) {
@@ -954,7 +961,7 @@ fun EditSurveyPage(navController: NavController) {
             )
     )
     Text(
-        text = "Multiple-choice",
+        text = stringResource(id = R.string.multipleChoice),
         color = Color(0xEFFF7067),
         fontSize = 20.sp,
         modifier = Modifier
@@ -963,11 +970,11 @@ fun EditSurveyPage(navController: NavController) {
     TextFiledEditQuestionText(
         modifier = Modifier
             .padding(55.dp, 130.dp, 30.dp, 30.dp),
-        "What other flavours of Coca Cola would you like?"
+        stringResource(id = R.string.flavourQuestion)
     )
     TextFiledEditAnswerText(
         modifier = Modifier
-            .padding(55.dp, 225.dp, 30.dp, 30.dp), "Tomato"
+            .padding(55.dp, 225.dp, 30.dp, 30.dp), stringResource(id = R.string.tomato)
     ) //TODO NEED MORE ANSWER FILEDS
     Divider(
         color = Color.White,
@@ -975,31 +982,31 @@ fun EditSurveyPage(navController: NavController) {
         modifier = Modifier.padding(1.dp, 400.dp, 1.dp, 1.dp)
     )
     Text(
-        text = "Settings",
+        text = stringResource(id = R.string.settings),
         color = Color(0xFFB874A6),
         fontSize = 20.sp,
         modifier = Modifier
             .padding(10.dp, 410.dp, 88.dp, 269.dp)
     )
     Text(
-        text = "Require an answer",
+        text = stringResource(id = R.string.reqAnswer),
         color = Color(0xEFFF7067),
         fontSize = 20.sp,
         modifier = Modifier
             .padding(10.dp, 450.dp, 88.dp, 269.dp)
     )
-/*
+
     AddPhoto(
         modifier = Modifier
             .padding(15.dp, 10.dp, 2.dp, 1.dp)
             .size(50.dp)
             .clickable(
                 enabled = true,
-                onClickLabel = "Clickable image",
+                onClickLabel = stringResource(id = R.string.clickImage),
                 onClick = { /*TODO*/ }), id = R.drawable.redgobackbutton
     )
 
- */
+
     Column(modifier = Modifier.padding(5.dp, 5.dp)) {
         OrangeBackButton(onClick = {
             navController.navigate(Screen.EventScreenEmployee.route) {
@@ -1015,13 +1022,14 @@ fun EditSurveyPage(navController: NavController) {
             .size(50.dp)
             .clickable(
                 enabled = true,
-                onClickLabel = "Clickable image",
+                onClickLabel = stringResource(id = R.string.clickImage),
                 onClick = { navController.navigate(Screen.EditEvent.route) }),
         id = R.drawable.greenconfirmedbutton
     )
 
 
 }
+
 
 @Composable
 fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
@@ -1034,13 +1042,18 @@ fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
             },
             label = {
                 Text(
-                    text = "Question",
+                    text = stringResource(id = R.string.question),
                     color = Color(0xFFB874A6)
                 )
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.type),
+                    color = Color(0xEFFF7067)
+                )
+            },
             modifier = modifier
 
         )
@@ -1058,13 +1071,18 @@ fun TextFiledEditAnswerText(modifier: Modifier, string: String) {
             },
             label = {
                 Text(
-                    text = "Answer",
+                    text = stringResource(id = R.string.answer),
                     color = Color(0xFFB874A6)
                 )
             },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             singleLine = true,
-            placeholder = { Text(text = "Type here...", color = Color(0xEFFF7067)) },
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.type),
+                    color = Color(0xEFFF7067)
+                )
+            },
             modifier = modifier
 
         )

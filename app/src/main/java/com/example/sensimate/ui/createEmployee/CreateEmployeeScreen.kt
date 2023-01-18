@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -101,7 +102,8 @@ fun CreateEmployeeScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Title(
-                    "Create an Employee", modifier = Modifier
+                    stringResource(id = R.string.createEmployee),
+                    modifier = Modifier
                         .padding(start = 0.dp, top = 10.dp)
                 )
             }
@@ -135,7 +137,7 @@ fun CreateEmployeeScreen(
             ) {
 
                 Text(
-                    text = "Add Employee",
+                    text = stringResource(id = R.string.addEmployee),
                     color = Color.White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
@@ -180,7 +182,7 @@ fun EmailTextField(titleText: String, textChange: (String) -> Unit) {
             onValueChange = { textChange(it) },
             label = {
                 Text(
-                    text = "Email",
+                    text = stringResource(id = R.string.email),
                     color = Color(0xFFB874A6)
                 )
             },
@@ -192,6 +194,16 @@ fun EmailTextField(titleText: String, textChange: (String) -> Unit) {
                 onDone = { keyboardController?.hide() })
         )
     }
+}
+
+
+@Composable
+fun Image(modifier: Modifier = Modifier, id: Int) {
+    Image(
+        painter = painterResource(id = id),
+        contentDescription = "",
+        modifier = modifier
+    )
 }
 
 /*
@@ -206,7 +218,7 @@ fun PasswordTextField(titleText: String, textChange: (String) -> Unit) {
             onValueChange = { textChange(it) },
             label = {
                 Text(
-                    text = "Password",
+                    text = stringResource(id = R.string.password),
                     color = Color(0xFFB874A6)
                 )
             },
@@ -221,15 +233,6 @@ fun PasswordTextField(titleText: String, textChange: (String) -> Unit) {
 }
 
  */
-
-@Composable
-fun Image(modifier: Modifier = Modifier, id: Int) {
-    Image(
-        painter = painterResource(id = id),
-        contentDescription = "",
-        modifier = modifier
-    )
-}
 
 
 

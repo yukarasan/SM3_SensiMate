@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,7 +38,7 @@ fun QuickEntry() {
         Column() {
             Row() {
                 QuickEntryImage()
-                QuickEntryTitle("Quick Entry") //TODO: Make text as recourse
+                QuickEntryTitle(title = stringResource(id = R.string.quickEntry))
             }
 
             Column(
@@ -131,7 +132,7 @@ fun InputField(onClick: () -> Unit) {
 @Composable
 private fun Label() {
     Text(
-        text = "Enter event code", //TODO: Make text as recourse
+        text = stringResource(id = R.string.enterEventCode),
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
@@ -142,7 +143,7 @@ private fun Label() {
 @Composable
 private fun Placeholder() {
     Text(
-        text = "Enter event code here to open the survey", //TODO: Make text as recourse
+        text = stringResource(id = R.string.enterEventCodeToOpenSurvey),
         fontFamily = manropeFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,

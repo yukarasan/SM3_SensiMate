@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.sensimate.R
 import com.example.sensimate.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +29,6 @@ class EventViewModel : ViewModel() {
         for (event in _uiState.value.events) {
             if (event.eventId == id) {
                 updateUiState(event = event)
-                Log.d("eventbyId", uiState.value.event.toString())
                 return event
             }
         }
@@ -47,7 +47,6 @@ class EventViewModel : ViewModel() {
 
 
     fun updateTitleString(title: String) {
-        //_uiState.value.event = _uiState.value.event.copy(title = title)
 
         updateUiState(event = _uiState.value.event.copy(title = title))
     }
@@ -65,7 +64,6 @@ class EventViewModel : ViewModel() {
     }
 
     fun updateSurveyCodeString(surveyCode: String) {
-        // updateUiState(event = _uiState.value.event.copy(surveyCode = surveyCode))
         _uiState.value.event.chosenSurveyCode.value = surveyCode
     }
 
@@ -87,27 +85,26 @@ class EventViewModel : ViewModel() {
         context: Context, navController: NavController
     ) {
         if (uiState.value.event.title == "") {
-            Toast.makeText(context, "Title was not entered", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.resources.getString(R.string.titleNotEntered),
+                Toast.LENGTH_SHORT).show()
         } else if (uiState.value.event.description == "") {
-            Toast.makeText(context, "Description was not entered", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.resources.getString(R.string.descripNotEntered), Toast.LENGTH_SHORT).show()
         } else if (uiState.value.event.location == "") {
-            Toast.makeText(context, "Location was not entered", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.resources.getString(R.string.locationNotEntered), Toast.LENGTH_SHORT).show()
         } else if (uiState.value.event.year == "" || uiState.value.event.month == ""
             || uiState.value.event.day == ""
         ) {
-            Toast.makeText(context, "Date was not entered", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.resources.getString(R.string.dateNotEntered), Toast.LENGTH_SHORT).show()
         } else if (uiState.value.event.minute == "" || uiState.value.event.hour == "") {
-            Toast.makeText(context, "Time was not entered", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.resources.getString(R.string.timeNotEntered), Toast.LENGTH_SHORT).show()
         } else if (uiState.value.event.allergens == "") {
-            Toast.makeText(context, "Allergens was not entered", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.resources.getString(R.string.allergensNotEntered), Toast.LENGTH_SHORT).show()
         } else if (uiState.value.event.surveyCode == "") {
-            Toast.makeText(context, "SurveyCode was not entered", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.resources.getString(R.string.surveyCodeNotEntered), Toast.LENGTH_SHORT).show()
         } else{
             updateEvent()
             navController.navigate(Screen.EventScreenEmployee.route)
         }
-
-
     }
 
     fun updateEvent() {
@@ -124,7 +121,6 @@ class EventViewModel : ViewModel() {
             "minute" to uiState.value.event.minute,
             "eventId" to uiState.value.event.eventId
         )
-        Log.d("event", event.toString())
         Database.UpdateEvent(event, uiState.value.event.eventId)
     }
 }

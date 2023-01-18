@@ -7,6 +7,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.EventUiState
 import com.example.sensimate.ui.AdminScreens.AdminViewModel
@@ -33,20 +34,20 @@ class CreateEmployeeViewModel : ViewModel() {
     ) {
         if (uiState.value.email.value == "") {
             Toast.makeText(
-                context,
-                "Email was not entered, try again",
+                context, context.resources.getString(R.string.emailNotEntered),
                 Toast.LENGTH_SHORT
             ).show()
 
         } //maybe for later use;
-        /*else if (uiState.value.password.value == "") {
+        /*
+        else if (uiState.value.password.value == "") {
             Toast.makeText(
-                context,
-                "Password was not entered, try again",
+                context, context.resources.getString(R.string.passwordNotEntered),
                 Toast.LENGTH_SHORT
             ).show()
-            */
-         else {
+
+         */
+        else {
             /*Database.signUserUp(email = uiState.value.email.value, password = uiState.value.password.value,
                 context = context, showLoading = showLoading, postalCode = "null", yearBorn = "null",
                 monthBorn = "null", gender = "null", dayBorn = "null", successLoggedIn = successLoggedIn,
