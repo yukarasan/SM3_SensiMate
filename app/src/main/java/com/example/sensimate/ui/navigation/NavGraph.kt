@@ -43,6 +43,7 @@ import com.example.sensimate.ui.startupscreens.ForgotPassword.ForgotPassword
 import com.example.sensimate.ui.startupscreens.ForgotPassword.StartProfileViewModel
 import com.example.sensimate.ui.startupscreens.Guest.GuestScreen
 import com.example.sensimate.ui.startupscreens.noNet.NoWifiScreen
+import com.example.sensimate.ui.startupscreens.splashscreen.SplashScreen
 import com.example.sensimate.ui.survey.*
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -74,53 +75,18 @@ fun SetupNavGraph(navController: NavHostController) {
     }
 
 
-    val screen = if (!loadedOnOpen.value) {
-        loadedOnOpen.value = true
 
-        if (!getBooleanFromLocalStorage("hasNet", context)) {
-            Screen.NoWifi
-
-        } else if (getBooleanFromLocalStorage(
-                "acceptedCookie",
-                context
-            )
-        ) {
-            if (auth.currentUser != null) {
-
-                if (getBooleanFromLocalStorage("isEmployee", context)) {
-                    Screen.EventScreenEmployee
-                } else {
-                    Screen.EventScreen
-                }
-
-            } else {
-                SaveBoolToLocalStorage(
-                    "isEmployee",
-                    false,
-                    context
-                )
-                Screen.Login
-            }
-
-        } else {
-            Screen.CookieScreen
-        }
-    } else {
-        Screen.CookieScreen
-    }
 
 
     NavHost(
         navController = navController,
-        startDestination = screen.route
+        startDestination = Screen.SplashScreen.route
     ) {
-/*
+
         // Splash-Screen
        composable(route = Screen.SplashScreen.route) {
             SplashScreen(navController = navController)
         }
-
- */
 
         // Screen.CookieScreen.route
         //Screens when starting up
