@@ -46,6 +46,7 @@ MyQuestion class that represents a question with its options
 @param oneChoice2 - whether the question allows only one choice
  */
 class MyQuestion(
+   // var mainQuestionId: String = "",
     var mainQuestion: String = "",
     var options: MutableList<String> = emptyList<String>().toMutableList(),
     var oneChoice: Boolean = false,
