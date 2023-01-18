@@ -47,7 +47,8 @@ fun createEmployeePreview() {
 @Composable
 fun CreateEmployeeScreen(
     navController: NavController,
-    createEmployeeViewModel: CreateEmployeeViewModel = viewModel()
+    createEmployeeViewModel: CreateEmployeeViewModel = viewModel(),
+    adminViewModel: AdminViewModel = viewModel()
 ) {
 
     val state = createEmployeeViewModel.uiState.collectAsState()
@@ -88,16 +89,21 @@ fun CreateEmployeeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    OrangeBackButton( onClick = {
+                    OrangeBackButton(onClick = {
                         navController.popBackStack()
                     })
                 }
             }
         }
         item {
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Title("Create an Employee", modifier = Modifier
-                    .padding(start = 0.dp, top = 10.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Title(
+                    "Create an Employee", modifier = Modifier
+                        .padding(start = 0.dp, top = 10.dp)
+                )
             }
         }
         item {
@@ -112,16 +118,18 @@ fun CreateEmployeeScreen(
             Spacer(modifier = Modifier.size(70.dp))
             Button(
                 onClick = {
-                          createEmployeeViewModel.checkIfTextFieldIsEmpty(context = context,
-                              navController = navController, showLoading = showLoading,
-                              successLoggedIn = successLoggedIn )
+                    createEmployeeViewModel.checkIfTextFieldIsEmpty(
+                        context = context,
+                        navController = navController, showLoading = showLoading,
+                        successLoggedIn = successLoggedIn, adminViewModel = adminViewModel
+                    )
 
                     //eventviewmodel
-                          /*createEmployeeViewModel.checkIfTextFieldIsEmpty(context = context,
-                              navController = navController, showLoading = showLoading,
-                              successLoggedIn = successLoggedIn )
+                    /*createEmployeeViewModel.checkIfTextFieldIsEmpty(context = context,
+                        navController = navController, showLoading = showLoading,
+                        successLoggedIn = successLoggedIn )
 
-                           */
+                     */
                 },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(backgroundColor = LightColor),
@@ -140,9 +148,12 @@ fun CreateEmployeeScreen(
             }
         }
         item {
-            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(start = 10.dp, top = 20.dp, end = 10.dp)) {
-                Image(modifier = Modifier.size(360.dp), id = R.drawable.emp )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 10.dp, top = 20.dp, end = 10.dp)
+            ) {
+                Image(modifier = Modifier.size(360.dp), id = R.drawable.emp)
             }
         }
     }

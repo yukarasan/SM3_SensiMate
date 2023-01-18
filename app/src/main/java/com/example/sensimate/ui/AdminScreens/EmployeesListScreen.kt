@@ -1,9 +1,9 @@
 package com.example.sensimate.ui.AdminScreens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -26,21 +27,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
-import com.example.sensimate.data.Profile
 import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.showLoading
 import com.example.sensimate.ui.components.OrangeBackButton
 import com.example.sensimate.ui.navigation.Screen
-import com.example.sensimate.ui.startupscreens.components.InitialStartBackground
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.Purple200
-import com.example.sensimate.ui.theme.PurpleButtonColor
-import org.apache.poi.xddf.usermodel.chart.Shape
+
 /**
  *  The EmployeesListScreen composable function provides the UI of the employee's list screen.
  *  it takes an AdminViewModel and NavController as a parameter, it uses the BuildProfileList
@@ -97,10 +94,7 @@ fun EmployeesListScreen(
             OrangeBackButton {
                 navController.popBackStack()
             }
-
-            Button(onClick = { navController.navigate(Screen.CreateScreenEmployee.route) }) {
-                Text(text = "Add")
-            }
+            MyButtonWithBorder({ navController.navigate(Screen.CreateScreenEmployee.route) })
         }
 
         Column(
@@ -279,7 +273,7 @@ fun DeleteProfileDialog(
         },
         text = {
             Text(
-                 stringResource(id = R.string.deleteEmpSure) +" $email ?",
+                stringResource(id = R.string.deleteEmpSure) + " $email ?",
                 style = typography.body2
             )
         },
@@ -326,7 +320,7 @@ private fun LogoutButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(100),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(239, 112, 103)),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(87, 102, 163, 255)),
         modifier = Modifier
             .height(40.dp)
             .padding()
@@ -388,4 +382,19 @@ private fun EmployeeListTitle() {
         }
     }
 
+}
+
+@Composable
+fun MyButtonWithBorder(onClick: () -> Unit) {
+    Button(
+        onClick = {
+            onClick.invoke()
+        },
+        border = BorderStroke(2.dp, Color.White),
+        colors = ButtonDefaults.outlinedButtonColors(
+            backgroundColor = Color.Transparent
+        )
+    ) {
+        Text(text = "Add", color = Color.White)
+    }
 }
