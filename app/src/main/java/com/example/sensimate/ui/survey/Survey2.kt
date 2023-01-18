@@ -54,22 +54,22 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
     ) {
 
         OrangeBackButton { navController.popBackStack() }
-            //ProgressPreview()
-            Question("Question")
-            SurveyTitle(title)
-            Information2(questionViewModel)
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 70.dp)
-            ) {
-                // PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
-                // NextButton(onClick = { navController.navigate(Screen.Survey3.route) } )
-            }
+        //ProgressPreview()
+        Question("Question")
+        SurveyTitle(title)
+        Information2(questionViewModel)
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 70.dp)
+        ) {
+            // PreviousButton(onClick = { navController.navigate(Screen.Survey.route) } )
+            // NextButton(onClick = { navController.navigate(Screen.Survey3.route) } )
         }
     }
+}
 
 
 /*
@@ -132,7 +132,7 @@ fun Information2(questionViewModel: QuestionViewModel) {
 
 
 
-   // val options = remember { MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList() }
+    // val options = remember { MutableList<MyQuestion> = emptyList<MyQuestion>().toMutableList() }
 
     Card(
         modifier = Modifier
@@ -180,18 +180,18 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
         color.value = lightpurple
     }
     else {
-    circleSize.value = 22.dp
-    circleThickness.value = 2.dp
-    color.value = GreyColor
+        circleSize.value = 22.dp
+        circleThickness.value = 2.dp
+        color.value = GreyColor
     }
 
-        Row(
+    Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             // Add a clickable modifier to the Row element
             .clickable(onClick =  {
                 // Update the isChecked state variable
-              //  isChecked.value = !isChecked.value
+                //  isChecked.value = !isChecked.value
 
                 listener?.invoke(option, isChecked)
 
@@ -209,7 +209,7 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
                 .background(darkbluegrey) ,
             contentAlignment = Center
         ) {
-             if (isChecked || state == option) {
+            if (isChecked || state == option) {
                 Box(
                     modifier = Modifier
                         .size(circleSize2.value)

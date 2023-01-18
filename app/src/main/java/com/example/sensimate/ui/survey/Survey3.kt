@@ -178,7 +178,7 @@ private fun SurveyImage(modifier: Modifier = Modifier) {
             .fillMaxWidth(),
 
 
-    )
+        )
 }
 
 @Composable

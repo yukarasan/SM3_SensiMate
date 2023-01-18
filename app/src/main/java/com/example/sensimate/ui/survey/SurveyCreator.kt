@@ -61,7 +61,7 @@ fun SurveyCreator(
         val showLoading = remember {
             mutableStateOf(true)
         }
-       // showLoadingSurvey(showLoading)
+        // showLoadingSurvey(showLoading)
     }
 
 
@@ -198,7 +198,7 @@ fun AllPages(
             }
 
 
-             else if (questions[questionIndex].oneChoice2) {
+            else if (questions[questionIndex].oneChoice2) {
 
                 Survey3(
                     title = questions[questionIndex].mainQuestion,
@@ -282,32 +282,4 @@ fun AllPages(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

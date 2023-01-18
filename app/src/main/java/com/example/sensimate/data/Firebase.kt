@@ -901,7 +901,7 @@ object Database {
     }
 
 
-/** Code inspiration regarding excel: https://medium.com/geekculture/a-simple-way-to-work-with-excel-in-android-app-94c727e9a138   */
+    /** Code inspiration regarding excel: https://medium.com/geekculture/a-simple-way-to-work-with-excel-in-android-app-94c727e9a138   */
     @SuppressLint("SuspiciousIndentation")
     suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
 //        val out = FileOutputStream(File("./test_file.xlsx"))
@@ -932,7 +932,7 @@ object Database {
     }
 
 
-    }
+}
 
 /*
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
@@ -1099,7 +1099,7 @@ private fun createExcel(workbook: Workbook, context: Context) {
 
 
 
-    }
+}
 
 
 
