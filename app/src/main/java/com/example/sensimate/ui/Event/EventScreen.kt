@@ -1,4 +1,4 @@
-package com.example.sensimate.ui.home
+package com.example.sensimate.ui.Event
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.*
@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -43,6 +42,15 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.util.*
 
+/**
+ * EventScreen is a composable function that takes in a navigation controller, an
+ * EventDataViewModel and an EventViewModel as arguments.
+ * It displays a list of events in a swipeable layout and also has a quick entry feature
+ * for creating new events.
+ * When no events are available, it will display a screen that displays that to the user.
+ * Additionally, it has a profile button that navigates to the profile screen when clicked.
+ * @author Yusuf Kara
+ */
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun EventScreen(
@@ -55,7 +63,7 @@ fun EventScreen(
     val isLoading by isLoadingViewModel.isLoading.collectAsState()
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
 
-    val checked = remember { mutableStateOf<Boolean>(false) }
+    val checked = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -109,7 +117,7 @@ fun EventScreen(
                                         .padding(top = 12.dp, start = 10.dp)
                                         .clickable(
                                             enabled = true,
-                                            onClickLabel = "quick entry",
+                                            onClickLabel = stringResource(id = R.string.quickEntryLower),
                                             onClick = {
                                                 checked.value = true
                                             }
@@ -120,7 +128,7 @@ fun EventScreen(
                                         .size(72.dp)
                                         .padding(top = 20.dp, end = 20.dp)
                                         .clickable(enabled = true,
-                                            onClickLabel = "profile",
+                                            onClickLabel = stringResource(id = R.string.profile),
                                             onClick = {
                                                 navController.navigate(Screen.ProfileScreen.route)
                                             }
@@ -176,10 +184,7 @@ fun EventScreen(
                             if (checked.value) {
                                 AlertDialog(onDismissRequest = { checked.value = false },
                                     text = {
-                                        Text(
-                                            "No events to join. Please wait until an " +
-                                                    "event is displayed"
-                                        )
+                                        Text(stringResource(id = R.string.noEventsAvailableToJoin))
                                     },
                                     confirmButton = {
                                         Button(
@@ -198,7 +203,7 @@ fun EventScreen(
                                     .padding(top = 12.dp, start = 10.dp)
                                     .clickable(
                                         enabled = true,
-                                        onClickLabel = "quick entry",
+                                        onClickLabel = stringResource(id = R.string.quickEntryLower),
                                         onClick = {
                                             checked.value = true
                                         }
@@ -209,7 +214,7 @@ fun EventScreen(
                                     .size(72.dp)
                                     .padding(top = 20.dp, end = 20.dp)
                                     .clickable(enabled = true,
-                                        onClickLabel = "profile",
+                                        onClickLabel = stringResource(id = R.string.profile),
                                         onClick = {
                                             navController.navigate(Screen.ProfileScreen.route)
                                         }
@@ -224,7 +229,7 @@ fun EventScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
-                        text = "No events are currently available",
+                        text = stringResource(id = R.string.noEventsAvailable),
                         fontFamily = manropeFamily,
                         fontWeight = FontWeight.Bold,
                         fontSize = 32.sp,
@@ -237,7 +242,12 @@ fun EventScreen(
     }
 }
 
-
+/**
+ * This composable displays the profile logo, which has an modifier as a parameter. This
+ * modifier is then used to make the image clickable and thereby making the user navigate
+ * to the profile screen.
+ * @author Yusuf Kara
+ */
 @Composable
 fun ProfileLogo(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.person_circle)
@@ -249,6 +259,15 @@ fun ProfileLogo(modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * EventQuickEntry creates a card with a quick entry feature for creating new events by entering
+ * a survey code.
+ * It also allows to navigate to the ExtendedEventScreen when the survey code entered corresponds
+ * to a specific event with that survey code.
+ * If the code entered does not correspond to an event, an alert is displayed telling the user
+ * that the survey code does not match any event.
+ * @author Yusuf Kara
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -287,7 +306,7 @@ fun EventQuickEntry(
                         .size(50.dp)
                 )
                 Text(
-                    text = "Quick Entry",
+                    text = stringResource(id = R.string.quickEntry),
                     fontSize = 22.sp,
                     fontFamily = manropeFamily,
                     fontWeight = FontWeight.Bold,
@@ -306,7 +325,12 @@ fun EventQuickEntry(
                         eventViewModel.updateSurveyCodeString(it)
                     }
                 },
-                label = { Text("Enter Survey Code", color = Color.White) },
+                label = {
+                    Text(
+                        stringResource(id = R.string.enterSurveyCode),
+                        color = Color.White
+                    )
+                },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
@@ -334,10 +358,9 @@ fun EventQuickEntry(
             ) {
                 MyButton(
                     color = Color.White,
-                    title = "Submit",
+                    title = stringResource(id = R.string.submit),
                     buttonColor = BottomGradient,
                     onClick = {
-                        // retrieve event from FireStore database using the survey code
                         dataViewModel.getEventBySurveyCode(
                             eventViewModel.uiState.value.event.chosenSurveyCode.value
                         ) { event ->
@@ -353,7 +376,7 @@ fun EventQuickEntry(
                 )
                 MyButton(
                     color = Color.White,
-                    title = "Cancel",
+                    title = stringResource(id = R.string.cancel),
                     buttonColor = Color(184, 58, 58, 255),
                     onClick = {
                         checked.value = false
@@ -367,8 +390,12 @@ fun EventQuickEntry(
     if (incorrectEventCodeAlert) {
         AlertDialog(
             onDismissRequest = { incorrectEventCodeAlert = false },
-            title = { Text("Incorrect Survey Code") },
-            text = { Text("The survey code you entered does not match any event.") },
+            title = {
+                Text(stringResource(id = R.string.incorrectSurveyCode))
+            },
+            text = {
+                Text(stringResource(id = R.string.surveyCodeDoesNotMatch))
+            },
             buttons = {
                 Button(
                     onClick = {
@@ -383,6 +410,11 @@ fun EventQuickEntry(
     }
 }
 
+/**
+ * QuickEntryImage is a private composable that displays an image quick entry button for
+ * creating new events.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun QuickEntryImage(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.ic_add_circle_outlined)
@@ -391,13 +423,16 @@ private fun QuickEntryImage(modifier: Modifier = Modifier) {
             painter = image,
             contentDescription = null,
             modifier = modifier
-                // .fillMaxSize()
                 .size(90.dp)
         )
     }
 }
 
-
+/**
+ * This image is meant to be used in the quick entry when the quick entry is displayed as an
+ * alert.
+ * @author Yusuf Kara
+ */
 @Composable
 private fun AlertQuickEntryImage(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.ic_add_circle_outlined)
@@ -408,6 +443,71 @@ private fun AlertQuickEntryImage(modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * MyButton is used in the quick entry. It takes different arguments, to allow for different
+ * versions of the button, including text, color and so on.
+ * This composable was originally made by Ansh, but later modified by Yusuf
+ * @author Ansh & Yusuf.
+ */
+@Composable
+fun MyButton(
+    color: Color,
+    title: String,
+    buttonColor: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults
+            .buttonColors(
+                backgroundColor = buttonColor
+            ),
+        modifier = modifier,
+        shape = CircleShape,
+    ) {
+        Text(
+            title,
+            color = color,
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp
+        )
+    }
+}
+
+/**
+ * The following out-commented code is functions that we could implement in the future, that would
+ * be nice to have on the app. For now, they are not necessary, which is why we have left them out.
+ */
+
+/*
+@Composable
+private fun Label() {
+    Text(
+        text = "Enter event code",
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
+        color = Color.White
+    )
+}
+ */
+
+/*
+@Composable
+private fun Placeholder() {
+    Text(
+        text = "Enter event code here to open the survey",
+        fontFamily = manropeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp,
+        color = Color.White
+    )
+}
+ */
+
+/*
 @Composable
 private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
     Text(
@@ -420,7 +520,9 @@ private fun QuickEntryTitle(title: String, modifier: Modifier = Modifier) {
             .padding(top = 5.dp, end = 30.dp)
     )
 }
+ */
 
+/*
 @Composable
 private fun EventInputField(onClick: () -> Unit) {
     Column(
@@ -429,7 +531,7 @@ private fun EventInputField(onClick: () -> Unit) {
             .padding(10.dp)
     ) {
         // ---------------------------------------------------------------------------
-        //TODO: Needs state hoisting
+        // Needs state hoisting
         var text by remember { mutableStateOf(TextFieldValue("")) }
         // ---------------------------------------------------------------------------
         TextField(
@@ -467,59 +569,11 @@ private fun EventInputField(onClick: () -> Unit) {
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
-            maxLines = 1 //TODO: maxLines not working. Fix this.
+            maxLines = 1
         )
     }
 }
-
-@Composable
-private fun Label() {
-    Text(
-        text = "Enter event code", //TODO: Make text as recourse
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 12.sp,
-        color = Color.White
-    )
-}
-
-@Composable
-private fun Placeholder() {
-    Text(
-        text = "Enter event code here to open the survey", //TODO: Make text as recourse
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 12.sp,
-        color = Color.White
-    )
-}
-
-@Composable
-fun MyButton(
-    color: Color,
-    title: String,
-    buttonColor: Color,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults
-            .buttonColors(
-                backgroundColor = buttonColor
-            ),
-        modifier = modifier,
-        shape = CircleShape,
-    ) {
-        Text(
-            title,
-            color = color,
-            fontFamily = manropeFamily,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 14.sp
-        )
-    }
-}
+ */
 
 /*
 
@@ -537,9 +591,6 @@ fun QrCode(data: String, size: Int) {
     val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888).apply { setPixels(pixels, 0, size, 0, 0, size, size) }
     Image(bitmap = bitmap)
 }
-
-
-
 
 fun generateQRCode(content: String): Bitmap {
     val hints = EnumMap<EncodeHintType, Any>(EncodeHintType::class.java)
@@ -577,8 +628,6 @@ fun showQrCode(data: String) {
     Image(asset = imageResource(id = R.drawable.qr_code_image), contentDescription = "QR code")
 }
 
-
-
 fun generateQRCode2(content: String): Bitmap {
     val hints = HashMap<EncodeHintType, Any>()
     hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.H
@@ -602,7 +651,6 @@ fun generateQRCode2(content: String): Bitmap {
     return bitmap
 
 }
-
  */
 
 

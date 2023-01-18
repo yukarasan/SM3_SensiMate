@@ -27,6 +27,8 @@ import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.data.getBooleanFromLocalStorage
+import com.example.sensimate.ui.Event.EventCard
+import com.example.sensimate.ui.Event.ProfileLogo
 import com.example.sensimate.ui.Event.viewModels.EventDataViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
