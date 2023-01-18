@@ -855,8 +855,6 @@ object Database {
     }
 
 
-
-
     suspend fun updateSurvey(
         context: Context,
         eventId: String,
@@ -901,7 +899,7 @@ object Database {
     }
 
 
-    /** Code inspiration regarding excel: https://medium.com/geekculture/a-simple-way-to-work-with-excel-in-android-app-94c727e9a138   */
+
     @SuppressLint("SuspiciousIndentation")
     suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
 //        val out = FileOutputStream(File("./test_file.xlsx"))
@@ -937,10 +935,8 @@ object Database {
 /*
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
     //setHeaderStyle is a custom function written below to add header style
-
     //Create sheet first row
     val row = sheet.createRow(0)
-
     //Header list
     val HEADER_LIST = listOf(
         "mainQuestion",
@@ -952,26 +948,19 @@ private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
         "answer",
         "isEmployee"
     )
-
     //Loop to populate each column of header row
     for ((index, value) in HEADER_LIST.withIndex()) {
-
         val columnWidth = (15 * 500)
-
         //index represents the column number
         sheet.setColumnWidth(index, columnWidth)
-
         //Create cell
         val cell = row.createCell(index)
-
         //value represents the header value from HEADER_LIST
         cell?.setCellValue(value)
-
         //Apply style to cell
         cell.cellStyle = cellStyle
     }
 }
-
  */
 
 private fun getHeaderStyle(workbook: Workbook): CellStyle {
@@ -1017,7 +1006,6 @@ private fun addData(
     options: List<String>,
     profile: Profile
 ) {
-
     //Create row based on row index
     val row = sheet.createRow(rowIndex)
     //Add data to each cell
@@ -1029,10 +1017,7 @@ private fun addData(
     createCell(row, 5, profile.gender) //Column 3
     createCell(row, 6, options.toString()) //Column 3
     createCell(row, 7, false) //Column 3
-
-
 }
-
  */
 
 private fun addData(
@@ -1100,6 +1085,10 @@ private fun createExcel(workbook: Workbook, context: Context) {
 
 
 }
+
+
+
+
 
 
 

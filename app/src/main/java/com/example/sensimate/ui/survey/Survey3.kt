@@ -92,10 +92,8 @@ private fun ProgressPreview(progress: Float) {
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
         progress = progress //0.75f //TODO:  Needs state hoisting in future.
-
     )
 }
-
  */
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -107,7 +105,8 @@ fun Information3(questionViewModel: QuestionViewModel) {
     var listener: ((option: Int, value: Boolean) -> Unit)? = { i: Int, b: Boolean ->
         selectedOption = i
 
-        questionViewModel.addAnswer(options[i])
+        //questionViewModel.addAnswer(options[i])
+        questionViewModel.setAnswer(options)
         //questionViewModel.addQuestion(questionTitle = questionViewModel.uiState.value.currentQuestion.mainQuestion, answers = mutableListOf(options[i]), onechoice = true)
 
 

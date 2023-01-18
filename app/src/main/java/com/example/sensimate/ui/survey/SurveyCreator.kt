@@ -113,7 +113,6 @@ private fun nextQuestion(questionViewModel: QuestionViewModel) {
     questionViewModel.setAnswer(MyAnswer(myAnswer = selectedAnswers, mainQuestion = questionViewModel.uiState.value.currentQuestion.mainQuestion))
     pager.nextPage()
 }
-
  */
 
 val selectedAnswers = mutableStateOf<List<String>>(emptyList())
@@ -123,7 +122,6 @@ private fun nextQuestion(questionViewModel: QuestionViewModel) {
     questionViewModel.setCurrentQuestion(questionViewModel.uiState.value.currentQuestion, selectedAnswers)
     pager.nextPage()
 }
-
  */
 
 
@@ -282,4 +280,18 @@ fun AllPages(
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

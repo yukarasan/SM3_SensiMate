@@ -84,10 +84,8 @@ private fun ProgressPreview(progress: Float) {
         backgroundColor = darkpurple,
         color = lightpurple, //progress color
         progress = progress //0.50f //TODO:  Needs state hoisting in future.
-
     )
 }
-
  */
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -107,25 +105,12 @@ fun Information2(questionViewModel: QuestionViewModel) {
         val test = options[i]
 
 
-        questionViewModel.addAnswer(options[i])
+        questionViewModel.setAnswer(listOf(options[i]))
 
         Log.d("Test3", listOf(options[i]).toString())
     }
 
 
-
-    /*
-
-    var listener: ((option: Int, value: Boolean) -> Unit)? = { option: Int, value: Boolean ->
-    if (value) {
-        answer.add(options[option])
-    } else {
-        answer.remove(options[option])
-    }
-    questionViewModel.setAnswer(answer)
-}
-
-     */
 
     // Define a list of options and their corresponding titles
 
@@ -153,8 +138,6 @@ fun Information2(questionViewModel: QuestionViewModel) {
                 ) {
                     // Pass the selectedOption state variable as a parameter to RoundedCheckView
                     RoundedCheckView(listener, selectedOption, option = i)
-                    //RoundedCheckView(options, listener, selectedOption, index)
-
                     Option(options[i])
 
                     Spacer(modifier = Modifier.width((120.dp)))
@@ -164,7 +147,6 @@ fun Information2(questionViewModel: QuestionViewModel) {
     }
 }
 
-//fun RoundedCheckView(options: List<String>, listener: ((Int, Boolean)-> Unit)? = null, state: Int, option: Int) {
 @Composable
 fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, option: Int) {
     // Add a state variable to track whether the checkbox is checked
@@ -194,8 +176,6 @@ fun RoundedCheckView(listener: ((Int, Boolean)-> Unit)? = null, state: Int, opti
                 //  isChecked.value = !isChecked.value
 
                 listener?.invoke(option, isChecked)
-
-                //listener?.invoke(options.indexOf(options[option]), isChecked)
 
             })
     ) {
@@ -233,18 +213,5 @@ private fun Option(title: String, modifier: Modifier = Modifier) {
             .padding(top = 5.dp, start = 20.dp)
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

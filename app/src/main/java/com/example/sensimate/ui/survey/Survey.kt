@@ -285,8 +285,3 @@ fun NextButton(onClick: () -> Unit) {
     }
 
 }
-
-
-
-
-

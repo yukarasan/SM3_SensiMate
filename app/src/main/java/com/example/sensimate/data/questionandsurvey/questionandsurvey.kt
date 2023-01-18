@@ -12,19 +12,17 @@ data class QuestionsUiState(
     var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList(),
     var questionsStarted: Boolean = false,
     var currentQuestion: MyQuestion = MyQuestion(),
-    var currentAnswers: MutableList<String> = mutableListOf(),
-    var currentAnswersMap: MutableMap<String, String> = mutableMapOf()
+    var currentAnswers: List<String> = emptyList(),
+    //var currentAnswersMap: MutableMap<String, String> = mutableMapOf()
 )
 
 /*
-
 data class QuestionsUiState(
     var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList(),
     var questionsStarted: Boolean = false,
     var currentQuestion: MyQuestion = MyQuestion(),
     var currentAnswers: MutableList<String> = mutableListOf()
 )
-
  */
 
 
@@ -33,7 +31,6 @@ class MyAnswer(
     var myAnswer: String,
     var mainQuestion: String = "",
 )
-
  */
 
 
@@ -46,7 +43,6 @@ MyQuestion class that represents a question with its options
 @param oneChoice2 - whether the question allows only one choice
  */
 class MyQuestion(
-   // var mainQuestionId: String = "",
     var mainQuestion: String = "",
     var options: MutableList<String> = emptyList<String>().toMutableList(),
     var oneChoice: Boolean = false,
@@ -57,7 +53,4 @@ class Question(
     var answers: MutableList<String> = emptyList<String>().toMutableList(),
     var oneChoice: Boolean = false,
 )
-
  */
-
-
