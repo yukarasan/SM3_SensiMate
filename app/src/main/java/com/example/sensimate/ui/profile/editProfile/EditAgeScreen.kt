@@ -14,7 +14,7 @@ import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 

@@ -33,7 +33,7 @@ import com.example.sensimate.R
 import com.example.sensimate.data.Database
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple

@@ -2,18 +2,12 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.app.DownloadManager
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.TimePicker
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -46,30 +40,23 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
-import com.example.sensimate.data.Database.main
-import com.example.sensimate.data.Database.updateSurvey
 
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import com.example.sensimate.ui.createEvent.AddPhoto
 import com.example.sensimate.ui.createEvent.ContentColorComponent
 import com.example.sensimate.ui.createEvent.TextToPhoto
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.survey.Survey4
 import com.example.sensimate.ui.theme.*
-import java.io.File
 import java.util.*
 
 

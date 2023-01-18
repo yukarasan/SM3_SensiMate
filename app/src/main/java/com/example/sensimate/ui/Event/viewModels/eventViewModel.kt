@@ -2,12 +2,12 @@ package com.example.sensimate.data
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.sensimate.R
+import com.example.sensimate.ui.Event.viewModels.Event
+import com.example.sensimate.ui.Event.viewModels.EventUiState
 import com.example.sensimate.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

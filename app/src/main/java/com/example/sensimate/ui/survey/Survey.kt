@@ -1,8 +1,7 @@
 package com.example.sensimate.ui.survey
 
 import android.annotation.SuppressLint
-import android.util.Log
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,24 +23,11 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.StampedPathEffectStyle.Companion.Rotate
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.sensimate.data.Database
-import com.example.sensimate.data.EventViewModel
-import com.example.sensimate.data.Profile
-import com.example.sensimate.data.Survey
-import com.example.sensimate.data.questionandsurvey.MyQuestion
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
-import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable

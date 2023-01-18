@@ -15,6 +15,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.sensimate.R
 
+/**
+ * This CheckBox composable is used in the various edit pages when editing profile.
+ * @author Yusuf Kara
+ */
 @Composable
 fun CheckBox(onClick: () -> Unit) {
     Button(

@@ -3,13 +3,11 @@ package com.example.sensimate.ui.survey
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.*
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -28,7 +26,6 @@ import androidx.navigation.NavController
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 //import com.example.sensimate.data.questionandsurvey.getAnswer
-import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.*
 
 

@@ -1,7 +1,6 @@
 package com.example.sensimate.ui.createEmployee
 
 import android.content.Context
-import android.provider.ContactsContract.Data
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -9,9 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.Database
-import com.example.sensimate.data.EventUiState
 import com.example.sensimate.ui.AdminScreens.AdminViewModel
-import com.example.sensimate.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

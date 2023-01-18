@@ -26,6 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sensimate.model.manropeFamily
 
+/**
+ * This composable is used to create custom text fields for a profile section, and is used
+ * multiple times, hence the decision to make it a part of app components.
+ * @author Yusuf Kara
+ */
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun CustomProfileTextField(

@@ -1,4 +1,4 @@
-package com.example.sensimate.data
+package com.example.sensimate.ui.Event.viewModels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -23,4 +23,4 @@ data class EventUiState(
     var chosenSurveyId: String = "",
     var event: Event = Event(),
 
-)
+    )

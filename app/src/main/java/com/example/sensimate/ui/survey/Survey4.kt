@@ -3,16 +3,14 @@ package com.example.sensimate.ui.survey
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -24,15 +22,12 @@ import com.example.sensimate.R
 import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
-import com.example.sensimate.data.Database.updateSurvey
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.Database.updateSurvey
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
-import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
 

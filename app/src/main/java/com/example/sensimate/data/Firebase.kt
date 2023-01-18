@@ -2,22 +2,15 @@ package com.example.sensimate.data
 
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 import android.annotation.SuppressLint
-import android.app.DownloadManager
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.*
-import androidx.core.content.FileProvider
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.sensimate.R
-import com.example.sensimate.data.Database.fetchProfile
 import com.example.sensimate.data.questionandsurvey.MyQuestion
+import com.example.sensimate.ui.Event.viewModels.Event
 import com.example.sensimate.ui.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -27,8 +20,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import org.apache.poi.ss.usermodel.*
@@ -37,7 +28,6 @@ import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 import kotlin.collections.HashMap

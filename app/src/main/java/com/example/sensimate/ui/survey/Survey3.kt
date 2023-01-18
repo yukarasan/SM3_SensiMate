@@ -3,7 +3,7 @@ package com.example.sensimate.ui.survey
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
-import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.*
 //@Preview(showBackground = true)
 @Composable

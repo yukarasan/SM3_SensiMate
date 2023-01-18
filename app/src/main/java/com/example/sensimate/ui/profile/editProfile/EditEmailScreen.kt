@@ -31,7 +31,7 @@ import com.example.sensimate.data.auth
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.appcomponents.editProfile.CheckBox
 import com.example.sensimate.ui.appcomponents.editProfile.CustomProfileTextField
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import com.example.sensimate.ui.profile.ProfileViewModel
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple

@@ -27,7 +27,7 @@ import com.example.sensimate.data.Database
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.InitialStartPage.MySensimateLogo
 import com.example.sensimate.ui.InitialStartPage.MyTextField
-import com.example.sensimate.ui.components.OrangeBackButton
+import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import com.example.sensimate.ui.startupscreens.components.InitialStartBackground
 import com.example.sensimate.ui.startupscreens.components.myButton
 import com.example.sensimate.ui.theme.PurpleButtonColor
