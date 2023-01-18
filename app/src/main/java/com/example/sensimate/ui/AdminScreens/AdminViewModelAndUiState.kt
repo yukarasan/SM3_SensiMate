@@ -37,7 +37,7 @@ class AdminViewModel() : ViewModel() {
         }
     }
 
-    fun createdEmployee(email: String, context: Context) {
+    fun createdEmployee(email: String) {
         _uiState.value.mails.add(email)
     }
 

@@ -56,7 +56,6 @@ class CreateEmployeeViewModel : ViewModel() {
 
             adminViewModel.createdEmployee(
                 email = uiState.value.email.value,
-                context = context
             )
         }
     }
