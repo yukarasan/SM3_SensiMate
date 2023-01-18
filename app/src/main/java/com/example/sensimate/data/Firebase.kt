@@ -635,6 +635,10 @@ object Database {
                     events.add(event)
                 }
      */
+    /**
+     @author Ahmad Sandhu
+     This function sends the event date when creating an event to firebase database
+     */
 
     fun createEvent(
         title: String,
@@ -668,7 +672,10 @@ object Database {
             docId = docRef.id
         }
     } //TODO: Ahmad
-
+    /**
+    @author Ahmad Sandhu
+    This function sends the question data when creating an question to firebase database
+     */
     fun question5(
         question: String,
         boolean: Boolean,
@@ -696,7 +703,10 @@ object Database {
                 .set(questionAnswer)
         }
     }//TODO: Ahmad
-
+    /**
+    @author Ahmad Sandhu
+    This function sends the question data when creating an question to firebase database
+     */
     fun question4(
         question: String,
         boolean: Boolean,
@@ -722,7 +732,10 @@ object Database {
                 .set(questionAnswer)
         }
     }//TODO: Ahmad
-
+    /**
+    @author Ahmad Sandhu
+    This function sends the question data when creating an question to firebase database
+     */
     fun question3(
         question: String,
         boolean: Boolean,
@@ -747,7 +760,10 @@ object Database {
                 .set(questionAnswer)
         }
     }//TODO: Ahmad
-
+    /**
+    @author Ahmad Sandhu
+    This function sends the question data when creating an question to firebase database
+     */
     fun question(question: String, boolean: Boolean, answer1: String, answer2: String) {
         val mainQuest = hashMapOf(
             "mainQuestion" to question,
@@ -765,7 +781,10 @@ object Database {
                 .set(questionAnswer)
         }
     }//TODO: Ahmad
-
+    /**
+    @author Ahmad Sandhu
+    This function sends the question data when creating an question to firebase database
+     */
     fun textAnswer(question: String) {
         val mainQuest = hashMapOf(
             "mainQuestion" to question

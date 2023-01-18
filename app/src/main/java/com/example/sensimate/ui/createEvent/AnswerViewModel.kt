@@ -11,6 +11,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/**
+ @author Ahmad Sandhu
+ AnswerViewModel class that handles the data for Multiple Choice Question
+ */
 data class AnswerUistate(
     var questionText: MutableState<String> = mutableStateOf(""),
     var answerText1: MutableState<String> = mutableStateOf(""),
