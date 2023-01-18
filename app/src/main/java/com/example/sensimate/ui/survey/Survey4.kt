@@ -57,8 +57,8 @@ fun Survey4(title: String, navController: NavController, questionViewModel: Ques
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
         OrangeBackButton { navController.popBackStack() }
-        //ProgressPreview()
-        Question("Question")
+        ProgressPreview(1f)
+        Question("2/2")
         SurveyTitle(title)
         Information4(questionViewModel)
 
@@ -206,7 +206,9 @@ fun CheckBox(questionViewModel: QuestionViewModel, option: MutableList<String>, 
         onCheckedChange = {
             checkedState.value = it
             option.add(options)
-            questionViewModel.setAnswer(option)
+            questionViewModel.addAnswer(option.toString())
+            //questionViewModel.addQuestion(questionTitle = questionViewModel.uiState.value.currentQuestion.mainQuestion, answers = option, onechoice = false)
+
             Log.d("Test1", options)
         },
         colors = CheckboxDefaults
@@ -263,7 +265,3 @@ fun FinishButton(onClick: () -> Unit) {
 
 
 }
-
-
-
-

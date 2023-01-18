@@ -12,8 +12,8 @@ data class QuestionsUiState(
     var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList(),
     var questionsStarted: Boolean = false,
     var currentQuestion: MyQuestion = MyQuestion(),
-    var currentAnswers: List<String> = emptyList(),
-    //var currentAnswersMap: MutableMap<String, String> = mutableMapOf()
+    var currentAnswers: MutableList<String> = mutableListOf(),
+    var currentAnswersMap: MutableMap<String, String> = mutableMapOf()
 )
 
 /*

@@ -61,7 +61,7 @@ fun SurveyCreator(
         val showLoading = remember {
             mutableStateOf(true)
         }
-        // showLoadingSurvey(showLoading)
+        showLoadingSurvey(showLoading)
     }
 
 
@@ -166,7 +166,6 @@ fun AllPages(
             answers.add(option)
             questionViewModel.setCurrentQuestion(questions[questionIndex])
             if (!questions[questionIndex].oneChoice) {
-
                 Survey4(
                     title = questions[questionIndex].mainQuestion,
                     navController = navController,
@@ -174,26 +173,27 @@ fun AllPages(
 
                 )
 
-
             } else if (questions[questionIndex].oneChoice) {
+                Survey2(
+                    title = questions[questionIndex].mainQuestion,
+                    navController = navController,
+                    questionViewModel
+                )
 
-                LazyColumn() {
+               /* LazyColumn() {
                     item {
                         Row(modifier = Modifier
                             .fillMaxSize()
                             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)) {
                             ProgressPreview(progress = progressState.value)
                         }
-                        Survey2(
-                            title = questions[questionIndex].mainQuestion,
-                            navController = navController,
-                            questionViewModel
-                        )
+
+                */
 
 
-                    }
+
                 }
-            }
+
 
 
             else if (questions[questionIndex].oneChoice2) {

@@ -523,7 +523,7 @@ object Database {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            .addOnFailureListener(){
+            .addOnFailureListener() {
                 Toast.makeText(
                     context,
                     "failed, and employee couldnt be created",
@@ -894,12 +894,199 @@ object Database {
 
                 }
             }
+    }
+
+
+        @SuppressLint("SuspiciousIndentation")
+        suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
+//        val out = FileOutputStream(File("./test_file.xlsx"))
+            // val filepath = "./test_file.xlsx"
+            // Creating excel workbook
+
+
+            val workbook = XSSFWorkbook()
+
+            //Creating first sheet inside workbook
+            //Constants.SHEET_NAME is a string value of sheet name
+            val sheet: Sheet = workbook.createSheet("Survey Results")
+
+            //Create Header Cell Style
+            val cellStyle = getHeaderStyle(workbook)
+
+            //Creating sheet header row
+            createSheetHeader(cellStyle, sheet)
+
+            val profile = fetchProfile()!!
+
+            //Adding data to the sheet
+            addData(0, sheet, newQuestion = newQuestion, options, profile)
+
+
+            createExcel(workbook, context)
+
+        }
 
 
     }
 
+/*
+private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
+    //setHeaderStyle is a custom function written below to add header style
+    //Create sheet first row
+    val row = sheet.createRow(0)
+    //Header list
+    val HEADER_LIST = listOf(
+        "mainQuestion",
+        "postalCode",
+        "yearBorn",
+        "monthBorn",
+        "dayBorn",
+        "gender",
+        "answer",
+        "isEmployee"
+    )
+    //Loop to populate each column of header row
+    for ((index, value) in HEADER_LIST.withIndex()) {
+        val columnWidth = (15 * 500)
+        //index represents the column number
+        sheet.setColumnWidth(index, columnWidth)
+        //Create cell
+        val cell = row.createCell(index)
+        //value represents the header value from HEADER_LIST
+        cell?.setCellValue(value)
+        //Apply style to cell
+        cell.cellStyle = cellStyle
+    }
+}
+ */
+
+    private fun getHeaderStyle(workbook: Workbook): CellStyle {
+
+        //Cell style for header row
+        val cellStyle: CellStyle = workbook.createCellStyle()
+
+        //Apply cell color
+        val colorMap: IndexedColorMap = (workbook as XSSFWorkbook).stylesSource.indexedColors
+        var color = XSSFColor(IndexedColors.RED, colorMap).indexed
+        cellStyle.fillForegroundColor = color
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+
+        //Apply font style on cell text
+        val whiteFont = workbook.createFont()
+        color = XSSFColor(IndexedColors.WHITE, colorMap).indexed
+        whiteFont.color = color
+        whiteFont.bold = true
+        cellStyle.setFont(whiteFont)
 
 
+        return cellStyle
+    }
+
+
+    private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
+        //setHeaderStyle is a custom function written below to add header style
+        val row = sheet.createRow(0)
+        val HEADER_NAME = "Data"
+        val columnWidth = (15 * 500)
+        sheet.setColumnWidth(0, columnWidth)
+        val cell = row.createCell(0)
+        cell?.setCellValue(HEADER_NAME)
+        cell.cellStyle = cellStyle
+    }
+
+/*
+private fun addData(
+    rowIndex: Int,
+    sheet: Sheet,
+    newQuestion: MyQuestion,
+    options: List<String>,
+    profile: Profile
+) {
+    //Create row based on row index
+    val row = sheet.createRow(rowIndex)
+    //Add data to each cell
+    createCell(row, 0, newQuestion.mainQuestion) //Column 1
+    createCell(row, 1, profile.postalCode) //Column 2
+    createCell(row, 2, profile.yearBorn) //Column 3
+    createCell(row, 3, profile.monthBorn) //Column 3
+    createCell(row, 4, profile.dayBorn) //Column 3
+    createCell(row, 5, profile.gender) //Column 3
+    createCell(row, 6, options.toString()) //Column 3
+    createCell(row, 7, false) //Column 3
+}
+ */
+
+    private fun addData(
+        rowIndex: Int,
+        sheet: Sheet,
+        newQuestion: MyQuestion,
+        options: List<String>,
+        profile: Profile
+    ) {
+        // Create a new row
+        val row = sheet.createRow(rowIndex)
+        row.createCell(0).setCellValue(newQuestion.mainQuestion)
+        row.createCell(1).setCellValue(profile.postalCode)
+        row.createCell(2).setCellValue(profile.yearBorn)
+        row.createCell(3).setCellValue(profile.monthBorn)
+        row.createCell(4).setCellValue(profile.dayBorn)
+        row.createCell(5).setCellValue(profile.gender)
+        row.createCell(6).setCellValue(options.toString())
+        row.createCell(7).setCellValue(false)
+
+    }
+
+    private fun createCell(row: Row, columnIndex: Int, value: String?) {
+        val cell = row.createCell(columnIndex)
+        cell?.setCellValue(value)
+
+
+    }
+
+    private fun createCell(row: Row, columnIndex: Int, value: Boolean) {
+        val cell = row.createCell(columnIndex)
+        cell?.setCellValue(value)
+
+    }
+
+
+    @SuppressLint("QueryPermissionsNeeded")
+    private fun createExcel(workbook: Workbook, context: Context) {
+
+        //Get App Director, APP_DIRECTORY_NAME is a string
+        val appDirectory = context.getExternalFilesDir("Sensimate")
+        val downloadDirectory =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+
+        //Check App Directory whether it exists or not, create if not.
+        if (downloadDirectory != null && !downloadDirectory.exists()) {
+            downloadDirectory.mkdirs()
+        }
+
+        //Create excel file with extension .xlsx
+        val excelFile = File(downloadDirectory, "survey.xlsx")
+
+        //Write workbook to file using FileOutputStream
+        try {
+
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+/**
     @SuppressLint("SuspiciousIndentation")
     suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
 //        val out = FileOutputStream(File("./test_file.xlsx"))
@@ -931,6 +1118,7 @@ object Database {
 
 
 }
+
 
 /*
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
@@ -985,8 +1173,68 @@ private fun getHeaderStyle(workbook: Workbook): CellStyle {
     return cellStyle
 }
 
+/**
+private fun getHeaderStyle(workbook: Workbook): CellStyle {
+
+    //Cell style for header row
+    val cellStyle: CellStyle = workbook.createCellStyle()
+
+    //Apply cell color
+    val colorMap: IndexedColorMap = (workbook as XSSFWorkbook).stylesSource.indexedColors
+    var color = XSSFColor(IndexedColors.RED, colorMap).indexed
+    cellStyle.fillForegroundColor = color
+    cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+
+    //Apply font style on cell text
+    val whiteFont = workbook.createFont()
+    color = XSSFColor(IndexedColors.WHITE, colorMap).indexed
+    whiteFont.color = color
+    whiteFont.bold = true
+    cellStyle.setFont(whiteFont)
 
 
+    return cellStyle
+}
+
+
+private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
+    //setHeaderStyle is a custom function written below to add header style
+
+    //Create sheet first row
+    val row = sheet.createRow(0)
+
+    //Header list
+    val HEADER_LIST = listOf(
+        "mainQuestion",
+        "postalCode",
+        "yearBorn",
+        "monthBorn",
+        "dayBorn",
+        "gender",
+        "answer",
+        "isEmployee"
+    )
+
+    //Loop to populate each column of header row
+    for ((index, value) in HEADER_LIST.withIndex()) {
+
+        val columnWidth = (15 * 500)
+
+        //index represents the column number
+        sheet.setColumnWidth(index, columnWidth)
+
+        //Create cell
+        val cell = row.createCell(index)
+
+        //value represents the header value from HEADER_LIST
+        cell?.setCellValue(value)
+
+        //Apply style to cell
+        cell.cellStyle = cellStyle
+    }
+}
+
+/**
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
     //setHeaderStyle is a custom function written below to add header style
     val row = sheet.createRow(0)
@@ -997,6 +1245,8 @@ private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
     cell?.setCellValue(HEADER_NAME)
     cell.cellStyle = cellStyle
 }
+
+ */
 
 /*
 private fun addData(
@@ -1331,3 +1581,4 @@ object OurCalendar {
     }
 }
 
+*/
