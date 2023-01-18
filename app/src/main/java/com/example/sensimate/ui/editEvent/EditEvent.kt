@@ -181,60 +181,7 @@ fun EditEvent(
                             Description(description = chosenEvent.description)
                         }
 
-                        Spacer(modifier = Modifier.height(10.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(start = 10.dp)
-                            ) {
-                                InputField(
-                                    onValueChange = {
-                                        if (it.length <= 4) {
-                                            eventViewModel.updateSurveyCodeString(
-                                                surveyCode = it
-                                            )
-                                        }
-                                    },
-                                    text = state.value.event.chosenSurveyCode.value
-                                )
-                            }
-                            Column(
-                                modifier = Modifier
-                                    .padding(end = 10.dp)
-                            ) {
-                                Button(
-                                    onClick = {
-                                        if (state.value.event.chosenSurveyCode.value.length < 4) {
-                                            showFieldAlert = true
-                                        } else if (state.value.event.chosenSurveyCode.value ==
-                                            state.value.event.surveyCode
-                                        ) {
-                                            navController.popBackStack()
-                                            navController.navigate(Screen.SurveyCreator.route)
-                                        } else {
-                                            showSecondFieldAlert = true
-                                        }
-                                    },
-                                    colors = ButtonDefaults.buttonColors(Color(0xFF8CB34D)),
-                                    modifier = Modifier
-                                        .size(width = 50.dp, height = 60.dp)
-                                        .padding(bottom = 10.dp)
-                                ) {
-                                    Text(
-                                        text = "Go",
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 10.sp,
-                                        color = Color.White,
-                                        fontFamily = manropeFamily
-                                    )
-                                }
-                            }
-                        }
-                        Spacer(modifier = Modifier.size(15.dp))
+                        Spacer(Modifier.size(15.dp))
 
                         Column(
                             modifier = Modifier.padding(10.dp)
@@ -330,10 +277,9 @@ fun EditEvent(
                     }
                     if (getBooleanFromLocalStorage("isAdmin", context = context)) {
 
-                        Spacer(modifier = Modifier.size(40.dp))
+                        Spacer(modifier = Modifier.size(25.dp))
                         Button(
                             onClick = {
-                                //download(context)
                                 questionViewModel.updateAnswer(
                                     chosenEvent.eventId, context = context,
                                     boolean = true
@@ -341,7 +287,7 @@ fun EditEvent(
                                 navController.navigate(Screen.EditEvent.route)
                             },
                             shape = CircleShape,
-                            colors = ButtonDefaults.buttonColors(Color(0xFF217225)),
+                            colors = ButtonDefaults.buttonColors(Color(0xFF2E7D32)),
                             modifier = Modifier.size(240.dp, 50.dp)
                         ) {
                             Text(
