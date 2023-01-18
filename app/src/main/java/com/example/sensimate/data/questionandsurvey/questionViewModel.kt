@@ -87,28 +87,10 @@ open class QuestionViewModel : ViewModel() {
     fun setCurrentQuestion(question: MyQuestion) {
         _uiState.value.currentQuestion = question
     }
-    /*
     fun setAnswer(answers: List<String>) {
         //_uiState.value.currentAnswers = listOf(answer)
         _uiState.value.currentAnswers = answers
     }
-
-     */
-
-    fun addAnswer(answer:String){
-        _uiState.value.currentAnswersMap[_uiState.value.currentQuestion.mainQuestion] = answer
-        _uiState.value.currentAnswers.add(answer)
-
-    }
-
-
-    /*
-
-   fun setAnswer(answers: List<String>) {
-    _uiState.value.currentAnswers.addAll(answers)
-}
-
-     */
 
     fun updateAnswer(
         eventId: String, boolean: Boolean, context: Context
@@ -122,26 +104,6 @@ open class QuestionViewModel : ViewModel() {
         }
     }
 
-    /*
-    fun updateAnswer(eventId: String, boolean: Boolean, context: Context) {
-    viewModelScope.launch {
-        Database.updateSurvey(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion,
-            boolean = boolean, context = context
-        )
-    }
-}
-
-     */
-
-
-
-
-    fun excel(eventId: String) {
-        viewModelScope.launch {
-            //Database.updateSurvey2(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion)
-            //excelDownloader.downloadExcel()
-        }
-    }
 
 }
 
@@ -153,7 +115,7 @@ open class QuestionViewModel : ViewModel() {
         val _myanswer = MutableStateFlow(MyAnswer())
         return _myanswer.asStateFlow()
     }
-
  */
+
 
 

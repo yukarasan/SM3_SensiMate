@@ -61,7 +61,7 @@ fun SurveyCreator(
         val showLoading = remember {
             mutableStateOf(true)
         }
-       // showLoadingSurvey(showLoading)
+        // showLoadingSurvey(showLoading)
     }
 
 
@@ -113,7 +113,6 @@ private fun nextQuestion(questionViewModel: QuestionViewModel) {
     questionViewModel.setAnswer(MyAnswer(myAnswer = selectedAnswers, mainQuestion = questionViewModel.uiState.value.currentQuestion.mainQuestion))
     pager.nextPage()
 }
-
  */
 
 val selectedAnswers = mutableStateOf<List<String>>(emptyList())
@@ -123,7 +122,6 @@ private fun nextQuestion(questionViewModel: QuestionViewModel) {
     questionViewModel.setCurrentQuestion(questionViewModel.uiState.value.currentQuestion, selectedAnswers)
     pager.nextPage()
 }
-
  */
 
 
@@ -198,7 +196,7 @@ fun AllPages(
             }
 
 
-             else if (questions[questionIndex].oneChoice2) {
+            else if (questions[questionIndex].oneChoice2) {
 
                 Survey3(
                     title = questions[questionIndex].mainQuestion,
@@ -282,20 +280,6 @@ fun AllPages(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
