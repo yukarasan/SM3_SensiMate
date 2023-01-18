@@ -10,7 +10,10 @@ import com.google.api.Context
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
+/**
+@author Ahmad Sandhu
+QuestionPageViewModel class that handles the data for choose a question type
+ */
 data class QuestionUistate(
     val selectedQuestion: MutableState<String> =  mutableStateOf("")
 )

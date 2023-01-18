@@ -67,20 +67,3 @@ fun getBooleanFromLocalStorage(key: String, context: Context): Boolean {
         context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
     return sharedPreferences.getBoolean(key, false)
 }
-
-@Preview
-@Composable
-fun TestLocalStorage() {
-    val context = LocalContext.current
-
-    SaveBoolToLocalStorage(
-        key = "isLoggedIn",
-        value = true,
-        context
-    )
-
-    Log.d(
-        "isLoggedIn?",
-        getBooleanFromLocalStorage(key = "isLoggedIn", context).toString()
-    )
-}

@@ -12,7 +12,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-
+/**
+@author Ahmad Sandhu
+CreateEventViewModel class that handles the data for Create an event
+ */
 data class CreateEventUistate(
     var titleText: MutableState<String> = mutableStateOf(""),
     var descriptionText: MutableState<String> = mutableStateOf(""),
