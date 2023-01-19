@@ -1,5 +1,6 @@
 package com.example.sensimate.ui.profile
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 import com.example.sensimate.model.manropeFamily
@@ -46,6 +48,7 @@ fun ProfileScreen(
 ) {
     val profileState by profileViewModel.uiState.collectAsState()
     val context = LocalContext.current
+    val showDialog = remember { mutableStateOf(false) }
 
     if (auth.currentUser != null) {
         profileViewModel.fetchProfileData(context = context)
@@ -86,20 +89,66 @@ fun ProfileScreen(
             item { ImageButton() }
             item { ProfileMail() }
             item {
-                LogoutButton(
-                    onClick = {
-                    Database.signOut(context = context)
-                    navController.popBackStack()
-                    navController.navigate(Screen.Login.route)
-                    }
+                if (!getBooleanFromLocalStorage("isGuest", context)) {
+                    LogoutButton(
+                        onClick = {
+                            Database.signOut(context = context)
+                            navController.popBackStack()
+                            navController.navigate(Screen.Login.route)
+                        }
+                    )
+                } else {
+                    DeleteUserProfileButton(showDialog = showDialog)
+                }
+            }
+            item {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Dialog(
+                        navController = navController,
+                        showDialog = showDialog,
+                        context = context
+                    )
+                }
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.age),
+                    info = profileState.age
                 )
             }
-            item { InfoAboutUser(desc = stringResource(id = R.string.age), info = profileState.age) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.yearBorn), info = profileState.yearBorn) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.dayBorn), info = profileState.dayBorn) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.monthBorn), info = profileState.monthBorn) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.postalCode), info = profileState.postalCode) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.gender), info = profileState.gender) }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.yearBorn),
+                    info = profileState.yearBorn
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.dayBorn),
+                    info = profileState.dayBorn
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.monthBorn),
+                    info = profileState.monthBorn
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.postalCode),
+                    info = profileState.postalCode
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.gender),
+                    info = profileState.gender
+                )
+            }
         }
     }
 }
@@ -126,6 +175,74 @@ private fun LogoutButton(onClick: () -> Unit) {
             fontWeight = FontWeight.ExtraBold,
             fontSize = 16.sp,
             color = Color.White
+        )
+    }
+}
+
+/**
+ * The DeleteUserProfileButton composable displays a button that, when clicked, sets the value
+ * of the showDialog state variable to true.
+ * @param showDialog the state variable that is used to control the visibility of the
+ * delete confirmation dialog
+ * @author Yusuf Kara
+ */
+@Composable
+private fun DeleteUserProfileButton(showDialog: MutableState<Boolean>) {
+    Button(
+        onClick = {
+            showDialog.value = true
+        },
+        shape = RoundedCornerShape(100),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color(184, 58, 58, 255)),
+        modifier = Modifier
+            .height(40.dp)
+    ) {
+        Text(
+            text = stringResource(id = R.string.deleteProfile),
+            fontFamily = manropeFamily,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+    }
+}
+
+/**
+ * The Dialog composable displays an AlertDialog that prompts the user to confirm the deletion
+ * of their profile.
+ * The dialog includes a "Yes" button that, when clicked, deletes the user's profile and
+ * navigates to the login screen, and a "No" button that dismisses the dialog.
+ * The visibility of the dialog is controlled by the showDialog state variable.
+ * @param navController the navigation controller for navigating between screens
+ * @param showDialog the state variable that is used to control the visibility of the
+ * delete confirmation dialog
+ * @param context the context in which the dialog is displayed
+ * @author Yusuf Kara
+ */
+@Composable
+private fun Dialog(
+    navController: NavController = rememberNavController(),
+    showDialog: MutableState<Boolean> = mutableStateOf(true),
+    context: Context
+) {
+    if (showDialog.value) {
+        AlertDialog(
+            onDismissRequest = { showDialog.value = false },
+            title = { Text(text = stringResource(id = R.string.deleteProfileConfirmation)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDialog.value = false
+                        navController.navigate(Screen.Login.route)
+                        Database.deleteGuestUser(context = context)
+                    }
+                )
+                { Text(text = stringResource(id = R.string.yes)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog.value = false })
+                { Text(text = stringResource(id = R.string.no)) }
+            },
         )
     }
 }
