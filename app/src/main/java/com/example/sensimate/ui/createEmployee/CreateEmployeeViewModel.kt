@@ -13,6 +13,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/**
+ * Data class representing the UI state of the Create Employee Screen
+ * @param password: MutableState<String> representing the password entered by the user, password,
+ * is not used now but perhaps for later use of the code, to modify changes with
+ * creating a employee.
+ * @param email: MutableState<String> representing the email entered by the user
+ * @author Sabirin Omar
+ */
 
 data class CreateEmployeeUIState(
     var password: MutableState<String> = mutableStateOf(""),
@@ -20,9 +28,22 @@ data class CreateEmployeeUIState(
 
     )
 
+/**
+ * ViewModel class representing the Create Employee Screen, this viewmodel handle the logic of the
+ * Create Employee feature
+ * @author Sabirin Omar
+ */
+
 class CreateEmployeeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(CreateEmployeeUIState())
     val uiState: StateFlow<CreateEmployeeUIState> = _uiState.asStateFlow()
+
+    /**
+     * A function that checks if the text fields are empty and if this is true, it would be
+     * displayed on the screen. If there is no text field that is empty it would make the giving
+     * email an employee in the database.
+     * @author Sabirin Omar
+     */
 
     fun checkIfTextFieldIsEmpty(
         context: Context, navController: NavController,
@@ -45,15 +66,7 @@ class CreateEmployeeViewModel : ViewModel() {
 
          */
         else {
-            /*Database.signUserUp(email = uiState.value.email.value, password = uiState.value.password.value,
-                context = context, showLoading = showLoading, postalCode = "null", yearBorn = "null",
-                monthBorn = "null", gender = "null", dayBorn = "null", successLoggedIn = successLoggedIn,
-                isEmployee = true
-            )
-             */
-
             Database.employProfile(context = context, email = uiState.value.email.value)
-
             adminViewModel.createdEmployee(
                 email = uiState.value.email.value,
             )
