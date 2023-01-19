@@ -106,15 +106,49 @@ fun ProfileScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Dialog(navController = navController, showDialog = showDialog, context = context)
+                    Dialog(
+                        navController = navController,
+                        showDialog = showDialog,
+                        context = context
+                    )
                 }
             }
-            item { InfoAboutUser(desc = stringResource(id = R.string.age), info = profileState.age) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.yearBorn), info = profileState.yearBorn) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.dayBorn), info = profileState.dayBorn) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.monthBorn), info = profileState.monthBorn) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.postalCode), info = profileState.postalCode) }
-            item { InfoAboutUser(desc = stringResource(id = R.string.gender), info = profileState.gender) }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.age),
+                    info = profileState.age
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.yearBorn),
+                    info = profileState.yearBorn
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.dayBorn),
+                    info = profileState.dayBorn
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.monthBorn),
+                    info = profileState.monthBorn
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.postalCode),
+                    info = profileState.postalCode
+                )
+            }
+            item {
+                InfoAboutUser(
+                    desc = stringResource(id = R.string.gender),
+                    info = profileState.gender
+                )
+            }
         }
     }
 }
@@ -196,11 +230,13 @@ private fun Dialog(
             onDismissRequest = { showDialog.value = false },
             title = { Text(text = stringResource(id = R.string.deleteProfileConfirmation)) },
             confirmButton = {
-                TextButton(onClick = {
-                    showDialog.value = false
-                    navController.navigate(Screen.Login.route)
-                    Database.deleteProfile(context = context)
-                })
+                TextButton(
+                    onClick = {
+                        showDialog.value = false
+                        navController.navigate(Screen.Login.route)
+                        Database.deleteGuestUser(context = context)
+                    }
+                )
                 { Text(text = stringResource(id = R.string.yes)) }
             },
             dismissButton = {

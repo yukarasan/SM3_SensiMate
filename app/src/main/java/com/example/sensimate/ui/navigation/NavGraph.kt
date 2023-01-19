@@ -21,13 +21,10 @@ import androidx.navigation.compose.composable
 import com.example.sensimate.broadcastreceivers.InternetBroadcastReceiver
 import com.example.sensimate.data.*
 import com.example.sensimate.data.EventViewModel
-import com.example.sensimate.data.SaveBoolToLocalStorage
-import com.example.sensimate.data.auth
 import com.example.sensimate.data.getBooleanFromLocalStorage
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.AdminScreens.AdminViewModel
 import com.example.sensimate.ui.AdminScreens.EmployeesListScreen
-//import com.example.sensimate.ui.Event.createEvent.*
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen
 import com.example.sensimate.ui.Event.extendedEvent.ExtendedEvent
 import com.example.sensimate.ui.InitialStartPage.LogInMail
@@ -64,7 +61,10 @@ fun SetupNavGraph(navController: NavHostController) {
     val context = LocalContext.current
     InternetBroadcastReceiver(context)
 
-    if (getBooleanFromLocalStorage("hasNet", context)) {
+    if (
+        getBooleanFromLocalStorage("hasNet", context)
+        && !getBooleanFromLocalStorage("isGuest", context)
+    ) {
         LaunchedEffect(key1 = true) {
             Database.getIsEmployee(context)
         }
@@ -74,17 +74,13 @@ fun SetupNavGraph(navController: NavHostController) {
         mutableStateOf(false)
     }
 
-
-
-
-
     NavHost(
         navController = navController,
         startDestination = Screen.SplashScreen.route
     ) {
 
         // Splash-Screen
-       composable(route = Screen.SplashScreen.route) {
+        composable(route = Screen.SplashScreen.route) {
             SplashScreen(navController = navController)
         }
 

@@ -232,6 +232,38 @@ object Database {
     }
 
     /**
+     * Deletes the current anonymous user from Firebase Authentication.
+     * @author Yusuf Kara
+     */
+    fun deleteGuestUser(context: Context) {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val currentUser = firebaseAuth.currentUser
+
+        if (currentUser != null && currentUser.isAnonymous) {
+            currentUser.delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        SaveBoolToLocalStorage("isGuest", false, context)
+                        Toast.makeText(
+                            context, "Anonymous user deleted.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            context, "Failed to delete anonymous user.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        } else {
+            Toast.makeText(
+                context, "User is not anonymous.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    /**
     @author hussein el-zein
     This function is used to log the user in with their email and password. It also updates the
     'showLoading' state variable to indicate that the login process is currently in progress.
