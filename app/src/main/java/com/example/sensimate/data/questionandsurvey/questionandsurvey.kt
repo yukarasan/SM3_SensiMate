@@ -1,12 +1,12 @@
 package com.example.sensimate.data.questionandsurvey
 
 /**
-@author Hussein El-Zein
-QuestionsUiState class that holds the data for the questionnaires
-@param questions - list of all questions
-@param questionsStarted - whether the questionnaire has started or not
-@param currentQuestion - the current question being displayed
-@param currentAnswers - the current answers chosen by the user
+ * QuestionsUiState class that holds the data for the questionnaires
+ * @author Hussein El-Zein
+ * @param questions - list of all questions
+ * @param questionsStarted - whether the questionnaire has started or not
+ * @param currentQuestion - the current question being displayed
+ * @param currentAnswers - the current answers chosen by the user
  */
 data class QuestionsUiState(
     var questions: List<MyQuestion> = emptyList<MyQuestion>().toMutableList(),

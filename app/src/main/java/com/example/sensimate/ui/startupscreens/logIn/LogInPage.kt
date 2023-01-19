@@ -34,10 +34,11 @@ import com.example.sensimate.ui.theme.PurpleButtonColor
 import java.util.*
 
 /**
-@author Hussein el-zein
-Function that displays the login screen for email and password authentication and handles the logic for login.
-@param navController Navigation controller for navigating between screens.
-@param startProfileViewModel ViewModel for managing the login process.
+ *
+ * Function that displays the login screen for email and password authentication and handles the logic for login.
+ * @param navController Navigation controller for navigating between screens.
+ * @param startProfileViewModel ViewModel for managing the login process.
+ * @author Hussein el-zein
  */
 @Composable
 fun LogInMail(
@@ -244,10 +245,10 @@ fun LogInMailPreview() {
 
 
 /**
-@author Hussein el-zein
-Function that displays the sign in/up/guest options and handles the navigation between screens.
-@param navController Navigation controller for navigating between screens.
-@param screen The current screen that the user is on.
+ *Function that displays the sign in/up/guest options and handles the navigation between screens.
+ * @param navController Navigation controller for navigating between screens.
+ * @param screen The current screen that the user is on.
+ * @author Hussein el-zein
  */
 @Composable
 fun SignMenus(

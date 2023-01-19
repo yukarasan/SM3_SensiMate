@@ -6,6 +6,13 @@ import android.util.Log
 import android.widget.Toast
 import com.example.sensimate.data.SaveBoolToLocalStorage
 
+/**
+ * InternetBroadcastReceiver is a function that checks the device's internet connectivity and saves the result to local storage.
+ * The function takes in a Context as a parameter, which it uses to retrieve the ConnectivityManager system service.
+ * It then gets the active network information and checks if it is connected.
+ * If it is connected, it calls the SaveBoolToLocalStorage function with the arguments "hasNet", true and the context.
+ * @author Hussein El-Zein
+*/
 fun InternetBroadcastReceiver(context: Context) {
 
     val connectivityManager =

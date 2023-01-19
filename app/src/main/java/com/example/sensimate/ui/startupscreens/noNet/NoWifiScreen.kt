@@ -43,9 +43,9 @@ fun NoWifiPreview() {
 }
 
 /**
-@author Hussein el-zein
-Function that displays the no internet connection screen and handles the logic for reloading the app.
-@param navController Navigation controller for navigating between screens.
+ * Function that displays the no internet connection screen and handles the logic for reloading the app.
+ * @param navController Navigation controller for navigating between screens.
+ * @author Hussein el-zein
  */
 @Composable
 fun NoWifiScreen(navController: NavController) {

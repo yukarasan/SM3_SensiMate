@@ -36,8 +36,8 @@ data class StartProfileUiState(
 )
 
 /**
-@author Hussein El-Zein
-StartProfileViewModel class that handles the data for the sign up process
+ * StartProfileViewModel class that handles the data for the sign up process
+ * @author Hussein El-Zein
  */
 class StartProfileViewModel() : ViewModel() {
     val _uiState = MutableStateFlow(StartProfileUiState())
