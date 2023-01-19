@@ -334,7 +334,9 @@ fun SetupNavGraph(navController: NavHostController) {
         composable(route = Screen.Survey.route) {
             Survey(
                 navController = navController,
-                title = ""
+                title = "",
+                questionViewModel = questionViewModel,
+                progress = questionViewModel.progress
             )
         }
         composable(route = Screen.Survey2.route) {
@@ -350,7 +352,8 @@ fun SetupNavGraph(navController: NavHostController) {
             Survey3(
                 navController = navController,
                 title = "",
-                questionViewModel = questionViewModel
+                questionViewModel = questionViewModel,
+                progress = questionViewModel.progress
             )
         }
         composable(route = Screen.Survey4.route) {

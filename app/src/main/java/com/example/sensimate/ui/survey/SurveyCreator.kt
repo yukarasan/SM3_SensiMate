@@ -73,7 +73,7 @@ fun SurveyCreator(
     var hasOther: Boolean = false
     val progressState = remember { mutableStateOf(0f) }
 
-    // Returns a scope that's cancelled when F is removed from composition
+
 
     val loaded = remember {
         mutableStateOf(false)
@@ -113,22 +113,6 @@ fun SurveyCreator(
         }
     }
 }
-/*
-private fun nextQuestion(questionViewModel: QuestionViewModel) {
-    questionViewModel.setAnswer(MyAnswer(myAnswer = selectedAnswers, mainQuestion = questionViewModel.uiState.value.currentQuestion.mainQuestion))
-    pager.nextPage()
-}
- */
-
-val selectedAnswers = mutableStateOf<List<String>>(emptyList())
-
-/*
-private fun nextQuestion(questionViewModel: QuestionViewModel) {
-    questionViewModel.setCurrentQuestion(questionViewModel.uiState.value.currentQuestion, selectedAnswers)
-    pager.nextPage()
-}
- */
-
 
 @Composable
 fun showLoadingSurvey(showloading: MutableState<Boolean>) {
@@ -148,10 +132,6 @@ fun AllPages(
 ) {
 
     val answers = mutableListOf<String>() //i vm
-
-    //val selectedAnswers = remember { mutableStateOf(listOf<MyAnswer>()) }
-
-
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
@@ -165,10 +145,7 @@ fun AllPages(
 
         questionViewModel.page.value = questionIndex + 1
 
-        // for (question in questions) {
-        //questions[questionIndex]
 
-        //progressState.value = (pagerState.currentPage + 1) / questions.size.toFloat()
         questionViewModel.progress.value = (pagerState.currentPage + 1) / questions.size.toFloat()
 
         for (option in questions[questionIndex].options) {
@@ -193,30 +170,23 @@ fun AllPages(
 
                     )
 
-                    /* LazyColumn() {
-                         item {
-                             Row(modifier = Modifier
-                                 .fillMaxSize()
-                                 .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)) {
-                                 ProgressPreview(progress = progressState.value)
-                             }
-
-                     */
-
 
                 } else if (questions[questionIndex].oneChoice2) {
 
                     Survey3(
                         title = questions[questionIndex].mainQuestion,
                         navController = navController,
-                        questionViewModel
+                        questionViewModel,
+                        questionViewModel.progress
                     )
 
 
                 } else {
                     Survey(
                         title = questions[questionIndex].mainQuestion,
-                        navController = navController
+                        navController = navController,
+                        questionViewModel,
+                        questionViewModel.progress
                     )
 
                 }

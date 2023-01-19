@@ -30,6 +30,7 @@ import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.createEvent.nonQuestion
 import com.example.sensimate.ui.theme.*
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * @author Anshjyot Singh
@@ -43,7 +44,9 @@ import com.example.sensimate.ui.theme.*
 @Composable
 fun Survey(
     title: String,
-    navController: NavController
+    navController: NavController,
+    questionViewModel: QuestionViewModel,
+    progress: MutableStateFlow<Float>
 ) {
     Box(
         modifier = Modifier
@@ -65,7 +68,7 @@ fun Survey(
                     .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
             ) {
                 OrangeBackButton({navController.popBackStack()})
-                //ProgressPreview()
+                ProgressPreview(progress = questionViewModel.progress.value)
                 Question(questionViewModel = QuestionViewModel())
                 SurveyTitle(title)
                 Information(
