@@ -32,6 +32,7 @@ import kotlinx.coroutines.delay
 
 /**
  * Code Inspriration: https://www.geeksforgeeks.org/animated-splash-screen-in-android-using-jetpack-compose/
+ * @author Anshjyot Singh
  */
 @Composable
 fun SplashScreen(navController: NavController) {
