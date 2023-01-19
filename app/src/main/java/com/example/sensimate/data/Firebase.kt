@@ -28,6 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 import kotlin.collections.HashMap
@@ -957,6 +958,7 @@ object Database {
     }
 
 
+
     /** Code inspiration regarding Excel implementation, function: main, getHeaderStyle,
      * createSheetHeader, addData, CreateCell, CreateExcel from
      * https://medium.com/geekculture/a-simple-way-to-work-with-excel-in-android-app-94c727e9a138 */
@@ -972,196 +974,8 @@ object Database {
      * getHeaderStyle is a private function used to set the header style for the excel sheet.
      * createSheetHeader is a private function used to create the header for the excel sheet.
      */
-        @SuppressLint("SuspiciousIndentation")
-        suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
-//        val out = FileOutputStream(File("./test_file.xlsx"))
-            // val filepath = "./test_file.xlsx"
-            // Creating excel workbook
 
 
-            val workbook = XSSFWorkbook()
-
-            //Creating first sheet inside workbook
-            //Constants.SHEET_NAME is a string value of sheet name
-            val sheet: Sheet = workbook.createSheet("Survey Results")
-
-            //Create Header Cell Style
-            val cellStyle = getHeaderStyle(workbook)
-
-            //Creating sheet header row
-            createSheetHeader(cellStyle, sheet)
-
-            val profile = fetchProfile()!!
-
-            //Adding data to the sheet
-            addData(0, sheet, newQuestion = newQuestion, options, profile)
-
-
-            createExcel(workbook, context)
-
-        }
-
-
-    }
-
-/*
-private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
-    //setHeaderStyle is a custom function written below to add header style
-    //Create sheet first row
-    val row = sheet.createRow(0)
-    //Header list
-    val HEADER_LIST = listOf(
-        "mainQuestion",
-        "postalCode",
-        "yearBorn",
-        "monthBorn",
-        "dayBorn",
-        "gender",
-        "answer",
-        "isEmployee"
-    )
-    //Loop to populate each column of header row
-    for ((index, value) in HEADER_LIST.withIndex()) {
-        val columnWidth = (15 * 500)
-        //index represents the column number
-        sheet.setColumnWidth(index, columnWidth)
-        //Create cell
-        val cell = row.createCell(index)
-        //value represents the header value from HEADER_LIST
-        cell?.setCellValue(value)
-        //Apply style to cell
-        cell.cellStyle = cellStyle
-    }
-}
- */
-
-    private fun getHeaderStyle(workbook: Workbook): CellStyle {
-
-        //Cell style for header row
-        val cellStyle: CellStyle = workbook.createCellStyle()
-
-        //Apply cell color
-        val colorMap: IndexedColorMap = (workbook as XSSFWorkbook).stylesSource.indexedColors
-        var color = XSSFColor(IndexedColors.RED, colorMap).indexed
-        cellStyle.fillForegroundColor = color
-        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
-
-        //Apply font style on cell text
-        val whiteFont = workbook.createFont()
-        color = XSSFColor(IndexedColors.WHITE, colorMap).indexed
-        whiteFont.color = color
-        whiteFont.bold = true
-        cellStyle.setFont(whiteFont)
-
-
-        return cellStyle
-    }
-
-
-    private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
-        //setHeaderStyle is a custom function written below to add header style
-        val row = sheet.createRow(0)
-        val HEADER_NAME = "Data"
-        val columnWidth = (15 * 500)
-        sheet.setColumnWidth(0, columnWidth)
-        val cell = row.createCell(0)
-        cell?.setCellValue(HEADER_NAME)
-        cell.cellStyle = cellStyle
-    }
-
-/*
-private fun addData(
-    rowIndex: Int,
-    sheet: Sheet,
-    newQuestion: MyQuestion,
-    options: List<String>,
-    profile: Profile
-) {
-    //Create row based on row index
-    val row = sheet.createRow(rowIndex)
-    //Add data to each cell
-    createCell(row, 0, newQuestion.mainQuestion) //Column 1
-    createCell(row, 1, profile.postalCode) //Column 2
-    createCell(row, 2, profile.yearBorn) //Column 3
-    createCell(row, 3, profile.monthBorn) //Column 3
-    createCell(row, 4, profile.dayBorn) //Column 3
-    createCell(row, 5, profile.gender) //Column 3
-    createCell(row, 6, options.toString()) //Column 3
-    createCell(row, 7, false) //Column 3
-}
- */
-
-    private fun addData(
-        rowIndex: Int,
-        sheet: Sheet,
-        newQuestion: MyQuestion,
-        options: List<String>,
-        profile: Profile
-    ) {
-        // Create a new row
-        val row = sheet.createRow(rowIndex)
-        row.createCell(0).setCellValue(newQuestion.mainQuestion)
-        row.createCell(1).setCellValue(profile.postalCode)
-        row.createCell(2).setCellValue(profile.yearBorn)
-        row.createCell(3).setCellValue(profile.monthBorn)
-        row.createCell(4).setCellValue(profile.dayBorn)
-        row.createCell(5).setCellValue(profile.gender)
-        row.createCell(6).setCellValue(options.toString())
-        row.createCell(7).setCellValue(false)
-
-    }
-
-    private fun createCell(row: Row, columnIndex: Int, value: String?) {
-        val cell = row.createCell(columnIndex)
-        cell?.setCellValue(value)
-
-
-    }
-
-    private fun createCell(row: Row, columnIndex: Int, value: Boolean) {
-        val cell = row.createCell(columnIndex)
-        cell?.setCellValue(value)
-
-    }
-
-
-    @SuppressLint("QueryPermissionsNeeded")
-    private fun createExcel(workbook: Workbook, context: Context) {
-
-        //Get App Director, APP_DIRECTORY_NAME is a string
-        val appDirectory = context.getExternalFilesDir("Sensimate")
-        val downloadDirectory =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-
-        //Check App Directory whether it exists or not, create if not.
-        if (downloadDirectory != null && !downloadDirectory.exists()) {
-            downloadDirectory.mkdirs()
-        }
-
-        //Create excel file with extension .xlsx
-        val excelFile = File(downloadDirectory, "survey.xlsx")
-
-        //Write workbook to file using FileOutputStream
-        try {
-
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-/**
     @SuppressLint("SuspiciousIndentation")
     suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
 //        val out = FileOutputStream(File("./test_file.xlsx"))
@@ -1187,44 +1001,43 @@ private fun addData(
         addData(0, sheet, newQuestion = newQuestion, options, profile)
 
 
-        createExcel(workbook,context)
+        createExcel(workbook, context)
 
     }
 
 
 }
-
 
 /*
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
-    //setHeaderStyle is a custom function written below to add header style
-    //Create sheet first row
-    val row = sheet.createRow(0)
-    //Header list
-    val HEADER_LIST = listOf(
-        "mainQuestion",
-        "postalCode",
-        "yearBorn",
-        "monthBorn",
-        "dayBorn",
-        "gender",
-        "answer",
-        "isEmployee"
-    )
-    //Loop to populate each column of header row
-    for ((index, value) in HEADER_LIST.withIndex()) {
-        val columnWidth = (15 * 500)
-        //index represents the column number
-        sheet.setColumnWidth(index, columnWidth)
-        //Create cell
-        val cell = row.createCell(index)
-        //value represents the header value from HEADER_LIST
-        cell?.setCellValue(value)
-        //Apply style to cell
-        cell.cellStyle = cellStyle
-    }
+//setHeaderStyle is a custom function written below to add header style
+//Create sheet first row
+val row = sheet.createRow(0)
+//Header list
+val HEADER_LIST = listOf(
+    "mainQuestion",
+    "postalCode",
+    "yearBorn",
+    "monthBorn",
+    "dayBorn",
+    "gender",
+    "answer",
+    "isEmployee"
+)
+//Loop to populate each column of header row
+for ((index, value) in HEADER_LIST.withIndex()) {
+    val columnWidth = (15 * 500)
+    //index represents the column number
+    sheet.setColumnWidth(index, columnWidth)
+    //Create cell
+    val cell = row.createCell(index)
+    //value represents the header value from HEADER_LIST
+    cell?.setCellValue(value)
+    //Apply style to cell
+    cell.cellStyle = cellStyle
 }
- */
+}
+*/
 
 private fun getHeaderStyle(workbook: Workbook): CellStyle {
 
@@ -1248,68 +1061,7 @@ private fun getHeaderStyle(workbook: Workbook): CellStyle {
     return cellStyle
 }
 
-/**
-private fun getHeaderStyle(workbook: Workbook): CellStyle {
 
-    //Cell style for header row
-    val cellStyle: CellStyle = workbook.createCellStyle()
-
-    //Apply cell color
-    val colorMap: IndexedColorMap = (workbook as XSSFWorkbook).stylesSource.indexedColors
-    var color = XSSFColor(IndexedColors.RED, colorMap).indexed
-    cellStyle.fillForegroundColor = color
-    cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
-
-    //Apply font style on cell text
-    val whiteFont = workbook.createFont()
-    color = XSSFColor(IndexedColors.WHITE, colorMap).indexed
-    whiteFont.color = color
-    whiteFont.bold = true
-    cellStyle.setFont(whiteFont)
-
-
-    return cellStyle
-}
-
-
-private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
-    //setHeaderStyle is a custom function written below to add header style
-
-    //Create sheet first row
-    val row = sheet.createRow(0)
-
-    //Header list
-    val HEADER_LIST = listOf(
-        "mainQuestion",
-        "postalCode",
-        "yearBorn",
-        "monthBorn",
-        "dayBorn",
-        "gender",
-        "answer",
-        "isEmployee"
-    )
-
-    //Loop to populate each column of header row
-    for ((index, value) in HEADER_LIST.withIndex()) {
-
-        val columnWidth = (15 * 500)
-
-        //index represents the column number
-        sheet.setColumnWidth(index, columnWidth)
-
-        //Create cell
-        val cell = row.createCell(index)
-
-        //value represents the header value from HEADER_LIST
-        cell?.setCellValue(value)
-
-        //Apply style to cell
-        cell.cellStyle = cellStyle
-    }
-}
-
-/**
 private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
     //setHeaderStyle is a custom function written below to add header style
     val row = sheet.createRow(0)
@@ -1321,29 +1073,27 @@ private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
     cell.cellStyle = cellStyle
 }
 
- */
-
 /*
 private fun addData(
-    rowIndex: Int,
-    sheet: Sheet,
-    newQuestion: MyQuestion,
-    options: List<String>,
-    profile: Profile
+rowIndex: Int,
+sheet: Sheet,
+newQuestion: MyQuestion,
+options: List<String>,
+profile: Profile
 ) {
-    //Create row based on row index
-    val row = sheet.createRow(rowIndex)
-    //Add data to each cell
-    createCell(row, 0, newQuestion.mainQuestion) //Column 1
-    createCell(row, 1, profile.postalCode) //Column 2
-    createCell(row, 2, profile.yearBorn) //Column 3
-    createCell(row, 3, profile.monthBorn) //Column 3
-    createCell(row, 4, profile.dayBorn) //Column 3
-    createCell(row, 5, profile.gender) //Column 3
-    createCell(row, 6, options.toString()) //Column 3
-    createCell(row, 7, false) //Column 3
+//Create row based on row index
+val row = sheet.createRow(rowIndex)
+//Add data to each cell
+createCell(row, 0, newQuestion.mainQuestion) //Column 1
+createCell(row, 1, profile.postalCode) //Column 2
+createCell(row, 2, profile.yearBorn) //Column 3
+createCell(row, 3, profile.monthBorn) //Column 3
+createCell(row, 4, profile.dayBorn) //Column 3
+createCell(row, 5, profile.gender) //Column 3
+createCell(row, 6, options.toString()) //Column 3
+createCell(row, 7, false) //Column 3
 }
- */
+*/
 
 private fun addData(
     rowIndex: Int,
@@ -1384,7 +1134,8 @@ private fun createExcel(workbook: Workbook, context: Context) {
 
     //Get App Director, APP_DIRECTORY_NAME is a string
     val appDirectory = context.getExternalFilesDir("Sensimate")
-    val downloadDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+    val downloadDirectory =
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
     //Check App Directory whether it exists or not, create if not.
     if (downloadDirectory != null && !downloadDirectory.exists()) {
@@ -1392,7 +1143,7 @@ private fun createExcel(workbook: Workbook, context: Context) {
     }
 
     //Create excel file with extension .xlsx
-    val excelFile = File(downloadDirectory, "survey.xlsx")
+    val excelFile = File(downloadDirectory, "surveyResult.xlsx")
 
     //Write workbook to file using FileOutputStream
     try {
@@ -1406,6 +1157,265 @@ private fun createExcel(workbook: Workbook, context: Context) {
     val fileOut = FileOutputStream(excelFile)
     workbook.write(fileOut)
     fileOut.close()
+}
+
+
+
+
+
+
+
+
+
+
+
+/**
+@SuppressLint("SuspiciousIndentation")
+suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
+//        val out = FileOutputStream(File("./test_file.xlsx"))
+    // val filepath = "./test_file.xlsx"
+    // Creating excel workbook
+
+
+    val workbook = XSSFWorkbook()
+
+    //Creating first sheet inside workbook
+    //Constants.SHEET_NAME is a string value of sheet name
+    val sheet: Sheet = workbook.createSheet("Survey Results")
+
+    //Create Header Cell Style
+    val cellStyle = getHeaderStyle(workbook)
+
+    //Creating sheet header row
+    createSheetHeader(cellStyle, sheet)
+
+    val profile = fetchProfile()!!
+
+    //Adding data to the sheet
+    addData(0, sheet, newQuestion = newQuestion, options, profile)
+
+
+    createExcel(workbook,context)
+
+}
+
+
+}
+
+
+/*
+private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
+//setHeaderStyle is a custom function written below to add header style
+//Create sheet first row
+val row = sheet.createRow(0)
+//Header list
+val HEADER_LIST = listOf(
+    "mainQuestion",
+    "postalCode",
+    "yearBorn",
+    "monthBorn",
+    "dayBorn",
+    "gender",
+    "answer",
+    "isEmployee"
+)
+//Loop to populate each column of header row
+for ((index, value) in HEADER_LIST.withIndex()) {
+    val columnWidth = (15 * 500)
+    //index represents the column number
+    sheet.setColumnWidth(index, columnWidth)
+    //Create cell
+    val cell = row.createCell(index)
+    //value represents the header value from HEADER_LIST
+    cell?.setCellValue(value)
+    //Apply style to cell
+    cell.cellStyle = cellStyle
+}
+}
+*/
+
+private fun getHeaderStyle(workbook: Workbook): CellStyle {
+
+//Cell style for header row
+val cellStyle: CellStyle = workbook.createCellStyle()
+
+//Apply cell color
+val colorMap: IndexedColorMap = (workbook as XSSFWorkbook).stylesSource.indexedColors
+var color = XSSFColor(IndexedColors.RED, colorMap).indexed
+cellStyle.fillForegroundColor = color
+cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+
+//Apply font style on cell text
+val whiteFont = workbook.createFont()
+color = XSSFColor(IndexedColors.WHITE, colorMap).indexed
+whiteFont.color = color
+whiteFont.bold = true
+cellStyle.setFont(whiteFont)
+
+
+return cellStyle
+}
+
+/**
+private fun getHeaderStyle(workbook: Workbook): CellStyle {
+
+//Cell style for header row
+val cellStyle: CellStyle = workbook.createCellStyle()
+
+//Apply cell color
+val colorMap: IndexedColorMap = (workbook as XSSFWorkbook).stylesSource.indexedColors
+var color = XSSFColor(IndexedColors.RED, colorMap).indexed
+cellStyle.fillForegroundColor = color
+cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND)
+
+//Apply font style on cell text
+val whiteFont = workbook.createFont()
+color = XSSFColor(IndexedColors.WHITE, colorMap).indexed
+whiteFont.color = color
+whiteFont.bold = true
+cellStyle.setFont(whiteFont)
+
+
+return cellStyle
+}
+
+
+private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
+//setHeaderStyle is a custom function written below to add header style
+
+//Create sheet first row
+val row = sheet.createRow(0)
+
+//Header list
+val HEADER_LIST = listOf(
+    "mainQuestion",
+    "postalCode",
+    "yearBorn",
+    "monthBorn",
+    "dayBorn",
+    "gender",
+    "answer",
+    "isEmployee"
+)
+
+//Loop to populate each column of header row
+for ((index, value) in HEADER_LIST.withIndex()) {
+
+    val columnWidth = (15 * 500)
+
+    //index represents the column number
+    sheet.setColumnWidth(index, columnWidth)
+
+    //Create cell
+    val cell = row.createCell(index)
+
+    //value represents the header value from HEADER_LIST
+    cell?.setCellValue(value)
+
+    //Apply style to cell
+    cell.cellStyle = cellStyle
+}
+}
+
+/**
+private fun createSheetHeader(cellStyle: CellStyle, sheet: Sheet) {
+//setHeaderStyle is a custom function written below to add header style
+val row = sheet.createRow(0)
+val HEADER_NAME = "Data"
+val columnWidth = (15 * 500)
+sheet.setColumnWidth(0, columnWidth)
+val cell = row.createCell(0)
+cell?.setCellValue(HEADER_NAME)
+cell.cellStyle = cellStyle
+}
+
+*/
+
+/*
+private fun addData(
+rowIndex: Int,
+sheet: Sheet,
+newQuestion: MyQuestion,
+options: List<String>,
+profile: Profile
+) {
+//Create row based on row index
+val row = sheet.createRow(rowIndex)
+//Add data to each cell
+createCell(row, 0, newQuestion.mainQuestion) //Column 1
+createCell(row, 1, profile.postalCode) //Column 2
+createCell(row, 2, profile.yearBorn) //Column 3
+createCell(row, 3, profile.monthBorn) //Column 3
+createCell(row, 4, profile.dayBorn) //Column 3
+createCell(row, 5, profile.gender) //Column 3
+createCell(row, 6, options.toString()) //Column 3
+createCell(row, 7, false) //Column 3
+}
+*/
+
+private fun addData(
+rowIndex: Int,
+sheet: Sheet,
+newQuestion: MyQuestion,
+options: List<String>,
+profile: Profile
+) {
+// Create a new row
+val row = sheet.createRow(rowIndex)
+row.createCell(0).setCellValue(newQuestion.mainQuestion)
+row.createCell(1).setCellValue(profile.postalCode)
+row.createCell(2).setCellValue(profile.yearBorn)
+row.createCell(3).setCellValue(profile.monthBorn)
+row.createCell(4).setCellValue(profile.dayBorn)
+row.createCell(5).setCellValue(profile.gender)
+row.createCell(6).setCellValue(options.toString())
+row.createCell(7).setCellValue(false)
+
+}
+
+private fun createCell(row: Row, columnIndex: Int, value: String?) {
+val cell = row.createCell(columnIndex)
+cell?.setCellValue(value)
+
+
+}
+
+private fun createCell(row: Row, columnIndex: Int, value: Boolean) {
+val cell = row.createCell(columnIndex)
+cell?.setCellValue(value)
+
+}
+
+
+@SuppressLint("QueryPermissionsNeeded")
+private fun createExcel(workbook: Workbook, context: Context) {
+
+//Get App Director, APP_DIRECTORY_NAME is a string
+val appDirectory = context.getExternalFilesDir("Sensimate")
+val downloadDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+
+//Check App Directory whether it exists or not, create if not.
+if (downloadDirectory != null && !downloadDirectory.exists()) {
+    downloadDirectory.mkdirs()
+}
+
+//Create excel file with extension .xlsx
+val excelFile = File(downloadDirectory, "survey.xlsx")
+
+//Write workbook to file using FileOutputStream
+try {
+
+} catch (e: FileNotFoundException) {
+    e.printStackTrace()
+} catch (e: IOException) {
+    e.printStackTrace()
+}
+
+val fileOut = FileOutputStream(excelFile)
+workbook.write(fileOut)
+fileOut.close()
+
+ */
 
 
 
@@ -1420,92 +1430,92 @@ private fun createExcel(workbook: Workbook, context: Context) {
 /*
 suspend fun updateSurvey2(eventId: String, options: List<String>, newQuestion: MyQuestion) {
 
-    val test = hashMapOf(
-        "mainQuestion" to newQuestion.mainQuestion
-    )
+val test = hashMapOf(
+    "mainQuestion" to newQuestion.mainQuestion
+)
 
 
-    val profile = fetchProfile()!!
+val profile = fetchProfile()!!
 
 
-    val survey = hashMapOf(
-        "postalCode" to profile.postalCode,
-        "yearBorn" to profile.yearBorn,
-        "monthBorn" to profile.monthBorn,
-        "dayBorn" to profile.dayBorn,
-        "gender" to profile.gender,
-        "answer" to options.toString(),
-        "isEmployee" to false
-    )
+val survey = hashMapOf(
+    "postalCode" to profile.postalCode,
+    "yearBorn" to profile.yearBorn,
+    "monthBorn" to profile.monthBorn,
+    "dayBorn" to profile.dayBorn,
+    "gender" to profile.gender,
+    "answer" to options.toString(),
+    "isEmployee" to false
+)
 
-    val questionRef = db.collection("events").document(eventId)
-        .collection("Answers").add(test).addOnSuccessListener { docRef ->
-            docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
+val questionRef = db.collection("events").document(eventId)
+    .collection("Answers").add(test).addOnSuccessListener { docRef ->
+        docRef.collection("users").add(survey).addOnSuccessListener { docRef ->
 
-                val optionsString = options.joinToString(",")
-                exportToExcel(
-                    postalCode = profile.postalCode,
-                    yearBorn = profile.yearBorn.toInt(),
-                    monthBorn = profile.monthBorn.toInt(),
-                    dayBorn = profile.dayBorn.toInt(),
-                    gender = profile.gender,
-                    answer = optionsString,
-                    isEmployee = false
-                )
+            val optionsString = options.joinToString(",")
+            exportToExcel(
+                postalCode = profile.postalCode,
+                yearBorn = profile.yearBorn.toInt(),
+                monthBorn = profile.monthBorn.toInt(),
+                dayBorn = profile.dayBorn.toInt(),
+                gender = profile.gender,
+                answer = optionsString,
+                isEmployee = false
+            )
 
 
-            }
         }
+    }
 }
 
- */
+*/
 
 // Create a new Excel workbook
 /*
-                    val workbook = XSSFWorkbook()
+                val workbook = XSSFWorkbook()
 
-                    // Create a new sheet in the workbook
-                    val sheet = workbook.createSheet("Survey Results")
-
-
-                    // Add the data to the sheet
-                    var rowNum = 0
-                    val row = sheet.createRow(rowNum++)
-                    row.createCell(0).setCellValue("Postal Code")
-                    row.createCell(1).setCellValue(survey["postalCode"].toString())
-                    val row2 = sheet.createRow(rowNum++)
-                    row2.createCell(0).setCellValue("Year Born")
-                    row2.createCell(1).setCellValue(survey["yearBorn"].toString())
-                    val row3 = sheet.createRow(rowNum++)
-                    row3.createCell(0).setCellValue("Month Born")
-                    row3.createCell(1).setCellValue(survey["monthBorn"].toString())
-                    val row4 = sheet.createRow(rowNum++)
-                    row4.createCell(0).setCellValue("Day Born")
-                    row4.createCell(1).setCellValue(survey["dayBorn"].toString())
-                    val row5 = sheet.createRow(rowNum++)
-                    row5.createCell(0).setCellValue("Gender")
-                    row5.createCell(1).setCellValue(survey["gender"].toString())
-                    val row6 = sheet.createRow(rowNum++)
-                    row6.createCell(0).setCellValue("Answer")
-                    row6.createCell(1).setCellValue(survey["answer"].toString())
-                    val row7 = sheet.createRow(rowNum++)
-                    row7.createCell(0).setCellValue("Is Employee")
-                    row7.createCell(1).setCellValue(survey["isEmployee"].toString())
+                // Create a new sheet in the workbook
+                val sheet = workbook.createSheet("Survey Results")
 
 
-                    // Write the workbook to a file
-                    val excelExportFolder =
-                        File(Environment.getExternalStorageDirectory(), "ExcelExport")
-                    if (!excelExportFolder.exists()) {
-                        excelExportFolder.mkdir()
-                    }
+                // Add the data to the sheet
+                var rowNum = 0
+                val row = sheet.createRow(rowNum++)
+                row.createCell(0).setCellValue("Postal Code")
+                row.createCell(1).setCellValue(survey["postalCode"].toString())
+                val row2 = sheet.createRow(rowNum++)
+                row2.createCell(0).setCellValue("Year Born")
+                row2.createCell(1).setCellValue(survey["yearBorn"].toString())
+                val row3 = sheet.createRow(rowNum++)
+                row3.createCell(0).setCellValue("Month Born")
+                row3.createCell(1).setCellValue(survey["monthBorn"].toString())
+                val row4 = sheet.createRow(rowNum++)
+                row4.createCell(0).setCellValue("Day Born")
+                row4.createCell(1).setCellValue(survey["dayBorn"].toString())
+                val row5 = sheet.createRow(rowNum++)
+                row5.createCell(0).setCellValue("Gender")
+                row5.createCell(1).setCellValue(survey["gender"].toString())
+                val row6 = sheet.createRow(rowNum++)
+                row6.createCell(0).setCellValue("Answer")
+                row6.createCell(1).setCellValue(survey["answer"].toString())
+                val row7 = sheet.createRow(rowNum++)
+                row7.createCell(0).setCellValue("Is Employee")
+                row7.createCell(1).setCellValue(survey["isEmployee"].toString())
 
-                    val file = File(excelExportFolder, "survey_results.xlsx")
-                    val fileOut = FileOutputStream(file)
-                    workbook.write(fileOut)
-                    fileOut.close()
 
- */
+                // Write the workbook to a file
+                val excelExportFolder =
+                    File(Environment.getExternalStorageDirectory(), "ExcelExport")
+                if (!excelExportFolder.exists()) {
+                    excelExportFolder.mkdir()
+                }
+
+                val file = File(excelExportFolder, "survey_results.xlsx")
+                val fileOut = FileOutputStream(file)
+                workbook.write(fileOut)
+                fileOut.close()
+
+*/
 
 
 
@@ -1516,44 +1526,90 @@ fun createEmployee() {} //TODO: Anshjyot
 
 
 fun getSurveyWudia(eventId: String) {
-    val db = FirebaseFirestore.getInstance()
-    val eventsRef = db.collection("events")
+val db = FirebaseFirestore.getInstance()
+val eventsRef = db.collection("events")
 
-    eventsRef.get()
-        .addOnSuccessListener { result ->
-            for (document in result) {
-                val eventId = document.id
-                val eventRef = eventsRef.document(eventId)
-                val questionsRef = eventRef.collection("questions")
-                val questionRef = questionsRef.document("q1")
+eventsRef.get()
+    .addOnSuccessListener { result ->
+        for (document in result) {
+            val eventId = document.id
+            val eventRef = eventsRef.document(eventId)
+            val questionsRef = eventRef.collection("questions")
+            val questionRef = questionsRef.document("q1")
 
-                questionRef.get()
-                    .addOnSuccessListener { result ->
-                        val mainQuestion = result.getString("mainQuestion")
-                        val oneChoice = result.getBoolean("oneChoice")
+            questionRef.get()
+                .addOnSuccessListener { result ->
+                    val mainQuestion = result.getString("mainQuestion")
+                    val oneChoice = result.getBoolean("oneChoice")
 
-                        val optionsRef = questionRef.collection("options")
-                        val answerRef = optionsRef.document("answer")
+                    val optionsRef = questionRef.collection("options")
+                    val answerRef = optionsRef.document("answer")
 
-                        answerRef.get()
-                            .addOnSuccessListener { result ->
-                                val answer = result.getString("answer")
-                                // val question = Question2(mainQuestion, oneChoice, answer)
-                            }
-                    }
-            }
+                    answerRef.get()
+                        .addOnSuccessListener { result ->
+                            val answer = result.getString("answer")
+                            // val question = Question2(mainQuestion, oneChoice, answer)
+                        }
+                }
         }
+    }
 }
 
 private fun exportToExcel(
-    postalCode: String,
-    yearBorn: Int,
-    monthBorn: Int,
-    dayBorn: Int,
-    gender: String,
-    answer: String,
-    isEmployee: Boolean
+postalCode: String,
+yearBorn: Int,
+monthBorn: Int,
+dayBorn: Int,
+gender: String,
+answer: String,
+isEmployee: Boolean
 ) {
+val workbook = XSSFWorkbook()
+val sheet = workbook.createSheet("Survey")
+
+// Create the headers
+val headers = arrayOf(
+    "postalCode",
+    "yearBorn",
+    "monthBorn",
+    "dayBorn",
+    "gender",
+    "answer",
+    "isEmployee"
+)
+val row = sheet.createRow(0)
+for (i in headers.indices) {
+    val cell = row.createCell(i)
+    cell.setCellValue(headers[i])
+}
+
+// Create the data row
+val dataRow = sheet.createRow(1)
+dataRow.createCell(0).setCellValue(postalCode)
+dataRow.createCell(1).setCellValue(yearBorn.toString())
+dataRow.createCell(2).setCellValue(monthBorn.toString())
+dataRow.createCell(3).setCellValue(dayBorn.toString())
+dataRow.createCell(4).setCellValue(gender)
+dataRow.createCell(5).setCellValue(answer)
+dataRow.createCell(6).setCellValue(isEmployee.toString())
+
+
+// Write the workbook to a file
+val file = File("survey.xlsx")
+val fileOut = FileOutputStream(file)
+workbook.write(fileOut)
+fileOut.close()
+workbook.close()
+}
+
+
+fun excel2() {
+
+}
+
+/*
+
+private fun exportToExcel(survey: HashMap<String, Any>) {
     val workbook = XSSFWorkbook()
     val sheet = workbook.createSheet("Survey")
 
@@ -1573,15 +1629,15 @@ private fun exportToExcel(
         cell.setCellValue(headers[i])
     }
 
-    // Create the data row
+    // Create the data rows
     val dataRow = sheet.createRow(1)
-    dataRow.createCell(0).setCellValue(postalCode)
-    dataRow.createCell(1).setCellValue(yearBorn.toString())
-    dataRow.createCell(2).setCellValue(monthBorn.toString())
-    dataRow.createCell(3).setCellValue(dayBorn.toString())
-    dataRow.createCell(4).setCellValue(gender)
-    dataRow.createCell(5).setCellValue(answer)
-    dataRow.createCell(6).setCellValue(isEmployee.toString())
+    dataRow.createCell(0).setCellValue(survey["postalCode"] as String)
+    dataRow.createCell(1).setCellValue(survey["yearBorn"].toString())
+    dataRow.createCell(2).setCellValue(survey["monthBorn"].toString())
+    dataRow.createCell(3).setCellValue(survey["dayBorn"].toString())
+    dataRow.createCell(4).setCellValue(survey["gender"] as String)
+    dataRow.createCell(5).setCellValue(survey["answer"] as String)
+    dataRow.createCell(6).setCellValue(survey["isEmployee"] as Boolean)
 
 
     // Write the workbook to a file
@@ -1592,53 +1648,7 @@ private fun exportToExcel(
     workbook.close()
 }
 
-
-fun excel2() {
-
-}
-
-/*
-
-    private fun exportToExcel(survey: HashMap<String, Any>) {
-        val workbook = XSSFWorkbook()
-        val sheet = workbook.createSheet("Survey")
-
-        // Create the headers
-        val headers = arrayOf(
-            "postalCode",
-            "yearBorn",
-            "monthBorn",
-            "dayBorn",
-            "gender",
-            "answer",
-            "isEmployee"
-        )
-        val row = sheet.createRow(0)
-        for (i in headers.indices) {
-            val cell = row.createCell(i)
-            cell.setCellValue(headers[i])
-        }
-
-        // Create the data rows
-        val dataRow = sheet.createRow(1)
-        dataRow.createCell(0).setCellValue(survey["postalCode"] as String)
-        dataRow.createCell(1).setCellValue(survey["yearBorn"].toString())
-        dataRow.createCell(2).setCellValue(survey["monthBorn"].toString())
-        dataRow.createCell(3).setCellValue(survey["dayBorn"].toString())
-        dataRow.createCell(4).setCellValue(survey["gender"] as String)
-        dataRow.createCell(5).setCellValue(survey["answer"] as String)
-        dataRow.createCell(6).setCellValue(survey["isEmployee"] as Boolean)
-
-
-        // Write the workbook to a file
-        val file = File("survey.xlsx")
-        val fileOut = FileOutputStream(file)
-        workbook.write(fileOut)
-        fileOut.close()
-        workbook.close()
-    }
-
- */
+*/
 
 
 //TODO: LATER
@@ -1648,12 +1658,12 @@ data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answe
 
 
 object OurCalendar {
-    fun getMonthName(month: Int): String? {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.MONTH, month)
-        return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+fun getMonthName(month: Int): String? {
+    val calendar = Calendar.getInstance()
+    calendar.set(Calendar.MONTH, month)
+    return calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
 
-    }
+}
 }
 
 */
