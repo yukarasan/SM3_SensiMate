@@ -961,9 +961,11 @@ object Database {
 
     /** Code inspiration regarding Excel implementation, function: main, getHeaderStyle,
      * createSheetHeader, addData, CreateCell, CreateExcel from
-     * https://medium.com/geekculture/a-simple-way-to-work-with-excel-in-android-app-94c727e9a138 */
+     * https://medium.com/geekculture/a-simple-way-to-work-with-excel-in-android-app-94c727e9a138 *
+     */
 
     /**
+     * @author Anshjyot Singh
      * addAnswer is a function that adds a new answer to the list of current answers and also adds it to a map with the current question as the key.
      * updateAnswer is a function that updates the survey in the database by passing the eventId, boolean, and context as arguments.
      * updateSurvey is a suspend function used to update the survey with the current answers in the database.

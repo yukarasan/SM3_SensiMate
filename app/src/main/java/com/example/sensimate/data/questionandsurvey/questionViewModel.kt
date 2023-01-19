@@ -68,20 +68,19 @@ import com.example.sensimate.ui.startupscreens.splashscreen.SplashScreen
 import kotlinx.coroutines.delay
 
 /**
-@author Anshjyot Singh
-QuestionViewModel is a ViewModel class that holds the state of questions and answers.
-It contains the following methods:
-insertQuestions: A suspend function used to insert questions and their state into the database.
-setCurrentQuestion: A function used to set the current question being displayed to the user.
-addAnswer is a function used to add an answer to the current question and update the currentAnswersMap.
-updateAnswer is a function used to update the survey with the current answers in the database.
-
-@property _uiState : MutableStateFlow variable that holds the state of questions and answers.
-@property uiState : StateFlow variable that holds the state of questions and answers.
-@param eventId : the id of the event the survey belongs to
-@param boolean : a boolean to indicate whether the current question is a new one or not
-@param context : the context of the application
-@param answer : the answer string to be added
+ * @author Anshjyot Singh
+ * QuestionViewModel is a ViewModel class that holds the state of questions and answers.
+ * It contains the following methods:
+ * insertQuestions: A suspend function used to insert questions and their state into the database.
+ * setCurrentQuestion: A function used to set the current question being displayed to the user.
+ * addAnswer is a function used to add an answer to the current question and update the currentAnswersMap.
+ * updateAnswer is a function used to update the survey with the current answers in the database.
+ * @property _uiState : MutableStateFlow variable that holds the state of questions and answers.
+ * @property uiState : StateFlow variable that holds the state of questions and answers.
+ * @param eventId : the id of the event the survey belongs to
+ * @param boolean : a boolean to indicate whether the current question is a new one or not
+ * @param context : the context of the application
+ * @param answer : the answer string to be added
  */
 
 open class QuestionViewModel : ViewModel() {
