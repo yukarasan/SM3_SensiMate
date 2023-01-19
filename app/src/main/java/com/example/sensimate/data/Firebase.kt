@@ -864,6 +864,14 @@ object Database {
     }
 
 
+    /**
+     * @author Anshjyot Singh
+     * updateSurvey is a suspend function used to update the survey with the current answers in the database.
+     * @param context : the context of the application
+     * @param eventId : the id of the event the survey belongs to
+     * @param options : list of answers for the current question
+     * @param newQuestion : the current question
+     */
     suspend fun updateSurvey(
         context: Context,
         eventId: String,
@@ -906,6 +914,21 @@ object Database {
     }
 
 
+    /** Code inspiration regarding Excel implementation, function: main, getHeaderStyle,
+     * createSheetHeader, addData, CreateCell, CreateExcel from
+     * https://medium.com/geekculture/a-simple-way-to-work-with-excel-in-android-app-94c727e9a138 */
+
+    /**
+     * addAnswer is a function that adds a new answer to the list of current answers and also adds it to a map with the current question as the key.
+     * updateAnswer is a function that updates the survey in the database by passing the eventId, boolean, and context as arguments.
+     * updateSurvey is a suspend function used to update the survey with the current answers in the database.
+     * It takes context, eventId, options, newQuestion, and boolean as arguments.
+     * main is a suspend function used to create and update an excel file with the survey results.
+     * It creates a new workbook, creates a new sheet, sets the header style, adds data to the sheet, and creates the excel file.
+     * It takes context, newQuestion, and options as arguments.
+     * getHeaderStyle is a private function used to set the header style for the excel sheet.
+     * createSheetHeader is a private function used to create the header for the excel sheet.
+     */
         @SuppressLint("SuspiciousIndentation")
         suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
 //        val out = FileOutputStream(File("./test_file.xlsx"))

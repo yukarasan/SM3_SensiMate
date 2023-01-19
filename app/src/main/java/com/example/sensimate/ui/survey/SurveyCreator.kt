@@ -29,7 +29,13 @@ import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-
+/**
+ * @author Anshjyot Singh
+ * SurveyCreator function is used to create a survey by displaying the questions and collecting answers from user.
+ * @param navController : NavController used to navigate to different screens.
+ * @param questionViewModel : A view model that holds the state of questions and answers.
+ * @param eventViewModel : A view model that holds the state of events.
+*/
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
 fun SurveyCreator(
@@ -165,121 +171,123 @@ fun AllPages(
         for (option in questions[questionIndex].options) {
             answers.add(option)
             questionViewModel.setCurrentQuestion(questions[questionIndex])
-            if (!questions[questionIndex].oneChoice) {
-                Survey4(
-                    title = questions[questionIndex].mainQuestion,
-                    navController = navController,
-                    questionViewModel
 
-                )
 
-            } else if (questions[questionIndex].oneChoice) {
+            if (questions[questionIndex].oneChoice) {
                 Survey2(
                     title = questions[questionIndex].mainQuestion,
                     navController = navController,
                     questionViewModel
                 )
 
-               /* LazyColumn() {
-                    item {
-                        Row(modifier = Modifier
-                            .fillMaxSize()
-                            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)) {
-                            ProgressPreview(progress = progressState.value)
-                        }
+            } else if (!questions[questionIndex].oneChoice) {
+                    Survey4(
+                        title = questions[questionIndex].mainQuestion,
+                        navController = navController,
+                        questionViewModel
 
-                */
+                    )
+
+                    /* LazyColumn() {
+                         item {
+                             Row(modifier = Modifier
+                                 .fillMaxSize()
+                                 .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)) {
+                                 ProgressPreview(progress = progressState.value)
+                             }
+
+                     */
 
 
+                } else if (questions[questionIndex].oneChoice2) {
+
+                    Survey3(
+                        title = questions[questionIndex].mainQuestion,
+                        navController = navController,
+                        questionViewModel
+                    )
+
+
+                } else {
+                    Survey(
+                        title = questions[questionIndex].mainQuestion,
+                        navController = navController
+                    )
 
                 }
 
-
-
-            else if (questions[questionIndex].oneChoice2) {
-
-                Survey3(
-                    title = questions[questionIndex].mainQuestion,
-                    navController = navController,
-                    questionViewModel
-                )
-
-
-            } else {
-                Survey(
-                    title = questions[questionIndex].mainQuestion,
-                    navController = navController
-                )
 
             }
 
-
-        }
-
-        Spacer(modifier = Modifier.size(600.dp))
-        Column(
-            verticalArrangement = Arrangement.Bottom, modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 50.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .padding(start = 15.dp, end = 15.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Spacer(modifier = Modifier.size(600.dp))
+            Column(
+                verticalArrangement = Arrangement.Bottom, modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 50.dp)
             ) {
-                if (pagerState.currentPage > 0) {
-                    PreviousButton(onClick = {
-                        if (pagerState.currentPage > 0) {
+                Row(
+                    modifier = Modifier
+                        .padding(start = 15.dp, end = 15.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (pagerState.currentPage > 0) {
+                        PreviousButton(onClick = {
+                            if (pagerState.currentPage > 0) {
 
-                            scope.launch {
-                                //PreviousButton(onClick = {
-                                pagerState.currentPage
-                                pagerState.scrollToPage(pagerState.currentPage - 1)
-                            }
-                        }
-                    })
-                }
-
-                val context = LocalContext.current
-
-
-                if (pagerState.currentPage == pagerState.pageCount - 1) {
-                    FinishButton(onClick = {
-                        //questionViewModel.updateAnswer(eventId)
-                        questionViewModel.updateAnswer(eventId, context = context, boolean = false)
-                        navController.navigate(Screen.EventScreen.route)
-                    })
-                } else {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        NextButton(onClick = {
-                            if (pagerState.currentPage < pagerState.pageCount - 1) {
                                 scope.launch {
-                                    //questionViewModel.setAnswer(selectedAnswers.value)
-                                    //questionViewModel.setAnswer()
                                     //PreviousButton(onClick = {
                                     pagerState.currentPage
-                                    pagerState.scrollToPage(pagerState.currentPage + 1)
-
+                                    pagerState.scrollToPage(pagerState.currentPage - 1)
                                 }
                             }
-                        }
-
-                        )
-
+                        })
                     }
 
+                    val context = LocalContext.current
 
+
+                    if (pagerState.currentPage == pagerState.pageCount - 1) {
+                        FinishButton(onClick = {
+                            //questionViewModel.updateAnswer(eventId)
+                            questionViewModel.updateAnswer(
+                                eventId,
+                                context = context,
+                                boolean = false
+                            )
+                            navController.navigate(Screen.EventScreen.route)
+                        })
+                    } else {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            NextButton(onClick = {
+                                if (pagerState.currentPage < pagerState.pageCount - 1) {
+                                    scope.launch {
+                                        //questionViewModel.setAnswer(selectedAnswers.value)
+                                        //questionViewModel.setAnswer()
+                                        //PreviousButton(onClick = {
+                                        pagerState.currentPage
+                                        pagerState.scrollToPage(pagerState.currentPage + 1)
+
+                                    }
+                                }
+                            }
+
+                            )
+
+                        }
+
+
+                    }
                 }
             }
         }
-    }
 }
+
 
 
 

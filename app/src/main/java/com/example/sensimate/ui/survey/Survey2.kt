@@ -27,7 +27,15 @@ import androidx.navigation.NavController
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 //import com.example.sensimate.data.questionandsurvey.getAnswer
 import com.example.sensimate.ui.theme.*
-
+/**
+ * @author Anshjyot Singh
+ * Displays a survey with a title, question, and form for collecting information. Includes an orange back button and linear progress indicator.
+ * Allows for selection of options and collection of answers.
+ *
+ * @param title The title of the survey
+ * @param navController The navigation controller for handling navigation
+ * @param questionViewModel The view model that holds the current question and options
+ */
 
 @Composable
 fun Survey2(title: String, navController: NavController, questionViewModel: QuestionViewModel) {

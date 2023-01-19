@@ -29,6 +29,14 @@ import androidx.navigation.NavController
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
 
+/**
+ * @author Anshjyot Singh
+ * Displays a survey with a title, question, and form for collecting information. Includes an orange back button and linear progress indicator.
+ * @param title The title of the survey
+ * @param navController The navigation controller used to handle navigation
+ * @param progress The progress value of the linear progress indicator
+ */
+
 @SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
 fun Survey(

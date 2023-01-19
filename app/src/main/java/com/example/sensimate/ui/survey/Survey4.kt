@@ -31,6 +31,13 @@ import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
 
+/**
+@author Anshjyot Singh
+A composable function that displays a survey with a title, a question, and a form for collecting information. It displays an orange back button that when pressed, pops the backstack of the passed NavController. The layout is filled with a dark purple and bottom gradient color, a progress bar, and a text title.
+@param title the title of the survey
+@param navController the NavController for the back button
+@param questionViewModel the view model for the survey question and options
+ */
 
 @Composable
 fun Survey4(title: String, navController: NavController, questionViewModel: QuestionViewModel) {
