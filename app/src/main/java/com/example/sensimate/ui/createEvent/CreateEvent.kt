@@ -64,13 +64,13 @@ fun CreateEventPreview() {
 }
 
 /**
-@author Ahmad Sandhu
-CreateEventScreen function allows the employee to create an event by typing a title, description,
-time, date, allergies, and a survey code. The event will then be sent to Firebase datebase's event
-collection in Firestore. We made it mandatory for the employee to fill out all of the fields.
-Otherwise, the application will notify you that something is missing and will not continue until it is entered.
-@param navController - navigation controller used to navigate between screens
-@param createEventViewModel - view model that holds the data for create events
+* @author Ahmad Sandhu
+* CreateEventScreen function allows the employee to create an event by typing a title, description,
+* time, date, allergies, and a survey code. The event will then be sent to Firebase datebase's event
+* collection in Firestore. We made it mandatory for the employee to fill out all of the fields.
+* Otherwise, the application will notify you that something is missing and will not continue until it is entered.
+* @param navController - navigation controller used to navigate between screens
+* @param createEventViewModel - view model that holds the data for create events
  */
 
 var docId: String = ""
@@ -495,12 +495,12 @@ fun TextFiledSurveyCodeText(surveyCodeText: MutableState<String>, textChange: (S
     }
 }
 /**
-@author Ahmad Sandhu
-The QuestionPageScreen function is where the employee can select either a multiple-choice or a text-answer question.
-Which leads the employee to the desired question. If the employee presses the plus button without selecting a question type,
-the application will inform them that no question type was submitted.
-@param navController - navigation controller used to navigate between screens
-@param questionPageViewModel - view model that holds the data for question page
+* @author Ahmad Sandhu
+* The QuestionPageScreen function is where the employee can select either a multiple-choice or a text-answer question.
+* Which leads the employee to the desired question. If the employee presses the plus button without selecting a question type,
+* the application will inform them that no question type was submitted.
+* @param navController - navigation controller used to navigate between screens
+* @param questionPageViewModel - view model that holds the data for question page
  */
 
 var nonQuestion: Int = 0
@@ -590,14 +590,14 @@ fun QuestionPageScreen(navController: NavController,questionPageViewModel: Quest
 }
 
 /**
-@author Ahmad Sandhu
-The CreateMultipleQuestionScreen function allows the employee to compose a question with many answers,
-and the employee can select "one response only" by clicking on a checkmark.
-If the question, answer 1 and answer 2 are not entered,
-the application will notify the employee that the question or answer 1 or 2 is missing and will not proceed.
-If the requirements are met, the application will transmit the questions and answers to the firebase event document.
-@param navController - navigation controller used to navigate between screens
-@param questionPageViewModel - view model that holds the data for multiple choice question
+* @author Ahmad Sandhu
+* The CreateMultipleQuestionScreen function allows the employee to compose a question with many answers,
+* and the employee can select "one response only" by clicking on a checkmark.
+* If the question, answer 1 and answer 2 are not entered,
+* the application will notify the employee that the question or answer 1 or 2 is missing and will not proceed.
+* If the requirements are met, the application will transmit the questions and answers to the firebase event document.
+* @param navController - navigation controller used to navigate between screens
+* @param questionPageViewModel - view model that holds the data for multiple choice question
  */
 
 

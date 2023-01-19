@@ -659,8 +659,8 @@ object Database {
                 }
      */
     /**
-     @author Ahmad Sandhu
-     This function sends the event date when creating an event to firebase database
+     * @author Ahmad Sandhu
+     * This function sends the event date when creating an event to firebase database
      */
 
     fun createEvent(
@@ -696,8 +696,8 @@ object Database {
         }
     } //TODO: Ahmad
     /**
-    @author Ahmad Sandhu
-    This function sends the question data when creating an question to firebase database
+    * @author Ahmad Sandhu
+    * This function sends the question data when creating an question to firebase database
      */
     fun question5(
         question: String,
@@ -727,8 +727,8 @@ object Database {
         }
     }//TODO: Ahmad
     /**
-    @author Ahmad Sandhu
-    This function sends the question data when creating an question to firebase database
+    * @author Ahmad Sandhu
+    * This function sends the question data when creating an question to firebase database
      */
     fun question4(
         question: String,
@@ -756,8 +756,8 @@ object Database {
         }
     }//TODO: Ahmad
     /**
-    @author Ahmad Sandhu
-    This function sends the question data when creating an question to firebase database
+    * @author Ahmad Sandhu
+    * This function sends the question data when creating an question to firebase database
      */
     fun question3(
         question: String,
@@ -784,8 +784,8 @@ object Database {
         }
     }//TODO: Ahmad
     /**
-    @author Ahmad Sandhu
-    This function sends the question data when creating an question to firebase database
+    * @author Ahmad Sandhu
+    * This function sends the question data when creating an question to firebase database
      */
     fun question(question: String, boolean: Boolean, answer1: String, answer2: String) {
         val mainQuest = hashMapOf(
@@ -805,8 +805,8 @@ object Database {
         }
     }//TODO: Ahmad
     /**
-    @author Ahmad Sandhu
-    This function sends the question data when creating an question to firebase database
+    * @author Ahmad Sandhu
+    * This function sends the question data when creating an question to firebase database
      */
     fun textAnswer(question: String) {
         val mainQuest = hashMapOf(
