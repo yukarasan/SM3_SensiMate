@@ -264,11 +264,11 @@ object Database {
     }
 
     /**
-    @author hussein el-zein
-    This function is used to log the user in with their email and password. It also updates the
-    'showLoading' state variable to indicate that the login process is currently in progress.
-    If the login is successful, the 'successLoggedIn' state variable is updated to indicate that the user
-    is now logged in.
+     * This function is used to log the user in with their email and password. It also updates the
+     * 'showLoading' state variable to indicate that the login process is currently in progress.
+     * If the login is successful, the 'successLoggedIn' state variable is updated to indicate that the user
+     * is now logged in.
+     * @author hussein el-zein
      */
     fun signUserUp(
         email: String,
@@ -339,9 +339,9 @@ object Database {
     }
 
     /**
-    This function sets up user's profile information and stores it in the firestore database
-    @author hussein el-zein
-    @param isEmployee whether the user is an employee or not
+     * This function sets up user's profile information and stores it in the firestore database
+     * @author hussein el-zein
+     * @param isEmployee whether the user is an employee or not
      */
     fun setUpProfileInfo(
         postalCode: String,
@@ -367,15 +367,15 @@ object Database {
 
 
     /**
-    @author hussein el-zein
-    logIn function is used to log in the user into the application
-    by taking the email and password as arguments and authenticating them against
-    the firebase authentication service.
-    @param email The email of the user trying to log in.
-    @param password The password of the user trying to log in.
-    @param showLoading MutableState object to control the visibility of the loading indicator.
-    @param context The context of the activity or fragment calling the function.
-    @param successLoggedIn MutableState object to store the success of the login operation.
+     * logIn function is used to log in the user into the application
+     * by taking the email and password as arguments and authenticating them against
+     * the firebase authentication service.
+     * @param email The email of the user trying to log in.
+     * @param password The password of the user trying to log in.
+     * @param showLoading MutableState object to control the visibility of the loading indicator.
+     * @param context The context of the activity or fragment calling the function.
+     * @param successLoggedIn MutableState object to store the success of the login operation.
+     * @author hussein el-zein
      */
     fun logIn(
         email: String,
@@ -868,10 +868,10 @@ object Database {
 
 
     /**
-    @author Hussein El-Zein
-    Retrieves a list of all the questions associated with an event
-    @param eventId the id of the event to retrieve questions from
-    @return list of all questions associated with the event
+     * Retrieves a list of all the questions associated with an event
+     * @author Hussein El-Zein
+     * @param eventId the id of the event to retrieve questions from
+     * @return list of all questions associated with the event
      */
     suspend fun getSurveyAsList(eventId: String): List<MyQuestion> {
         val questions: MutableList<MyQuestion> = mutableListOf()
