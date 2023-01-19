@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,7 +12,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.sensimate.data.Database.updateSurvey
 import com.example.sensimate.data.EventViewModel
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
@@ -27,7 +25,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 /**
  * @author Anshjyot Singh
@@ -74,7 +71,7 @@ fun SurveyCreator(
     val surveyId = eventViewModel.uiState.value.chosenSurveyId
     val state = questionViewModel.uiState.value
     var hasOther: Boolean = false
-
+    val progressState = remember { mutableStateOf(0f) }
 
     // Returns a scope that's cancelled when F is removed from composition
 
@@ -87,11 +84,13 @@ fun SurveyCreator(
 
     if (loaded2.value) {
         Log.d("sjdj", "dk")
+
         AllPages(
             navController,
             questionViewModel.uiState.value.questions,
             questionViewModel,
             surveyId
+
         )
     }
 
@@ -146,13 +145,13 @@ fun AllPages(
     questions: List<MyQuestion>,
     questionViewModel: QuestionViewModel,
     eventId: String
-
 ) {
+
     val answers = mutableListOf<String>() //i vm
 
     //val selectedAnswers = remember { mutableStateOf(listOf<MyAnswer>()) }
 
-    val progressState = remember { mutableStateOf(0f) }
+
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
@@ -163,10 +162,14 @@ fun AllPages(
         modifier = Modifier,
         state = pagerState
     ) { questionIndex ->
+
+        questionViewModel.page.value = questionIndex + 1
+
         // for (question in questions) {
         //questions[questionIndex]
 
-        progressState.value = (pagerState.currentPage + 1) / questions.size.toFloat()
+        //progressState.value = (pagerState.currentPage + 1) / questions.size.toFloat()
+        questionViewModel.progress.value = (pagerState.currentPage + 1) / questions.size.toFloat()
 
         for (option in questions[questionIndex].options) {
             answers.add(option)
@@ -177,14 +180,16 @@ fun AllPages(
                 Survey2(
                     title = questions[questionIndex].mainQuestion,
                     navController = navController,
-                    questionViewModel
+                    questionViewModel,
+                    questionViewModel.progress
                 )
 
             } else if (!questions[questionIndex].oneChoice) {
                     Survey4(
                         title = questions[questionIndex].mainQuestion,
                         navController = navController,
-                        questionViewModel
+                        questionViewModel,
+                        questionViewModel.progress
 
                     )
 

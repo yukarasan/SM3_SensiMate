@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * @author Anshjyot Singh
@@ -39,8 +40,9 @@ import com.example.sensimate.ui.theme.*
  * @param questionViewModel the view model for the survey question and options
  */
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun Survey4(title: String, navController: NavController, questionViewModel: QuestionViewModel) {
+fun Survey4(title: String, navController: NavController, questionViewModel: QuestionViewModel, progress: MutableStateFlow<Float>) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -59,8 +61,9 @@ fun Survey4(title: String, navController: NavController, questionViewModel: Ques
             .padding(start = 20.dp, end = 20.dp, bottom = 20.dp, top = 10.dp)
     ) {
         OrangeBackButton { navController.popBackStack() }
-        ProgressPreview(1f)
-        Question("2/2")
+       // ProgressPreview(1f)
+        ProgressPreview(progress = questionViewModel.progress.value)
+        Question(questionViewModel)
         SurveyTitle(title)
         Information4(questionViewModel)
 

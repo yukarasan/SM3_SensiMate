@@ -86,6 +86,9 @@ import kotlinx.coroutines.delay
 open class QuestionViewModel : ViewModel() {
     val _uiState = MutableStateFlow(QuestionsUiState())
     val uiState: StateFlow<QuestionsUiState> = _uiState.asStateFlow()
+    var progress = MutableStateFlow(0f)
+    var page = MutableStateFlow(0)
+
 
 
     suspend fun insertQuestions(

@@ -27,6 +27,8 @@ import androidx.navigation.NavController
 import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 //import com.example.sensimate.data.questionandsurvey.getAnswer
 import com.example.sensimate.ui.theme.*
+import kotlinx.coroutines.flow.MutableStateFlow
+
 /**
  * @author Anshjyot Singh
  * Displays a survey with a title, question, and form for collecting information. Includes an orange back button and linear progress indicator.
@@ -36,8 +38,9 @@ import com.example.sensimate.ui.theme.*
  * @param questionViewModel The view model that holds the current question and options
  */
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun Survey2(title: String, navController: NavController, questionViewModel: QuestionViewModel) {
+fun Survey2(title: String, navController: NavController, questionViewModel: QuestionViewModel, progress: MutableStateFlow<Float>) {
     var selectedOption by remember { mutableStateOf(0) }
     Box(
         modifier = Modifier
@@ -58,8 +61,9 @@ fun Survey2(title: String, navController: NavController, questionViewModel: Ques
     ) {
 
         OrangeBackButton { navController.popBackStack() }
-        ProgressPreview(0.5f)
-        Question("1/2")
+        //ProgressPreview(0.5f)
+        ProgressPreview(progress = questionViewModel.progress.value)
+        Question(questionViewModel)
         SurveyTitle(title)
         Information2(questionViewModel)
         Row(

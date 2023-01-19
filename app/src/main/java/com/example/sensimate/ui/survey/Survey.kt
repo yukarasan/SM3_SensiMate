@@ -26,7 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
+import com.example.sensimate.data.questionandsurvey.QuestionViewModel
 import com.example.sensimate.ui.InitialStartPage.MyTextField
+import com.example.sensimate.ui.createEvent.nonQuestion
 import com.example.sensimate.ui.theme.*
 
 /**
@@ -64,7 +66,7 @@ fun Survey(
             ) {
                 OrangeBackButton({navController.popBackStack()})
                 //ProgressPreview()
-                Question("Question")
+                Question(questionViewModel = QuestionViewModel())
                 SurveyTitle(title)
                 Information(
                     titles = listOf("Age", "Gender", "Postal code"),
@@ -104,18 +106,21 @@ fun ProgressPreview(progress: Float) {
 }
 
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun Question(title: String, modifier: Modifier = Modifier) {
+fun Question(questionViewModel: QuestionViewModel) {
     Text(
-        text = title,
+        text = "${questionViewModel.page.value}/${questionViewModel.uiState.value.questions.size}",
         fontFamily = manropeFamily,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 15.sp,
         color = Color.White,
-        modifier = modifier
-            .padding(top = 5.dp, start = 0.dp)
+        modifier = Modifier.padding(top = 5.dp)
     )
 }
+
+
+
 
 
 @Composable

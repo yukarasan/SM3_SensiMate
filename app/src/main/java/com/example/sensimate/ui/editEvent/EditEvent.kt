@@ -33,18 +33,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 
@@ -1004,9 +1000,10 @@ fun EditSurveyPage(navController: NavController) {
  * @author Sabirin Omar
  */
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun EditSurvey(navController: NavController, questionViewModel: QuestionViewModel) {
-    Survey4(title = "", navController, questionViewModel)
+    Survey4(title = "", navController, questionViewModel, questionViewModel.progress)
     AddPhoto(
         modifier = Modifier
             .padding(330.dp, 10.dp, 2.dp, 1.dp)
