@@ -60,14 +60,14 @@ import com.example.sensimate.ui.theme.*
 import java.util.*
 
 
-@Preview(showBackground = true)
-@Composable
-fun EditEventPreview() {
-    EditEvent(navController = rememberNavController(), questionViewModel = QuestionViewModel())
-    EditPage(navController = rememberNavController(), eventViewModel = EventViewModel())
-    //EditSurvey()
-    //EditSurveyPage()
-}
+/**
+ * This class represents the Edit Event Screen, this screen contains the UI for editing an event,
+ * here we are passing arguments such as;
+ * @param navController: NavController, to handle navigation between screens.
+ * @param eventViewModel: EventViewModel, this viewmodels handles the logic of this EditEvent Screen.
+ * @param questionViewModel: QuestionViewModel, the viewmodel for handling the questions in the survey.
+ * @author Sabirin Omar
+ */
 
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -295,6 +295,10 @@ fun EditEvent(
     }
 }
 
+/**
+ * This composable displays the title of the EditEvent Screen
+ * @author Sabirin Omar
+ */
 
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier) {
@@ -310,6 +314,11 @@ private fun Title(title: String, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * This composable displays the description of the EditEvent Screen.
+ * @author Sabirin Omar
+ */
+
 @Composable
 private fun Description(description: String, modifier: Modifier = Modifier) {
     Text(
@@ -324,6 +333,11 @@ private fun Description(description: String, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * This composable displays the time of the event in EditEvent Screen.
+ * @author Sabirin Omar
+ */
+
 @Composable
 private fun Time(hour: String, minute: String, modifier: Modifier = Modifier) {
     Text(
@@ -336,6 +350,11 @@ private fun Time(hour: String, minute: String, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * This composable displays the where the event is located in EditEvent Screen.
+ * @author Sabirin Omar
+ */
+
 @Composable
 private fun Address(address: String, modifier: Modifier = Modifier) {
     Text(
@@ -347,6 +366,11 @@ private fun Address(address: String, modifier: Modifier = Modifier) {
         modifier = modifier.padding(end = 8.dp)
     )
 }
+
+/**
+ * This composable displays a description if there is allergens in the event in EditEvent Screen.
+ * @author Sabirin Omar
+ */
 
 @Composable
 private fun Allergens(title: String, allergen: String, modifier: Modifier = Modifier) {
@@ -374,73 +398,12 @@ private fun Allergens(title: String, allergen: String, modifier: Modifier = Modi
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-private fun InputField(onValueChange: (String) -> Unit, text: String) {
-    Column(
-        modifier = Modifier
-            .padding(bottom = 10.dp)
-    ) {
-        val keyboardController = LocalSoftwareKeyboardController.current
-        TextField(
-            value = text,
-            onValueChange = onValueChange,
-            label = { Label() },
-            placeholder = { Placeholder() },
-            textStyle = TextStyle(
-                color = Color.White,
-                fontSize = 12.sp,
-                fontFamily = manropeFamily,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier
-                .width(240.dp)
-                .height(50.dp)
-                .padding(end = 10.dp)
-                .background(
-                    Color(74, 75, 90),
-                    shape = RoundedCornerShape(35.dp)
-                ),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = { keyboardController?.hide() }
-            ),
-            singleLine = true,
-            maxLines = 1 //TODO: maxLines not working. Fix this.
-        )
-    }
-}
-
-@Composable
-private fun Label() {
-    Text(
-        text = stringResource(id = R.string.enterEventCode), //TODO: Make text as recourse
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 12.sp,
-        color = Color.White
-    )
-}
-
-@Composable
-private fun Placeholder() {
-    Text(
-        text = stringResource(id = R.string.enterEventCodeToOpenSurvey), //TODO: Make text as recourse
-        fontFamily = manropeFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 12.sp,
-        color = Color.White
-    )
-}
-
+/**
+ * This class represents the Edit Page Screen, this screen contains the UI for editing a page of an event
+ * @param navController: NavController, to handle navigation between screens
+ * @param eventViewModel: EventViewModel, the viewmodel for handling events
+ * @author Sabirin Omar
+ */
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -453,13 +416,6 @@ fun EditPage(
     val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
 
     val maxChar = 4
-
-/*
-    var year: String
-    var month: String
-    var day: String
-
- */
 
     val context = LocalContext.current
 
@@ -616,6 +572,10 @@ fun EditPage(
     }
 }
 
+/**
+ * This composable displays a changeable textField which indicates the time of the event, in EditPage.
+ * @author Sabirin Omar
+ */
 
 @Composable
 fun Time(
@@ -665,6 +625,10 @@ fun Time(
     )
 }
 
+/**
+ * This composable displays a changeable textField which indicates the date of the event, in EditPage.
+ * @author Sabirin Omar
+ */
 
 @Composable
 fun EventDateChosen(
@@ -732,6 +696,11 @@ fun EventDateChosen(
     )
 }
 
+/**
+ * This composable displays a changeable description textField in EditPage.
+ * @author Sabirin Omar
+ */
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -762,6 +731,11 @@ fun DescriptionText(descriptionText: String, onValueChange: (String) -> Unit) {
     }
 }
 
+/**
+ * This composable displays a changeable title textField in EditPage.
+ * @author Sabirin Omar
+ */
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -791,6 +765,11 @@ fun TitleText(titleText: String, textChange: (String) -> Unit) {
         )
     }
 }
+
+/**
+ * This composable displays a changeable location textField in EditPage.
+ * @author Sabirin Omar
+ */
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -837,6 +816,11 @@ fun LocationText(locationText: String, onValueChange: (String) -> Unit) {
     }
 }
 
+/**
+ * This composable displays a changeable allergens textField in EditPage.
+ * @author Sabirin Omar
+ */
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -870,6 +854,10 @@ fun AllergensText(allergensText: String, onValueChange: (String) -> Unit) {
     }
 }
 
+/**
+ * This composable displays a changeable surveyCode textField in EditPage.
+ * @author Sabirin Omar
+ */
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -915,22 +903,16 @@ fun ContentColor1Component(
     )
 }
 
-@Composable
-fun EditSurvey(navController: NavController, questionViewModel: QuestionViewModel) {
-    Survey4(title = "", navController, questionViewModel)
-    AddPhoto(
-        modifier = Modifier
-            .padding(330.dp, 10.dp, 2.dp, 1.dp)
-            .size(50.dp)
-            .clickable(
-                enabled = true,
-                onClickLabel = stringResource(id = R.string.clickImage),
-                onClick = { navController.navigate(Screen.EditSurveyPage.route) }),
-        id = R.drawable.yelloweditbutton
-    )
-}
-
 //For later use, so that we can edit the survey
+
+/**
+ * EditSurveyPage is a screen that is made so that we can edit a survey, if this is needed as an
+ * employee, but because of the limited time this feature is not furfilled, but could be done for
+ * later use. Also for later use, this composable would take in as argument a viewmodel, which
+ * contains the logic of this composable.
+ * @param navController: NavController, to handle navigation between screens.
+ * @author Sabirin Omar
+ */
 
 @Composable
 fun EditSurveyPage(navController: NavController) {
@@ -1001,7 +983,7 @@ fun EditSurveyPage(navController: NavController) {
                     inclusive = true
                 }
             }
-        }) //TODO BACK BUTTON VIRKER IKKE FOR MIG :(
+        })
     }
     AddPhoto(
         modifier = Modifier
@@ -1013,9 +995,35 @@ fun EditSurveyPage(navController: NavController) {
                 onClick = { navController.navigate(Screen.EditEvent.route) }),
         id = R.drawable.greenconfirmedbutton
     )
-
-
 }
+
+
+/**
+ * Again for later use, this composable EditSurvey has a button which when clicked should navigate
+ * you to EditSurvey Screen.
+ * @author Sabirin Omar
+ */
+
+@Composable
+fun EditSurvey(navController: NavController, questionViewModel: QuestionViewModel) {
+    Survey4(title = "", navController, questionViewModel)
+    AddPhoto(
+        modifier = Modifier
+            .padding(330.dp, 10.dp, 2.dp, 1.dp)
+            .size(50.dp)
+            .clickable(
+                enabled = true,
+                onClickLabel = stringResource(id = R.string.clickImage),
+                onClick = { navController.navigate(Screen.EditSurveyPage.route) }),
+        id = R.drawable.yelloweditbutton
+    )
+}
+
+
+/**
+ * Again for later use, this composable TextFiledEditQuestionText is created for editSurvey.
+ * @author Sabirin Omar
+ */
 
 
 @Composable
@@ -1046,6 +1054,11 @@ fun TextFiledEditQuestionText(modifier: Modifier, string: String) {
         )
     }
 }
+
+/**
+ * Again for later use, this composable TextFiledEditAnswerText is created for editSurvey.
+ * @author Sabirin Omar
+ */
 
 @Composable
 fun TextFiledEditAnswerText(modifier: Modifier, string: String) {

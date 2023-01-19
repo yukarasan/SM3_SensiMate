@@ -37,12 +37,13 @@ import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
 import com.example.sensimate.ui.theme.LightColor
-
-@Preview
-@Composable
-fun createEmployeePreview() {
-    CreateEmployeeScreen(rememberNavController())
-}
+/**
+ * This class represents the Create Employee Screen, this screen contains the UI for create employee
+ * @param navController: NavController, to handle navigation between screens
+ * @param createEmployeeViewModel: CreateEmployeeViewModel, the viewmodel for handling Create Employee
+ * @param adminViewModel: AdminViewModel, the viewmodel for handling admin operations.
+ * @author Sabirin Omar
+ */
 
 @Composable
 fun CreateEmployeeScreen(
@@ -112,7 +113,7 @@ fun CreateEmployeeScreen(
             EmailTextField(titleText = state.value.email.value, textChange = {
                 state.value.email.value = it
             })
-            //Maybe for later use:
+            //Perhaps for later use:
             /*
             PasswordTextField(titleText = state.value.password.value, textChange = {
                 state.value.password.value = it
@@ -157,6 +158,11 @@ fun CreateEmployeeScreen(
 }
 
 
+/**
+* This composable displays the title of the CreateEmployeeScreen.
+* @author Sabirin Omar
+*/
+
 @Composable
 private fun Title(title: String, modifier: Modifier = Modifier) {
     Text(
@@ -169,6 +175,13 @@ private fun Title(title: String, modifier: Modifier = Modifier) {
 
     )
 }
+
+
+/**
+ * This composable is created to make a textField where the admin user can type in the mail
+ * of the employee that is about to be created.
+ * @author Sabirin Omar
+ */
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -195,6 +208,11 @@ fun EmailTextField(titleText: String, textChange: (String) -> Unit) {
     }
 }
 
+/**
+ * This composable Image is created to display a image in the composoable CreateEmployeeScreen.
+ * @author Sabirin Omar
+ */
+
 
 @Composable
 fun Image(modifier: Modifier = Modifier, id: Int) {
@@ -205,8 +223,13 @@ fun Image(modifier: Modifier = Modifier, id: Int) {
     )
 }
 
+/**
+ * This composable PasswordTextField is created for later use, so that an Admin can create a
+ * password for their employees.
+ * @author Sabirin Omar
+ */
+
 /*
-//for later use;
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PasswordTextField(titleText: String, textChange: (String) -> Unit) {

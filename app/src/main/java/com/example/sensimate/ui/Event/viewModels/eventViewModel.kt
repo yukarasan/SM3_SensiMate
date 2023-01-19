@@ -13,17 +13,41 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/**
+ * EventViewModel class is a ViewModel class that holds the state of the events.It uses
+ * MutableStateFlow to manage the state of the events and provides the state through uiState.
+ * It then provides the functions below
+ * @author Sabirin Omar
+ */
+
 class EventViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(EventUiState())
     val uiState: StateFlow<EventUiState> = _uiState.asStateFlow()
+
+    /**
+     * This function below insertEvent, takes as argument an Event object, and then inserts the
+     * event into the events list.
+     * @author Sabirin Omar
+     */
 
     fun insertEvent(event: Event) {
         _uiState.value.events.add(event)
     }
 
+    /**
+     * This function emptyList, is only used to empty the list of the events.
+     * @author Sabirin Omar
+     */
+
     fun emptyList() {
         _uiState.value.events.removeAll(uiState.value.events)
     }
+
+    /**
+     * This function getEventByID takes as argument id (eventID) which is a string and returns a
+     * whole event. The function will then update the state with the event and return it.
+     * @author Sabirin Omar
+     */
 
     fun getEventById(id: String): Event {
         for (event in _uiState.value.events) {
@@ -34,7 +58,11 @@ class EventViewModel : ViewModel() {
         }
         return Event("NO SUCH EVENT")
     }
-
+    /**
+     * This function below UpdateUIState, updates the state of the UI with the provided event.
+     * This function is used to update the differents states of the UIState below.
+     * @author Sabirin Omar
+     */
 
     fun updateUiState(event: Event) {
         _uiState.value = _uiState.value.copy(event = event)
@@ -80,6 +108,13 @@ class EventViewModel : ViewModel() {
         updateUiState(event = _uiState.value.event.copy(minute = minute, hour = hour))
     }
 
+    /**
+     * This function below checks if the text field in the IU state are empty. If they are empty,
+     * a toast message is displayed indicating which field is empty. But if the fields are filled
+     * the event is updated and the employee is navigated to the EventScreenEmployee.
+     * @author Sabirin Omar
+     */
+
     @SuppressLint("SuspiciousIndentation")
     fun checkIfTextfieldIsEmpty(
         context: Context, navController: NavController
@@ -106,6 +141,10 @@ class EventViewModel : ViewModel() {
             navController.navigate(Screen.EventScreenEmployee.route)
         }
     }
+    /**
+     * Updates the event in the database.
+     * @author Sabirin Omar
+     */
 
     fun updateEvent() {
         val event = hashMapOf(

@@ -783,7 +783,13 @@ object Database {
         subcollectionRef.add(mainQuest)
     }//TODO: Ahmad
 
-    fun editEvent() {} //TODO: Sabirin
+    /**
+     * This function deleteEvent, is created to delete the event, once this function is invocted in
+     * firebase. It takes a eventTitle as an argument, so based of the eventTitle it should delete
+     * the event. If the event is deleted we would get an alert message  and also if the event couldn't be
+     * deleted we would also get an alert message
+     * @author Sabirin Omar.
+     */
 
     fun deleteEvent(eventtitle: String) {
         //val docref = db.collection()
@@ -806,6 +812,11 @@ object Database {
             }
     }
 
+    /**
+     * This function is used to update an Event as an employee user, so once this function is used
+     * it would eventually update the event based of the the giving event documentID.
+     * @author Sabirin Omar
+     */
 
     @SuppressLint("SuspiciousIndentation")
     fun UpdateEvent(event: HashMap<String, String>, documentID: String) {
@@ -820,7 +831,7 @@ object Database {
                 Log.w(TAG, "Error updating document", e)
             }
 
-    } //TODO: Sabirin
+    }
 
 
     /**
