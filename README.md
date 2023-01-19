@@ -12,4 +12,5 @@ The surveys are about different food products and drinks, so that companies can 
 
 Here is a poster of how it would look like on the Google Play Store:
 
-https://cdn.discordapp.com/attachments/1016978702233505802/1065398987810680832/image.png![image](https://user-images.githubusercontent.com/91071020/213482371-ec28e965-c0aa-417e-b788-58303c1fdd42.png)
+<img width="1153" alt="image" src="https://user-images.githubusercontent.com/91071020/213482519-d917507d-6641-42d3-bae6-a176cf2b536d.png">
+
