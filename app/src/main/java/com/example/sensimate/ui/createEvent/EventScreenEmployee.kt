@@ -61,7 +61,6 @@ fun EventScreenEmployee(
     val isLoading by isLoadingViewModel.isLoading.collectAsState()
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isLoading)
 
-    Log.d("CHOSENNNNNN", chosenEvent.eventId)
 
     val showDialog = remember {
         mutableStateOf(false)
@@ -102,7 +101,6 @@ fun EventScreenEmployee(
                 LazyColumn(
                     contentPadding = PaddingValues(bottom = 20.dp),
                 ) {
-                    //val state = dataViewModel.state.value
 
                     item {
                         Row(
@@ -115,15 +113,15 @@ fun EventScreenEmployee(
                                 Modifier
                                     .clickable {
 
-                                        if(!getBooleanFromLocalStorage("isAdmin", context = context)){
+                                        if (!getBooleanFromLocalStorage(
+                                                "isAdmin",
+                                                context = context
+                                            )
+                                        ) {
                                             showDialog.value = true
-                                        }else{
-
+                                        } else {
                                             navController.navigate(Screen.AdminListOfEmployeeScreen.route)
-
                                         }
-
-
 
                                     }
                                     .size(64.dp)
@@ -155,7 +153,6 @@ fun EventScreenEmployee(
                                             Screen.EditEvent.route
                                         )
                                         eventViewModel.setChosenEventId(event.eventId)
-                                        Log.d("CLICKED", event.eventId)
                                     }
                                 )
                             }
