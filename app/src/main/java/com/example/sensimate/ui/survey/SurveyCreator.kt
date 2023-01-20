@@ -170,7 +170,6 @@ fun AllPages(
 
                     )
 
-
                 } else if (questions[questionIndex].oneChoice2) {
 
                     Survey3(
