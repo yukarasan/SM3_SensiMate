@@ -1,5 +1,5 @@
 
-package com.example.sensimate.data.questionandsurvey
+package com.example.sensimate.data.QuestionandSurvey
 
 import android.Manifest
 import android.content.Intent
@@ -107,13 +107,6 @@ open class QuestionViewModel : ViewModel() {
     fun setCurrentQuestion(question: MyQuestion) {
         _uiState.value.currentQuestion = question
     }
-/*
-    fun setAnswer(answers: List<String>) {
-        //_uiState.value.currentAnswers = listOf(answer)
-        _uiState.value.currentAnswers = answers
-    }
-
- */
 
 
     fun addAnswer(answer:String){
@@ -124,18 +117,9 @@ open class QuestionViewModel : ViewModel() {
 
 
 
-
-    /*
-   fun setAnswer(answers: List<String>) {
-    _uiState.value.currentAnswers.addAll(answers)
-}
-     */
-
     fun updateAnswer(
         eventId: String, boolean: Boolean, context: Context
     ) {
-
-        //Database.requestStoragePermission(context as Activity)
         viewModelScope.launch {
             Database.updateSurvey(eventId = eventId, options = uiState.value.currentAnswers, newQuestion = uiState.value.currentQuestion,
                 boolean = boolean, context = context
@@ -148,13 +132,4 @@ open class QuestionViewModel : ViewModel() {
 
 }
 
-
-
-
-/*
-    fun getAnswer(question: MyQuestion): StateFlow<MyAnswer> {
-        val _myanswer = MutableStateFlow(MyAnswer())
-        return _myanswer.asStateFlow()
-    }
- */
 

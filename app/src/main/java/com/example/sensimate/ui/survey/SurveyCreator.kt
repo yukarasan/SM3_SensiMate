@@ -16,8 +16,8 @@ import com.example.sensimate.data.EventViewModel
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.questionandsurvey.MyAnswer2
-import com.example.sensimate.data.questionandsurvey.MyQuestion
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.data.QuestionandSurvey.MyQuestion
+import com.example.sensimate.data.QuestionandSurvey.QuestionViewModel
 import com.example.sensimate.ui.navigation.Screen
 import com.example.sensimate.ui.theme.BottomGradient
 import com.example.sensimate.ui.theme.DarkPurple
@@ -69,10 +69,6 @@ fun SurveyCreator(
 
 
     val surveyId = eventViewModel.uiState.value.chosenSurveyId
-    val state = questionViewModel.uiState.value
-    var hasOther: Boolean = false
-    val progressState = remember { mutableStateOf(0f) }
-
 
 
     val loaded = remember {
@@ -131,7 +127,7 @@ fun AllPages(
     eventId: String
 ) {
 
-    val answers = mutableListOf<String>() //i vm
+    val answers = mutableListOf<String>()
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
 
@@ -144,8 +140,6 @@ fun AllPages(
     ) { questionIndex ->
 
         questionViewModel.page.value = questionIndex + 1
-
-
         questionViewModel.progress.value = (pagerState.currentPage + 1) / questions.size.toFloat()
 
         for (option in questions[questionIndex].options) {

@@ -9,7 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.*
 import com.example.sensimate.R
-import com.example.sensimate.data.questionandsurvey.MyQuestion
+import com.example.sensimate.data.QuestionandSurvey.MyQuestion
 import com.example.sensimate.ui.Event.viewModels.Event
 import com.example.sensimate.ui.createEvent.docId
 import com.google.firebase.auth.EmailAuthProvider

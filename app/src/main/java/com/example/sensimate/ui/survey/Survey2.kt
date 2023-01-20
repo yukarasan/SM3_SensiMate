@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.navigation.NavController
 
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.data.QuestionandSurvey.QuestionViewModel
 //import com.example.sensimate.data.questionandsurvey.getAnswer
 import com.example.sensimate.ui.theme.*
 import kotlinx.coroutines.flow.MutableStateFlow

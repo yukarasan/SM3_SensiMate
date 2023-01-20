@@ -22,7 +22,7 @@ import com.example.sensimate.broadcastreceivers.InternetBroadcastReceiver
 import com.example.sensimate.data.*
 import com.example.sensimate.data.EventViewModel
 import com.example.sensimate.data.getBooleanFromLocalStorage
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.data.QuestionandSurvey.QuestionViewModel
 import com.example.sensimate.ui.AdminScreens.AdminViewModel
 import com.example.sensimate.ui.AdminScreens.EmployeesListScreen
 import com.example.sensimate.ui.InitialStartPage.CookiesScreen

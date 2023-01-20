@@ -24,11 +24,10 @@ import com.example.sensimate.model.manropeFamily
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.data.QuestionandSurvey.QuestionViewModel
 import com.example.sensimate.ui.theme.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
-//@Preview(showBackground = true)
 
 /**
  * @author Anshjyot Singh
@@ -86,28 +85,13 @@ fun Survey3(title: String, navController: NavController, questionViewModel: Ques
                     .fillMaxWidth()
                     .padding(top = 70.dp)
             ) {
-                //PreviousButton(onClick = { navController.navigate(Screen.Survey2.route) } )
-                //NextButton(onClick = { navController.navigate(Screen.Survey4.route) } )
+
+
             }
         }
     }
 }
 
-/*
-@Composable
-private fun ProgressPreview(progress: Float) {
-    LinearProgressIndicator(
-        modifier = Modifier
-            .padding(top = 20.dp, start = 0.dp)
-            .fillMaxWidth()
-            .height(10.dp)
-            .clip(RoundedCornerShape(15.dp)),
-        backgroundColor = darkpurple,
-        color = lightpurple, //progress color
-        progress = progress //0.75f //TODO:  Needs state hoisting in future.
-    )
-}
- */
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -119,9 +103,6 @@ fun Information3(questionViewModel: QuestionViewModel) {
         selectedOption = i
 
         questionViewModel.addAnswer(options[i])
-        //questionViewModel.setAnswer(options)
-        //questionViewModel.addQuestion(questionTitle = questionViewModel.uiState.value.currentQuestion.mainQuestion, answers = mutableListOf(options[i]), onechoice = true)
-
 
         Log.d("Test2", options.toString())
     }
@@ -167,7 +148,7 @@ fun Information3(questionViewModel: QuestionViewModel) {
                     RoundedCheckView(listener, selectedOption, option = index)
 
 
-                    //Log.d("Test2", options.toString())
+
                 }
             }
         }
@@ -180,7 +161,7 @@ fun Information3(questionViewModel: QuestionViewModel) {
 
 @Composable
 private fun SurveyImage(modifier: Modifier = Modifier) {
-    val image = painterResource(id = R.drawable.drinkingdude) // Possible for hoisting in future.
+    val image = painterResource(id = R.drawable.drinkingdude)
     Image(
         painter = image,
         contentDescription = null,
@@ -195,7 +176,7 @@ private fun SurveyImage(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SurveyImage2(modifier: Modifier = Modifier) {
-    val image = painterResource(id = R.drawable.thumbsdown) // Possible for hoisting in future.
+    val image = painterResource(id = R.drawable.thumbsdown)
     Image(
         painter = image,
         contentDescription = null,
@@ -207,7 +188,7 @@ private fun SurveyImage2(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SurveyImage3(modifier: Modifier = Modifier) {
-    val image = painterResource(id = R.drawable.heart) // Possible for hoisting in future.
+    val image = painterResource(id = R.drawable.heart)
     Image(
         painter = image,
         contentDescription = null,

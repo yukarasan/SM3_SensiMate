@@ -1,7 +1,7 @@
 package com.example.sensimate
 
-import com.example.sensimate.data.questionandsurvey.MyQuestion
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.data.QuestionandSurvey.MyQuestion
+import com.example.sensimate.data.QuestionandSurvey.QuestionViewModel
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

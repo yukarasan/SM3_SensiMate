@@ -27,7 +27,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 //import com.example.sensimate.data.questionandsurvey.MyAnswer
 //import com.example.sensimate.data.Database.updateSurvey
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.data.QuestionandSurvey.QuestionViewModel
 import com.example.sensimate.ui.InitialStartPage.MyTextField
 import com.example.sensimate.ui.theme.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,8 +74,7 @@ fun Survey4(title: String, navController: NavController, questionViewModel: Ques
                 .fillMaxWidth()
                 .padding(top = 70.dp)
         ) {
-            //PreviousButton(onClick = { navController.navigate(Screen.Survey3.route) } )
-            //FinishButton(onClick = { navController.navigate(Screen.EventScreen.route) } )
+
         }
     }
 
@@ -83,39 +82,15 @@ fun Survey4(title: String, navController: NavController, questionViewModel: Ques
 
 
 
-/*
-@Composable
-private fun ProgressPreview(progress: Float) {
-    LinearProgressIndicator(
-        modifier = Modifier
-            .padding(top = 20.dp, start = 0.dp)
-            .fillMaxWidth()
-            .height(10.dp)
-            .clip(RoundedCornerShape(15.dp)),
-        backgroundColor = darkpurple,
-        color = lightpurple, //progress color
-        progress = progress //1f //TODO:  Needs state hoisting in future.
-    )
-}
- */
 
 
 @SuppressLint("StateFlowValueCalledInComposition", "MutableCollectionMutableState")
 @Composable
 fun Information4(questionViewModel: QuestionViewModel) {
     val checkedState = remember { mutableStateOf(false) }
-
     val options = questionViewModel.uiState.value.currentQuestion.options
-
     val answer = remember { mutableListOf<String>() }
 
-
-/*
-    val myAnswers = selectedAnswers.value.map {
-        MyAnswer(it)
-    }
-    questionViewModel.setAnswer(myAnswers)
- */
 
     Card(
         modifier = Modifier
@@ -136,7 +111,6 @@ fun Information4(questionViewModel: QuestionViewModel) {
                     CheckBox(questionViewModel, option = answer, option)
                     Option(title = option)
                     Spacer(modifier = Modifier.width((120.dp)))
-                    // questionViewModel.setAnswer(answers = options)
                 }
             }
 
@@ -200,7 +174,6 @@ private fun Option(title: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun CheckBox(questionViewModel: QuestionViewModel, option: MutableList<String>, options: String) {
-    //val isChecked = remember { mutableStateOf(false) }
     val checkedState = remember { mutableStateOf(false) }
 
     //if (isChecked.value) {
@@ -212,7 +185,6 @@ fun CheckBox(questionViewModel: QuestionViewModel, option: MutableList<String>, 
             checkedState.value = it
             option.add(options)
             questionViewModel.addAnswer(option.toString())
-            //questionViewModel.addQuestion(questionTitle = questionViewModel.uiState.value.currentQuestion.mainQuestion, answers = option, onechoice = false)
 
             Log.d("Test1", options)
         },
@@ -250,7 +222,6 @@ fun FinishButton(onClick: () -> Unit) {
                 "Finish",
                 color = Color.White,
                 fontSize = 15.sp,
-                // modifier = Modifier.padding(start = 0.dp)
             )
 
 
@@ -258,9 +229,7 @@ fun FinishButton(onClick: () -> Unit) {
                 painter = painterResource(id = R.drawable.tick),
                 contentDescription = "Finish",
                 colorFilter = ColorFilter.tint(Color.White)
-                /*modifier = Modifier
-                    .size(30.dp)
-                    .padding(start = 10.dp) */
+
 
             )
 

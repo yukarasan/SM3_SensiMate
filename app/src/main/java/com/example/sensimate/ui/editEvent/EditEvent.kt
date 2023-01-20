@@ -44,7 +44,7 @@ import androidx.navigation.NavController
 import com.example.sensimate.R
 import com.example.sensimate.data.*
 
-import com.example.sensimate.data.questionandsurvey.QuestionViewModel
+import com.example.sensimate.data.QuestionandSurvey.QuestionViewModel
 import com.example.sensimate.model.manropeFamily
 import com.example.sensimate.ui.appcomponents.composable.OrangeBackButton
 import com.example.sensimate.ui.createEvent.AddPhoto
