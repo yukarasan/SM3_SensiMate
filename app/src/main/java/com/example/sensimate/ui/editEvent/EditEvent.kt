@@ -397,7 +397,7 @@ private fun Allergens(title: String, allergen: String, modifier: Modifier = Modi
 /**
  * This class represents the Edit Page Screen, this screen contains the UI for editing a page of an event
  * @param navController: NavController, to handle navigation between screens
- * @param eventViewModel: EventViewModel, the viewmodel for handling events
+ * @param eventViewModel: EventViewModel, the viewmodel for handling events and the logic of this screen
  * @author Sabirin Omar
  */
 
@@ -409,7 +409,6 @@ fun EditPage(
 ) {
 
     val state = eventViewModel.uiState.collectAsState()
-    val chosenEvent = eventViewModel.getEventById(eventViewModel.uiState.value.chosenSurveyId)
 
     val maxChar = 4
 
@@ -591,7 +590,7 @@ fun Time(
     val hasChosen = remember {
         mutableStateOf(false)
     }
-    // Creating a TimePicker dialod
+    // Creating a TimePicker dialog
     val mTimePickerDialog = TimePickerDialog(
         context,
         { _: TimePicker, mHour: Int, mMinute: Int ->
@@ -645,10 +644,6 @@ fun EventDateChosen(
     val hasChosen = remember {
         mutableStateOf(false)
     }
-
-    Log.d("myyear.value", myYear)
-    Log.d("mymonth.value", myMonth)
-    Log.d("myday.value", myDay)
 
 
     var text by remember { mutableStateOf(("")) }

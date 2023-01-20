@@ -113,7 +113,7 @@ fun CreateEmployeeScreen(
             EmailTextField(titleText = state.value.email.value, textChange = {
                 state.value.email.value = it
             })
-            //Perhaps for later use:
+            //Perhaps for later use, to include also password for the employee user:
             /*
             PasswordTextField(titleText = state.value.password.value, textChange = {
                 state.value.password.value = it

@@ -27,7 +27,6 @@ data class CreateEventUistate(
     val myDay: MutableState<String> = mutableStateOf(""),
     val myHour: MutableState<String> = mutableStateOf(""),
     val myMinute: MutableState<String> = mutableStateOf(""),
-   // val eventCode : MutableState<String> = mutableStateOf("")
 )
 class CreateEventViewModel: ViewModel(){
    val  _uistate = MutableStateFlow(CreateEventUistate())
