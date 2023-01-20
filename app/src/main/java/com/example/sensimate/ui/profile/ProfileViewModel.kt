@@ -74,7 +74,7 @@ class ProfileViewModel : ViewModel() {
 
                 val birthCalendar = Calendar.getInstance()
                 birthCalendar.set(Calendar.YEAR, profile.yearBorn.toInt())
-                birthCalendar.set(Calendar.MONTH, profile.monthBorn.toInt())
+                birthCalendar.set(Calendar.MONTH, profile.monthBorn.toInt() - 1)
                 birthCalendar.set(Calendar.DAY_OF_MONTH, profile.dayBorn.toInt())
 
                 val birthYear = birthCalendar.get(Calendar.YEAR)
