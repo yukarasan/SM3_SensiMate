@@ -1160,7 +1160,6 @@ private fun createExcel(workbook: Workbook, context: Context) {
 
 
 
-//TODO: LATER
 data class Question2(val mainQuestion: String, val oneChoice: Boolean, val answer: String)
 
 
