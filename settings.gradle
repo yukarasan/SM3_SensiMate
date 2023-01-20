@@ -12,6 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Sensimate"
+rootProject.name = "SM3_SensiMate"
 include ':app'
 include ':app'
