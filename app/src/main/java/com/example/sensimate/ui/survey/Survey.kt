@@ -28,7 +28,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.navigation.NavController
 import com.example.sensimate.data.QuestionandSurvey.QuestionViewModel
 import com.example.sensimate.ui.InitialStartPage.MyTextField
-import com.example.sensimate.ui.createEvent.nonQuestion
 import com.example.sensimate.ui.theme.*
 import kotlinx.coroutines.flow.MutableStateFlow
 

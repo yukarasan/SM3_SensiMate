@@ -980,26 +980,19 @@ object Database {
 
     @SuppressLint("SuspiciousIndentation")
     suspend fun main(context: Context, newQuestion: MyQuestion, options: List<String>) {
-//        val out = FileOutputStream(File("./test_file.xlsx"))
-        // val filepath = "./test_file.xlsx"
-        // Creating excel workbook
-
 
         val workbook = XSSFWorkbook()
 
-        //Creating first sheet inside workbook
-        //Constants.SHEET_NAME is a string value of sheet name
         val sheet: Sheet = workbook.createSheet("Survey Results")
 
-        //Create Header Cell Style
+
         val cellStyle = getHeaderStyle(workbook)
 
-        //Creating sheet header row
+
         createSheetHeader(cellStyle, sheet)
 
         val profile = fetchProfile()!!
 
-        //Adding data to the sheet
         addData(0, sheet, newQuestion = newQuestion, options, profile)
 
 
